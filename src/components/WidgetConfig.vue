@@ -85,7 +85,7 @@
         </el-input>
       </el-form-item>
       <!-- 访问外部条件 -->
-      <el-form-item :label="$t('fm.config.widget.remoteFactor')" v-if="data.type!='grid'">
+      <el-form-item :label="$t('fm.config.widget.remoteFactor')" v-if="data.type=='input'">
         <el-checkbox v-model="data.remoteFactor.isRemote" label="是" style="margin-bottom:10px"></el-checkbox>
         <!-- <el-button @click="handelMirror">点击配置外部条件访问</el-button> -->
         <template v-if="data.remoteFactor.isRemote">
@@ -389,7 +389,7 @@
         </el-form-item>
         <!-- 提示信息 -->
       <el-form-item v-if="data.type =='input'" :label="$t('fm.config.widget.showTips')">
-        <span style="color: red">注意：禁用和提示信息为互斥项</span>
+        <span style="color: red">注意：设置只读属性不可以设置提示信息</span>
         <el-input v-if="data.options.disabled" :disabled="data.options.disabled" placeholder="不可配置"></el-input>
         <el-input v-else placeholder="输入提示信息" v-model="data.options.tips"></el-input>
       </el-form-item>

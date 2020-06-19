@@ -34,12 +34,8 @@
 
 <script>
 import Vue from 'vue'
-import HrInput from './components/Hr-input/HrInput'
 export default {
   name: 'app',
-  components:{
-    HrInput
-  },
   methods: {
     handleHome () {
       this.$router.push({path: '/'})

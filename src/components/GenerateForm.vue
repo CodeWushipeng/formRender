@@ -81,7 +81,7 @@
 import GenetateFormItem from "./GenerateFormItem";
 import { loadJs } from "../util/index.js";
 import request from "../util/request.js";
-import {IdentityCodeValid} from '../util/idencardUtil';
+import { IdentityCodeValid } from "../util/idencardUtil";
 
 export default {
   name: "fm-generate-form",
@@ -103,6 +103,8 @@ export default {
   },
   data() {
     return {
+      first:{},
+      second:{},
       isDataNull: true, // 判断props传入的data是否有真实数据
       models: {}, // form表单对象所有组件key value组成的json
       rules: {}, // form表单对象所有组件对应校验规则
@@ -111,13 +113,10 @@ export default {
       canFocusInputArr: [],
       startIndex: 0,
       focusIndex: 0, // 后期添加非form making自有属性，当前可聚焦节点相对全局下标
-      intervalId: null, //定时器ID
+      intervalId: null, //定时器ID,
+      remoteType: false, //添加用于标记远程校验状态  （因为promise返回值是promise所以添加）
     };
   },
-  // 源码里有created钩子，但是请求外部接口数据是存在父子组件异步传值问题，会报错，传入的data为空对象
-  // created(){
-  //   this.generateModle(this.data.list)
-  // },
   created() {
     this.generateModle(this.data.list);
   },
@@ -125,32 +124,43 @@ export default {
     // 这个定时器主要是解决父组件异步传值，子组件生命周期获取不到数据的问题
     this.intervalId = setInterval(() => {
       if (!this.isDataNull) {
+        this.dynamicData();
+        this.handelDynamicInFlow()
         this.flowHandel();
+        console.log(this.data.list)
         clearInterval(this.intervalId);
       }
     }, 200);
   },
   methods: {
-    // 动态数据处理函数
-    dynamicData(targetdata) {
-      // 动态数据赋值
+     //  动态数据处理函数
+    dynamicData() {
       var platform = this.dyData.platform;
       var user = this.dyData.user;
-      if (
-        targetdata.options.defaultValue != "" &&
-        targetdata.options.defaultValue[0] == "@"
-      ) {
-        var temp = targetdata.options.defaultValue.substring(1);
-        try {
-          var tempJson = eval(temp);
-        } catch (error) {
-          throw new Error(error);
-        }
-        if (tempJson != "" || tempJson != null) {
-          console.log(tempJson);
-          targetdata.options.defaultValue = tempJson;
+      let formLists = this.data.list;
+      for (let i = 0; i < formLists.length; i++) {
+        if (
+          formLists[i].options.defaultValue != "" &&
+          formLists[i].options.defaultValue[0] == "@"
+        ) {
+          var temp = formLists[i].options.defaultValue.substring(1);
+          try {
+            var tempJson = eval(temp);
+          } catch (error) {
+            throw new Error(error);
+          }
+          if (tempJson != "" || tempJson != null) {
+            console.log(tempJson,formLists[i].model,this.models,this.models[formLists[i].model])
+            this.$set(formLists[i].options,"defaultValue",tempJson)
+            // formLists[i].options.defaultValue = tempJson;
+            // this.models[formLists[i].model] = tempJson
+            this.$set(this.models,formLists[i].model,tempJson)
+            this.$forceUpdate()
+            console.log(formLists[i].options.defaultValue,this.models[formLists[i].model])
+          }
         }
       }
+      console.log(this.data.list,this.value)
     },
     // 处理流控数据中带有的动态数据
     handelDynamicInFlow() {
@@ -167,7 +177,15 @@ export default {
             throw new Error(error);
           }
           if (tempJson != "" || tempJson != null) {
-            this.models[key] = tempJson;
+            this.$set(this.models,key,tempJson);
+            this.models[key] = tempJson
+            console.log(this.models)
+            for(let i=0;i<this.data.list.length;i++){
+              if(this.data.list[i].model == key ){
+                this.$set(this.data.list[i],key,tempJson)
+              }
+            }
+            console.log(key,tempJson,this.models[key],this.models)
           }
         }
       }
@@ -177,25 +195,24 @@ export default {
       if (!genList) {
         return;
       }
-      console.log("========generateModle=========");
       for (let i = 0; i < genList.length; i++) {
-        this.dyData && Object.keys(this.dyData) && this.dynamicData(genList[i]);
         if (genList[i].type === "grid") {
           genList[i].columns.forEach((item) => {
             this.generateModle(item.list);
           });
         } else {
+          console.log("11")
           // 处理非表格类型的组件
           if (
             // 如果value对象不为空且具有与当前组件model同名的属性，则将值赋给models的该属性（这样就修改了组件原始值）
             this.value &&
             Object.keys(this.value).indexOf(genList[i].model) >= 0
           ) {
+            console.log("22")
             this.models[genList[i].model] = this.value[genList[i].model];
           } else {
             // 如果value为空判断当前组件的类型是否为空类型
             if (genList[i].type === "blank") {
-              console.log("g2");
               // 如果为空类型则为models添加对应的响应式属性，并赋值为默认值
               this.$set(
                 this.models,
@@ -207,6 +224,7 @@ export default {
                   : []
               );
             } else {
+              console.log("33")
               // 如果value为空并且组件为非空类型组件将组件默认值赋值给models对应属性
               // 这个if条件为后期加入的，判断是否已触发过隐藏条件
               if (!this.haveHide) {
@@ -216,8 +234,9 @@ export default {
               // 组件创建完成后models为组件 key:value 键值对json
             }
           }
-          // 如果rules对象存在当前组件的校验规则
+          // 如果rules对象存在当前组件的model属性
           if (this.rules[genList[i].model]) {
+            console.log("44")
             // 执行此段代码后rules的每个属性为组件默认校验规则和传入检验规则组成的数组
             this.rules[genList[i].model] = [
               ...this.rules[genList[i].model], // 将当前数组值展开
@@ -233,7 +252,8 @@ export default {
               }),
             ];
           } else {
-            // 如果rules对象不存在当前组件的校验规则则展开传入的校验规则
+            console.log("55")
+            // 如果rules对象不存在当前组件的model属性
             this.rules[genList[i].model] = [
               ...genList[i].rules.map((item) => {
                 if (item.pattern) {
@@ -243,86 +263,103 @@ export default {
                 }
               }),
             ];
+           
+          }
+          //  console.log(this.rules)
+          // 确认密码的校验
+          // console.log('genList[i]',genList[i])
+          const dataType = genList[i].options.dataType;
+          const confirm_field = genList[i].options.confirm_field;
+          if (dataType == "againpassword") {
+            var validatePass = (rule, value, callback) => {
+              // console.log('this.models',JSON.stringify(_this.models));
+              setTimeout(() => {
+                if (this.models[confirm_field]) {
+                  if (value === "") {
+                    callback(new Error("请输入确认密码"));
+                  } else if (this.models[confirm_field] !== value) {
+                    callback(new Error("两次输入密码不一致!"));
+                  } else {
+                    callback();
+                  }
+                }
+              }, 200);
+            };
+            this.rules[genList[i].model].push({
+              validator: validatePass,
+              trigger: "blur",
+            });
           }
 
-            // 确认密码的校验
-            // console.log('genList[i]',genList[i])
-            const dataType = genList[i].options.dataType;
-            const confirm_field = genList[i].options.confirm_field;
-            if(dataType =='againpassword'){
-                var validatePass = (rule, value, callback) => {
-                    // console.log('this.models',JSON.stringify(_this.models));
-                    setTimeout(()=>{
-                        if(this.models[confirm_field]){
-                            if (value === '') {
-                                callback(new Error('请输入确认密码'));
-                            } else if (this.models[confirm_field] !== value ) {
-                                callback(new Error('两次输入密码不一致!'));
-                            } else {
-                                callback();
-                            }
-                        }
-                    },200)
-                };
-                this.rules[genList[i].model].push({ validator: validatePass, trigger: 'blur' })
-            }
-
-            if(dataType =='singletext'){
-                debugger
-                var validatePass = (rule, value, callback) => {
-                    setTimeout(()=>{
-                            if (value === '') {
-                                callback(new Error('请输入文本内容'));
-                            } else {
-                                callback();
-                            }
-                    },200)
-                };
-                this.rules[genList[i].model].push({ validator: validatePass, trigger: 'blur' })
-            }
-            //整数和数字类型     整数位、小数位位数
-            if(dataType =='integer' || dataType =='float'){
-                var validatePass = (rule, value, callback) => {
-                    setTimeout(()=>{
-                        if (value && genList[i].options.integerbits) {
-                            if((value+"").indexOf(".") > -1){
-                                const temp = (value+"").split(".")
-                                if((temp[0]+"").length > genList[i].options.integerbits){
-                                    callback(new Error('超过整数位位数'));
-                                }
-                                if(genList[i].options.decimalbits && (temp[1]+"").length > genList[i].options.decimalbits){
-                                    callback(new Error('超过小数位位数'));
-                                }else{
-                                    callback();
-                                }
-                            }else{
-                                if((value+"").length > genList[i].options.integerbits){
-                                    callback(new Error('超过整数位位数'));
-                                }else{
-                                    callback();
-                                }
-                            }
-                        }
-                    },200)
-                };
-                this.rules[genList[i].model].push({ validator: validatePass, trigger: 'blur' })
-            }
-            //身份证校验
-            if(genList[i].type =='idencard'){
-                var validatePass = (rule, value, callback) => {
-                    setTimeout(()=>{
-                        if (value && IdentityCodeValid(value)) {
-                            callback();
-                        }else{
-                            callback(new Error('身份证验证错误'));
-                        }
-                    },200)
-                };
-                this.rules[genList[i].model].push({ validator: validatePass, trigger: 'blur' })
-            }
+          if (dataType == "singletext") {
+            debugger;
+            var validatePass = (rule, value, callback) => {
+              setTimeout(() => {
+                if (value === "") {
+                  callback(new Error("请输入文本内容"));
+                } else {
+                  callback();
+                }
+              }, 200);
+            };
+            this.rules[genList[i].model].push({
+              validator: validatePass,
+              trigger: "blur",
+            });
+          }
+          //整数和数字类型     整数位、小数位位数
+          if (dataType == "integer" || dataType == "float") {
+            var validatePass = (rule, value, callback) => {
+              setTimeout(() => {
+                if (value && genList[i].options.integerbits) {
+                  if ((value + "").indexOf(".") > -1) {
+                    const temp = (value + "").split(".");
+                    if (
+                      (temp[0] + "").length > genList[i].options.integerbits
+                    ) {
+                      callback(new Error("超过整数位位数"));
+                    }
+                    if (
+                      genList[i].options.decimalbits &&
+                      (temp[1] + "").length > genList[i].options.decimalbits
+                    ) {
+                      callback(new Error("超过小数位位数"));
+                    } else {
+                      callback();
+                    }
+                  } else {
+                    if ((value + "").length > genList[i].options.integerbits) {
+                      callback(new Error("超过整数位位数"));
+                    } else {
+                      callback();
+                    }
+                  }
+                }
+              }, 200);
+            };
+            this.rules[genList[i].model].push({
+              validator: validatePass,
+              trigger: "blur",
+            });
+          }
+          //身份证校验
+          if (genList[i].type == "idencard") {
+            var validatePass = (rule, value, callback) => {
+              setTimeout(() => {
+                if (value && IdentityCodeValid(value)) {
+                  callback();
+                } else {
+                  callback(new Error("身份证验证错误"));
+                }
+              }, 200);
+            };
+            this.rules[genList[i].model].push({
+              validator: validatePass,
+              trigger: "blur",
+            });
+          }
         }
       }
-      this.handelDynamicInFlow();
     },
     // 验证并获取输入框当前的值
     getData() {
@@ -330,7 +367,7 @@ export default {
         // 执行form表单验证函数
         this.$refs.generateForm.validate((valid) => {
           if (valid) {
-            // 逐条验证当前组件的校验规则
+            // 逐条验证当前表单的校验规则
             resolve(this.models);
           } else {
             reject(new Error(this.$t("fm.message.validError")).message);
@@ -428,21 +465,25 @@ export default {
         if (condition) {
           this.handelValidate("success");
           return true;
-          // this.handelElement();
-          // this.handelFocus();
         } else {
           this.handelValidate("error", "不满足离开条件");
           return false;
         }
+      } else {
+        this.handelValidate("success");
+        return true;
       }
     },
-    
+
     // 离开赋值
     handelAssignment() {
-      if(this.data.list[this.focusIndex].assignment && this.data.list[this.focusIndex].assignment !=""){
+      if (
+        this.data.list[this.focusIndex].assignment &&
+        this.data.list[this.focusIndex].assignment != ""
+      ) {
         this.evalWrap(this.data.list[this.focusIndex].assignment);
       }
-      return true
+      return true;
     },
     // 取值范围校验
     handelRange() {
@@ -458,9 +499,10 @@ export default {
           result = eval(range);
           resultType = Object.prototype.toString.call(result);
         } catch (error) {
-          throw new Error("取值范围条件解析出错");
+          this.handelValidate("error", "语法错误");
+          throw new Error(error, "取值范围条件解析出错");
         }
-        console.log(result);
+        console.log(resultType);
         if (resultType == "[object Array]") {
           if (result.indexOf(nowValue) == -1) {
             this.handelValidate("error", "不在取值范围内");
@@ -470,21 +512,25 @@ export default {
             return true;
           }
         } else if (resultType == "[object RegExp]") {
-          if(result.test(nowValue)){
+          if (result.test(nowValue)) {
             this.handelValidate("success");
-            return true
-          }else{
+            return true;
+          } else {
             this.handelValidate("error", "不在取值范围内");
-            return false
+            return false;
           }
-        } else if (resultType == "[object String]") {
-          let resultReg = new RegExp(result);
-          if(resultReg.test(nowValue)){
+        } else if (
+          resultType == "[object String]" ||
+          resultType == "[object Number]"
+        ) {
+          let resultReg = new RegExp("[" + range + "]");
+          console.log(resultReg);
+          if (resultReg.test(nowValue)) {
             this.handelValidate("success");
-            return true
-          }else{
+            return true;
+          } else {
             this.handelValidate("error", "不在取值范围内");
-            return false
+            return false;
           }
         }
       } else {
@@ -494,21 +540,32 @@ export default {
     },
     // 访问外部条件
     remoteValidate() {
-      if (this.data.list[this.focusIndex].remoteFactor.isRemote == true) {
+      if (
+        this.data.list[this.focusIndex].remoteFactor &&
+        this.data.list[this.focusIndex].remoteFactor.isRemote == true
+      ) {
         let url = this.data.list[this.focusIndex].remoteFactor.url;
+        let primitiveData = this.data.list[this.focusIndex].remoteFactor.data;
         let nowModel = this.data.list[this.focusIndex].model;
-        let data = this.models[nowModel];
-        console.log(nowModel, data);
+        let nowData = this.models[nowModel];
+        let postData;
+        var result;
+        if (primitiveData != undefined && primitiveData != "") {
+          postData = primitiveData;
+        } else {
+          postData = nowData;
+        }
+        console.log(postData);
         let success = this.data.list[this.focusIndex].remoteFactor.success;
+        console.log(this.data.list[this.focusIndex].remoteFactor.success);
         request
           .post(url, {
-            data: data,
+            data: postData,
           })
           .then((res) => {
             if (res.code == 0) {
               // 提取返回数据对象名
               let targetKeys = Object.keys(res.data);
-              console.log(this.models);
               // 解析返回数据对应的属性名并赋值对应组件
               for (let i = 0; i < targetKeys.length; i++) {
                 if (this.models[targetKeys[i]] != undefined) {
@@ -517,21 +574,22 @@ export default {
               }
               this.evalWrap(success);
               this.handelValidate("success");
-              return true;
+              this.remoteType = true;
             } else {
               this.handelValidate("error", "验证失败，请重新验证");
-              return false;
+              this.remoteType = false;
             }
           })
           .catch((error) => {
             console.log(error);
             this.handelValidate("error", "验证失败，请重新验证");
-            return false;
+            this.remoteType = false;
           });
       } else {
         this.handelValidate("success");
-        return true;
+        this.remoteType = true;
       }
+      return this.remoteType;
     },
     // 全部可聚焦input节点下标加入一个全局数组维护
     getFocusEle() {
@@ -586,13 +644,38 @@ export default {
     },
     // 监听input组件发射的el-change事件
     onElChange(e) {
-      this.getData().then((resolve) => {
-        if(this.handelRange() && this.remoteValidate() && this.handelAssignment() &&this.handelCondition()){
-          this.handelElement();
-          this.handelFocus();
+      if (
+        this.focusIndex <
+        this.canFocusInputArr[this.canFocusInputArr.length - 1]
+      ) {
+        if (
+          this.handelRange() &&
+          this.handelCondition() &&
+          this.remoteValidate() &&
+          this.handelAssignment()
+        ) {
+          if (this.data.list[this.focusIndex].rules.length > 0) {
+            let nowModel = this.data.list[this.focusIndex].rules;
+              this.$refs.generateForm.validateField(this.data.list[this.focusIndex].rules, (valid) => {
+                if (valid) {
+                  // 逐条验证当前组件的校验规则
+
+                  this.handelElement();
+                  this.handelFocus();
+                } else {
+                  throw new Error(this.$t("fm.message.validError")).message;
+                }
+              });
+          } else {
+            this.handelElement();
+            this.handelFocus();
+          }
         }
-      });
-      this.$emit("input-enter");
+      }
+      // this.getData().then((resolve) => {
+      //   console.log(resolve)
+      // });
+      // this.$emit("input-enter");
     },
     // textarea ctrl+enter触发光标离开事件
     textEnter() {
@@ -604,8 +687,8 @@ export default {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
       handler(val) {
-        this.isDataNull = false;
         this.generateModle(val.list);
+        this.isDataNull = false;
       },
     },
     value: {
@@ -616,6 +699,13 @@ export default {
         this.models = { ...this.models, ...val };
       },
     },
+    models: {
+      deep: true,
+      handler(val){
+        console.log(val)
+        this.models = val
+      }
+    }
   },
 };
 </script>

@@ -1,8 +1,7 @@
 <template>
   <el-form-item :label="widget.name" :prop="widget.model">
-    widget: {{widget}}
-      <br/>
-      {{rules}}
+    <!-- widget: {{widget}} -->
+      <!-- {{rules}} -->
       <!--金额控件-->
       <template v-if="widget.type == 'amount'">
           <!--放大镜-->
@@ -89,17 +88,6 @@
               :placeholder="widget.options.placeholder"
               :style="{width: widget.options.width}"
       ><el-button v-if="widget.options.ifperipheral" slot="prepend" icon="el-icon-question" @click="indentcart()">读取</el-button></el-input>
-    </template>
-
-    <template v-if="widget.type == 'hrinput'">
-      <hr-input
-        :type="widget.options.type"
-        :maxlength="widget.options.maxlength"
-        v-model="widget.options.defaultValue"
-        :disabled="widget.options.disabled"
-        :placeholder="widget.options.placeholder"
-        :style="{width: widget.options.width}"
-      ></hr-input>
     </template>
 
     <template v-if="widget.type == 'singletext'">
@@ -460,6 +448,7 @@ export default {
         this.widget.options.token = data;
       });
     }
+    console.log(this.models,this.widget)
   },
   methods: {
       handleClose(tag) {
@@ -613,6 +602,7 @@ export default {
       deep: true,
       handler(val) {
         this.dataModel = val[this.widget.model];
+        console.log(this.dataModel)
       }
     }
   }

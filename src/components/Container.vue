@@ -207,7 +207,6 @@ import {bankingComponents} from './componentsBankingConfig.js'
 import {loadJs, loadCss} from '../util/index.js'
 import request from '../util/request.js'
 import generateCode from './generateCode.js'
-import HrInput from './Hr-input/HrInput'
 
 export default {
   name: 'fm-making-form',
@@ -217,8 +216,7 @@ export default {
     FormConfig,
     WidgetForm,
     CusDialog,
-    GenerateForm,
-    HrInput
+    GenerateForm
   },
   props: {
     preview: {
@@ -247,7 +245,7 @@ export default {
     },
     basicFields: {
       type: Array,
-      default: () => ['hrinput','input', 'textarea', 'number', 'radio', 'checkbox', 'time', 'date', 'rate', 'color', 'select', 'switch', 'slider', 'text']
+      default: () => ['input', 'textarea', 'number', 'radio', 'checkbox', 'time', 'date', 'rate', 'color', 'select', 'switch', 'slider', 'text']
     },
     advanceFields: {
       type: Array,

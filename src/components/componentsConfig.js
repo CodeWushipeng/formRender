@@ -1,18 +1,5 @@
 export const basicComponents = [
   {
-    type: 'hrinput',
-    icon: 'icon-input',
-    options: {
-      width: '100%',
-      type: 'textarea',
-      placeholder: '华软input',
-      disabled: false,
-      defaultValue: '华软components',
-      autofocus: true,
-      maxlength: 30
-    }
-  },
-  {
     type: 'input',
     icon: 'icon-input',
     options: {
@@ -32,7 +19,8 @@ export const basicComponents = [
     remoteFactor:{
       isRemote: false,
       url:"",
-      data:""
+      data:"",
+      success: ""
     }
   },
   {

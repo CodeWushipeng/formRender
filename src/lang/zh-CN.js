@@ -18,7 +18,6 @@ export default {
           taglable: '标签',
       },
       fields: {
-        hrinput: "华软input",
         input: '单行文本',
         textarea: '多行文本',
         number: '计数器',

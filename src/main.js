@@ -9,7 +9,6 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 import enLocale from 'element-ui/lib/locale/lang/en'
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
-import HrInput from './components/Hr-input'
 import VueCodemirror from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
@@ -22,7 +21,6 @@ import 'codemirror/addon/hint/show-hint'
 import 'codemirror/addon/hint/javascript-hint'
 
 Vue.use(VueCodemirror)
-Vue.use(HrInput)
 Vue.use(VueI18n)
 Vue.use(VueEditor)
 

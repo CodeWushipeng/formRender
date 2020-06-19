@@ -36,24 +36,6 @@
           ></el-input>
       </template>
 
-        <template v-if="element.type == 'hrinput'">
-          <!-- <el-input
-            v-model="element.options.defaultValue"
-            :style="{width: element.options.width}"
-            :placeholder="element.options.placeholder"
-            :disabled="element.options.disabled"
-          ></el-input> -->
-          <hr-input
-            v-model="element.options.defaultValue"
-            :type="element.options.type"
-            :maxlength="element.options.maxlength"
-            :style="{width: element.options.width}"
-            :placeholder="element.options.placeholder"
-            :disabled="element.options.disabled"
-            :autofocus="element.options.autofocus"
-          ></hr-input>
-        </template>
-
         <template v-if="element.type == 'idencard' | element.type == 'readcard'">
           <el-input
                   v-model="element.options.defaultValue"
