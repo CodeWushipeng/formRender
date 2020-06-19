@@ -5,7 +5,12 @@
         <!--platform: {{platform}}<hr>-->
         <!--user: {{user}}<hr>-->
         <!--nodesLength: {{nodesLength}}<hr>-->
-
+        <!--remoteFuncs： {{Object.keys(remoteFuncs)}}-->
+        <div>
+            <h3>renderForm:</h3>
+        </div>
+        formdata: {{JSON.stringify(formdata)}} <hr>
+        input_config: {{input_config}} <hr>
         <fm-generate-form
                 :remote="remoteFuncs"
                 :data="jsonData"
@@ -17,23 +22,6 @@
 </template>
 
 <script>
-    // input_config对应的函数值
-    function input_config_EE() {
-        return {
-            amount: '流控数据',
-            // transferType: 'flow.platform.transferType',
-            transferType: '1',
-            user: '622002'
-        }
-    }
-
-    function input_config_BB() {
-        return {
-            amount: '流控数据',
-            transferType: '1',
-            user: '622001112244409014'
-        }
-    }
 
     import fmGenerateForm from "./GenerateForm";
     import request from "../util/request.js";
@@ -43,7 +31,7 @@
         components: {
             fmGenerateForm,
         },
-        props: ['configdata', 'remoteFuncs'],
+        props: ['configdata', 'remoteFuncs',"func"],
         data() {
             return {
                 jsonData: {},
@@ -52,37 +40,43 @@
             };
         },
         created() {
-            // 1
-            const list = this.configdata.list;
-            if(list && list.length){
-                const {input_config_code} = list[0];
-                this._getConfigData(input_config_code).then(res=>{
-                    this.jsonData = res;
-                }).catch(error => {
-                    console.log(error);
-                })
-            }
-            // 2
-            const {platform, user} = this.setDynamicData();
-            this.dyData = {
-                platform,
-                user
-            };
-            // 3
-            this.formdata = this.getInputData();
-
+            console.log('configdata... ',this.configdata);
+           this._inits();
         },
         computed: {
             nodesLength() {
                 return this.configdata && this.configdata.list.length > 0
+            },
+            input_config(){
+                if(this.configdata && this.configdata.list.length > 0){
+                    const  {input_config,checkstart,node_code,next_node} = this.configdata.list[0];
+                    return {
+                        input_config,checkstart,node_code,next_node
+                    };
+                }
             }
         },
         methods: {
-            outPuts(output_config_code){
-                // 响应页面
-               this._getConfigData(output_config_code).then(res=>{
-                   this.jsonData = res;
-               })
+            _inits(){
+                // 1
+                const list = this.configdata.list;
+                if((list instanceof Array) && list.length){
+                    const {input_config_code} = list[0];
+                    input_config_code && this._getConfigData(input_config_code).then(res=>{
+                        this.jsonData = res;
+                    }).catch(error => {
+                        console.log(error);
+                    })
+                }
+                // 2
+                const {platform, user} = this.setDynamicData();
+                this.dyData = {
+                    platform,
+                    user
+                };
+                // 3
+                // this.formdata = {};
+                this.formdata = this.getInputData();
             },
             // 获取表单配置信息
             _getConfigData(input_config) {
@@ -92,24 +86,34 @@
                     return false
                 }
             },
+            // 响应页面
+            changeJsonData(input_config, formData = {}) {
+                console.log('input_config',input_config)
+                input_config && this._getConfigData(input_config).then(res=>{
+                    this.jsonData = res;
+                    this.formdata = formData;
+                })
+            },
             // 将流控引擎input数据绑定到value
             getInputData() {
-                console.log('getInputData....input_config_BB')
+                console.log('getInputData....input_config_BB',new Date())
                 const list = this.configdata.list;
                 if(list.length){
-                    const {input_config} = list[0];
+                    const {input_config} = list[0]; // 注入数据
+                    const funkeys = Object.keys(this.func)
                     try {
-                        if (input_config) {
-                            let transObj = eval("(" + input_config + ")")()  //封装
+                        if (input_config && funkeys.length) {
+                            let transObj = eval("(" + this.func[input_config] + ")")()  //封装
                             console.log('transObj',transObj)
-                            // console.log('this.configdata.list',this.configdata.list)
                             return transObj;
+                        }else{
+                            return {}
                         }
                     } catch (error) {
                         throw new Error("input_config解析出错",input_config)
                     }
                 }
-                return '';
+                return {};
             },
             // 动态数据获取
             setDynamicData() {
@@ -124,20 +128,11 @@
             },
         },
         watch:{
-            configdata:{
+            'configdata.list':{
                 deep: true,
-                handler(val) {
-                    console.warn('=========configdata===========',val)
-                    const list = this.configdata.list;
-                    if(list && list.length){
-                        const {input_config_code} = list[0];
-                        this._getConfigData(input_config_code).then(res=>{
-                            this.jsonData = res;
-                        }).catch(error => {
-                            console.log(error);
-                        })
-                    }
-
+                handler(list) {
+                    // console.warn('=========configdata===========',list)
+                    this._inits()
                 },
             }
         },
