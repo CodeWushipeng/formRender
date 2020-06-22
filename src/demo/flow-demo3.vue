@@ -1,9 +1,35 @@
 <template>
     <div class="render-wrap" style="padding: 20px;">
-        <flowItem ref="flow"
+        <!--<flowItem ref="flow"
                    :data="data"
                    v-if="data">
-        </flowItem>
+        </flowItem>-->
+        remoteFuncs:{{remoteFuncs}}
+        <hr>
+        configdata.list:{{configdata.list}}
+        <hr>
+        data:{{data}}
+        <hr>
+        func:{{func}}
+        <hr>
+
+        <h3>{{node_name}}</h3>
+        <div v-if="type=='01'">
+            可以开始
+        </div>
+        <div v-if="type=='02'">
+            结束
+        </div>
+
+        <div v-if="type=='03'">
+            <render-form v-if="configdata.list.length>0"
+                         :configdata="configdata"
+                         :remoteFuncs="remoteFuncs"
+                         :func="func"
+                         ref="renderForm"
+            ></render-form>
+        </div>
+
         <!--:json="json"-->
         <!--:edit="edit"-->
         <!--<el-button @click="clickHandler">clicked</el-button>-->
@@ -11,7 +37,27 @@
             <el-button type="primary" @click="prevHandle">Back</el-button>
             <el-button type="primary" @click="submitHandle">Submit</el-button>
             <el-button type="primary" @click="cancelHandle">Cancel</el-button>
+            <el-button type="primary" @click="_get">GET</el-button>
         </div>
+
+
+        <el-dialog
+                title="提示"
+                :visible.sync="dialogVisible"
+                width="30%"
+                :before-close="handleClose">
+            <el-input
+                    type="textarea"
+                    :rows="2"
+                    placeholder="请输入内容"
+                    v-model="allData">
+            </el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -28,30 +74,101 @@ export default {
     },
     data() {
         return {
+            dialogVisible:false,
+            allData:null,
             // 流控数据
-            // _configData: null,
+            configdata:{
+                platform:{},
+                user:{},
+                list:[]
+            },
+            remoteFuncs: {},
             // 处理数据
+            data: {},
+            func:{},
             // json: null,
             // edit: null,
-            data: null,
         };
     },
     created() {
-        this._getConfigData();
+        this._getStartNode();
+        this._remote();
+    },
+    computed: {
+        type() {
+            const { type} = this.data;
+            return type
+        },
+        node_name() {
+            const { node_name} = this.data;
+            return node_name
+        }
     },
     methods: {
+        handleClose(done) {
+           /* this.$confirm('确认关闭？')
+                .then(_ => {
+                    done();
+                })
+                .catch(_ => {});*/
+        },
+        _remote(){
+            console.log('remote..... start')
+            // 加载远程数据
+            const user = 'getUser';
+            this.remoteFuncs[user] = function (resolve) {
+                // 选择用户 user
+                const data = [
+                    {label: 'zhangsan', value: "622001"},
+                    {label: 'lisi', value: "622002"},
+                    {label: 'wangwu', value: "622003"},
+                    {label: 'fengwenxin', value: "622004"},
+                ]
+                resolve(data)
+            }
+
+            const getType = 'getType';
+            this.remoteFuncs[getType] = function (resolve) {
+                // 选择用户 user
+                const data = [
+                    {label: '对公转账', value: "1"},
+                    {label: '个人转账', value: "2"},
+                ]
+                resolve(data)
+            }
+
+            const getUrl = 'getUrl';
+            this.remoteFuncs[getUrl] = function (resolve) {
+                const data = [
+                    {label: 'zhangsan', value: "622001"},
+                    {label: 'lisi', value: "622002"},
+                    {label: 'wangwu', value: "622003"},
+                ]
+                resolve(data)
+            }
+            console.log('remote..... end',typeof  this.remoteFuncs ,Object.keys(this.remoteFuncs))
+        },
         _configData(next_node){
             this.data = FG.getNext(next_node);
+            this.configdata.list = [FG.getNext(next_node)]
         },
-        _getConfigData() {
+        _getStartNode() {
             request.get("http://localhost:3000/flow").then((res) => {
                 console.log('res', res)
-                FG.setState(res);
+                // FG.setState(res);
+                FG.settters('user',res.user)
+                FG.settters('platform',res.platform)
+                FG.settters('list',res.list)
+                FG.settters('func',res.func)
+                this.func = res.func;
 
-                const start = FG.flow.list.filter(item => item.type == '01')[0];
+                const start = FG.list.filter(item => item.type == '01')[0];
+                // console.log('FG.list',FG.list)
+                // console.log('start',start)
                 const {checkstart, node_code} = start;
                 if (FG.checkStart(checkstart)) {
                     this.data = start;
+                    this.configdata.list = [start];
                     FG.ISOK = true;
                     console.log(`开始节点${node_code}，检查通过,可以执行`);
                 } else {
@@ -78,18 +195,17 @@ export default {
                     } else {
                         let flw;
                         this.data = flw = FG.getPrev(return_node);
-                        this.edit = FG.getInputData(return_node);
+                        // this.edit = FG.getInputData(return_node);
                         const inputConfigCode = flw.input_config_code;
                         const sType = flw.type;
                         if (sType == FG.START) {
-                            this.json = null;
-                            this.edit = null;
+                            // this.json = null;
+                            // this.edit = null;
                             FG.OUTFLAG = false;
                             // this.$handleSuccess("已经返回开始节点")
                             alert("已经返回开始节点")
                         } else {
-
-                            this.$refs.flow.outPut(inputConfigCode);
+                            this.configdata.list = [this.data]
                             FG.CURFORM = 'input_config_code';
                             FG.OUTFLAG = false;
                         }
@@ -104,7 +220,7 @@ export default {
         nextHandle(next_node) {
             if (next_node && next_node.includes(",")) {
                 const nodes = next_node.split(",");
-                const flow_list = FG.flow.list;
+                const flow_list = FG.list;
 
                 function filters(j) {
                     let fs = nodes[j];
@@ -116,13 +232,13 @@ export default {
                     const {checkstart} = nextFlow;
                     const nextCode = nextFlow['node_code'];
                     try {
-                        // console.log('checkstart', checkstart)
+                        console.log('checkstart', checkstart)
                         if (FG.checkStart(checkstart)) {
                             this._configData(nextCode);
                             break;
                         }
                     } catch (e) {
-                        throw new Error('nextHandle checkstart执行出错了');
+                        throw new Error('nextHandle checkstart执行出错了',checkstart);
                     }
                 }
             } else {
@@ -132,7 +248,6 @@ export default {
         // 提交
         submitHandle() {
             if(FG.ISOK==false){
-                // this.$handleWarning('流程已取消');
                 alert("流程已取消");
                 return
             }
@@ -158,7 +273,7 @@ export default {
             }
             if (type == FG.DOING) {
                 // 执行节点
-                const nodePromise = this.$refs.flow.getFormData();
+                const nodePromise = this.$refs.renderForm.getData();
                 nodePromise.then(data => {
                     console.log('res', data);
                     // 提交类型
@@ -173,7 +288,8 @@ export default {
                             alert("提交数据：" + JSON.stringify(Obj));
                             // TODO 有响应页面
                             if (output_config_code) {
-                                this.$refs.flow.outPut(output_config_code);
+                                // this.$refs.flow.outPut(output_config_code);
+                                this.$refs.renderForm.changeJsonData(output_config_code, data);
                                 FG.OUTFLAG = true;
                                 FG.CURFORM = "input_config_code";
                             } else {
@@ -207,6 +323,11 @@ export default {
             alert("已清理这个流程");
             console.log('FG', FG)
         },
+        _get(){
+            this.dialogVisible = true
+            // this.allData = FG.getAllData();
+            this.allData = JSON.stringify(FG.getAllData(),null,4)
+        }
     },
 };
 </script>

@@ -7,6 +7,8 @@
 
         data： {{data}}
         <hr>
+        remoteFuncs： {{Object.keys(remoteFuncs)}}
+        <hr>
         configdata.list.length {{configdata.list.length}}
         <hr>
         <div style="width:50%;margin:0 auto;">
@@ -17,8 +19,8 @@
                     </el-card>
                 </el-col>
                 <el-col :span="24" v-else-if="data && Object.keys(data)">
-                    <!--render-form-->
-                    <render-form v-if="configdata && configdata.list.length"
+                    render-form
+                    <render-form v-if="configdata && configdata.list.length && Object.keys(remoteFuncs)"
                             :configdata="configdata"
                             :remoteFuncs="remoteFuncs"
                             ref="renderForm"
@@ -75,32 +77,7 @@ export default {
                 user,
                 list:[]
             },
-            remoteFuncs: {
-                getUser(resolve) {
-                    const data = [
-                        {label: 'zhangsan', value: "622001112244409011"},
-                        {label: 'lisi', value: "622001112244409012"},
-                        {label: 'wangwu', value: "622001112244409013"},
-                        {label: 'fengwenxin', value: "622001112244409014"},
-                    ]
-                    resolve(data)
-                },
-                getType(resolve) {
-                    const data = [
-                        {label: '对公转账', value: "1"},
-                        {label: '个人转账', value: "2"},
-                    ]
-                    resolve(data)
-                },
-                getUrl(resolve) {
-                    const data = [
-                        {label: 'zhangsan', value: "622001"},
-                        {label: 'lisi', value: "622002"},
-                        {label: 'wangwu', value: "622003"},
-                    ]
-                    resolve(data)
-                }
-            }
+            remoteFuncs: {}
         };
     },
     props: {
@@ -117,27 +94,71 @@ export default {
             } else {
                 this.configdata.list = [];
             }
+            // this.remote();
             // console.log('this.configdata',this.configdata)
         },
+        'data.id': function (value, oldValue) {
+            console.log('oldValue', JSON.stringify(oldValue), 'value', JSON.stringify(value))
+            if ((!value && oldValue) || value) {
+                // this.remote();
+            }
+        }
     },
     computed: {
         type(){
             const {type} = this.data;
             return type;
         },
-        itemProp() {
-            return this.data;
-        },
         nodeName() {
+            // 节点名称
             const {node_name} = this.data;
             return node_name;
         }
     },
+    created(){
+        this.remote();
+    },
     methods: {
+        remote(){
+            console.log('remote..... start')
+            // 加载远程数据
+            const user = 'getUser';
+            this.remoteFuncs[user] = function (resolve) {
+                // 选择用户 user
+                const data = [
+                    {label: 'zhangsan', value: "622001"},
+                    {label: 'lisi', value: "622002"},
+                    {label: 'wangwu', value: "622003"},
+                    {label: 'fengwenxin', value: "622004"},
+                ]
+                resolve(data)
+            }
+
+            const getType = 'getType';
+            this.remoteFuncs[getType] = function (resolve) {
+                // 选择用户 user
+                const data = [
+                    {label: '对公转账', value: "1"},
+                    {label: '个人转账', value: "2"},
+                ]
+                resolve(data)
+            }
+
+            const getUrl = 'getUrl';
+            this.remoteFuncs[getUrl] = function (resolve) {
+                const data = [
+                    {label: 'zhangsan', value: "622001"},
+                    {label: 'lisi', value: "622002"},
+                    {label: 'wangwu', value: "622003"},
+                ]
+                resolve(data)
+            }
+            console.log('remote..... end',typeof  this.remoteFuncs ,Object.keys(this.remoteFuncs))
+        },
         outPut(output_config_code){
             this.$refs.renderForm.outPuts(output_config_code)
         },
-        submitHandle(){
+        getFormData(){
             console.log('this.$refs.renderForm',this.$refs.renderForm)
             return this.$refs.renderForm.getData();
         }

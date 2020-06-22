@@ -448,21 +448,19 @@ export default {
         this.widget.options.token = data;
       });
     }
-    console.log(this.models,this.widget)
   },
   methods: {
+      /*标签方法*/
       handleClose(tag) {
           this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
           this.dataModel = this.dynamicTags
       },
-
       showInput() {
           this.inputVisible = true;
           this.$nextTick(_ => {
               this.$refs.saveTagInput.$refs.input.focus();
           });
       },
-
       handleInputConfirm() {
           let inputValue = this.inputValue;
           if (inputValue) {
@@ -472,13 +470,13 @@ export default {
           this.inputValue = '';
           this.dataModel = this.dynamicTags
       },
+      /*标签方法*/
 
+      /*单选 多选快捷键方法*/
       radioVisibleFun(){
-          //console.log("111-------------------")
           this.radioVisible = false
 
       },
-
       radioFun () {
           const keyType = event.type;
           const keyCode = event.keyCode;
@@ -491,8 +489,10 @@ export default {
               this.radioVisible = true
           }
       },
-    focus(){
-      // this.$on("focus",function(){
+      /*单选 多选快捷键方法*/
+
+      focus(){
+          // this.$on("focus",function(){
       //   focus()
       // })
     },

@@ -19,7 +19,11 @@ import 'codemirror/addon/scroll/simplescrollbars'
 import 'codemirror/addon/selection/active-line'
 import 'codemirror/addon/hint/show-hint'
 import 'codemirror/addon/hint/javascript-hint'
+import VideoPlayer from 'vue-video-player'
+require('video.js/dist/video-js.css')
+require('vue-video-player/src/custom-theme.css')
 
+Vue.use(VideoPlayer)
 Vue.use(VueCodemirror)
 Vue.use(VueI18n)
 Vue.use(VueEditor)

@@ -83,6 +83,7 @@
           <el-header class="btn-bar" style="height: 45px;">
             <slot name="action">
             </slot>
+            <el-button v-if="upload" type="text" size="medium" icon="el-icon-upload2" @click="handleUpJson">{{$t('fm.actions.upJson')}}</el-button>
             <el-button v-if="upload" type="text" size="medium" icon="el-icon-upload2" @click="handleUpload">{{$t('fm.actions.import')}}</el-button>
             <el-button v-if="clearable" type="text" size="medium" icon="el-icon-delete" @click="handleClear">{{$t('fm.actions.clear')}}</el-button>
             <el-button v-if="preview" type="text" size="medium" icon="el-icon-view" @click="handlePreview">{{$t('fm.actions.preview')}}</el-button>
@@ -437,6 +438,21 @@ export default {
     handleReset () {
       this.$refs.generateForm.reset()
     },
+    // 上传数据
+    handleUpJson(){
+      request.post("http://192.168.1.192:3001/mock/43/formDevelop/insertFormDefine",{
+        data:{
+          formCode: 1,
+          formContent: this.widgetForm,
+          formDescribe: '个人信息表单',
+          formName: '个人信息',
+          formType: "00",
+        } 
+      }).then((res)=>{
+        console.log(res)
+      }).catch(error => console.log(error))
+    },
+
     handleGenerateJson () {
       this.jsonVisible = true
       this.jsonTemplate = this.widgetForm

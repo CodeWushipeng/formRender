@@ -103,8 +103,6 @@ export default {
   },
   data() {
     return {
-      first:{},
-      second:{},
       isDataNull: true, // 判断props传入的data是否有真实数据
       models: {}, // form表单对象所有组件key value组成的json
       rules: {}, // form表单对象所有组件对应校验规则
@@ -124,72 +122,14 @@ export default {
     // 这个定时器主要是解决父组件异步传值，子组件生命周期获取不到数据的问题
     this.intervalId = setInterval(() => {
       if (!this.isDataNull) {
-        this.dynamicData();
-        this.handelDynamicInFlow()
         this.flowHandel();
-        console.log(this.data.list)
+        console.log(this.rules)
         clearInterval(this.intervalId);
       }
     }, 200);
   },
   methods: {
-     //  动态数据处理函数
-    dynamicData() {
-      var platform = this.dyData.platform;
-      var user = this.dyData.user;
-      let formLists = this.data.list;
-      for (let i = 0; i < formLists.length; i++) {
-        if (
-          formLists[i].options.defaultValue != "" &&
-          formLists[i].options.defaultValue[0] == "@"
-        ) {
-          var temp = formLists[i].options.defaultValue.substring(1);
-          try {
-            var tempJson = eval(temp);
-          } catch (error) {
-            throw new Error(error);
-          }
-          if (tempJson != "" || tempJson != null) {
-            console.log(tempJson,formLists[i].model,this.models,this.models[formLists[i].model])
-            this.$set(formLists[i].options,"defaultValue",tempJson)
-            // formLists[i].options.defaultValue = tempJson;
-            // this.models[formLists[i].model] = tempJson
-            this.$set(this.models,formLists[i].model,tempJson)
-            this.$forceUpdate()
-            console.log(formLists[i].options.defaultValue,this.models[formLists[i].model])
-          }
-        }
-      }
-      console.log(this.data.list,this.value)
-    },
-    // 处理流控数据中带有的动态数据
-    handelDynamicInFlow() {
-      var platform = this.dyData.platform;
-      var user = this.dyData.user;
-      for (let key in this.value) {
-        if (
-          this.value[key].indexOf("platform") != -1 ||
-          this.value[key].indexOf("user") != -1
-        ) {
-          try {
-            var tempJson = eval(this.value[key]);
-          } catch (error) {
-            throw new Error(error);
-          }
-          if (tempJson != "" || tempJson != null) {
-            this.$set(this.models,key,tempJson);
-            this.models[key] = tempJson
-            console.log(this.models)
-            for(let i=0;i<this.data.list.length;i++){
-              if(this.data.list[i].model == key ){
-                this.$set(this.data.list[i],key,tempJson)
-              }
-            }
-            console.log(key,tempJson,this.models[key],this.models)
-          }
-        }
-      }
-    },
+     
     // 生成models、rules对象
     generateModle(genList) {
       if (!genList) {
@@ -201,14 +141,12 @@ export default {
             this.generateModle(item.list);
           });
         } else {
-          console.log("11")
           // 处理非表格类型的组件
           if (
             // 如果value对象不为空且具有与当前组件model同名的属性，则将值赋给models的该属性（这样就修改了组件原始值）
             this.value &&
             Object.keys(this.value).indexOf(genList[i].model) >= 0
           ) {
-            console.log("22")
             this.models[genList[i].model] = this.value[genList[i].model];
           } else {
             // 如果value为空判断当前组件的类型是否为空类型
@@ -224,7 +162,6 @@ export default {
                   : []
               );
             } else {
-              console.log("33")
               // 如果value为空并且组件为非空类型组件将组件默认值赋值给models对应属性
               // 这个if条件为后期加入的，判断是否已触发过隐藏条件
               if (!this.haveHide) {
@@ -236,7 +173,6 @@ export default {
           }
           // 如果rules对象存在当前组件的model属性
           if (this.rules[genList[i].model]) {
-            console.log("44")
             // 执行此段代码后rules的每个属性为组件默认校验规则和传入检验规则组成的数组
             this.rules[genList[i].model] = [
               ...this.rules[genList[i].model], // 将当前数组值展开
@@ -252,7 +188,6 @@ export default {
               }),
             ];
           } else {
-            console.log("55")
             // 如果rules对象不存在当前组件的model属性
             this.rules[genList[i].model] = [
               ...genList[i].rules.map((item) => {
@@ -654,22 +589,22 @@ export default {
           this.remoteValidate() &&
           this.handelAssignment()
         ) {
-          if (this.data.list[this.focusIndex].rules.length > 0) {
-            let nowModel = this.data.list[this.focusIndex].rules;
-              this.$refs.generateForm.validateField(this.data.list[this.focusIndex].rules, (valid) => {
-                if (valid) {
-                  // 逐条验证当前组件的校验规则
+          // if (this.data.list[this.focusIndex].rules.length > 0) {
+          //   let nowModel = this.data.list[this.focusIndex].rules;
+          //     this.$refs.generateForm.validateField(this.data.list[this.focusIndex].rules, (valid) => {
+          //       if (valid) {
+          //         // 逐条验证当前组件的校验规则
 
-                  this.handelElement();
-                  this.handelFocus();
-                } else {
-                  throw new Error(this.$t("fm.message.validError")).message;
-                }
-              });
-          } else {
+          //         this.handelElement();
+          //         this.handelFocus();
+          //       } else {
+          //         throw new Error(this.$t("fm.message.validError")).message;
+          //       }
+          //     });
+          // } else {
             this.handelElement();
             this.handelFocus();
-          }
+          // }
         }
       }
       // this.getData().then((resolve) => {
@@ -699,13 +634,6 @@ export default {
         this.models = { ...this.models, ...val };
       },
     },
-    models: {
-      deep: true,
-      handler(val){
-        console.log(val)
-        this.models = val
-      }
-    }
   },
 };
 </script>

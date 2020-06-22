@@ -69,6 +69,7 @@ export default {
       clear: '清空',
       preview: '预览',
       json: '生成JSON',
+      upJson: '提交数据',
       code: '生成代码',
       getData: '获取数据',
       reset: '重置',

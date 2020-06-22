@@ -26,6 +26,7 @@ export default {
         .get("http://localhost:3000/flow")
         .then((res) => {
           this.configdata = res;
+          console.log(this.configdata)
         })
         .catch((error) => {
           console.log(error);

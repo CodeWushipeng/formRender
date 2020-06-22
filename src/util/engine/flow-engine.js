@@ -3,43 +3,34 @@
  */
 class FG {
   constructor() {
+
+    this.ISOK = false;
+    this.CURFORM= null;   // 当前展示的是input_config_code 还是 output_config_code 表单
+    this.OUTFLAG= null;   // 提交标识
+    this.FUNC= null;      // 函数列表
     // 流程节点
-    this.FLOW_START = "01"; // 开始
-    this.FLOW_END   = "02"; // 结束
-    this.FLOW_DOING = "03"; // 业务类型
+    this.START = "01"; // 开始
+    this.END   = "02"; // 结束
+    this.DOING = "03"; // 业务类型
     // 提交方式
     this.COMMIT_TYPE_DEFAULT = "01"; // 默认提交
     this.COMMIT_TYPE_DEFINE  = "02"; // 自定义提交
     this.COMMIT_TYPE_ORDER   = "03"; // 订单提交
     this.COMMIT_TYPE_LOCAL   = "04"; // 本地提交
+
+    this.user = {};
+    this.platform =  {};
+    this.list =  {};
+    this.func =  {};
+
     // 流控数据
     this.flow = {
-      // 用户数据
-      user: {
-        user: "feng",
-        age: "11",
-        address: "beijing001",
-        account_no: "6212121212",
-        up: {
-          idflag: "2"
-        }
-      },
-      // 平台数据
-      platform: {
-        sysdate: '20200202',
-        amount: '99',
-        transferType: '2',
-        bank: {
-          bankId: "0098878",
-          banktoken: "#212@112"
-        },
-      },
-      isOK: false,     // 标识这个流是否可以执行
-      curForm: null,   // 当前展示的是input_config_code 还是 output_config_code 表单
-      OutFlag: null,   // 提交标识
-      func: null,      // 函数列表
-      flow_code: null, // 流程编码
-      list: [],        // 流程数据
+      // isOK: false,     // 标识这个流是否可以执行
+      // curForm: null,   // 当前展示的是input_config_code 还是 output_config_code 表单
+      // OutFlag: null,   // 提交标识
+      // func: null,      // 函数列表
+      // flow_code: null, // 流程编码
+      // list: [],        // 流程数据
     };
   }
 
@@ -50,12 +41,26 @@ class FG {
     console.log('engine init...')
   }
 
+  getAllData(){
+    return {
+        user:this.user,
+        platform:this.platform,
+        CURFORM:this.CURFORM ,
+        OUTFLAG:this.OUTFLAG ,
+        func:this.func,
+        list:this.list,
+    }
+  }
+
   /**
    * 同步流程数据
    * @param object
    */
   setState(object) {
     Object.assign(this.flow, object)
+  }
+  settters(key,value){
+    this[key] = value;
   }
 
   /**
@@ -65,7 +70,9 @@ class FG {
    */
   checkStart(checkstart) {
     try {
-      const flow = this.flow;
+      const list = this.list;
+      const platform = this.platform;
+      const user = this.user;
       if (checkstart) {
         return checkstart && eval(checkstart);
       }
@@ -101,7 +108,8 @@ class FG {
    * @private
    */
   _filter(node_code) {
-    return this.flow.list.filter(item => item.node_code == node_code);
+    // return this.flow.list.filter(item => item.node_code == node_code);
+    return this.list.filter(item => item.node_code == node_code);
   }
 
   /**
