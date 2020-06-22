@@ -47,6 +47,12 @@ export const basicComponents = [
       step: 1,
       disabled: false,
       controlsPosition: ''
+    },
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   },
   {
