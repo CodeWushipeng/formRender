@@ -123,7 +123,6 @@ export default {
     this.intervalId = setInterval(() => {
       if (!this.isDataNull) {
         this.flowHandel();
-        console.log(this.rules)
         clearInterval(this.intervalId);
       }
     }, 200);

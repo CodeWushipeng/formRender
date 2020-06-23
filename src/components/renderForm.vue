@@ -17,6 +17,8 @@
       <hr>
       tempValue:{{tempValue}}
       <hr>
+      configdata:{{configdata}}
+      <hr>
       <fm-generate-form
               :remote="remoteFuncs"
               :data="jsonData"
@@ -28,14 +30,6 @@
 </template>
 
 <script>
-// input_config对应的函数值
-/*function input_config_EE() {
-  return {
-    amount: "流控数据",
-    transferType: "platform.transferType",
-    user: "622002",
-  };
-}*/
 import fmGenerateForm from "./GenerateForm";
 import request from "../util/request.js";
 const formServerHost = "http://localhost:3000";
@@ -55,29 +49,6 @@ export default {
     };
   },
   created() {
-
-    // 1
-    /*this.getConfigData(this.configdata)
-      .then((response) => {
-        // this.jsonData = response;
-        let temp = response;
-        this.dynamicData(temp)
-        this.handelDynamicInFlow(temp)
-        console.log(temp)
-        this.jsonData = temp
-      })
-      .catch((error) => {
-        console.log(error);
-      });*/
-    // 2
-   /* const { platform, user } = this.setDynamicData();
-    this.dyData = {
-      platform,
-      user,
-    };*/
-    // 3
-    // this.tempValue = this.getInputData()
-
       this._inits();
   },
     computed: {
@@ -98,6 +69,7 @@ export default {
         console.log("init..........")
         // 1
         const list = this.configdata.list;
+        console.log(this.configdata)
         if ((list instanceof Array) && list.length) {
             const {input_config_code} = list[0];
             input_config_code && this._getConfigData(input_config_code).then(res => {
@@ -117,6 +89,7 @@ export default {
             platform,
             user
         };
+        console.log(this.dyData)
         // 3
         // this.formdata = {};
         // this.formdata = this.getInputData();
@@ -127,6 +100,7 @@ export default {
       var platform = this.dyData.platform;
       var user = this.dyData.user;
       let formLists = temp.list;
+      console.log(this.dyData)
       for (let i = 0; i < formLists.length; i++) {
         if (
           formLists[i].options.defaultValue != "" &&
@@ -138,8 +112,8 @@ export default {
           } catch (error) {
             throw new Error(error);
           }
-          if (tempJson != "" || tempJson != null) {
-            console.log(tempJson,formLists[i].model)
+          console.log(tempJson,temp)
+          if (tempJson != "" && tempJson != undefined) {
             this.$set(formLists[i].options,"defaultValue",tempJson)
             // formLists[i].options.defaultValue = tempJson;
             // this.models[formLists[i].model] = tempJson
@@ -150,30 +124,27 @@ export default {
     },
     // 处理流控数据中带有的动态数据
     handelDynamicInFlow(temp) {
+      console.log(this.tempValue,this.formdata)
       var platform = this.dyData.platform;
       var user = this.dyData.user;
       for (let key in this.tempValue) {
         if (
-          this.tempValue[key].indexOf("platform") != -1 ||
-          this.tempValue[key].indexOf("user") != -1
+          this.tempValue[key].indexOf("@") == 0
         ) {
+          var temp = this.tempValue[key].substring(1);
+          console.log(temp)
           try {
-            var tempJson = eval(this.tempValue[key]);
+            var tempJson = eval(temp);
           } catch (error) {
             throw new Error(error);
           }
+          console.log(tempJson)
           if (tempJson != "" || tempJson != null) {
             this.tempValue[key]=tempJson;
-            // for(let i=0;i<temp.list.length;i++){
-            //   if(temp.list[i].model == key ){
-            //     this.$set(temp.list[i].options,"defaultValue",tempJson)
-            //     console.log(temp.list[i])
-            //   }
-            // }
-            this.formdata = this.tempValue
-            console.log( "aaaaaaaaaaa"+JSON.stringify(this.formdata))
           }
         }
+        this.formdata = this.tempValue
+        console.log( "aaaaaaaaaaa"+JSON.stringify(this.formdata))
       }
     },
       // 获取表单配置信息
@@ -242,6 +213,7 @@ export default {
 
     // 动态数据获取
     setDynamicData() {
+      console.log(this.configdata)
         return {
             platform: this.configdata.platform,
             user: this.configdata.user

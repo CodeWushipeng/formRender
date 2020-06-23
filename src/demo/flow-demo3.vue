@@ -2,6 +2,8 @@
     <div class="render-wrap" style="padding: 20px;">
         remoteFuncs:{{remoteFuncs}}
         <hr>
+         configdata:{{configdata}}
+        <hr>
         configdata.list:{{configdata.list}}
         <hr>
         data:{{data}}
@@ -89,6 +91,7 @@ export default {
     created() {
         this._getStartNode();
         this._remote();
+        console.log(this.configdata)
     },
     computed: {
         type() {
@@ -146,6 +149,7 @@ export default {
         },
         _configData(next_node){
             this.data = FG.getNext(next_node);
+            console.log(this.data)
             this.configdata.list = [FG.getNext(next_node)]
         },
         _getStartNode() {
@@ -165,6 +169,8 @@ export default {
                 const {checkstart, node_code} = start;
                 if (FG.checkStart(checkstart)) {
                     this.data = start;
+                    this.configdata.platform = data.platform;
+                    this.configdata.user = data.user;
                     this.configdata.list = [start];
                     FG.ISOK = true;
                     console.log(`开始节点${node_code}，检查通过,可以执行`);
