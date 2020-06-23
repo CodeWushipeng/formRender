@@ -43,9 +43,9 @@ export default {
   data() {
     return {
       jsonData: {},
-      tempValue:{},
+      tempValue:{}, //处理流控数据的变量
       formdata: {},
-      dyData: {}, //流控引擎传入的数据
+      dyData: {}, //动态数据
     };
   },
   created() {
@@ -75,8 +75,8 @@ export default {
             input_config_code && this._getConfigData(input_config_code).then(res => {
                 // this.jsonData = res;
                 let temp = res;
-                this.dynamicData(temp)
                 this.handelDynamicInFlow(temp)
+                this.dynamicData(temp)
                 console.log(temp)
                 this.jsonData = temp
             }).catch(error => {
@@ -127,25 +127,33 @@ export default {
       console.log(this.tempValue,this.formdata)
       var platform = this.dyData.platform;
       var user = this.dyData.user;
-      for (let key in this.tempValue) {
-        if (
-          this.tempValue[key].indexOf("@") == 0
-        ) {
-          var temp = this.tempValue[key].substring(1);
-          console.log(temp)
-          try {
-            var tempJson = eval(temp);
-          } catch (error) {
-            throw new Error(error);
+      let formLists = temp.list;
+      for(let i=0;i<formLists.length; i++){
+        for(let key in this.tempValue){
+          if(formLists[i].model==key){
+            formLists[i].options.defaultValue = this.tempValue[key]
           }
-          console.log(tempJson)
-          if (tempJson != "" || tempJson != null) {
-            this.tempValue[key]=tempJson;
-          }
-        }
-        this.formdata = this.tempValue
-        console.log( "aaaaaaaaaaa"+JSON.stringify(this.formdata))
+        }  
       }
+      // for (let key in this.tempValue) {
+      //   if (
+      //     this.tempValue[key].indexOf("@") == 0
+      //   ) {
+      //     var temp = this.tempValue[key].substring(1);
+      //     console.log(temp)
+      //     try {
+      //       var tempJson = eval(temp);
+      //     } catch (error) {
+      //       throw new Error(error);
+      //     }
+      //     console.log(tempJson)
+      //     if (tempJson != "" || tempJson != null) {
+      //       this.tempValue[key]=tempJson;
+      //     }
+      //   }
+      //   this.formdata = this.tempValue
+      //   console.log( "aaaaaaaaaaa"+JSON.stringify(this.formdata))
+      // }
     },
       // 获取表单配置信息
       _getConfigData(input_config) {
@@ -186,29 +194,7 @@ export default {
       },
 
 
-    // 获取表单配置信息
-    getConfigData(configdata) {
-      if (configdata.list[0].input_config_code) {
-        let codeId = configdata.list[0].input_config_code;
-        return request.get("http://localhost:3000/from", {
-          params: {
-            id: codeId,
-          },
-        });
-      } else {
-        return false;
-      }
-    },
-    // 将流控引擎input数据绑定到value
-    _getInputData() {
-      try {
-        let transObj = eval("(" + this.configdata.list[0].input_config + ")")(); //封装
-        // this.formdata = transObj
-        return transObj;
-      } catch (error) {
-        throw new Error("input_config解析出错");
-      }
-    },
+    
 
 
     // 动态数据获取
