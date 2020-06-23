@@ -242,7 +242,7 @@ export default {
     },
     bankingFields:{
         type: Array,
-        default: () => ['password','againpassword',"amount","input","singletext","textarea","radio","checkbox","time","date","select","idencard","readcard","taglable"]
+        default: () => ['password','againpassword',"amount","input","singletext","textarea","radio","checkbox","time","date","select","idencard","readcard","taglable","imageupload","fileupload","videoupload"]
     },
     basicFields: {
       type: Array,

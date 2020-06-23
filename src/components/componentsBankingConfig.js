@@ -273,6 +273,72 @@ export const bankingComponents = [
             tips:"暂无提示信息"
         }
     },
+    {
+        type: 'imageupload',
+        icon: 'icon-tupian',
+        options: {
+            defaultValue: [],
+            size: {
+                width: 100,
+                height: 100,
+            },
+            width: '',
+            tokenFunc: '',
+            token: '',
+            domain: '',
+            disabled: false,
+            min: 0,
+            length: 8,
+            multiple: false,
+            isDelete: true,
+            isEdit: true,
+            action: ''
+        }
+    },
+    {
+        type: 'fileupload',
+        icon: 'icon-tupian',
+        options: {
+            defaultValue: [],
+            size: {
+                width: 100,
+                height: 100,
+            },
+            width: '',
+            tokenFunc: '',
+            token: '',
+            domain: '',
+            disabled: false,
+            min: 0,
+            length: 8,
+            multiple: false,
+            isDelete: true,
+            isEdit: true,
+            action: ''
+        }
+    },
+    {
+        type: 'videoupload',
+        icon: 'icon-tupian',
+        options: {
+            defaultValue: [],
+            size: {
+                width: 100,
+                height: 100,
+            },
+            width: '',
+            tokenFunc: '',
+            token: '',
+            domain: '',
+            disabled: false,
+            min: 0,
+            length: 8,
+            multiple: false,
+            isDelete: true,
+            isEdit: true,
+            action: ''
+        }
+    },
 ]
 
 

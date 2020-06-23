@@ -2,7 +2,6 @@
   <div class="fm-uplaod-container"
     :id="uploadId"
   >
-    <!--value{{fileList}}-->
     <draggable class="drag-img-list"
       v-model="fileList"
       v-bind="{group: uploadId, ghostClass: 'ghost', animation: 200}"
@@ -13,8 +12,8 @@
         :style="{width: width+'px', height: height+'px'}"
         :class="{uploading: item.status=='uploading', 'is-success': item.status=='success', 'is-diabled': disabled}"
         class="upload-file" v-for="(item) in fileList" :key="item.key">
-        <!--<img :src="item.url" />-->
-        <video :src="item.url"></video>
+        <img :src="item.url" v-if="uploadtype == 'imageupload'"/>
+        <video :src="item.url" v-if="uploadtype == 'videoupload'"></video>
 
         <el-progress v-if="item.status=='uploading'" :width="miniWidth*0.9" class="upload-progress" type="circle" :percentage="item.percent"></el-progress>
 
@@ -29,7 +28,6 @@
         </div>
       </div>
     </draggable>
-
     <cus-dialog
             :visible="showDoc == true || showPdf == true  || showVideo == true"
             :show-close="true"
@@ -38,11 +36,13 @@
             @on-close="closePreviewClick"
             center>
       <div v-if="showDoc == true" class="dialog-body-content-base-style">
-        <iframe frameborder="0"
-                :src="'https://view.officeapps.live.com/op/view.aspx?src=' + this.fileUrl"
+        <!--<iframe frameborder="0"
+                :src="docUrl"
                 width='100%'>
-        </iframe>
+        </iframe>-->
+        <div v-html="pdfUrl" />
       </div>
+
       <div v-else-if="showPdf == true" class="dialog-body-content-base-style" style="justify-content: center; align-items: center">
         <embed :src="pdfUrl" style="width: 100%; height: 100%"/>
       </div>
@@ -63,27 +63,31 @@
 
     <div class="el-upload el-upload--picture-card"
       :class="{'is-disabled': disabled}"
-      v-show="(!isQiniu || (isQiniu && token)) && fileList.length < length"
+      v-show="fileList.length < length"
       :style="{width: width+'px', height: height+'px'}"
       @click.self="handleAdd"
     >
       <i class="el-icon-plus" @click.self="handleAdd" :style="{fontSize:miniWidth/4+'px',marginTop: (-miniWidth/8)+'px', marginLeft: (-miniWidth/8)+'px'}"></i>
-      <input accept="" v-if="multiple"  multiple ref="uploadInput" @change="handleChange" type="file" :style="{width: 0, height: 0}" name="file" class="el-upload__input upload-input">
-      <input accept="" v-else ref="uploadInput" @change="handleChange" type="file" :style="{width:0, height: 0}" name="file" class="el-upload__input upload-input">
+      <input :accept="reversedMessage" v-if="multiple"  multiple ref="uploadInput" @change="handleChange" type="file" :style="{width: 0, height: 0}" name="file" class="el-upload__input upload-input">
+      <input :accept="reversedMessage" v-else ref="uploadInput" @change="handleChange" type="file" :style="{width:0, height: 0}" name="file" class="el-upload__input upload-input">
     </div>
   </div>
 </template>
 
 <script>
+    import pdf from 'vue-pdf'
 import Viewer from 'viewerjs'
 import Draggable from 'vuedraggable'
-import * as qiniu from 'qiniu-js'
 import CusDialog from '../CusDialog'
+import mammoth from 'mammoth'
 require('viewerjs/dist/viewer.css')
+
 export default {
   components: {
     Draggable,
     CusDialog,
+      mammoth,
+      pdf,
   },
   props: {
     value: {
@@ -114,10 +118,6 @@ export default {
       type: Number,
       default: 9
     },
-    isQiniu: {
-      type: Boolean,
-      default: false
-    },
     isDelete: {
       type: Boolean,
       default: false
@@ -138,6 +138,10 @@ export default {
       type: String,
       default: ''
     },
+    uploadtype: {
+      type: String,
+      default: ''
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -145,23 +149,16 @@ export default {
   },
   data () {
     return {
-      fileList: this.value.map(item => {
-          debugger
-        return {
-          key: item.key ? item.key : (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999),
-          url: item.url,
-          percent: item.percent ? item.percent : 100,
-          status: item.status ? item.status : 'success'
-        }
-
-      }),
+      fileList: this.value,
       viewer: null,
+      docUrl: null,
       uploadId: 'upload_' + new Date().getTime(),
       editIndex: -1,
       meituIndex: -1,
-        showPdf:false,
-        showDoc:false,
-        showVideo:false,
+      showPdf:false,
+      pdfUrl: '',
+      showDoc:false,
+      showVideo:false,
       positivePlayerOptions: {
           playbackRates: [0.5, 1.0, 1.5, 2.0], //播放速度
           autoplay: false, //如果true,浏览器准备好时开始回放。
@@ -173,7 +170,7 @@ export default {
           fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
           sources: [{
               type: "",
-              src:require("../../assets/11.mp4"),
+              src:"",
           }],
           // width: document.documentElement.clientWidth,
           notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
@@ -187,7 +184,20 @@ export default {
       },
     }
   },
+  created() {
+  },
   computed: {
+    reversedMessage: function () {
+        if(this.uploadtype == "imageupload"){
+            return "image/*"
+        }else if(this.uploadtype == "fileupload"){
+
+        }else if(this.uploadtype == "videoupload"){
+            return "audio/*,video/*"
+        }
+        return "*"
+    },
+
     miniWidth () {
       if (this.width > this.height) {
         return this.height
@@ -207,7 +217,6 @@ export default {
           return row.fileName.substring(row.fileName.lastIndexOf(".") + 1, row.fileName.length)
       },
       closePreviewClick() {
-          debugger
           if (this.showDoc == true) {
               this.showDoc = false
           } else if (this.showPdf == true) {
@@ -217,7 +226,6 @@ export default {
           }
       },
 
-
     handleChange () {
         debugger
       console.log(this.$refs.uploadInput.files)
@@ -225,135 +233,93 @@ export default {
       
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
-        const reader = new FileReader()
-        const key = (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
-        reader.readAsDataURL(file)
-        reader.onload = () => {
-            debugger
-          if (this.editIndex >= 0) {
 
-            this.$set(this.fileList, this.editIndex, {
-              key,
-              url: reader.result,
-              percent: 0,
-              status: 'uploading'
-            })
-
-            this.editIndex = -1
-          } else {
-            this.fileList.push({
-              key,
-              url: reader.result,
-              percent: 0,
-              status: 'uploading'
-            })
+          let url = null;
+          if (window.createObjectURL != undefined) {
+              // basic
+              url = window.createObjectURL(file);
+          } else if (window.webkitURL != undefined) {
+              // webkit or chrome
+              url = window.webkitURL.createObjectURL(file);
+          } else if (window.URL != undefined) {debugger
+              // mozilla(firefox)
+              url = window.URL.createObjectURL(file);
           }
 
-          /*this.$nextTick(() => {
-              debugger
-            if (this.isQiniu) {
-              this.uplaodAction2(reader.result, file, key)
-            } else {
-              this.uplaodAction(reader.result, file, key)
+        const reader = new FileReader()
+        const key = (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
+        if((file.name).indexOf(".doc1") > -1 | (file.name).indexOf(".docx1") > -1){
+            reader.readAsArrayBuffer(file)
+            reader.onload  = (e) => {
+                debugger
+                /*let blob = new Blob([e.target.result], {
+                    type: `application/msword` //word文档为msword,pdf文档为pdf
+                });*/
+                let blob = window.URL.createObjectURL(new Blob([e.target.result]))
+                let objectUrl = URL.createObjectURL(blob);
+
+                if (this.editIndex >= 0) {
+                    this.$set(this.fileList, this.editIndex, {
+                        key,
+                        url: e.target.result,
+                        name: file.name,
+                        urlPath: url,
+                        percent: 100,
+                        status: 'success'
+                    })
+
+                    this.editIndex = -1
+                } else {
+                    debugger
+                    this.fileList.push({
+                        key,
+                        url: e.target.result,
+                        name: file.name,
+                        urlPath: url,
+                        percent: 100,
+                        status: 'success'
+                    })
+                }
             }
-          })*/
+        }else{
+            reader.readAsDataURL(file)
+            reader.onload = () => {
+                debugger
+                url=reader.result.substring(reader.result.indexOf(',')+1);
+                var imgUrl='data:image/png;base64,'+url
+
+                if (this.editIndex >= 0) {
+
+                    this.$set(this.fileList, this.editIndex, {
+                        key,
+                        url: reader.result,
+                        name: file.name,
+                        urlPath: url,
+                        percent: 100,
+                        status: 'success'
+                    })
+
+                    this.editIndex = -1
+                } else {
+                    this.fileList.push({
+                        key,
+                        url: reader.result,
+                        name: file.name,
+                        urlPath: url,
+                        percent: 100,
+                        status: 'success'
+                    })
+                }
+            }
         }
       }
       this.$refs.uploadInput.value = []
     }, 
-    uplaodAction (res, file, key) {
-        debugger
-      let changeIndex = this.fileList.findIndex(item => item.key === key)
-      console.log(this.fileList.findIndex(item => item.key === key))
-      const xhr = new XMLHttpRequest()
-      
-      const url = this.action
-      xhr.open('POST', url, true)
-      // xhr.setRequestHeader('Content-Type', 'multipart/form-data')
-
-      let formData = new FormData()
-      formData.append('file', file)
-
-      xhr.send(formData)
-      xhr.onreadystatechange = () => {
-        console.log(xhr)
-        if (xhr.readyState === 4) {
-          
-          let resData = JSON.parse(xhr.response)
-          if (resData && resData.url) {
-            this.$set(this.fileList, this.fileList.findIndex(item => item.key === key), {
-              ...this.fileList[this.fileList.findIndex(item => item.key === key)],
-              url: resData.url,
-              percent: 100
-            })
-            setTimeout(() => {
-              this.$set(this.fileList, this.fileList.findIndex(item => item.key === key), {
-                ...this.fileList[this.fileList.findIndex(item => item.key === key)],
-                status: 'success'
-              })
-              this.$emit('input', this.fileList)
-            }, 200)
-          } else {
-            this.$set(this.fileList, this.fileList.findIndex(item => item.key === key), {
-              ...this.fileList[this.fileList.findIndex(item => item.key === key)],
-              status: 'error'
-            })
-            this.fileList.splice(this.fileList.findIndex(item => item.key === key), 1)
-          }
-        }
-      }
-      xhr.onprogress = (res) => {
-        console.log('progress', res)
-        if (res.total && res.loaded) {
-          this.$set(this.fileList[this.fileList.findIndex(item => item.key === key)], 'percent', res.loaded/res.total*100)
-        }
-      }
-    },
-    uplaodAction2 (res, file, key) {
-        debugger
-      const _this = this
-      const observable = qiniu.upload(file, key, this.token, {
-        fname: key,
-        mimeType: []
-      }, {
-        useCdnDomain: true,
-        region: qiniu.region.z2
-      })
-      observable.subscribe({
-        next (res) {
-          _this.$set(_this.fileList[_this.fileList.findIndex(item => item.key === key)], 'percent', parseInt(res.total.percent))
-          
-        },
-        error (err) {
-          _this.$set(_this.fileList, _this.fileList.findIndex(item => item.key === key), {
-            ..._this.fileList[_this.fileList.findIndex(item => item.key === key)],
-            status: 'error'
-          })
-          _this.fileList.splice(_this.fileList.findIndex(item => item.key === key), 1)
-        },
-        complete (res) {
-          _this.$set(_this.fileList, _this.fileList.findIndex(item => item.key === key), {
-            ..._this.fileList[_this.fileList.findIndex(item => item.key === key)],
-            url: _this.domain + res.key,
-            percent: 100
-          })
-          setTimeout(() => {
-            _this.$set(_this.fileList, _this.fileList.findIndex(item => item.key === key), {
-              ..._this.fileList[_this.fileList.findIndex(item => item.key === key)],
-              status: 'success'
-            })
-            _this.$emit('input', _this.fileList)
-          }, 200)
-        }
-      })
-    },
     handleRemove (key) {
-        debugger
       this.fileList.splice(this.fileList.findIndex(item => item.key === key), 1)
     },
     handleEdit (key) {
       this.editIndex = this.fileList.findIndex(item => item.key === key)
-      
       this.$refs.uploadInput.click()
     },
     handleMeitu (key) {
@@ -367,24 +333,36 @@ export default {
       }
     },
     handlePreviewFile (key) {
-        debugger
-      /*this.viewer && this.viewer.destroy()
-      this.uploadId = 'upload_' + new Date().getTime()
-      
-      console.log(this.viewer)
-      this.$nextTick(() => {
-        this.viewer = new Viewer(document.getElementById(this.uploadId))
-        this.viewer.view(this.fileList.findIndex(item => item.key === key))
-      })*/
-      //var fileObj = this.fileList.findIndex(item => item.key === key)
-      //this.positivePlayerOptions.sources[0].src = require("../../assets/11.mp4")
+      debugger
+      if(this.uploadtype == "imageupload"){
+          this.viewer && this.viewer.destroy()
+          this.uploadId = 'upload_' + new Date().getTime()
 
-        this.$set(this.positivePlayerOptions.sources, 0, {
-            type: "video/mp4",
-            src: this.fileList[this.fileList.findIndex(item => item.key === key)].url,
-        })
-        this.showVideo = true
-
+          console.log(this.viewer)
+          this.$nextTick(() => {
+              this.viewer = new Viewer(document.getElementById(this.uploadId))
+              this.viewer.view(this.fileList.findIndex(item => item.key === key))
+          })
+      }else if(this.uploadtype == "fileupload"){
+          var docTemp = this.fileList.findIndex(item => item.key === key)
+          this.pdfUrl = this.fileList[docTemp].url
+          window.open('https://view.officeapps.live.com/op/view.aspx?src=' + this.fileList[docTemp].urlPath)
+          this.showPdf = true
+          /*if((this.fileList[docTemp].name).indexOf(".pdf") > -1){
+              this.showPdf = true
+          }else {
+              mammoth.convertToHtml({ arrayBuffer: this.pdfUrl }).then((result) => {
+                  this.pdfUrl = result.value
+              }).done()
+              this.showDoc = true
+          }*/
+      }else if(this.uploadtype == "videoupload"){
+          this.$set(this.positivePlayerOptions.sources, 0, {
+              type: "video/mp4",
+              src: this.fileList[this.fileList.findIndex(item => item.key === key)].url,
+          })
+          this.showVideo = true
+      }
     }
   },
   watch: {

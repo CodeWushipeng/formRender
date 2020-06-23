@@ -90,6 +90,17 @@
       ><el-button v-if="widget.options.ifperipheral" slot="prepend" icon="el-icon-question" @click="indentcart()">读取</el-button></el-input>
     </template>
 
+    <template v-if="widget.type == 'hrinput'">
+      <hr-input
+        :type="widget.options.type"
+        :maxlength="widget.options.maxlength"
+        v-model="widget.options.defaultValue"
+        :disabled="widget.options.disabled"
+        :placeholder="widget.options.placeholder"
+        :style="{width: widget.options.width}"
+      ></hr-input>
+    </template>
+
     <template v-if="widget.type == 'singletext'">
       <el-input
               autosize
@@ -323,6 +334,25 @@
       ></fm-upload>
     </template>
 
+    <template v-if="widget.type=='imageupload' |widget.type=='fileupload' |widget.type=='videoupload'">
+      <fm-upload-extend
+        v-model="dataModel"
+        :uploadtype="widget.type"
+        :disabled="widget.options.disabled"
+        :style="{'width': widget.options.width}"
+        :width="widget.options.size.width"
+        :height="widget.options.size.height"
+        :token="widget.options.token"
+        :domain="widget.options.domain"
+        :multiple="widget.options.multiple"
+        :length="widget.options.length"
+        :is-delete="widget.options.isDelete"
+        :min="widget.options.min"
+        :is-edit="widget.options.isEdit"
+        :action="widget.options.action"
+      ></fm-upload-extend>
+    </template>
+
     <template v-if="widget.type == 'editor'">
       <vue-editor v-model="dataModel" :style="{width: widget.options.width}"></vue-editor>
     </template>
@@ -346,6 +376,7 @@
 
 <script>
 import FmUpload from "./Upload";
+import FmUploadExtend from "./Uploadextend";
 import CusDialog from './CusDialog'
 import radioFormItem from './radioFormItem'
 import { getInputValue , delcommafy} from '../util/comother.js'
@@ -355,6 +386,7 @@ export default {
   props: ["widget", "models", "rules", "remote"],    // widget为当前组件json数据
   components: {
     FmUpload,
+    FmUploadExtend,
     CusDialog,
     radioFormItem
   },
