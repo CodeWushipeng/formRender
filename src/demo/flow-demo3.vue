@@ -1,17 +1,15 @@
 <template>
     <div class="render-wrap" style="padding: 20px;">
-        <!--<flowItem ref="flow"
-                   :data="data"
-                   v-if="data">
-        </flowItem>-->
         remoteFuncs:{{remoteFuncs}}
+        <hr>
+         configdata:{{configdata}}
         <hr>
         configdata.list:{{configdata.list}}
         <hr>
         data:{{data}}
         <hr>
-        func:{{func}}
-        <hr>
+        <!--func:{{func}}-->
+        <!--<hr>-->
 
         <h3>{{node_name}}</h3>
         <div v-if="type=='01'">
@@ -65,12 +63,12 @@
 import getFG from '../util/engine/flow-engine';
 // import getFG from 'fg-control'
 import request from "../util/request.js";
-import flowItem from './flow-item';
+// import flowItem from './flow-item';
 const FG = new getFG();
 export default {
     name:'flow-demo',
     components: {
-        flowItem
+        // flowItem
     },
     data() {
         return {
@@ -93,6 +91,7 @@ export default {
     created() {
         this._getStartNode();
         this._remote();
+        console.log(this.configdata)
     },
     computed: {
         type() {
@@ -150,17 +149,19 @@ export default {
         },
         _configData(next_node){
             this.data = FG.getNext(next_node);
+            console.log(this.data)
             this.configdata.list = [FG.getNext(next_node)]
         },
         _getStartNode() {
             request.get("http://localhost:3000/flow").then((res) => {
                 console.log('res', res)
                 // FG.setState(res);
-                FG.settters('user',res.user)
-                FG.settters('platform',res.platform)
-                FG.settters('list',res.list)
-                FG.settters('func',res.func)
-                this.func = res.func;
+                const data = res.data;
+                FG.settters('user',data.user)
+                FG.settters('platform',data.platform)
+                FG.settters('list',data.list)
+                FG.settters('func',data.func)
+                this.func = data.func;
 
                 const start = FG.list.filter(item => item.type == '01')[0];
                 // console.log('FG.list',FG.list)
@@ -168,6 +169,8 @@ export default {
                 const {checkstart, node_code} = start;
                 if (FG.checkStart(checkstart)) {
                     this.data = start;
+                    this.configdata.platform = data.platform;
+                    this.configdata.user = data.user;
                     this.configdata.list = [start];
                     FG.ISOK = true;
                     console.log(`开始节点${node_code}，检查通过,可以执行`);

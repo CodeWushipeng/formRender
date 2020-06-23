@@ -69,38 +69,6 @@
           >
           </el-switch>
       </el-form-item>
-      <!-- 是否隐藏 -->
-      <el-form-item :label="$t('fm.config.widget.hidden')" v-if="data.type!='grid'">
-        <el-input style="text-overflow: ellipsis;" readonly  @focus="handelMirror" v-model="data.hidden" placeholder="隐藏条件">
-        </el-input>
-      </el-form-item>
-      <!-- 离开条件 -->
-      <el-form-item :label="$t('fm.config.widget.condition')" v-if="data.type!='grid'">
-        <el-input style="text-overflow: ellipsis;" readonly  @focus="handelMirror" v-model="data.condition" placeholder="离开条件">
-        </el-input>
-      </el-form-item>
-      <!-- 离开赋值 -->
-      <el-form-item :label="$t('fm.config.widget.assignment')" v-if="data.type!='grid'">
-        <el-input style="text-overflow: ellipsis;" readonly  @focus="handelMirror" v-model="data.assignment" placeholder="离开赋值">
-        </el-input>
-      </el-form-item>
-      <!-- 访问外部条件 -->
-      <el-form-item :label="$t('fm.config.widget.remoteFactor')" v-if="data.type=='input'">
-        <el-checkbox v-model="data.remoteFactor.isRemote" label="是" style="margin-bottom:10px"></el-checkbox>
-        &lt;!&ndash; <el-button @click="handelMirror">点击配置外部条件访问</el-button> &ndash;&gt;
-        <template v-if="data.remoteFactor.isRemote">
-          <el-input v-model="data.remoteFactor.url" placeholder="添加校验地址" style="margin-bottom:15px">
-            <template slot="prepend">URL</template>
-          </el-input>
-          <el-input style="text-overflow: ellipsis;" readonly  @focus="handelMirror" v-model="data.remoteFactor.data" placeholder="添加校验数据">
-            <template slot="prepend">DATA</template>
-          </el-input>
-        </template>
-      </el-form-item>
-      <!-- 取值范围 -->
-      <el-form-item :label="$t('fm.config.widget.valueRange')" v-if="data.type!='grid'">
-        <el-input v-model="data.valueRange"></el-input>
-      </el-form-item>
       
       <el-form-item :label="$t('fm.config.widget.showAlpha')" v-if="Object.keys(data.options).indexOf('showAlpha')>=0">
         <el-switch
