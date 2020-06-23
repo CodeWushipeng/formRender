@@ -266,6 +266,7 @@
     </template>
 
     <template v-if="widget.type == 'select'">
+        <!--remoteOptions:{{widget.options.remoteOptions}}-->
       <el-select
         v-model="dataModel"
         :disabled="widget.options.disabled"
@@ -603,6 +604,9 @@ export default {
       handler(val) {
         this.dataModel = val[this.widget.model];
         console.log(this.dataModel)
+        // setTimeout(()=>{
+        //     this.remoteFunc()
+        // },200)
       }
     }
   }

@@ -1,6 +1,6 @@
 <template>
-  <div v-if="!isDataNull">
-    <!--<div>-->
+  <!--<div v-if="!isDataNull">-->
+    <div>
     <!--data:{{data.config}} <br>-->
     <!--models:{{models}} <br>-->
     <!--rules:{{rules}} <br>-->
@@ -129,7 +129,7 @@ export default {
     }, 200);
   },
   methods: {
-     
+
     // 生成models、rules对象
     generateModle(genList) {
       if (!genList) {
@@ -198,7 +198,7 @@ export default {
                 }
               }),
             ];
-           
+
           }
           //  console.log(this.rules)
           // 确认密码的校验
