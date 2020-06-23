@@ -15,6 +15,7 @@ export const basicComponents = [
     },
     hidden:"",
     condition:"",
+    valueRange: '',
     assignment:"",
     remoteFactor:{
       isRemote: false,
@@ -32,7 +33,18 @@ export const basicComponents = [
       required: false,
       disabled: false,
       pattern: '',
-      placeholder: ''
+      placeholder: '',
+      tips:""
+    },
+    hidden:"",
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   },
   {
@@ -48,6 +60,10 @@ export const basicComponents = [
       disabled: false,
       controlsPosition: ''
     },
+    hidden:"",
+    condition:"",
+    valueRange: '',
+    assignment:"",
     remoteFactor:{
       isRemote: false,
       url:"",
@@ -86,6 +102,16 @@ export const basicComponents = [
       },
       remoteFunc: '',
       disabled: false,
+    },
+    hidden:"",
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   },
   {
@@ -116,6 +142,16 @@ export const basicComponents = [
       },
       remoteFunc: '',
       disabled: false,
+    },
+    hidden:"",
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   },
   {
@@ -135,6 +171,16 @@ export const basicComponents = [
       format: 'HH:mm:ss',
       required: false,
       width: '',
+    },
+    hidden:"",
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   },
   {
@@ -154,6 +200,16 @@ export const basicComponents = [
       timestamp: false,
       required: false,
       width: '',
+    },
+    hidden:"",
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   },
   {
@@ -165,6 +221,16 @@ export const basicComponents = [
       disabled: false,
       allowHalf: false,
       required: false
+    },
+    hidden:"",
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   },
   {
@@ -175,6 +241,16 @@ export const basicComponents = [
       disabled: false,
       showAlpha: false,
       required: false
+    },
+    hidden:"",
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   },
   {
@@ -207,6 +283,16 @@ export const basicComponents = [
         label: 'label'
       },
       remoteFunc: ''
+    },
+    hidden:"",
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   },
   {
@@ -216,6 +302,16 @@ export const basicComponents = [
       defaultValue: false,
       required: false,
       disabled: false,
+    },
+    hidden:"",
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   },
   {
@@ -231,6 +327,16 @@ export const basicComponents = [
       showInput: false,
       range: false,
       width: ''
+    },
+    hidden:"",
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   },
   {
@@ -239,6 +345,16 @@ export const basicComponents = [
     options: {
       defaultValue: 'This is a text',
       customClass: '',
+    },
+    hidden:"",
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   }
 ]

@@ -69,7 +69,7 @@ export default {
       clear: '清空',
       preview: '预览',
       json: '生成JSON',
-      upJson: '提交数据',
+      formConfig: '表单设置',
       code: '生成代码',
       getData: '获取数据',
       reset: '重置',
@@ -95,14 +95,16 @@ export default {
         size: '组件尺寸',
         customClass: '自定义Class'
       },
-      widget: {
+      common:{
+        title: '通用字段',
         condition: '离开条件',  //新增离开条件
-        //outTips: '离开错误提示', //新增离开错误提示
         assignment: '离开赋值', //新增离开赋值
         hidden: '隐藏条件',     //新增隐藏条件
         valueRange: '取值范围', //新增取值范围
-        showTips: '提示信息',       //新增是否显示提示信息
         remoteFactor: '是否需要远程校验', //新增控件访问外部条件
+      },
+      widget: {
+        showTips: '提示信息',       //新增是否显示提示信息
         title: '字段属性',
         model: '字段标识',
         name: '标题',
