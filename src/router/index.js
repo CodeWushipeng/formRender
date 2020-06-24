@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 
 import Home from "../demo/Home.vue";
+import camera from "../demo/camera";
 import LanguageView from "./LanguageView.vue";
 import preview from "../demo/preView.vue";
 import flowDemo from "../demo/flow-demo";
@@ -44,7 +45,12 @@ export default new Router({
               path: 'flowDemo3',
               name: 'flowDemo3',
               component: flowDemo3
-          }
+          },
+          {
+              path: 'camera',
+              name: 'camera',
+              component: camera
+          },
       ]
     }
   ]

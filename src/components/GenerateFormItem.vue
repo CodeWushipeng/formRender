@@ -90,6 +90,17 @@
       ><el-button v-if="widget.options.ifperipheral" slot="prepend" icon="el-icon-question" @click="indentcart()">读取</el-button></el-input>
     </template>
 
+    <template v-if="widget.type == 'hrinput'">
+      <hr-input
+        :type="widget.options.type"
+        :maxlength="widget.options.maxlength"
+        v-model="widget.options.defaultValue"
+        :disabled="widget.options.disabled"
+        :placeholder="widget.options.placeholder"
+        :style="{width: widget.options.width}"
+      ></hr-input>
+    </template>
+
     <template v-if="widget.type == 'singletext'">
       <el-input
               autosize
@@ -264,7 +275,6 @@
         :show-alpha="widget.options.showAlpha"
       ></el-color-picker>
     </template>
-
     <template v-if="widget.type == 'select'">
         <!--remoteOptions:{{widget.options.remoteOptions}}-->
       <el-select
@@ -287,6 +297,54 @@
       </el-select>
         <span>{{dataModel}}</span>
     </template>
+
+    <template v-if="widget.type == 'camera'">
+      <el-select
+        ref="camera"
+        v-model="dataModel"
+        :disabled="widget.options.disabled"
+        :multiple="widget.options.multiple"
+        :clearable="widget.options.clearable"
+        :placeholder="widget.options.placeholder"
+        :style="{width: widget.options.width}"
+        :filterable="widget.options.filterable"
+        style="width: 80%"
+      >
+        <el-option
+          v-for="item in cameraList"
+          :key="item.value"
+          :value="item.value"
+          :label="item.label">
+        </el-option>
+      </el-select>
+      <el-button
+              type="primary"
+              class="json-btn"
+              @click="cameraFun"
+      >拍照</el-button>
+      <el-image :src="cameraimage" v-if="cameraimage != ''"></el-image>
+    </template>
+
+    <!--camera-->
+    <cus-dialog
+            :visible="cameraVisible"
+            @on-close="cameraVisible = false"
+            ref="cameraPreview"
+            width="800px"
+            form
+    >
+      <cameraFormItem insite="true" v-if="cameraVisible" @on-close1="cameraVisibleFun" @on-cameraimage="oncameraimage" :models.sync="models" :widget="widget"  :cameraimage.sync="cameraimage" ref="cameraForm">
+
+        <template v-slot:blank="scope">
+          Width <el-input v-model="scope.model.blank.width" style="width: 100px"></el-input>
+          Height <el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
+        </template>
+      </cameraFormItem>
+
+      <template slot="action">
+        <span></span>
+      </template>
+    </cus-dialog>
 
     <template v-if="widget.type=='switch'">
       <el-switch v-model="dataModel" :disabled="widget.options.disabled"></el-switch>
@@ -324,6 +382,25 @@
       ></fm-upload>
     </template>
 
+    <template v-if="widget.type=='imageupload' |widget.type=='fileupload' |widget.type=='videoupload'">
+      <fm-upload-extend
+        v-model="dataModel"
+        :uploadtype="widget.type"
+        :disabled="widget.options.disabled"
+        :style="{'width': widget.options.width}"
+        :width="widget.options.size.width"
+        :height="widget.options.size.height"
+        :token="widget.options.token"
+        :domain="widget.options.domain"
+        :multiple="widget.options.multiple"
+        :length="widget.options.length"
+        :is-delete="widget.options.isDelete"
+        :min="widget.options.min"
+        :is-edit="widget.options.isEdit"
+        :action="widget.options.action"
+      ></fm-upload-extend>
+    </template>
+
     <template v-if="widget.type == 'editor'">
       <vue-editor v-model="dataModel" :style="{width: widget.options.width}"></vue-editor>
     </template>
@@ -347,21 +424,30 @@
 
 <script>
 import FmUpload from "./Upload";
+import FmUploadExtend from "./Uploadextend";
 import CusDialog from './CusDialog'
 import radioFormItem from './radioFormItem'
+import cameraFormItem from './cameraFormItem'
 import { getInputValue , delcommafy} from '../util/comother.js'
 import {InputMoney} from '../util/amtUtil';
 import request from "../util/request.js";
+import ElImage from "element-ui/packages/image/src/main";
 export default {
   props: ["widget", "models", "rules", "remote"],    // widget为当前组件json数据
   components: {
-    FmUpload,
+      ElImage,
+      FmUpload,
+    FmUploadExtend,
     CusDialog,
+    cameraFormItem,
     radioFormItem
   },
   data() {
     return {
       radioVisible:false,
+      cameraVisible:false,
+      cameraList: [],
+      cameraimage: "",
       amountvisible:false, // 控制金额放大镜的显隐
       dataModel: this.models[this.widget.model],   // 当前组件的默认值，是双向绑定的
         pickerOptionsDate: {
@@ -476,7 +562,6 @@ export default {
       /*单选 多选快捷键方法*/
       radioVisibleFun(){
           this.radioVisible = false
-
       },
       radioFun () {
           const keyType = event.type;
@@ -492,6 +577,18 @@ export default {
       },
       /*单选 多选快捷键方法*/
 
+      /*摄像头*/
+      cameraVisibleFun(){
+          this.cameraVisible = false
+      },
+      oncameraimage(val){
+          this.cameraimage = val
+      },
+      /*摄像头*/
+      cameraFun () {
+          //debugger
+          this.cameraVisible = true
+      },
       focus(){
           // this.$on("focus",function(){
       //   focus()
@@ -584,6 +681,34 @@ export default {
           this.amountvisible = false;
           this.dataModel  = delcommafy(refsId.value);
       },
+
+      /*摄像头*/
+      camera () {
+          var _this = this;
+          navigator.mediaDevices.enumerateDevices()
+              .then(function(devices) {
+                  console.log(devices)
+                  _this.cameraList = []
+                  devices.forEach(function(device) {
+                      if (device.kind == 'videoinput') {
+                          _this.cameraList.push({
+                              'label': device.label,
+                              'value': device.deviceId
+                          })
+                      }
+                  });
+                  console.log(_this.cameraList)
+              })
+              .catch(function(err) {
+                  console.log(err.name + ": " + err.message);
+              });
+      },
+      /*摄像头*/
+  },
+  mounted () {
+      if(this.widget.type == "camera"){
+          this.camera();
+      }
   },
   watch: {
     dataModel: {
@@ -608,7 +733,7 @@ export default {
         //     this.remoteFunc()
         // },200)
       }
-    }
+    },
   }
 };
 </script>

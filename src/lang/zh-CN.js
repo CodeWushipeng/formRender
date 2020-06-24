@@ -16,6 +16,10 @@ export default {
           idencard: '身份证',
           readcard: '读卡',
           taglable: '标签',
+          imageupload: '图像上传',
+          fileupload: '文件上传',
+          videoupload: '影像集成',
+          camera: '摄像头',
       },
       fields: {
         input: '单行文本',
