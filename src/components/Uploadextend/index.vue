@@ -40,7 +40,7 @@
                 :src="docUrl"
                 width='100%'>
         </iframe>-->
-        <div v-html="pdfUrl" />
+        <div v-html="docUrl" />
       </div>
 
       <div v-else-if="showPdf == true" class="dialog-body-content-base-style" style="justify-content: center; align-items: center">
@@ -151,11 +151,11 @@ export default {
     return {
       fileList: this.value,
       viewer: null,
-      docUrl: null,
       uploadId: 'upload_' + new Date().getTime(),
       editIndex: -1,
       meituIndex: -1,
       showPdf:false,
+      docUrl: '',
       pdfUrl: '',
       showDoc:false,
       showVideo:false,
@@ -227,8 +227,6 @@ export default {
       },
 
     handleChange () {
-        debugger
-      console.log(this.$refs.uploadInput.files)
       const files = this.$refs.uploadInput.files
       
       for (let i = 0; i < files.length; i++) {
@@ -248,15 +246,15 @@ export default {
 
         const reader = new FileReader()
         const key = (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
-        if((file.name).indexOf(".doc1") > -1 | (file.name).indexOf(".docx1") > -1){
+        if((file.name).indexOf(".doc") > -1 | (file.name).indexOf(".docx") > -1){
             reader.readAsArrayBuffer(file)
             reader.onload  = (e) => {
                 debugger
                 /*let blob = new Blob([e.target.result], {
                     type: `application/msword` //word文档为msword,pdf文档为pdf
                 });*/
-                let blob = window.URL.createObjectURL(new Blob([e.target.result]))
-                let objectUrl = URL.createObjectURL(blob);
+                /*let blob = window.URL.createObjectURL(new Blob([e.target.result]))
+                let objectUrl = URL.createObjectURL(blob);*/
 
                 if (this.editIndex >= 0) {
                     this.$set(this.fileList, this.editIndex, {
@@ -338,24 +336,25 @@ export default {
           this.viewer && this.viewer.destroy()
           this.uploadId = 'upload_' + new Date().getTime()
 
-          console.log(this.viewer)
+          //console.log(this.viewer)
           this.$nextTick(() => {
               this.viewer = new Viewer(document.getElementById(this.uploadId))
               this.viewer.view(this.fileList.findIndex(item => item.key === key))
           })
       }else if(this.uploadtype == "fileupload"){
           var docTemp = this.fileList.findIndex(item => item.key === key)
-          this.pdfUrl = this.fileList[docTemp].url
-          window.open('https://view.officeapps.live.com/op/view.aspx?src=' + this.fileList[docTemp].urlPath)
-          this.showPdf = true
-          /*if((this.fileList[docTemp].name).indexOf(".pdf") > -1){
+          //this.pdfUrl = this.fileList[docTemp].url
+          /*window.open('https://view.officeapps.live.com/op/view.aspx?src=' + this.fileList[docTemp].urlPath)
+          this.showPdf = true*/
+          if((this.fileList[docTemp].name).indexOf(".pdf") > -1){
+              this.pdfUrl = this.fileList[docTemp].url
               this.showPdf = true
           }else {
               mammoth.convertToHtml({ arrayBuffer: this.pdfUrl }).then((result) => {
-                  this.pdfUrl = result.value
+                  this.docUrl = result.value
               }).done()
               this.showDoc = true
-          }*/
+          }
       }else if(this.uploadtype == "videoupload"){
           this.$set(this.positivePlayerOptions.sources, 0, {
               type: "video/mp4",
