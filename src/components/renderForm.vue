@@ -35,6 +35,7 @@ export default {
     };
   },
   created() {
+      console.log('created...')
     this._inits();
   },
   computed: {
@@ -44,16 +45,16 @@ export default {
     input_config() {
       if (this.configdata && this.configdata.list.length > 0) {
         const {
-          input_config,
-          checkstart,
-          node_code,
-          next_node,
+          inputConfig,
+          checkStart,
+          nodeCode,
+          nextNode,
         } = this.configdata.list[0];
         return {
-          input_config,
-          checkstart,
-          node_code,
-          next_node,
+          inputConfig,
+          checkStart,
+          nodeCode,
+          nextNode,
         };
       }
     },
@@ -64,9 +65,9 @@ export default {
       const list = this.configdata.list;
       console.log(this.configdata);
       if (list instanceof Array && list.length) {
-        const { input_config_code } = list[0];
-        input_config_code &&
-          this._getConfigData(input_config_code)
+        const { inputFormCode } = list[0];
+        inputFormCode &&
+          this._getConfigData(inputFormCode)
             .then((res) => {
               let temp = res;
               this.handelDynamicInFlow(temp);
@@ -127,39 +128,39 @@ export default {
       }
     },
     // 获取表单配置信息
-    _getConfigData(input_config) {
-      if (input_config) {
-        return request.get(`${this.url}/${input_config}`);
+    _getConfigData(inputConfig) {
+      if (inputConfig) {
+        return request.get(`${this.url}/${inputConfig}`);
       } else {
         return false;
       }
     },
     // 响应页面
-    changeJsonData(input_config, formData = {}) {
-      console.log("input_config", input_config);
-      input_config &&
-        this._getConfigData(input_config).then((res) => {
+    changeJsonData(inputConfig, formData = {}) {
+      console.log("inputConfig", inputConfig);
+      inputConfig &&
+        this._getConfigData(inputConfig).then((res) => {
           this.jsonData = res;
           this.formdata = formData;
         });
     },
     // 将流控引擎input数据绑定到value
     getInputData() {
-      console.log("getInputData....input_config_BB", new Date());
+      console.log("getInputData....inputConfig_BB", new Date());
       const list = this.configdata.list;
       if (list.length) {
-        const { input_config } = list[0]; // 注入数据
+        const { inputConfig } = list[0]; // 注入数据
         const funkeys = Object.keys(this.func);
         try {
-          if (input_config && funkeys.length) {
-            let transObj = eval("(" + this.func[input_config] + ")")(); //封装
+          if (inputConfig && funkeys.length) {
+            let transObj = eval("(" + this.func[inputConfig] + ")")(); //封装
             console.log("transObj", transObj);
             return transObj;
           } else {
             return {};
           }
         } catch (error) {
-          throw new Error("input_config解析出错", input_config);
+          throw new Error("inputConfig解析出错", inputConfig);
         }
       }
       return {};
