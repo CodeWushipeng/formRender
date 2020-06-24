@@ -174,6 +174,19 @@
           </el-select>
         </template>
 
+        <template v-if="element.type == 'camera'">
+          <el-select
+            v-model="element.options.defaultValue"
+            :disabled="element.options.disabled"
+            :multiple="element.options.multiple"
+            :clearable="element.options.clearable"
+            :placeholder="element.options.placeholder"
+            :style="{width: element.options.width}"
+          >
+            <el-option v-for="item in element.options.options" :key="item.value" :value="item.value" :label="element.options.showLabel?item.label:item.value"></el-option>
+          </el-select>
+        </template>
+
         <template v-if="element.type=='switch'">
           <el-switch
             v-model="element.options.defaultValue"

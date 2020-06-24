@@ -391,27 +391,28 @@ export const bankingComponents = [
       success: "",
     },
   },
-  {
-    type: "taglable",
-    icon: "icon-input",
-    options: {
-      hidden: false,
-      width: "100%",
-      defaultValue: "",
-      required: false,
-      placeholder: "",
-      disabled: false,
-      tips: "暂无提示信息",
-    },
-    hidden: "",
-    condition: "",
-    valueRange: "",
-    assignment: "",
-    remoteFactor: {
-      isRemote: false,
-      url: "",
-      data: "",
-      success: "",
+    {
+        type: "taglable",
+        icon: "icon-input",
+        options: {
+            hidden: false,
+            width: "100%",
+            defaultValue: "",
+            required: false,
+            placeholder: "",
+            disabled: false,
+            tips: "暂无提示信息",
+        },
+        hidden: "",
+        condition: "",
+        valueRange: "",
+        assignment: "",
+        remoteFactor: {
+            isRemote: false,
+            url: "",
+            data: "",
+            success: "",
+        },
     },
     {
         type: 'imageupload',
@@ -477,6 +478,19 @@ export const bankingComponents = [
             isDelete: true,
             isEdit: true,
             action: ''
+        }
+    },
+    {
+        type: 'camera',
+        icon: 'icon-tupian',
+        options: {
+            hidden: false,
+            width: "100%",
+            defaultValue: "",
+            required: false,
+            placeholder: "",
+            disabled: false,
+            tips: "暂无提示信息",
         }
     },
 ]
