@@ -5,6 +5,10 @@
     :url="'http://localhost:3000'"
     :configdata="{}"
   >
+
+      jsonData: {{jsonData}}
+      <hr>
+
     <fm-generate-form
       :remote="remoteFuncs"
       :data="jsonData"
@@ -18,7 +22,9 @@
 
 <script>
 import fmGenerateForm from "./GenerateForm";
-import request from "../util/request.js";
+// import request from "../util/request.js";
+// import request from "../util/request-form.js";
+import { getFormList } from '../api/forms';
 
 export default {
   name: "render-form",
@@ -35,7 +41,7 @@ export default {
     };
   },
   created() {
-      console.log('created...')
+    console.log('created...')
     this._inits();
   },
   computed: {
@@ -69,11 +75,19 @@ export default {
         inputFormCode &&
           this._getConfigData(inputFormCode)
             .then((res) => {
-              let temp = res;
-              this.handelDynamicInFlow(temp);
-              this.dynamicData(temp);
-              console.log(temp);
-              this.jsonData = temp;
+                // console.log('=====11===res============',res)
+                const {rspCode} = res;
+                if(rspCode=="00000000"){
+                    const formContent = res.define[0]['formContent'];
+                    const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
+                    let temp = result;
+                    this.handelDynamicInFlow(temp);
+                    this.dynamicData(temp);
+                    console.log(temp);
+                    this.jsonData = temp;
+                }else{
+                    this.$message('查询失败');
+                }
             })
             .catch((error) => {
               console.log(error);
@@ -129,8 +143,13 @@ export default {
     },
     // 获取表单配置信息
     _getConfigData(inputConfig) {
+        // alert(inputConfig)
       if (inputConfig) {
-        return request.get(`${this.url}/${inputConfig}`);
+        // return request.get(`${this.url}/${inputConfig}`);
+          let data = {
+              "formCode": inputConfig
+          };
+           return getFormList(data)
       } else {
         return false;
       }
@@ -138,10 +157,20 @@ export default {
     // 响应页面
     changeJsonData(inputConfig, formData = {}) {
       console.log("inputConfig", inputConfig);
+        let data = {
+            "formCode": inputConfig
+        };
       inputConfig &&
-        this._getConfigData(inputConfig).then((res) => {
-          this.jsonData = res;
-          this.formdata = formData;
+        this._getConfigData(data).then((res) => {
+            const {rspCode} = res;
+            if(rspCode=="00000000"){
+                const formContent = res.define[0]['formContent'];
+                const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
+                this.jsonData = result;
+                this.formdata = formData;
+            }else{
+                this.$message('响应页面失败');
+            }
         });
     },
     // 将流控引擎input数据绑定到value

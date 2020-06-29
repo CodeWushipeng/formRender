@@ -73,6 +73,7 @@
         name:'flow-demo',
         data() {
             return {
+                // url:"http://localhost:3000",
                 url:"http://localhost:3000",
                 dialogVisible:false,
                 allData:null,
@@ -82,14 +83,13 @@
                     user:{},
                     list:[]
                 },
-                remoteFuncs: {},
+                remoteFuncs: {
+                },
                 // 处理数据
                 data: {
                     nodeName:null,
                 },
                 func:{},
-                // json: null,
-                // edit: null,
             };
         },
         created() {
