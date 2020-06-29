@@ -144,6 +144,7 @@ export default {
         staticData: '静态数据',
         remoteData: '远端数据',
         remoteFunc: '远端方法',
+        remoteUrl: '远端地址',
         value: '值',
         label: '标签',
         childrenOption: '子选项',

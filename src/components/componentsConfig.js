@@ -282,7 +282,8 @@ export const basicComponents = [
         value: 'value',
         label: 'label'
       },
-      remoteFunc: ''
+      remoteFunc: '',
+      remoteUrl: '',
     },
     hidden:"",
     condition:"",
