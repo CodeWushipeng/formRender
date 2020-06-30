@@ -101,6 +101,8 @@ export default {
       },
       common:{
         title: '通用字段',
+        enterCondition: '进入条件',
+        remoteCode: '字典值',
         condition: '离开条件',  //新增离开条件
         assignment: '离开赋值', //新增离开赋值
         hidden: '隐藏条件',     //新增隐藏条件
@@ -144,7 +146,6 @@ export default {
         staticData: '静态数据',
         remoteData: '远端数据',
         remoteFunc: '远端方法',
-        remoteUrl: '远端地址',
         value: '值',
         label: '标签',
         childrenOption: '子选项',

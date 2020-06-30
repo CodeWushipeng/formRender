@@ -92,10 +92,6 @@
             <el-input size="mini" style="" v-model="data.options.remoteFunc">
               <template slot="prepend">{{$t('fm.config.widget.remoteFunc')}}</template>
             </el-input>
-            <!-- 远端地址 -->
-            <el-input size="mini" style="" v-model="data.options.remoteUrl">
-              <template slot="prepend">{{$t('fm.config.widget.remoteUrl')}}</template>
-            </el-input>
             <el-input size="mini" style="" v-model="data.options.props.value">
               <template slot="prepend">{{$t('fm.config.widget.value')}}</template>
             </el-input>
