@@ -2,13 +2,9 @@
   <div
     class="form-wrap"
     ref="renderForm"
-    :url="'http://localhost:3000'"
-    :configdata="{}"
   >
-
       jsonData: {{jsonData}}
       <hr>
-
     <fm-generate-form
       :remote="remoteFuncs"
       :data="jsonData"
@@ -29,7 +25,24 @@ export default {
   components: {
     fmGenerateForm,
   },
-  props: ["configdata", "remoteFuncs", "func", "url"],
+    props:{
+        configdata: {
+            type: Object,
+            default:()=>{}
+        },
+        remoteFuncs: {
+            type: Object,
+            default:()=>{}
+        },
+        func: {
+            type: Object,
+            default:()=>{}
+        },
+        url: { // 查询表单的服务
+            type: String,
+            default:()=> ''
+        },
+    },
   data() {
     return {
       jsonData: {},
@@ -156,7 +169,7 @@ export default {
           let data = {
               formCode: inputConfig
           };
-           return getFormList(data)
+           return getFormList(this.url,data)
       } else {
         return false;
       }

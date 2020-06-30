@@ -67,14 +67,13 @@
     import getFG from './fg-control';
     import { queryFlowDetail } from '../../api/flows'
     const FG = new getFG();
-    import {platform,user,func} from './flowData'
+    import {platform,user,func} from './flowData';
 
     export default {
         name:'flow-demo',
         data() {
             return {
-                // url:"http://localhost:3000",
-                url:"http://localhost:3000",
+                url:"",
                 dialogVisible:false,
                 allData:null,
                 // 流控数据
