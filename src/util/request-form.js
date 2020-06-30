@@ -8,29 +8,33 @@ const service = axios.create({
     timeout: 5000 // request timeout
 })
 
+
+
 // request interceptor
 service.interceptors.request.use(
     config => {
         config.data = {
             "body":config.data,
             "header":{
-                "antiWeightSeqNo": "qui",
-                "gloSeqNo": "anim dolor deserunt",
                 "pageIndex": 1,
-                "pageSize": 999,
-                "projectId": "quis consectetur",
-                "reqSeqNo": "Duis et Ut tempor qui",
-                "reqTime": "Excepteur exercitation ut quis dolor",
-                "serviceGroupid": "mollit sed",
-                "serviceId": "officia non",
-                "serviceName": "officia qui adipisicing",
-                "subProjectId": "occaecat tempor dolor enim ex",
-                "userInfo": {
-                    "role": [
-                        "ea fugiat incididunt"
-                    ],
-                    "username": "dolore deserunt do"
-                }
+                "pageSize": 1,
+                // "antiWeightSeqNo": "qui",
+                // "gloSeqNo": "anim dolor deserunt",
+                // "pageIndex": 1,
+                // "pageSize": 999,
+                // "projectId": "quis consectetur",
+                // "reqSeqNo": "Duis et Ut tempor qui",
+                // "reqTime": "Excepteur exercitation ut quis dolor",
+                // "serviceGroupid": "mollit sed",
+                // "serviceId": "officia non",
+                // "serviceName": "officia qui adipisicing",
+                // "subProjectId": "occaecat tempor dolor enim ex",
+                // "userInfo": {
+                //     "role": [
+                //         "ea fugiat incididunt"
+                //     ],
+                //     "username": "dolore deserunt do"
+                // }
             }
         }
         return config

@@ -22,8 +22,6 @@
 
 <script>
 import fmGenerateForm from "./GenerateForm";
-// import request from "../util/request.js";
-// import request from "../util/request-form.js";
 import { getFormList } from '../api/forms';
 
 export default {
@@ -78,15 +76,26 @@ export default {
                 // console.log('=====11===res============',res)
                 const {rspCode} = res;
                 if(rspCode=="00000000"){
-                    const formContent = res.define[0]['formContent'];
-                    const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
-                    let temp = result;
-                    this.handelDynamicInFlow(temp);
-                    this.dynamicData(temp);
-                    console.log(temp);
-                    this.jsonData = temp;
+                    const rest = res.define;
+                    if(rest.length>0){
+                        const formContent = res.define[0]['formContent'];
+                        const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
+                        let temp = result;
+                        this.handelDynamicInFlow(temp);
+                        this.dynamicData(temp);
+                        console.log(temp);
+                        this.jsonData = temp;
+                    }else{
+                        this.$notify.error({
+                            title: '消息',
+                            message: '没有搜索到数据'
+                        });
+                    }
                 }else{
-                    this.$message('查询失败');
+                    this.$notify.error({
+                        title: '消息',
+                        message: '查询失败'
+                    });
                 }
             })
             .catch((error) => {
@@ -143,11 +152,9 @@ export default {
     },
     // 获取表单配置信息
     _getConfigData(inputConfig) {
-        // alert(inputConfig)
       if (inputConfig) {
-        // return request.get(`${this.url}/${inputConfig}`);
           let data = {
-              "formCode": inputConfig
+              formCode: inputConfig
           };
            return getFormList(data)
       } else {
@@ -158,18 +165,29 @@ export default {
     changeJsonData(inputConfig, formData = {}) {
       console.log("inputConfig", inputConfig);
         let data = {
-            "formCode": inputConfig
+            formCode: inputConfig
         };
       inputConfig &&
-        this._getConfigData(data).then((res) => {
+        this._getConfigData(inputConfig).then((res) => {
             const {rspCode} = res;
             if(rspCode=="00000000"){
-                const formContent = res.define[0]['formContent'];
-                const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
-                this.jsonData = result;
-                this.formdata = formData;
+                const rest = res.define;
+                if(rest.length>0){
+                    const formContent = res.define[0]['formContent'];
+                    const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
+                    this.jsonData = result;
+                    this.formdata = formData;
+                }else{
+                    this.$notify.error({
+                        title: '消息',
+                        message: '没有搜索到数据'
+                    });
+                }
             }else{
-                this.$message('响应页面失败');
+                this.$notify.error({
+                    title: '消息',
+                    message: '响应页面失败'
+                });
             }
         });
     },
