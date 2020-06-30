@@ -599,11 +599,36 @@ export default {
         };
       });
     },
+    // 字典查询值传给组件
+    // setRemoteData(com,params){
+      
+    // },
     // mirror控制函数
     showMirror(parms, modify) {
       console.log(modify);
       this.modify = modify;
       this.nowEle = parms;
+      if (this.modify == "隐藏条件") {
+        if (this.nowEle.hidden != "") {
+          this.code = this.nowEle.hidden;
+        }
+      } else if (this.modify == "离开条件") {
+        if (this.nowEle.condition != "") {
+          this.code = this.nowEle.condition;
+        }
+      } else if (this.modify == "进入条件") {
+        if (this.nowEle.enterCondition != "") {
+          this.code = this.nowEle.enterCondition;
+        }
+      } else if (this.modify == "离开赋值") {
+        if (this.nowEle.assignment != "") {
+          this.code = this.nowEle.assignment;
+        }
+      } else if (this.modify == "添加校验数据") {
+        if (this.nowEle.remoteFactor.data != "") {
+          this.code = this.nowEle.remoteFactor.data;
+        }
+      }
       this.mirrorVisible = true;
     },
     // 关闭mirror
@@ -618,6 +643,8 @@ export default {
         this.nowEle.hidden = this.code;
       } else if (this.modify == "离开条件") {
         this.nowEle.condition = this.code;
+      } else if (this.modify == "进入条件") {
+        this.nowEle.enterCondition = this.code;
       } else if (this.modify == "离开赋值") {
         this.nowEle.assignment = this.code;
       } else if (this.modify == "添加校验数据") {

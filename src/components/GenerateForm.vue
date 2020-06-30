@@ -1,6 +1,6 @@
 <template>
   <!--<div v-if="!isDataNull">-->
-    <div>
+  <div>
     <!--data:{{data.config}} <br>-->
     <!--models:{{models}} <br>-->
     <!--rules:{{rules}} <br>-->
@@ -92,9 +92,8 @@ export default {
    * data为表单渲染原始数据
    * remote为获取服务端数据的回调函数
    * value为覆盖表单原始默认值的数据
-   * dyData为公共区动态数据
    */
-  props: ["data", "remote", "value", "insite", "dyData"],
+  props: ["data", "remote", "value", "insite"],
   computed: {
     keysLength() {
       // 解除报错
@@ -107,7 +106,18 @@ export default {
       models: {}, // form表单对象所有组件key value组成的json
       rules: {}, // form表单对象所有组件对应校验规则
       haveHide: false, // 后期添加非form making自有属性，是否触发过节点隐藏
-      canFocusType:['input','date','time','number','password','againpassword','amount','singletext','select','idencard'],
+      canFocusType: [
+        "input",
+        "date",
+        "time",
+        "number",
+        "password",
+        "againpassword",
+        "amount",
+        "singletext",
+        "select",
+        "idencard",
+      ],
       allItems: [],
       canFocusInputArr: [],
       startIndex: 0,
@@ -127,9 +137,9 @@ export default {
         clearInterval(this.intervalId);
       }
     }, 200);
+    this.flowHandel();
   },
   methods: {
-
     // 生成models、rules对象
     generateModle(genList) {
       if (!genList) {
@@ -198,7 +208,6 @@ export default {
                 }
               }),
             ];
-
           }
           //  console.log(this.rules)
           // 确认密码的校验
@@ -318,6 +327,7 @@ export default {
     flowHandel() {
       this.handelElement();
       this.allItems = document.querySelectorAll(".el-form-item");
+      console.log(this.allItems);
       this.getFocusEle();
       this.handelFocus();
     },
@@ -385,6 +395,29 @@ export default {
         this.$refs["generateForm"].fields[
           this.focusIndex
         ].validateMessage = msg;
+      }
+    },
+    // 进入条件检测
+    enterCheck() {
+      for (let i = 0; i < this.data.list.length; i++) {
+        if (
+          this.data.list[i].enterCondition &&
+          this.data.list[i].enterCondition != ""
+        ) {
+          let condition = this.evalWrap(this.data.list[i].enterCondition);
+          for (const key in condition) {
+            if (object.hasOwnProperty(key)) {
+              const element = object[key];
+              for (let j = 0; j < this.data.list.length; j++) {
+                  if (this.data.list[j].model == key) {
+                    this.data.list[j].options.disabled = element;
+                  }
+              }
+            }
+          }
+
+          console.log(this.data.list[i].enterCondition);
+        }
       }
     },
     // 离开条件检测
@@ -603,8 +636,8 @@ export default {
           //       }
           //     });
           // } else {
-            this.handelElement();
-            this.handelFocus();
+          this.handelElement();
+          this.handelFocus();
           // }
         }
       }
@@ -633,6 +666,7 @@ export default {
       handler(val) {
         console.log(JSON.stringify(val));
         this.models = { ...this.models, ...val };
+        this.enterCheck(); //进入条件
       },
     },
   },

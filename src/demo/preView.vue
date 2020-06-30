@@ -1,11 +1,12 @@
 <template>
   <div class="render-wrap">
-    <render-form
+    <!-- <render-form
       v-if="configdata != null"
       :configdata="configdata"
       ref="renderForm"
     ></render-form>
-    <el-button @click="acceptFormData">获取数据</el-button>
+    <el-button @click="acceptFormData">获取数据</el-button> -->
+    <fm-generate-form v-if="configdata != null" :data="configdata" ref="generateForm"></fm-generate-form>
   </div>
 </template>
 
@@ -23,19 +24,21 @@ export default {
   methods: {
     getConfigData() {
       request
-        .get("http://localhost:3000/flow")
+        .get("http://localhost:3000/from")
         .then((res) => {
           this.configdata = res;
-          console.log(this.configdata)
+          console.log(this.configdata);
         })
         .catch((error) => {
           console.log(error);
         });
     },
     // 接收renderform组件返回的表单数据
-    acceptFormData(){
-      this.$refs.renderForm.getFormData().then(data=>{console.log(data)});
-    }
+    acceptFormData() {
+      this.$refs.renderForm.getFormData().then((data) => {
+        console.log(data);
+      });
+    },
   },
 };
 </script>
