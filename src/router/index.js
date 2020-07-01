@@ -36,16 +36,12 @@ export default new Router({
           name: "preview",
           component: preview,
         },
-         /* {
-              path: 'flowDemo',
-              name: 'flowDemo',
-              component: flowDemo
-          },*/
           {
-              path: '100001',
-              name: '100001',
+              path: 'flow',
+              name: 'flow',
               component: flowDemo3
           },
+
           {
               path: 'camera',
               name: 'camera',

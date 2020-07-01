@@ -86,7 +86,7 @@ export default {
         inputFormCode &&
           this._getConfigData(inputFormCode)
             .then((res) => {
-                // console.log('=====11===res============',res)
+                console.log('=====form-making-secondary===res============',res)
                 const {rspCode} = res;
                 if(rspCode=="00000000"){
                     const rest = res.define;

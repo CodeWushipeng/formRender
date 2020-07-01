@@ -69,6 +69,53 @@
     const FG = new getFG();
     import {platform,user,func} from './flowData';
 
+
+
+    // if
+    const fs1 =  `if(name==1){
+  return true
+}else{
+  return false
+}`
+
+    // fn
+    const fs2 =   `
+  function add (){
+  return 1213
+}
+
+`
+    // Object
+const fs3 = `{
+  name:1,
+  age:12
+}
+`
+
+
+const fs4 =   `
+  function add (){
+  return 1213
+}
+
+var sum  = function  (){
+  return 456
+}
+var json = {
+    name:123,
+    age:456,
+    address: 12
+}
+
+module.exports = {
+    add,
+    sum,
+    json
+}`
+
+
+
+
     export default {
         name:'flow-demo',
         data() {
@@ -92,6 +139,16 @@
             };
         },
         created() {
+
+            // const fs = eval(fs4)
+/*
+            console.log('fs',typeof fs,typeof fs.add)
+            console.log('fs..add..',fs.add())
+            console.log('fs..sum..',fs.sum())
+            console.log('fs..json..',fs.json)*/
+
+
+
             this._getStartNode();
             this._remote();
         },
@@ -155,10 +212,13 @@
             },
             _getStartNode() {
                 const flowCode = this.$route.name;
+                const query = this.$route.query;
                 console.log('this.$routes.name:',this.$route.name)
+                console.log('this.$routes.query:',this.$route.query)
                 // request.get(flow_Url).then((res) => {
                 let params = {
-                    flowCode:this.$route.name.replace('buss','')
+                    // flowCode:flowCode.replace('buss','')
+                    flowCode:query.id
                 }
                 queryFlowDetail(params).then((res) => {
                     console.log('res', res)
