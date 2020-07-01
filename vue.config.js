@@ -2,6 +2,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 const port = process.env.port || process.env.npm_config_port || 9528; // dev port
 
+
 module.exports = {
   productionSourceMap: false,
   publicPath: "./",
@@ -28,7 +29,7 @@ module.exports = {
       "/dev-api/dictionary": {
         target: "http://192.168.1.194:21009",
         pathRewrite: { "^/dev-api": "" },
-        changeOrigin: true, 
+        changeOrigin: true,
       },
       "/dev-api/formDevelop": {
         target: "http://192.168.1.194:21004",
