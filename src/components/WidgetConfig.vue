@@ -79,6 +79,13 @@
         </el-form-item>
       </el-form-item>
 
+      <!--图片属性-->
+      <el-form-item v-if="data.type=='imageshow'">
+        <el-form-item :label="$t('fm.config.widget.imagesrc')">
+          <el-input v-model="data.options.imagesrc"></el-input>
+        </el-form-item>
+      </el-form-item>
+
       <el-form-item label="$t('fm.config.widget.allowHalf')" v-if="Object.keys(data.options).indexOf('allowHalf')>=0">
         <el-switch
             v-model="data.options.allowHalf"

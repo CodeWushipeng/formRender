@@ -208,7 +208,7 @@
           ></el-slider>
         </template>
 
-        <template v-if="element.type=='imgupload' | element.type=='imageupload' |element.type=='fileupload' |element.type=='videoupload'">
+        <template v-if="element.type=='imageshow' | element.type=='imgupload' | element.type=='imageupload' |element.type=='fileupload' |element.type=='videoupload'">
           <fm-upload
             v-model="element.options.defaultValue"
             :disabled="element.options.disabled"

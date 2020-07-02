@@ -362,6 +362,15 @@
         </el-button>
     </template>
 
+    <!--{{widget.options.imagesrc}}&&&
+    {{imagesrc}}-->
+    <template v-if="widget.type == 'imageshow'">
+      <el-image
+              :src="imagesrc"
+      >
+      </el-image>
+    </template>
+
     <template v-if="widget.type=='switch'">
       <el-switch v-model="dataModel" :disabled="widget.options.disabled"></el-switch>
     </template>
@@ -460,6 +469,8 @@ export default {
   },
   data() {
     return {
+      /*imagesrc:require(this.widget.options.imagesrc),*/
+      imagesrc:"",
       radioVisible:false,
       cameraVisible:false,
       cameraList: [],
@@ -739,12 +750,36 @@ export default {
           alert("button function")
       },
       /*按钮*/
+
+      getBase64Image(img) {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        var ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
+        var dataURL = canvas.toDataURL("image/"+ext);
+        return dataURL;
+    }
   },
   mounted () {
+
       if(this.widget.type == "camera"){
           this.camera();
       }else if(this.widget.type == "buttonCom" && (this.widget.options.buttontext || this.widget.options.defaultValue)){
           this.$refs.buttonref.$el.textContent = this.widget.options.buttontext ? this.widget.options.buttontext : this.widget.options.defaultValue
+      }else if(this.widget.type == "imageshow"){
+          this.dataModel = this.imagesrc = require('../assets/'+this.widget.options.imagesrc)
+
+          /*var img = "D:\\jcbankWork\\form-making-secondary\\src\\assets\\wenjian.png";
+          var image = new Image();
+          image.crossOrigin = '';
+          image.src = img;
+          image.onload = function(){
+              var base64 = this.getBase64Image(image);
+              console.log(base64);
+          }*/
       }
   },
   watch: {
