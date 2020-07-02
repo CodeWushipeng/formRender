@@ -128,24 +128,26 @@ export default {
       let formLists = temp.list;
       console.log(this.dyData);
       for (let i = 0; i < formLists.length; i++) {
-        if (
-          formLists[i].options.defaultValue != "" &&
-          formLists[i].options.defaultValue[0] == "@"
-        ) {
-          var temp = formLists[i].options.defaultValue.substring(1);
-          try {
-            var tempJson = eval(temp);
-          } catch (error) {
-            throw new Error(error);
+          if (formLists[i].type != "grid"){
+            if (
+              formLists[i].options.defaultValue != "" &&
+              formLists[i].options.defaultValue[0] == "@"
+            ) {
+              var temp = formLists[i].options.defaultValue.substring(1);
+              try {
+                var tempJson = eval(temp);
+              } catch (error) {
+                throw new Error(error);
+              }
+              console.log(tempJson, temp);
+              if (tempJson != "" && tempJson != undefined) {
+                this.$set(formLists[i].options, "defaultValue", tempJson);
+                // formLists[i].options.defaultValue = tempJson;
+                // this.models[formLists[i].model] = tempJson
+                console.log(formLists[i].options.defaultValue);
+              }
+            }
           }
-          console.log(tempJson, temp);
-          if (tempJson != "" && tempJson != undefined) {
-            this.$set(formLists[i].options, "defaultValue", tempJson);
-            // formLists[i].options.defaultValue = tempJson;
-            // this.models[formLists[i].model] = tempJson
-            console.log(formLists[i].options.defaultValue);
-          }
-        }
       }
     },
     // 处理流控数据中带有的动态数据
@@ -190,13 +192,18 @@ export default {
     },
     // 提取函数的返回数据
     solve(inputConfig){
-        const { platform, user, nodes, utils} = this.configdata;
-        console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )
-        console.log('{ configdata} ',JSON.stringify(this.configdata))
-        const resCode = `function _execute(user, platform, nodes, utils){  ${inputConfig}  return main(...arguments);}`;
-        const exeCode = eval("(" + resCode + ")");
-        let rs =  exeCode(user,platform,nodes,utils);
-        return rs;
+        try {
+            const { platform, user, nodes, utils} = this.configdata;
+            console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )
+            console.log('{ configdata} ',JSON.stringify(this.configdata))
+            const resCode = `function _execute(user, platform, nodes, utils){  ${inputConfig}  return main(...arguments);}`;
+            const exeCode = eval("(" + resCode + ")");
+            let rs =  exeCode(user,platform,nodes,utils);
+            return rs;
+        }catch (error) {
+            console.log(inputConfig);
+            throw new Error(error);
+        }
     },
 
     // 将流控引擎input数据绑定到value
@@ -205,15 +212,9 @@ export default {
         if (list.length) {
             const { inputConfig } = list[0]; // 注入数据
             if(!inputConfig) return {};
-            try {
-                //  代码格式
-                let transObj = this.solve(inputConfig);
-                console.log('transObj',JSON.stringify(transObj));
-                return transObj;
-            }catch (error) {
-                console.log(inputConfig);
-                throw new Error(error);
-            }
+            let transObj = this.solve(inputConfig);
+            console.log('transObj',JSON.stringify(transObj));
+            return transObj;
         }
         return {};
     },
