@@ -1,5 +1,5 @@
 <template>
-    <div class="render-wrap" style="padding: 20px;">
+    <div class="render-wrap" style="padding: 20px;"  ref="loadingArea">
         <!--<flowItem ref="flow"
                    :data="data"
                    v-if="data">
@@ -68,7 +68,6 @@
     const FG = new getFG();
     import {platform,user,utils} from './flowData';
 
-
     export default {
         name:'flow-demo',
         data() {
@@ -93,10 +92,6 @@
                 func:{},
             };
         },
-        created() {
-            this._getStartNode();
-            this._remote();
-        },
         computed: {
             type() {
                 const { type} = this.data;
@@ -107,8 +102,11 @@
                 return nodeName
             }
         },
+        created() {
+            this._getStartNode();
+            this._remote();
+        },
         methods: {
-
             _remote(){
                 // console.log('remote..... start')
                 // 加载远程数据
@@ -175,6 +173,7 @@
                         this.utils = utils;
 
                         const start = FG.list.filter(item => item.type == '01')[0];
+
                         // console.log('FG.list',FG.list)
                         // console.log('start',start)
                         const {checkStart, nodeCode} = start;
@@ -300,10 +299,18 @@
                                 Obj['down'] = res;
                                 FG.saveNode(nodeCode, Obj);
                                 alert("提交数据：" + JSON.stringify(Obj));
+                                const outConfig =  `
+                                    function main(){
+                                        return {
+                                            user:"lisi",
+                                            desc:"this is lisi's description",
+                                        }
+                                    }
+                                `
                                 // TODO 有响应页面
                                 if (outputFromCode) {
                                     // this.$refs.flow.outPut(outputFromCode);
-                                    this.$refs.renderForm.changeJsonData(outputFromCode, data);
+                                    this.$refs.renderForm.changeJsonData(outputFromCode, outConfig);
                                     FG.OUTFLAG = true;
                                     FG.CURFORM = "inputFormCode";
                                 } else {

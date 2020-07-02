@@ -48,15 +48,6 @@
       </template>
 
     <template v-if="widget.type == 'input'">
-      <!-- <el-popover
-        width="500"
-        placement="top-start"
-        trigger="hover"
-        v-if="!widget.options.disabled"
-        content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
-        >
-        <el-button :style="{'border':'0'}" slot="reference" icon="el-icon-question"></el-button>
-      </el-popover> -->
       <el-input
         v-if="widget.options.dataType == 'number' || widget.options.dataType == 'integer' || widget.options.dataType == 'float'"
         type="number"
@@ -74,6 +65,9 @@
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
         :style="{width: widget.options.width}"
+        :data-index="nowindex"
+        @focus="getIndex($event)"
+        @blur="setPreIndex($event)"
         @keyup.native.enter="change"
         :ref="widget.model"
       ><el-button v-if="widget.options.tips!=''" @click="showTips(widget.options.tips)" slot="prepend" icon="el-icon-question"></el-button></el-input>
@@ -88,17 +82,6 @@
               :placeholder="widget.options.placeholder"
               :style="{width: widget.options.width}"
       ><el-button v-if="widget.options.ifperipheral" slot="prepend" icon="el-icon-question" @click="indentcart()">读取</el-button></el-input>
-    </template>
-
-    <template v-if="widget.type == 'hrinput'">
-      <hr-input
-        :type="widget.options.type"
-        :maxlength="widget.options.maxlength"
-        v-model="widget.options.defaultValue"
-        :disabled="widget.options.disabled"
-        :placeholder="widget.options.placeholder"
-        :style="{width: widget.options.width}"
-      ></hr-input>
     </template>
 
     <template v-if="widget.type == 'singletext'">
@@ -124,6 +107,9 @@
         :placeholder="widget.options.placeholder"
         :style="{width: widget.options.width}"
         show-word-limit
+        :data-index="nowindex"
+        @focus="getIndex($event)"
+        @blur="setPreIndex($event)"
         @keyup.native.ctrl.enter="areaHandel"
       ></el-input>
     </template>
@@ -135,6 +121,9 @@
         :step="widget.options.step"
         controls-position="right"
         :disabled="widget.options.disabled"
+        :data-index="nowindex"
+        @focus="getIndex($event)"
+        @blur="setPreIndex($event)"
         @keyup.native.enter="change"
       ></el-input-number>
     </template>
@@ -236,6 +225,9 @@
         :arrowControl="widget.options.arrowControl"
         :value-format="widget.options.format"
         :style="{width: widget.options.width}"
+        :data-index="nowindex"
+        @focus="getIndex($event)"
+        @blur="setPreIndex($event)"
         @keyup.native.enter="change"
       ></el-time-picker>
     </template>
@@ -255,6 +247,9 @@
         :format="widget.options.format"
         :style="{width: widget.options.width}"
         v-bind:picker-options="widget.options.type == 'date' ? pickerOptionsDate : (widget.options.type == 'daterange' ? pickerOptionsRange :'') "
+        :data-index="nowindex"
+        @focus="getIndex($event)"
+        @blur="setPreIndex($event)"
         @keyup.native.enter="change"
       ></el-date-picker>
     </template>
@@ -285,6 +280,10 @@
         :placeholder="widget.options.placeholder"
         :style="{width: widget.options.width}"
         :filterable="widget.options.filterable"
+        :data-index="nowindex"
+        @focus="getIndex($event)"
+        @blur="setPreIndex($event)"
+        @keyup.native.enter="change"
       >
         <el-option
           v-for="item in (widget.options.remote ? widget.options.remoteOptions : widget.options.options)"
@@ -458,7 +457,7 @@ import {InputMoney} from '../util/amtUtil';
 import request from "../util/request.js";
 import ElImage from "element-ui/packages/image/src/main";
 export default {
-  props: ["widget", "models", "rules", "remote"],    // widget为当前组件json数据
+  props: ["widget", "models", "rules", "remote", "nowindex"],    // widget为当前组件json数据
   components: {
       ElImage,
       FmUpload,
@@ -476,6 +475,7 @@ export default {
       cameraList: [],
       cameraimage: "",
       amountvisible:false, // 控制金额放大镜的显隐
+      blurIndex: 0,
       dataModel: this.models[this.widget.model],   // 当前组件的默认值，是双向绑定的
         pickerOptionsDate: {
             disabledDate(time) {
@@ -627,6 +627,29 @@ export default {
           duration: 5000,
           message: msg
         });
+    },
+    // 组件聚焦获取model
+    getIndex(e) {
+      console.log(this.widget);
+      this.$emit("pushIndex", this.widget.model);
+    },
+    // 获取设置的index
+    getPre(ele){
+      if(ele.dataset.index==undefined){
+        this.getPre(ele.parentNode)
+      }else{
+        this.blurIndex = ele.dataset.index
+      }
+    },
+    // 组件失去焦点设置index
+    setPreIndex(e) {
+      //  e.target.dataset.index
+      this.blurIndex = e.target.dataset.index;
+      if(this.blurIndex==undefined){
+        this.getPre(e.target.parentNode)
+      }
+      console.log("index=========",this.blurIndex);
+      this.$emit("pushPreIndex",this.blurIndex);
     },
     // element change事件，回车和失去焦点时触发
     change(){

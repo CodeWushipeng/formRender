@@ -1,6 +1,6 @@
 <template>
   <!--<div v-if="!isDataNull">-->
-  <div>
+  <div class="generateForm">
     <!--data:{{data.config}} <br>-->
     <!--models:{{models}} <br>-->
     <!--rules:{{rules}} <br>-->
@@ -14,7 +14,7 @@
       :label-position="data.config.labelPosition"
       :label-width="data.config.labelWidth + 'px'"
     >
-      <template v-for="item in data.list">
+      <template v-for="(item, index) in data.list">
         <template v-if="item.type == 'grid'">
           <el-row
             :key="item.key"
@@ -66,10 +66,12 @@
             @input-change="onInputChange"
             @el-change="onElChange"
             @text-enter="textEnter"
+            :nowindex='index'
+            @pushIndex="getIndex"
+            @pushPreIndex="getPreIndex"
             :remote="remote"
             :ref="item.model"
-            v-show="!item.options.hidden"
-            :class="item.options.customClass"
+            v-show="item.options.show"
           ></genetate-form-item>
         </template>
       </template>
@@ -82,6 +84,7 @@ import GenetateFormItem from "./GenerateFormItem";
 import { loadJs } from "../util/index.js";
 import request from "../util/request.js";
 import { IdentityCodeValid } from "../util/idencardUtil";
+import handler from "./handler";
 
 export default {
   name: "fm-generate-form",
@@ -93,6 +96,7 @@ export default {
    * remote为获取服务端数据的回调函数
    * value为覆盖表单原始默认值的数据
    */
+  mixins: [handler],
   props: ["data", "remote", "value", "insite"],
   computed: {
     keysLength() {
@@ -106,22 +110,6 @@ export default {
       models: {}, // form表单对象所有组件key value组成的json
       rules: {}, // form表单对象所有组件对应校验规则
       haveHide: false, // 后期添加非form making自有属性，是否触发过节点隐藏
-      canFocusType: [
-        "input",
-        "date",
-        "time",
-        "number",
-        "password",
-        "againpassword",
-        "amount",
-        "singletext",
-        "select",
-        "idencard",
-      ],
-      allItems: [],
-      canFocusInputArr: [],
-      startIndex: 0,
-      focusIndex: 0, // 后期添加非form making自有属性，当前可聚焦节点相对全局下标
       intervalId: null, //定时器ID,
       remoteType: false, //添加用于标记远程校验状态  （因为promise返回值是promise所以添加）
     };
@@ -131,13 +119,13 @@ export default {
   },
   mounted() {
     // 这个定时器主要是解决父组件异步传值，子组件生命周期获取不到数据的问题
-    this.intervalId = setInterval(() => {
-      if (!this.isDataNull) {
-        this.flowHandel();
-        clearInterval(this.intervalId);
-      }
-    }, 200);
-    this.flowHandel();
+    // this.intervalId = setInterval(() => {
+    //   if (!this.isDataNull) {
+    //     this.flowHandel();
+    //     clearInterval(this.intervalId);
+    //   }
+    // }, 200);
+    // this.flowHandel();
   },
   methods: {
     // 生成models、rules对象
@@ -323,335 +311,10 @@ export default {
     reset() {
       this.$refs.generateForm.resetFields();
     },
-    // 数据初始化完成后流程控制操作
-    flowHandel() {
-      this.handelElement();
-      this.allItems = document.querySelectorAll(".el-form-item");
-      console.log(this.allItems);
-      this.getFocusEle();
-      this.handelFocus();
-    },
     // 监听表单数据改变
     onInputChange(value, field) {
       // 向container组件发射on-change事件，将 key value 以及models（form表单的key value对象）传入
       this.$emit("on-change", field, value, this.models);
-    },
-    // eval封装
-    evalWrap(targetEval) {
-      let result;
-      if (targetEval.indexOf("function") != -1) {
-        try {
-          let tmpFunc = eval("(" + targetEval + ")");
-          result = tmpFunc.call(this);
-        } catch (error) {
-          throw new Error(error);
-        }
-      } else if (
-        targetEval.indexOf("function") == -1 &&
-        targetEval.indexOf("if") != -1
-      ) {
-        let tmpFunc = new Function(targetEval);
-        try {
-          result = tmpFunc.call(this);
-        } catch (error) {
-          throw new Error(error);
-        }
-      } else {
-        try {
-          result = eval(targetEval);
-        } catch (error) {
-          throw new Error(error);
-        }
-      }
-      return result;
-    },
-    // 隐藏并获取可聚焦元素
-    handelElement() {
-      this.handelHide();
-      this.getFocusEle();
-    },
-    // 隐藏条件判断
-    handelHide() {
-      if(Object.keys(this.data)==0) return;
-      for (let i = 0; i < this.data.list.length; i++) {
-        if (this.data.list[i].hidden && this.data.list[i].hidden !== "") {
-          let hide = this.evalWrap(this.data.list[i].hidden);
-          console.log(hide);
-          if (hide) {
-            console.log("handelHide");
-            this.haveHide = true;
-            this.data.list[i].options.hidden = true;
-          } else {
-            this.haveHide = false;
-            this.data.list[i].options.hidden = false;
-          }
-        }
-      }
-      this.getFocusEle();
-    },
-    // 手动触发校验提示函数
-    handelValidate(statu, msg) {
-      this.$refs["generateForm"].fields[this.focusIndex].validateState = statu;
-      if (statu == "error") {
-        this.$refs["generateForm"].fields[
-          this.focusIndex
-        ].validateMessage = msg;
-      }
-    },
-    // 进入条件检测
-    enterCheck() {
-      for (let i = 0; i < this.data.list.length; i++) {
-        if (
-          this.data.list[i].enterCondition &&
-          this.data.list[i].enterCondition != ""
-        ) {
-          let condition = this.evalWrap(this.data.list[i].enterCondition);
-          for (const key in condition) {
-            if (object.hasOwnProperty(key)) {
-              const element = object[key];
-              for (let j = 0; j < this.data.list.length; j++) {
-                  if (this.data.list[j].model == key) {
-                    this.data.list[j].options.disabled = element;
-                  }
-              }
-            }
-          }
-
-          console.log(this.data.list[i].enterCondition);
-        }
-      }
-    },
-    // 离开条件检测
-    handelCondition() {
-      if (
-        this.data.list[this.focusIndex].condition &&
-        this.data.list[this.focusIndex].condition != ""
-      ) {
-        let condition = this.evalWrap(
-          this.data.list[this.focusIndex].condition
-        );
-        console.log(this.data.list[this.focusIndex].condition);
-        if (condition) {
-          this.handelValidate("success");
-          return true;
-        } else {
-          this.handelValidate("error", "不满足离开条件");
-          return false;
-        }
-      } else {
-        this.handelValidate("success");
-        return true;
-      }
-    },
-
-    // 离开赋值
-    handelAssignment() {
-      if (
-        this.data.list[this.focusIndex].assignment &&
-        this.data.list[this.focusIndex].assignment != ""
-      ) {
-        this.evalWrap(this.data.list[this.focusIndex].assignment);
-      }
-      return true;
-    },
-    // 取值范围校验
-    handelRange() {
-      if (
-        this.data.list[this.focusIndex].valueRange != "" &&
-        this.data.list[this.focusIndex].valueRange != undefined
-      ) {
-        let range = this.data.list[this.focusIndex].valueRange;
-        let nowValue = this.models[this.data.list[this.focusIndex].model];
-        console.log(nowValue);
-        let result, resultType;
-        try {
-          result = eval(range);
-          resultType = Object.prototype.toString.call(result);
-        } catch (error) {
-          this.handelValidate("error", "语法错误");
-          throw new Error(error, "取值范围条件解析出错");
-        }
-        console.log(resultType);
-        if (resultType == "[object Array]") {
-          if (result.indexOf(nowValue) == -1) {
-            this.handelValidate("error", "不在取值范围内");
-            return false;
-          } else {
-            this.handelValidate("success");
-            return true;
-          }
-        } else if (resultType == "[object RegExp]") {
-          if (result.test(nowValue)) {
-            this.handelValidate("success");
-            return true;
-          } else {
-            this.handelValidate("error", "不在取值范围内");
-            return false;
-          }
-        } else if (
-          resultType == "[object String]" ||
-          resultType == "[object Number]"
-        ) {
-          let resultReg = new RegExp("[" + range + "]");
-          console.log(resultReg);
-          if (resultReg.test(nowValue)) {
-            this.handelValidate("success");
-            return true;
-          } else {
-            this.handelValidate("error", "不在取值范围内");
-            return false;
-          }
-        }
-      } else {
-        this.handelValidate("success");
-        return true;
-      }
-    },
-    // 访问外部条件
-    remoteValidate() {
-      if (
-        this.data.list[this.focusIndex].remoteFactor &&
-        this.data.list[this.focusIndex].remoteFactor.isRemote == true
-      ) {
-        let url = this.data.list[this.focusIndex].remoteFactor.url;
-        let primitiveData = this.data.list[this.focusIndex].remoteFactor.data;
-        let nowModel = this.data.list[this.focusIndex].model;
-        let nowData = this.models[nowModel];
-        let postData;
-        var result;
-        if (primitiveData != undefined && primitiveData != "") {
-          postData = primitiveData;
-        } else {
-          postData = nowData;
-        }
-        console.log(postData);
-        let success = this.data.list[this.focusIndex].remoteFactor.success;
-        console.log(this.data.list[this.focusIndex].remoteFactor.success);
-        request
-          .post(url, {
-            data: postData,
-          })
-          .then((res) => {
-            if (res.code == 0) {
-              // 提取返回数据对象名
-              let targetKeys = Object.keys(res.data);
-              // 解析返回数据对应的属性名并赋值对应组件
-              for (let i = 0; i < targetKeys.length; i++) {
-                if (this.models[targetKeys[i]] != undefined) {
-                  this.models[targetKeys[i]] = res.data[targetKeys[i]];
-                }
-              }
-              this.evalWrap(success);
-              this.handelValidate("success");
-              this.remoteType = true;
-            } else {
-              this.handelValidate("error", "验证失败，请重新验证");
-              this.remoteType = false;
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            this.handelValidate("error", "验证失败，请重新验证");
-            this.remoteType = false;
-          });
-      } else {
-        this.handelValidate("success");
-        this.remoteType = true;
-      }
-      return this.remoteType;
-    },
-    // 全部可聚焦input节点下标加入一个全局数组维护
-    getFocusEle() {
-        if(Object.keys(this.data)==0) return;
-
-      this.canFocusInputArr = [];
-      let flowData = this.data.list;
-      for (let i = 0; i < flowData.length; i++) {
-        if (
-          flowData[i].options.disabled ||
-          flowData[i].options.hidden ||
-          flowData[i].options.readonly == "readonly"
-        ) {
-          continue;
-        } else {
-          if (
-            this.canFocusType.indexOf(flowData[i].type) != -1
-            // flowData[i].type == "input" ||
-            // flowData[i].type == "date" ||
-            // flowData[i].type == "number" ||
-            // flowData[i].type == "time"
-          ) {
-            this.canFocusInputArr.push(i);
-          } else if (flowData[i].type == "textarea") {
-            if (
-              !flowData[i].options.disabled ||
-              !flowData[i].options.hidden ||
-              flowData[i].options.readonly != "readonly"
-            ) {
-              this.canFocusInputArr.push(i);
-            }
-          }
-        }
-      }
-    },
-    // 光标操作控制流程
-    handelFocus() {
-      for (let i = this.startIndex; i < this.canFocusInputArr.length; i++) {
-        let nowInput = this.allItems[this.canFocusInputArr[i]].querySelector(
-          "input"
-        );
-        let nowTextraea = this.allItems[this.canFocusInputArr[i]].querySelector(
-          "textarea"
-        );
-        if (nowInput) {
-          nowInput.focus();
-        } else if (nowTextraea) {
-          nowTextraea.focus();
-        }
-        this.startIndex = i + 1;
-        this.focusIndex = this.canFocusInputArr[i];
-        console.log("this.focusIndex", this.focusIndex);
-        break;
-      }
-    },
-    // 监听input组件发射的el-change事件
-    onElChange(e) {
-      if (
-        this.focusIndex <
-        this.canFocusInputArr[this.canFocusInputArr.length - 1]
-      ) {
-        if (
-          this.handelRange() &&
-          this.handelCondition() &&
-          this.remoteValidate() &&
-          this.handelAssignment()
-        ) {
-          // if (this.data.list[this.focusIndex].rules.length > 0) {
-          //   let nowModel = this.data.list[this.focusIndex].rules;
-          //     this.$refs.generateForm.validateField(this.data.list[this.focusIndex].rules, (valid) => {
-          //       if (valid) {
-          //         // 逐条验证当前组件的校验规则
-
-          //         this.handelElement();
-          //         this.handelFocus();
-          //       } else {
-          //         throw new Error(this.$t("fm.message.validError")).message;
-          //       }
-          //     });
-          // } else {
-          this.handelElement();
-          this.handelFocus();
-          // }
-        }
-      }
-      // this.getData().then((resolve) => {
-      //   console.log(resolve)
-      // });
-      // this.$emit("input-enter");
-    },
-    // textarea ctrl+enter触发光标离开事件
-    textEnter() {
-      this.handelFocus();
     },
   },
   watch: {
@@ -669,7 +332,6 @@ export default {
       handler(val) {
         console.log(JSON.stringify(val));
         this.models = { ...this.models, ...val };
-        this.enterCheck(); //进入条件
       },
     },
   },
