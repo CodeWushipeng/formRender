@@ -426,6 +426,34 @@ export const bankingComponents = [
     },
   },
   {
+      type: "imageshow",
+      icon: "icon-tupian",
+      options: {
+          defaultValue: [],
+          size: {
+              width: 100,
+              height: 100,
+          },
+          width: "",
+          tokenFunc: "",
+          token: "",
+          domain: "",
+          disabled: false,
+          min: 0,
+          length: 8,
+          multiple: false,
+          isDelete: true,
+          isEdit: true,
+          action: "",
+      },
+      remoteFactor: {
+          isRemote: false,
+          url: "",
+          data: "",
+          success: "",
+      },
+  },
+  {
     type: "imageupload",
     icon: "icon-tupian",
     options: {
@@ -528,4 +556,24 @@ export const bankingComponents = [
       success: "",
     },
   },
+  {
+    type: "buttonCom",
+    icon: "icon-tupian",
+    options: {
+      hidden: false,
+      width: "auto",
+      defaultValue: "",
+      required: false,
+      placeholder: "",
+      disabled: false,
+      tips: "暂无提示信息",
+    },
+    remoteFactor: {
+      isRemote: false,
+      url: "",
+      data: "",
+      success: "",
+    },
+  },
+
 ];

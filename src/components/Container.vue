@@ -445,10 +445,12 @@ export default {
         "idencard",
         "readcard",
         "taglable",
+        "imageshow",
         "imageupload",
         "fileupload",
         "videoupload",
         "camera",
+        "buttonCom",
       ],
     },
     basicFields: {
