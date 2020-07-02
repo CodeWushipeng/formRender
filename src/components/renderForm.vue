@@ -5,6 +5,8 @@
   >
       jsonData: {{jsonData}}
       <hr>
+      <!--utliTools: {{utliTools}}-->
+      <hr>
     <fm-generate-form
       :remote="remoteFuncs"
       :data="jsonData"
@@ -19,7 +21,6 @@
 <script>
 import fmGenerateForm from "./GenerateForm";
 import { getFormList } from '../api/forms';
-
 export default {
   name: "render-form",
   components: {
@@ -52,7 +53,7 @@ export default {
     };
   },
   created() {
-    console.log('created...')
+    console.log('created...');
     this._inits();
   },
   computed: {
@@ -78,42 +79,40 @@ export default {
   },
   methods: {
     _inits() {
-      console.log("init..........");
-      const list = this.configdata.list;
-      console.log(this.configdata);
+      const {list} = this.configdata;
+      // console.log(this.configdata);
       if (list instanceof Array && list.length) {
         const { inputFormCode } = list[0];
         inputFormCode &&
-          this._getConfigData(inputFormCode)
-            .then((res) => {
-                console.log('=====form-making-secondary===res============',res)
-                const {rspCode} = res;
-                if(rspCode=="00000000"){
-                    const rest = res.define;
-                    if(rest.length>0){
-                        const formContent = res.define[0]['formContent'];
-                        const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
-                        let temp = result;
-                        this.handelDynamicInFlow(temp);
-                        this.dynamicData(temp);
-                        console.log(temp);
-                        this.jsonData = temp;
-                    }else{
-                        this.$notify.error({
-                            title: '消息',
-                            message: '没有搜索到数据'
-                        });
-                    }
+        getFormList(this.url,{ formCode: inputFormCode}).then((res) => {
+            console.log('=====form-making-secondary===res============',res)
+            const {rspCode} = res;
+            if(rspCode=="00000000"){
+                const rest = res.define;
+                if(rest && rest.records.length>0){
+                    const formContent = rest.records[0]['formContent'];
+                    const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
+                    let temp = result;
+                    this.handelDynamicInFlow(temp);
+                    this.dynamicData(temp);
+                    console.log(temp);
+                    this.jsonData = temp;
                 }else{
                     this.$notify.error({
                         title: '消息',
-                        message: '查询失败'
+                        message: '没有搜索到数据'
                     });
                 }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+            }else{
+                this.$notify.error({
+                    title: '消息',
+                    message: '查询失败'
+                });
+            }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       }
       const { platform, user } = this.setDynamicData();
       this.dyData = {
@@ -163,30 +162,15 @@ export default {
         }
       }
     },
-    // 获取表单配置信息
-    _getConfigData(inputConfig) {
-      if (inputConfig) {
-          let data = {
-              formCode: inputConfig
-          };
-           return getFormList(this.url,data)
-      } else {
-        return false;
-      }
-    },
     // 响应页面
     changeJsonData(inputConfig, formData = {}) {
       console.log("inputConfig", inputConfig);
-        let data = {
-            formCode: inputConfig
-        };
-      inputConfig &&
-        this._getConfigData(inputConfig).then((res) => {
+        inputConfig && getFormList(this.url,{formCode: inputConfig}).then((res) => {
             const {rspCode} = res;
             if(rspCode=="00000000"){
                 const rest = res.define;
-                if(rest.length>0){
-                    const formContent = res.define[0]['formContent'];
+                if(rest && rest.records.length>0){
+                    const formContent = rest.records[0]['formContent'];
                     const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
                     this.jsonData = result;
                     this.formdata = formData;
@@ -204,30 +188,38 @@ export default {
             }
         });
     },
+    // 提取函数的返回数据
+    solve(inputConfig){
+        const { platform, user, nodes, utils} = this.configdata;
+        console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )
+        console.log('{ configdata} ',JSON.stringify(this.configdata))
+        const resCode = `function _execute(user, platform, nodes, utils){  ${inputConfig}  return main(...arguments);}`;
+        const exeCode = eval("(" + resCode + ")");
+        let rs =  exeCode(user,platform,nodes,utils);
+        return rs;
+    },
+
     // 将流控引擎input数据绑定到value
     getInputData() {
-      console.log("getInputData....inputConfig_BB", new Date());
-      const list = this.configdata.list;
-      if (list.length) {
-        const { inputConfig } = list[0]; // 注入数据
-        const funkeys = Object.keys(this.func);
-        try {
-          if (inputConfig && funkeys.length) {
-            let transObj = eval("(" + this.func[inputConfig] + ")")(); //封装
-            console.log("transObj", transObj);
-            return transObj;
-          } else {
-            return {};
-          }
-        } catch (error) {
-          throw new Error("inputConfig解析出错", inputConfig);
+        const {list} = this.configdata;
+        if (list.length) {
+            const { inputConfig } = list[0]; // 注入数据
+            if(!inputConfig) return {};
+            try {
+                //  代码格式
+                let transObj = this.solve(inputConfig);
+                console.log('transObj',JSON.stringify(transObj));
+                return transObj;
+            }catch (error) {
+                console.log(inputConfig);
+                throw new Error(error);
+            }
         }
-      }
-      return {};
+        return {};
     },
     // 动态数据获取
     setDynamicData() {
-      console.log(this.configdata);
+      // console.log(this.configdata);
       return {
         platform: this.configdata.platform,
         user: this.configdata.user,

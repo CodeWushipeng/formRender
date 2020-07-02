@@ -20,8 +20,9 @@ class FG {
 
         this.user = {};
         this.platform =  {};
+        this.nodes =  {};
         this.list =  {};
-        this.func =  {};
+        this.utils =  {};
 
         // 流控数据
         this.flow = {
@@ -69,16 +70,27 @@ class FG {
      * @returns {*}
      */
     checkStart(checkstart) {
+        if(checkstart){
+            return this._solve(checkstart)
+        }
+        return true;
+    }
+
+    _solve(inputConfig){
         try {
-            const list = this.list;
             const platform = this.platform;
             const user = this.user;
-            if (checkstart) {
-                return checkstart && eval(checkstart);
-            }
-            return true;
-        } catch (e) {
-            throw new Error('init checkstart执行出错了')
+            const nodes = this.nodes;
+            const utils = this.utils;
+            console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )
+            const resCode = `function _execute(user, platform, nodes, utils){  ${inputConfig}  return main(...arguments);}`;
+            // console.log('resCode',resCode)
+            const exeCode = eval("(" + resCode + ")");
+            let rs = exeCode(user, platform, nodes, utils);
+            return rs;
+        } catch (error) {
+            console.log('===inputConfig===',inputConfig)
+            throw new Error(error)
         }
     }
 

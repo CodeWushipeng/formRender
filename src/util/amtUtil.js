@@ -13,7 +13,7 @@
 **									 del 清楚当前控件值为空 0.00
 *************************************************************************************/
 
-console.log("xxxxxxxxxxxx")
+// console.log("xxxxxxxxxxxx")
 
 export function InputMoney(ele){
 	//最大小数位,默认为两位

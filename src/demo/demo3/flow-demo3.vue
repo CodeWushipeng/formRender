@@ -6,11 +6,11 @@
         </flowItem>-->
         <!--remoteFuncs:{{remoteFuncs}}-->
         <hr>
-        configdata.list:{{configdata.list}}
+        configdata.list:{{configdata}}
         <hr>
-        data:{{data}}
+        <!--data:{{data}}-->
         <hr>
-        func:{{func}}
+        <!--func:{{func}}-->
         <hr>
         <h3>{{node_name}}</h3>
         <div>
@@ -46,8 +46,7 @@
         <el-dialog
                 title="提示"
                 :visible.sync="dialogVisible"
-                width="30%"
-                :before-close="handleClose">
+                width="30%">
             <el-input
                     type="textarea"
                     :rows="2"
@@ -67,53 +66,7 @@
     import getFG from './fg-control';
     import { queryFlowDetail } from '../../api/flows'
     const FG = new getFG();
-    import {platform,user,func} from './flowData';
-
-
-
-    // if
-    const fs1 =  `if(name==1){
-  return true
-}else{
-  return false
-}`
-
-    // fn
-    const fs2 =   `
-  function add (){
-  return 1213
-}
-
-`
-    // Object
-const fs3 = `{
-  name:1,
-  age:12
-}
-`
-
-
-const fs4 =   `
-  function add (){
-  return 1213
-}
-
-var sum  = function  (){
-  return 456
-}
-var json = {
-    name:123,
-    age:456,
-    address: 12
-}
-
-module.exports = {
-    add,
-    sum,
-    json
-}`
-
-
+    import {platform,user,utils} from './flowData';
 
 
     export default {
@@ -125,9 +78,11 @@ module.exports = {
                 allData:null,
                 // 流控数据
                 configdata:{
-                    platform:{},
-                    user:{},
-                    list:[]
+                    platform,
+                    user,
+                    utils,
+                    nodes:{},
+                    list:[],
                 },
                 remoteFuncs: {
                 },
@@ -139,16 +94,6 @@ module.exports = {
             };
         },
         created() {
-
-            // const fs = eval(fs4)
-/*
-            console.log('fs',typeof fs,typeof fs.add)
-            console.log('fs..add..',fs.add())
-            console.log('fs..sum..',fs.sum())
-            console.log('fs..json..',fs.json)*/
-
-
-
             this._getStartNode();
             this._remote();
         },
@@ -163,13 +108,7 @@ module.exports = {
             }
         },
         methods: {
-            handleClose(done) {
-                /* this.$confirm('确认关闭？')
-                     .then(_ => {
-                         done();
-                     })
-                     .catch(_ => {});*/
-            },
+
             _remote(){
                 // console.log('remote..... start')
                 // 加载远程数据
@@ -208,14 +147,13 @@ module.exports = {
             },
             _configData(next_node){
                 this.data = FG.getNext(next_node);
-                this.configdata.list = [FG.getNext(next_node)]
+                this.configdata.list = [FG.getNext(next_node)];
             },
             _getStartNode() {
                 const flowCode = this.$route.name;
                 const query = this.$route.query;
                 console.log('this.$routes.name:',this.$route.name)
                 console.log('this.$routes.query:',this.$route.query)
-                // request.get(flow_Url).then((res) => {
                 let params = {
                     // flowCode:flowCode.replace('buss','')
                     flowCode:query.id
@@ -223,15 +161,18 @@ module.exports = {
                 queryFlowDetail(params).then((res) => {
                     console.log('res', res)
                     const list = res.detail.records;
-                    console.log('list',list)
+                    let utils1 = res.define.funcCollection;
+                    // utils1 = typeof utils1 == 'string' ? JSON.parse(utils1) : utils1;
+                    // console.log('utils', JSON.parse(utils1))
+                    // console.log('list',list)
                     const {statusCode} = res;
                     if(statusCode == 200){
                         // FG.setState(res);
                         FG.settters('user',user)
                         FG.settters('platform',platform)
                         FG.settters('list',list)
-                        FG.settters('func',func)
-                        this.func = func;
+                        FG.settters('utils',utils)
+                        this.utils = utils;
 
                         const start = FG.list.filter(item => item.type == '01')[0];
                         // console.log('FG.list',FG.list)
@@ -309,8 +250,9 @@ module.exports = {
                                 this._configData(nextCode);
                                 break;
                             }
-                        } catch (e) {
-                            throw new Error('nextHandle checkStart执行出错了',checkStart);
+                        } catch (error) {
+                            console.log('===nextHandle checkStart===',checkStart)
+                            throw new Error(error)
                         }
                     }
                 } else {

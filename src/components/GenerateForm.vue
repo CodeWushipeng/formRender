@@ -372,6 +372,7 @@ export default {
     },
     // 隐藏条件判断
     handelHide() {
+      if(Object.keys(this.data)==0) return;
       for (let i = 0; i < this.data.list.length; i++) {
         if (this.data.list[i].hidden && this.data.list[i].hidden !== "") {
           let hide = this.evalWrap(this.data.list[i].hidden);
@@ -561,6 +562,8 @@ export default {
     },
     // 全部可聚焦input节点下标加入一个全局数组维护
     getFocusEle() {
+        if(Object.keys(this.data)==0) return;
+
       this.canFocusInputArr = [];
       let flowData = this.data.list;
       for (let i = 0; i < flowData.length; i++) {

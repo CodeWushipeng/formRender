@@ -5,9 +5,8 @@ import Home from "../demo/Home.vue";
 import camera from "../demo/camera";
 import LanguageView from "./LanguageView.vue";
 import preview from "../demo/preView.vue";
-// import flowDemo from "../demo/flow-demo";
-// import flowDemo2 from "../demo/flow-demo2";
 import flowDemo3 from "../demo/demo3/flow-demo3";
+import testJs from "../demo/testjs/index";
 
 Vue.use(Router);
 
@@ -41,7 +40,11 @@ export default new Router({
               name: 'flow',
               component: flowDemo3
           },
-
+          {
+              path: 'testjs',
+              name: 'testjs',
+              component: testJs
+          },
           {
               path: 'camera',
               name: 'camera',

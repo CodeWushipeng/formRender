@@ -1,5 +1,5 @@
 export  const user = {
-  user: "feng",
+  name: "feng",
   age: "11",
   address: "beijing001",
   account_no: "6212121212",
@@ -26,56 +26,21 @@ function html_encode(str){
   return s;
 }
 
-
-function commit_define() {
-  const a = 1;
-  const b = 1;
-  return a+b;
+const  generateUUID = () => {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x7|0x8)).toString(16);
+    });
+    return uuid;
 }
 
-function input_config_cx() {
-  const fl = {
-    amount: '@platform.amount',
-    transferType: '@platform.transferType',
-    user: '622004',
-    name:"fengwenxin",
-    description:"this is input_config_cx has @",
-  }
-
-  const fl2 = {
-    amount: '12121.00',
-    transferType: '1',
-    user: '622004',
-    name:"fengwenxin",
-    description:"this is input_config_cx no @",
-  }
-
-  return fl2
+const createDateTime = () => {
+    return (new Date()).getTime();
 }
 
-function input_config_jf() {
-  return {
-    user: '899',
-    transferType: '2',
-    amount: '888.00',
-    account_no:"62209878788878",
-    description: 'this is jf desc',
-  }
-}
-
-function input_config_jf2() {
-  return {
-    user: '22222',
-    transferType: '2',
-    amount: '12.00',
-    account_no:"62209878788878",
-    description: 'this is jf desc',
-  }
-}
-
-export   const func = {
-  'commit':  `${html_encode(commit_define.toString())}` ,
-  'input_config_cx': `${html_encode(input_config_cx.toString())}`,
-  'input_config_jf2': `${html_encode(input_config_jf2.toString())}`,
-  'input_config_jf': `${html_encode(input_config_jf.toString())}`,
+export const utils = {
+  'uuid':  `${html_encode(generateUUID.toString())}` ,
+  'time': `${html_encode(createDateTime.toString())}`,
 }
