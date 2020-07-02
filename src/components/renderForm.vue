@@ -5,6 +5,7 @@
   >
       jsonData: {{jsonData}}
       <hr>
+      formdata: {{formdata}}
       <!--utliTools: {{utliTools}}-->
       <hr>
     <fm-generate-form
@@ -165,7 +166,7 @@ export default {
       }
     },
     // 响应页面
-    changeJsonData(inputConfig, formData = {}) {
+    changeJsonData(inputConfig, outConfig = {}) {
       console.log("inputConfig", inputConfig);
         inputConfig && getFormList(this.url,{formCode: inputConfig}).then((res) => {
             const {rspCode} = res;
@@ -175,7 +176,8 @@ export default {
                     const formContent = rest.records[0]['formContent'];
                     const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
                     this.jsonData = result;
-                    this.formdata = formData;
+                    this.formdata = this.solve(outConfig);
+                    console.log('this.solve(outConfig)',this.solve(outConfig))
                 }else{
                     this.$notify.error({
                         title: '消息',
@@ -195,7 +197,7 @@ export default {
         try {
             const { platform, user, nodes, utils} = this.configdata;
             console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )
-            console.log('{ configdata} ',JSON.stringify(this.configdata))
+            // console.log('{ configdata} ',JSON.stringify(this.configdata))
             const resCode = `function _execute(user, platform, nodes, utils){  ${inputConfig}  return main(...arguments);}`;
             const exeCode = eval("(" + resCode + ")");
             let rs =  exeCode(user,platform,nodes,utils);
