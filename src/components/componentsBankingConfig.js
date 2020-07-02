@@ -528,4 +528,23 @@ export const bankingComponents = [
       success: "",
     },
   },
+  {
+    type: "buttonCom",
+    icon: "icon-tupian",
+    options: {
+      hidden: false,
+      width: "auto",
+      defaultValue: "",
+      required: false,
+      placeholder: "",
+      disabled: false,
+      tips: "暂无提示信息",
+    },
+    remoteFactor: {
+      isRemote: false,
+      url: "",
+      data: "",
+      success: "",
+    },
+  },
 ];

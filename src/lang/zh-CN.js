@@ -20,6 +20,7 @@ export default {
           fileupload: '文件上传',
           videoupload: '影像集成',
           camera: '摄像头',
+          buttonCom: '按钮',
       },
       fields: {
         input: '单行文本',
@@ -175,6 +176,10 @@ export default {
         againpassword: '确认密码',
         iccard: 'ic卡',
         magnetismcard: '磁卡',
+        buttontext: '按钮文本内容',
+        buttonicon: '按钮图标',
+        buttonfun: '按钮调用函数',
+        buttonurl: '按钮访问URL',
         email: '邮箱地址',
         hex: '十六进制',
         gutter: '栅格间隔',

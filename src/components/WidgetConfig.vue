@@ -63,6 +63,22 @@
         </div>
       </el-form-item>
 
+      <!--按钮相关属性-->
+      <el-form-item v-if="data.type=='buttonCom'">
+        <el-form-item :label="$t('fm.config.widget.buttontext')">
+          <el-input v-model="data.options.buttontext"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('fm.config.widget.buttonicon')">
+          <el-input v-model="data.options.buttonicon"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('fm.config.widget.buttonfun')">
+          <el-input v-model="data.options.buttonfun"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('fm.config.widget.buttonurl')">
+          <el-input v-model="data.options.buttonurl"></el-input>
+        </el-form-item>
+      </el-form-item>
+
       <el-form-item label="$t('fm.config.widget.allowHalf')" v-if="Object.keys(data.options).indexOf('allowHalf')>=0">
         <el-switch
             v-model="data.options.allowHalf"

@@ -449,6 +449,7 @@ export default {
         "fileupload",
         "videoupload",
         "camera",
+        "buttonCom",
       ],
     },
     basicFields: {

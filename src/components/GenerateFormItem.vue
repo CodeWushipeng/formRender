@@ -1,5 +1,5 @@
 <template>
-  <el-form-item :label="widget.name" :prop="widget.model">
+  <el-form-item :label="widget.type != 'buttonCom' ? widget.name : ''" :prop="widget.model">
     <!-- widget: {{widget}} -->
       <!-- {{rules}} -->
       <!--金额控件-->
@@ -345,6 +345,22 @@
         <span></span>
       </template>
     </cus-dialog>
+
+    <!--按钮组件-->
+    <template v-if="widget.type == 'buttonCom'">
+        <el-button
+                :icon="widget.options.buttonicon"
+                ref="buttonref"
+                v-model="dataModel"
+                @click="buttonfun(widget.options.buttonfun)"
+                :placeholder="widget.options.placeholder"
+                :size="widget.options.size"
+                :style="{width: widget.options.width}"
+                :disabled="widget.options.disabled"
+        >
+          按钮3
+        </el-button>
+    </template>
 
     <template v-if="widget.type=='switch'">
       <el-switch v-model="dataModel" :disabled="widget.options.disabled"></el-switch>
@@ -704,10 +720,31 @@ export default {
               });
       },
       /*摄像头*/
+
+      /*按钮*/
+      buttonfun (event_name, title) {
+          //alert(event_name)
+          debugger
+          if(this.widget.options.buttonfun){
+              try{
+                  this[this.widget.options.buttonfun](title)
+              }catch (error){
+                  console.log(error)
+              }
+          }else if(this.widget.options.buttonurl){
+              window.location=this.widget.options.buttonurl
+          }
+      },
+      test(){
+          alert("button function")
+      },
+      /*按钮*/
   },
   mounted () {
       if(this.widget.type == "camera"){
           this.camera();
+      }else if(this.widget.type == "buttonCom" && (this.widget.options.buttontext || this.widget.options.defaultValue)){
+          this.$refs.buttonref.$el.textContent = this.widget.options.buttontext ? this.widget.options.buttontext : this.widget.options.defaultValue
       }
   },
   watch: {

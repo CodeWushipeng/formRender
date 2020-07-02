@@ -2,7 +2,7 @@
   <el-form-item class="widget-view "
       v-if="element && element.key"
       :class="{active: selectWidget.key == element.key, 'is_req': element.options.required}"
-      :label="element.name"
+      :label="element.type != 'buttonCom' ? element.name : ''"
       @click.native.stop="handleSelectWidget(index)"
     >
 
@@ -233,6 +233,19 @@
           >
 
           </el-cascader>
+        </template>
+
+        <template v-if="element.type == 'buttonCom'">
+          <el-button
+            v-model="element.options.defaultValue"
+            :disabled="element.options.disabled"
+            :clearable="element.options.clearable"
+            :placeholder="element.options.placeholder"
+            :style="{width: element.options.width}"
+            :options="element.options.remoteOptions"
+          >
+            按钮
+          </el-button>
         </template>
 
         <template v-if="element.type == 'editor'">
