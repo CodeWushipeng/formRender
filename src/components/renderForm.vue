@@ -11,7 +11,6 @@
       :remote="remoteFuncs"
       :data="jsonData"
       :value="formdata"
-      :dyData="dyData"
       ref="generateForm"
     >
     </fm-generate-form>
@@ -80,7 +79,7 @@ export default {
   methods: {
     _inits() {
       const {list} = this.configdata;
-      // console.log(this.configdata);
+      console.log(this.configdata);
       if (list instanceof Array && list.length) {
         const { inputFormCode } = list[0];
         inputFormCode &&
@@ -121,6 +120,48 @@ export default {
       };
       this.tempValue = this.getInputData();
     },
+    // 提取函数的返回数据
+    solve(inputConfig){
+        try {
+            const { platform, user, nodes, utils} = this.configdata;
+            console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )
+            console.log('{ configdata} ',JSON.stringify(this.configdata))
+            const resCode = `function _execute(user, platform, nodes, utils){  ${inputConfig}  return main(...arguments);}`;
+            const exeCode = eval("(" + resCode + ")");
+            let rs =  exeCode(user,platform,nodes,utils);
+            return rs;
+        }catch (error) {
+            console.log(inputConfig);
+            throw new Error(error);
+        }
+    },
+    // 将流控引擎input数据绑定到value
+    getInputData() {
+        const {list} = this.configdata;
+        // console.log(list)
+        if (list.length) {
+            const { inputConfig } = list[0]; // 注入数据
+            if(!inputConfig) return {};
+            let transObj = this.solve(inputConfig);
+            console.log('transObj',JSON.stringify(transObj));
+            return transObj;
+        }
+        return {};
+    },
+    // 处理流控数据中带有的动态数据
+    handelDynamicInFlow(temp) {
+      console.log(this.tempValue, this.formdata);
+      var platform = this.dyData.platform;
+      var user = this.dyData.user;
+      let formLists = temp.list;
+      for (let i = 0; i < formLists.length; i++) {
+        for (let key in this.tempValue) {
+          if (formLists[i].model == key) {
+            formLists[i].options.defaultValue = this.tempValue[key];
+          }
+        }
+      }
+    },
     //  动态数据处理函数
     dynamicData(temp) {
       var platform = this.dyData.platform;
@@ -130,7 +171,7 @@ export default {
       for (let i = 0; i < formLists.length; i++) {
           if (formLists[i].type != "grid"){
             if (
-              formLists[i].options.defaultValue != "" &&
+              formLists[i].options.defaultValue &&
               formLists[i].options.defaultValue[0] == "@"
             ) {
               var temp = formLists[i].options.defaultValue.substring(1);
@@ -150,20 +191,7 @@ export default {
           }
       }
     },
-    // 处理流控数据中带有的动态数据
-    handelDynamicInFlow(temp) {
-      console.log(this.tempValue, this.formdata);
-      var platform = this.dyData.platform;
-      var user = this.dyData.user;
-      let formLists = temp.list;
-      for (let i = 0; i < formLists.length; i++) {
-        for (let key in this.tempValue) {
-          if (formLists[i].model == key) {
-            formLists[i].options.defaultValue = this.tempValue[key];
-          }
-        }
-      }
-    },
+    
     // 响应页面
     changeJsonData(inputConfig, formData = {}) {
       console.log("inputConfig", inputConfig);
@@ -189,34 +217,6 @@ export default {
                 });
             }
         });
-    },
-    // 提取函数的返回数据
-    solve(inputConfig){
-        try {
-            const { platform, user, nodes, utils} = this.configdata;
-            console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )
-            console.log('{ configdata} ',JSON.stringify(this.configdata))
-            const resCode = `function _execute(user, platform, nodes, utils){  ${inputConfig}  return main(...arguments);}`;
-            const exeCode = eval("(" + resCode + ")");
-            let rs =  exeCode(user,platform,nodes,utils);
-            return rs;
-        }catch (error) {
-            console.log(inputConfig);
-            throw new Error(error);
-        }
-    },
-
-    // 将流控引擎input数据绑定到value
-    getInputData() {
-        const {list} = this.configdata;
-        if (list.length) {
-            const { inputConfig } = list[0]; // 注入数据
-            if(!inputConfig) return {};
-            let transObj = this.solve(inputConfig);
-            console.log('transObj',JSON.stringify(transObj));
-            return transObj;
-        }
-        return {};
     },
     // 动态数据获取
     setDynamicData() {

@@ -16,6 +16,7 @@ export const bankingComponents = [
     },
     hidden: "",
     condition: "",
+    enterCondition: '',
     valueRange: "",
     assignment: "",
     remoteFactor: {
@@ -42,6 +43,7 @@ export const bankingComponents = [
     },
     hidden: "",
     condition: "",
+    enterCondition: '',
     valueRange: "",
     assignment: "",
     remoteFactor: {
@@ -70,6 +72,7 @@ export const bankingComponents = [
     },
     hidden: "",
     condition: "",
+    enterCondition: '',
     valueRange: "",
     assignment: "",
     remoteFactor: {

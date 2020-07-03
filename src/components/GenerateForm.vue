@@ -28,7 +28,7 @@
               :key="colIndex"
               :span="col.span"
             >
-              <template v-for="citem in col.list">
+              <template v-for="(citem, index ) in col.list">
                 <el-form-item
                   v-if="citem.type == 'blank'"
                   :label="citem.name"
@@ -45,6 +45,13 @@
                   :rules="rules"
                   :widget="citem"
                   @input-change="onInputChange"
+                  @el-change="onElChange"
+                  @text-enter="textEnter"
+                  :nowindex='index'
+                  @pushIndex="getIndex"
+                  @pushPreIndex="getPreIndex"
+                  :ref="item.model"
+                  v-show="!item.options.hidden"
                 ></genetate-form-item>
               </template>
             </el-col>
@@ -71,7 +78,7 @@
             @pushPreIndex="getPreIndex"
             :remote="remote"
             :ref="item.model"
-            v-show="item.options.show"
+            v-show="!item.options.hidden"
           ></genetate-form-item>
         </template>
       </template>
