@@ -5,6 +5,7 @@ let handlers = {
     return {
       comArr: [], //组件list数组
       allItems: [],
+      isEnter: "",
       startIndex: 0,
       singleError: false,
       rangeError: false,
@@ -39,9 +40,18 @@ let handlers = {
     getPreIndex(params) {
       params = params * 1;
       let index;
-      for(let i=0;i<this.canFocusArr.length;i++){
-        if(this.canFocusArr[i].index==this.startIndex){
-          index = i
+      if(this.isEnter == "enter"){
+        for(let i=0;i<this.canFocusArr.length;i++){
+          if(this.canFocusArr[i].index==this.startIndex-1){
+            index = i
+          }
+        }
+      }else if(this.isEnter == ""){
+        this.isEnter == "blur";
+        for(let i=0;i<this.canFocusArr.length;i++){
+          if(this.canFocusArr[i].index==this.startIndex){
+            index = i
+          }
         }
       }
       console.log("失去焦点",index)
@@ -49,12 +59,6 @@ let handlers = {
         this.handelRange(index);
         this.handelCondition(index);
         this.remoteValidate(index);
-      console.log(
-        this.singleError,
-        this.rangeError,
-        this.conditionError,
-        this.remoteError
-      );
     },
     // 隐藏
     handelHidden() {
@@ -95,6 +99,7 @@ let handlers = {
     // 光标操作控制流程
     handelFocus() {
       for (let i = this.startIndex; i < this.canFocusArr.length; i++) {
+        console.log(this.allItems,this.canFocusArr[i].index)
         let nowInput = this.allItems[this.canFocusArr[i].index].querySelector(
           "input"
         );
@@ -389,6 +394,7 @@ let handlers = {
     // 回车事件
     onElChange() {
       console.log("回车", this.startIndex);
+      this.isEnter = "enter";
       if (this.startIndex < this.canFocusArr.length - 1) {
         this.singleValidate(this.startIndex);
         this.handelRange(this.startIndex);

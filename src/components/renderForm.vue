@@ -5,6 +5,7 @@
   >
       jsonData: {{jsonData}}
       <hr>
+      formdata: {{formdata}}
       <!--utliTools: {{utliTools}}-->
       <hr>
     <fm-generate-form
@@ -193,7 +194,7 @@ export default {
     },
     
     // 响应页面
-    changeJsonData(inputConfig, formData = {}) {
+    changeJsonData(inputConfig, outConfig = {}) {
       console.log("inputConfig", inputConfig);
         inputConfig && getFormList(this.url,{formCode: inputConfig}).then((res) => {
             const {rspCode} = res;
@@ -203,7 +204,8 @@ export default {
                     const formContent = rest.records[0]['formContent'];
                     const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
                     this.jsonData = result;
-                    this.formdata = formData;
+                    this.formdata = this.solve(outConfig);
+                    console.log('this.solve(outConfig)',this.solve(outConfig))
                 }else{
                     this.$notify.error({
                         title: '消息',
@@ -217,6 +219,34 @@ export default {
                 });
             }
         });
+    },
+    // 提取函数的返回数据
+    solve(inputConfig){
+        try {
+            const { platform, user, nodes, utils} = this.configdata;
+            console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )
+            // console.log('{ configdata} ',JSON.stringify(this.configdata))
+            const resCode = `function _execute(user, platform, nodes, utils){  ${inputConfig}  return main(...arguments);}`;
+            const exeCode = eval("(" + resCode + ")");
+            let rs =  exeCode(user,platform,nodes,utils);
+            return rs;
+        }catch (error) {
+            console.log(inputConfig);
+            throw new Error(error);
+        }
+    },
+
+    // 将流控引擎input数据绑定到value
+    getInputData() {
+        const {list} = this.configdata;
+        if (list.length) {
+            const { inputConfig } = list[0]; // 注入数据
+            if(!inputConfig) return {};
+            let transObj = this.solve(inputConfig);
+            console.log('transObj',JSON.stringify(transObj));
+            return transObj;
+        }
+        return {};
     },
     // 动态数据获取
     setDynamicData() {

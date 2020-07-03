@@ -1,5 +1,8 @@
 <template>
-  <el-form-item :label="widget.name" :prop="widget.model">
+  <el-form-item
+    :label="widget.type != 'buttonCom' ? widget.name : ''"
+    :prop="widget.model"
+  >
     <!-- widget: {{widget}} -->
     <!-- {{rules}} -->
     <!--金额控件-->
@@ -462,6 +465,28 @@
       </template>
     </cus-dialog>
 
+    <!--按钮组件-->
+    <template v-if="widget.type == 'buttonCom'">
+      <el-button
+        :icon="widget.options.buttonicon"
+        ref="buttonref"
+        v-model="dataModel"
+        @click="buttonfun(widget.options.buttonfun)"
+        :placeholder="widget.options.placeholder"
+        :size="widget.options.size"
+        :style="{ width: widget.options.width }"
+        :disabled="widget.options.disabled"
+      >
+        按钮3
+      </el-button>
+    </template>
+
+    <!--{{widget.options.imagesrc}}&&&
+    {{imagesrc}}-->
+    <template v-if="widget.type == 'imageshow'">
+      <el-image :src="imagesrc"> </el-image>
+    </template>
+
     <template v-if="widget.type == 'switch'">
       <el-switch
         v-model="dataModel"
@@ -572,6 +597,8 @@ export default {
   },
   data() {
     return {
+      /*imagesrc:require(this.widget.options.imagesrc),*/
+      imagesrc: "",
       radioVisible: false,
       cameraVisible: false,
       cameraList: [],
@@ -758,7 +785,7 @@ export default {
     },
     // 组件失去焦点设置index
     setPreIndex(e) {
-      console.log(e)
+      console.log(e);
       this.getPre(e.target);
       console.log("index=========", this.blurIndex);
       this.$emit("pushPreIndex", this.blurIndex);
@@ -869,30 +896,74 @@ export default {
     /*摄像头*/
     camera() {
       var _this = this;
-      navigator.mediaDevices
-        .enumerateDevices()
-        .then(function(devices) {
-          console.log(devices);
-          _this.cameraList = [];
-          devices.forEach(function(device) {
-            if (device.kind == "videoinput") {
-              _this.cameraList.push({
-                label: device.label,
-                value: device.deviceId,
-              });
-            }
-          });
-          console.log(_this.cameraList);
-        })
-        .catch(function(err) {
-          console.log(err.name + ": " + err.message);
+      navigator.mediaDevices.enumerateDevices().then(function(devices) {
+        console.log(devices);
+        _this.cameraList = [];
+        devices.forEach(function(device) {
+          if (device.kind == "videoinput") {
+            _this.cameraList.push({
+              label: device.label,
+              value: device.deviceId,
+            });
+          }
         });
+      });
     },
     /*摄像头*/
+
+    /*按钮*/
+    buttonfun(event_name, title) {
+      //alert(event_name)
+      debugger;
+      if (this.widget.options.buttonfun) {
+        try {
+          this[this.widget.options.buttonfun](title);
+        } catch (error) {
+          console.log(error);
+        }
+      } else if (this.widget.options.buttonurl) {
+        window.location = this.widget.options.buttonurl;
+      }
+    },
+    test() {
+      alert("button function");
+    },
+    /*按钮*/
+
+    getBase64Image(img) {
+      var canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
+      var dataURL = canvas.toDataURL("image/" + ext);
+      return dataURL;
+    },
   },
   mounted() {
     if (this.widget.type == "camera") {
       this.camera();
+    } else if (
+      this.widget.type == "buttonCom" &&
+      (this.widget.options.buttontext || this.widget.options.defaultValue)
+    ) {
+      this.$refs.buttonref.$el.textContent = this.widget.options.buttontext
+        ? this.widget.options.buttontext
+        : this.widget.options.defaultValue;
+    } else if (this.widget.type == "imageshow") {
+      this.dataModel = this.imagesrc = require("../assets/" +
+        this.widget.options.imagesrc);
+
+      /*var img = "D:\\jcbankWork\\form-making-secondary\\src\\assets\\wenjian.png";
+          var image = new Image();
+          image.crossOrigin = '';
+          image.src = img;
+          image.onload = function(){
+              var base64 = this.getBase64Image(image);
+              console.log(base64);
+          }*/
     }
   },
   watch: {
@@ -933,8 +1004,6 @@ export default {
     font-size: 20px;
     color: yellow;
     font-weight: bold;
-  }
-  .mglass-big {
   }
 }
 

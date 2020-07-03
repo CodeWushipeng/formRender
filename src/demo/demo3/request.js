@@ -61,7 +61,7 @@ service.interceptors.response.use(
       const { header, body } = res;
       return Promise.resolve(Object.assign({},{"statusCode":200,...header,...body}))
     }
-    
+
     if (res.statusCode !== 200) {
       Message({
         message: res.message || 'Error',

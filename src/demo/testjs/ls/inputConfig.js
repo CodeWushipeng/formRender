@@ -43,7 +43,6 @@ console.log("arguments",arguments)
 
 export  const inputConfig  = `
 
-
     // 函数1
     function query() {
         return  {
@@ -70,7 +69,6 @@ export  const inputConfig  = `
 
     // 启动函数
     function main(){
-
         const obj1 = query();
         const obj2 = query2();
         const obj3 = {

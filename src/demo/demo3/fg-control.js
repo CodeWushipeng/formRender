@@ -7,7 +7,7 @@ class FG {
         this.ISOK = false;
         this.CURFORM= null;   // 当前展示的是input_config_code 还是 output_config_code 表单
         this.OUTFLAG= null;   // 提交标识
-        this.FUNC= null;      // 函数列表
+        // this.FUNC= null;      // 函数列表
         // 流程节点
         this.START = "01"; // 开始
         this.END   = "02"; // 结束
@@ -25,14 +25,7 @@ class FG {
         this.utils =  {};
 
         // 流控数据
-        this.flow = {
-            // isOK: false,     // 标识这个流是否可以执行
-            // curForm: null,   // 当前展示的是input_config_code 还是 output_config_code 表单
-            // OutFlag: null,   // 提交标识
-            // func: null,      // 函数列表
-            // flow_code: null, // 流程编码
-            // list: [],        // 流程数据
-        };
+        this.flow = {};
     }
 
     /**
@@ -48,19 +41,16 @@ class FG {
             platform:this.platform,
             CURFORM:this.CURFORM ,
             OUTFLAG:this.OUTFLAG ,
-            func:this.func,
+            // func:this.func,
             list:this.list,
         }
     }
 
     /**
-     * 同步流程数据
+     * 设置数据
      * @param object
      */
-    setState(object) {
-        Object.assign(this.flow, object)
-    }
-    settters(key,value){
+    setters(key,value){
         this[key] = value;
     }
 
@@ -76,6 +66,12 @@ class FG {
         return true;
     }
 
+    /**
+     *
+     * @param inputConfig
+     * @returns {*}
+     * @private
+     */
     _solve(inputConfig){
         try {
             const platform = this.platform;
@@ -120,7 +116,6 @@ class FG {
      * @private
      */
     _filter(node_code) {
-        // return this.flow.list.filter(item => item.node_code == node_code);
         return this.list.filter(item => item.nodeCode == node_code);
     }
 
@@ -130,7 +125,6 @@ class FG {
      * @returns {*}
      */
     getInputData(node_code) {
-        // const flw = this.flow.list.filter(item => item.node_code == node_code)[0];
         const flw = this._filter(node_code)[0];
         const {input_config} = flw;
         const {func} = this.flow;
@@ -149,7 +143,6 @@ class FG {
      */
     getPrev(return_node) {
         if (return_node) {
-            // const prev = this.flow.list.filter(item => item.node_code == return_node);
             const prev = this._filter(return_node);
             if (prev instanceof Array && prev.length > 0) {
                 return prev[0]
