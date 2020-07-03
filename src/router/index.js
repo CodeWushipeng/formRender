@@ -7,6 +7,7 @@ import LanguageView from "./LanguageView.vue";
 import preview from "../demo/preView.vue";
 import flowDemo3 from "../demo/demo3/flow-demo3";
 import testJs from "../demo/testjs/index";
+import testUntil from "../demo/testUntil/index";
 
 Vue.use(Router);
 
@@ -44,6 +45,11 @@ export default new Router({
               path: 'testjs',
               name: 'testjs',
               component: testJs
+          },
+          {
+              path: 'until',
+              name: 'until',
+              component: testUntil
           },
           {
               path: 'camera',

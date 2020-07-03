@@ -1,5 +1,5 @@
 <template>
-    <div class="render-wrap" style="padding: 20px;"  ref="loadingArea">
+    <div class="render-wrap" style="padding: 20px;" ref="loadingArea">
         <!--<flowItem ref="flow"
                    :data="data"
                    v-if="data">
@@ -29,7 +29,6 @@
                          :url="url"
                          :configdata="configdata"
                          :remoteFuncs="remoteFuncs"
-                         :func="func"
                          ref="renderForm"
             ></render-form>
         </div>
@@ -64,9 +63,9 @@
 <script>
     // import getFG from 'fg-control';
     import getFG from './fg-control';
-    import { queryFlowDetail } from '../../api/flows'
+    import { queryFlowDetail } from '../../api/flows';
     const FG = new getFG();
-    import {platform,user,utils} from './flowData';
+    import {platform,user} from './flowData';
 
     export default {
         name:'flow-demo',
@@ -79,7 +78,7 @@
                 configdata:{
                     platform,
                     user,
-                    utils,
+                    utils:{},
                     nodes:{},
                     list:[],
                 },
@@ -89,7 +88,6 @@
                 data: {
                     nodeName:null,
                 },
-                func:{},
             };
         },
         computed: {
@@ -160,22 +158,17 @@
                     console.log('res', res)
                     const list = res.detail.records;
                     let utils1 = res.define.funcCollection;
-                    // utils1 = typeof utils1 == 'string' ? JSON.parse(utils1) : utils1;
-                    // console.log('utils', JSON.parse(utils1))
-                    // console.log('list',list)
-                    const {statusCode} = res;
-                    if(statusCode == 200){
-                        // FG.setState(res);
-                        FG.settters('user',user)
-                        FG.settters('platform',platform)
-                        FG.settters('list',list)
-                        FG.settters('utils',utils)
-                        this.utils = utils;
+                    console.log('queryFlowDetail utils', utils1);
+                    const {rspCode} = res;
+                    if(rspCode == "00000000"){
+                        FG.setters('user',user);
+                        FG.setters('platform',platform);
+                        FG.setters('list',list);
+                        FG.setters('utils',eval(utils1));
+                        this.configdata.utils = eval(utils1);
+                        // console.log('FG',FG.utils)
 
                         const start = FG.list.filter(item => item.type == '01')[0];
-
-                        // console.log('FG.list',FG.list)
-                        // console.log('start',start)
                         const {checkStart, nodeCode} = start;
                         if (FG.checkStart(checkStart)) {
                             this.data = start;
