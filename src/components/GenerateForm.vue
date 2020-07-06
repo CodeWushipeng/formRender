@@ -2,9 +2,9 @@
   <!--<div v-if="!isDataNull">-->
   <div class="generateForm">
     <!--data:{{data.config}} <br>-->
-      value:{{value}} <br>
+      <!--value:{{value}} <br>
     models:{{models}} <br>
-    <!--rules:{{rules}} <br>-->
+    rules:{{rules}} <br>-->
     <el-form
       v-if="keysLength"
       ref="generateForm"
@@ -230,14 +230,10 @@ export default {
             });
           }
 
-          if (genList[i].type == "singletext") {
+          if (dataType == "text") {
             var validatePass = (rule, value, callback) => {
               setTimeout(() => {
-                if (value === "") {
-                  callback(new Error("请输入文本内容"));
-                } else {
                   callback();
-                }
               }, 200);
             };
             this.rules[genList[i].model].push({
