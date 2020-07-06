@@ -28,7 +28,7 @@
               :key="colIndex"
               :span="col.span"
             >
-              <template v-for="citem in col.list">
+              <template v-for="(citem, index) in col.list">
                 <el-form-item
                   v-if="citem.type == 'blank'"
                   :label="citem.name"
@@ -45,6 +45,13 @@
                   :rules="rules"
                   :widget="citem"
                   @input-change="onInputChange"
+                  @el-change="onElChange"
+                  @text-enter="textEnter"
+                  :nowindex="index"
+                  @pushIndex="getIndex"
+                  @pushPreIndex="getPreIndex"
+                  :ref="item.model"
+                  v-show="!item.options.hidden"
                 ></genetate-form-item>
               </template>
             </el-col>
@@ -66,12 +73,12 @@
             @input-change="onInputChange"
             @el-change="onElChange"
             @text-enter="textEnter"
-            :nowindex='index'
+            :nowindex="index"
             @pushIndex="getIndex"
             @pushPreIndex="getPreIndex"
             :remote="remote"
             :ref="item.model"
-            v-show="item.options.show"
+            v-show="!item.options.hidden"
           ></genetate-form-item>
         </template>
       </template>
@@ -110,23 +117,13 @@ export default {
       models: {}, // form表单对象所有组件key value组成的json
       rules: {}, // form表单对象所有组件对应校验规则
       haveHide: false, // 后期添加非form making自有属性，是否触发过节点隐藏
-      intervalId: null, //定时器ID,
       remoteType: false, //添加用于标记远程校验状态  （因为promise返回值是promise所以添加）
     };
   },
   created() {
     this.generateModle(this.data.list);
   },
-  mounted() {
-    // 这个定时器主要是解决父组件异步传值，子组件生命周期获取不到数据的问题
-    // this.intervalId = setInterval(() => {
-    //   if (!this.isDataNull) {
-    //     this.flowHandel();
-    //     clearInterval(this.intervalId);
-    //   }
-    // }, 200);
-    // this.flowHandel();
-  },
+  mounted() {},
   methods: {
     // 生成models、rules对象
     generateModle(genList) {
@@ -332,6 +329,7 @@ export default {
       handler(val) {
         console.log(JSON.stringify(val));
         this.models = { ...this.models, ...val };
+        this.enterCheck(); //进入条件
       },
     },
   },

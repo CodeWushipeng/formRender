@@ -3,7 +3,7 @@ export const basicComponents = [
     type: 'input',
     icon: 'icon-input',
     options: {
-      show:  true,
+      hidden: false,
       width: '100%',
       defaultValue: '',
       required: false,
@@ -29,7 +29,7 @@ export const basicComponents = [
     type: 'textarea',
     icon: 'icon-diy-com-textarea',
     options: {
-      show:  true,
+      hidden: false,
       width: '100%',
       defaultValue: '',
       required: false,
@@ -54,7 +54,7 @@ export const basicComponents = [
     type: 'number',
     icon: 'icon-number',
     options: {
-      show:  true,
+      hidden: false,
       width: '',
       required: false,
       defaultValue: 0,
@@ -80,7 +80,7 @@ export const basicComponents = [
     type: 'radio',
     icon: 'icon-radio-active',
     options: {
-      show:  true,
+      hidden: false,
       inline: false,
       defaultValue: '',
       showLabel: false,
@@ -125,7 +125,7 @@ export const basicComponents = [
     type: 'checkbox',
     icon: 'icon-check-box',
     options: {
-      show:  true,
+      hidden: false,
       inline: false,
       defaultValue: [],
       showLabel: false,
@@ -167,7 +167,7 @@ export const basicComponents = [
     type: 'time',
     icon: 'icon-time',
     options: {
-      show:  true,
+      hidden: false,
       defaultValue: '21:19:56',
       readonly: false,
       disabled: false,
@@ -198,7 +198,7 @@ export const basicComponents = [
     type: 'date',
     icon: 'icon-date',
     options: {
-      show:  true,
+      hidden: false,
       defaultValue: '',
       readonly: false,
       disabled: false,
@@ -229,7 +229,7 @@ export const basicComponents = [
     type: 'rate',
     icon: 'icon-pingfen1',
     options: {
-      show:  true,
+      hidden: false,
       defaultValue: null,
       max: 5,
       disabled: false,
@@ -252,7 +252,7 @@ export const basicComponents = [
     type: 'color',
     icon: 'icon-color',
     options: {
-      show:  true,
+      hidden: false,
       defaultValue: '',
       disabled: false,
       showAlpha: false,
@@ -274,7 +274,7 @@ export const basicComponents = [
     type: 'select',
     icon: 'icon-select',
     options: {
-      show:  true,
+      hidden: false,
       defaultValue: '',
       multiple: false,
       disabled: false,
@@ -320,7 +320,7 @@ export const basicComponents = [
     type: 'switch',
     icon: 'icon-switch',
     options: {
-      show:  true,
+      hidden: false,
       defaultValue: false,
       required: false,
       disabled: false,
@@ -341,7 +341,7 @@ export const basicComponents = [
     type: 'slider',
     icon: 'icon-slider',
     options: {
-      show:  true,
+      hidden: false,
       defaultValue: 0,
       disabled: false,
       required: false,
@@ -368,7 +368,7 @@ export const basicComponents = [
     type: 'text',
     icon: 'icon-wenzishezhi-',
     options: {
-      show:  true,
+      hidden: false,
       defaultValue: 'This is a text',
       customClass: '',
     },
@@ -421,14 +421,27 @@ export const advanceComponents = [
     type: 'editor',
     icon: 'icon-fuwenbenkuang',
     options: {
+      hidden: false,
       defaultValue: '',
       width: ''
+    },
+    hidden:"",
+    enterCondition: '',
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   },
   {
     type: 'cascader',
     icon: 'icon-jilianxuanze',
     options: {
+      hidden: false,
       defaultValue: [],
       width: '',
       placeholder: '',
@@ -442,6 +455,17 @@ export const advanceComponents = [
         children: 'children'
       },
       remoteFunc: ''
+    },
+    hidden:"",
+    enterCondition: '',
+    condition:"",
+    valueRange: '',
+    assignment:"",
+    remoteFactor:{
+      isRemote: false,
+      url:"",
+      data:"",
+      success: ""
     }
   }
 ]

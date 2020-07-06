@@ -7,16 +7,16 @@ class FG {
         this.ISOK = false;
         this.CURFORM= null;   // 当前展示的是input_config_code 还是 output_config_code 表单
         this.OUTFLAG= null;   // 提交标识
-        this.FUNC= null;      // 函数列表
+        // this.FUNC= null;      // 函数列表
         // 流程节点
         this.START = "01"; // 开始
         this.END   = "02"; // 结束
         this.DOING = "03"; // 业务类型
         // 提交方式
-        this.COMMIT_TYPE_DEFAULT = "01"; // 默认提交
-        this.COMMIT_TYPE_DEFINE  = "02"; // 自定义提交
-        this.COMMIT_TYPE_ORDER   = "03"; // 订单提交
-        this.COMMIT_TYPE_LOCAL   = "04"; // 本地提交
+        this.COMMIT_DEFAULT = "01"; // 默认提交
+        this.COMMIT_DEFINE  = "02"; // 自定义提交
+        this.COMMIT_ORDER   = "03"; // 订单提交
+        this.COMMIT_LOCAL   = "04"; // 本地提交
 
         this.user = {};
         this.platform =  {};
@@ -25,14 +25,7 @@ class FG {
         this.utils =  {};
 
         // 流控数据
-        this.flow = {
-            // isOK: false,     // 标识这个流是否可以执行
-            // curForm: null,   // 当前展示的是input_config_code 还是 output_config_code 表单
-            // OutFlag: null,   // 提交标识
-            // func: null,      // 函数列表
-            // flow_code: null, // 流程编码
-            // list: [],        // 流程数据
-        };
+        this.flow = {};
     }
 
     /**
@@ -48,19 +41,16 @@ class FG {
             platform:this.platform,
             CURFORM:this.CURFORM ,
             OUTFLAG:this.OUTFLAG ,
-            func:this.func,
+            // func:this.func,
             list:this.list,
         }
     }
 
     /**
-     * 同步流程数据
+     * 设置数据
      * @param object
      */
-    setState(object) {
-        Object.assign(this.flow, object)
-    }
-    settters(key,value){
+    setters(key,value){
         this[key] = value;
     }
 
@@ -71,25 +61,46 @@ class FG {
      */
     checkStart(checkstart) {
         if(checkstart){
-            return this._solve(checkstart)
+            return this._solveConfigJs(checkstart)
         }
         return true;
     }
 
-    _solve(inputConfig){
+    /**
+     * 处理公共函数js代码
+     * @param JsCode
+     * @returns {any}
+     * @private
+     */
+    solveCommonJS(JsCode){
+        try {
+            return eval(JsCode)
+        }catch (error) {
+            console.log('===commonJs===',JsCode)
+            throw  new Error(error)
+        }
+    }
+
+    /**
+     * 处理配置数据js代码
+     * @param inputConfigJs
+     * @returns {*}
+     * @private
+     */
+    _solveConfigJs(JsCode){
         try {
             const platform = this.platform;
             const user = this.user;
             const nodes = this.nodes;
             const utils = this.utils;
             console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )
-            const resCode = `function _execute(user, platform, nodes, utils){  ${inputConfig}  return main(...arguments);}`;
+            const resCode = `function _execute(user, platform, nodes, utils){  ${JsCode}  return main(...arguments);}`;
             // console.log('resCode',resCode)
             const exeCode = eval("(" + resCode + ")");
             let rs = exeCode(user, platform, nodes, utils);
             return rs;
         } catch (error) {
-            console.log('===inputConfig===',inputConfig)
+            console.log('===inputConfigJs===',JsCode)
             throw new Error(error)
         }
     }
@@ -120,7 +131,6 @@ class FG {
      * @private
      */
     _filter(node_code) {
-        // return this.flow.list.filter(item => item.node_code == node_code);
         return this.list.filter(item => item.nodeCode == node_code);
     }
 
@@ -130,7 +140,6 @@ class FG {
      * @returns {*}
      */
     getInputData(node_code) {
-        // const flw = this.flow.list.filter(item => item.node_code == node_code)[0];
         const flw = this._filter(node_code)[0];
         const {input_config} = flw;
         const {func} = this.flow;
@@ -149,7 +158,6 @@ class FG {
      */
     getPrev(return_node) {
         if (return_node) {
-            // const prev = this.flow.list.filter(item => item.node_code == return_node);
             const prev = this._filter(return_node);
             if (prev instanceof Array && prev.length > 0) {
                 return prev[0]
