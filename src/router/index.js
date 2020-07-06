@@ -8,6 +8,7 @@ import preview from "../demo/preView.vue";
 import flowDemo3 from "../demo/demo3/flow-demo3";
 import testJs from "../demo/testjs/index";
 import testUntil from "../demo/testUntil/index";
+import image from "../demo/image";
 
 Vue.use(Router);
 
@@ -52,9 +53,9 @@ export default new Router({
               component: testUntil
           },
           {
-              path: 'camera',
-              name: 'camera',
-              component: camera
+              path: 'image',
+              name: 'image',
+              component: image
           },
       ]
     }

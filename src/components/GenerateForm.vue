@@ -220,8 +220,7 @@ export default {
             });
           }
 
-          if (dataType == "singletext") {
-            debugger;
+          if (genList[i].type == "singletext") {
             var validatePass = (rule, value, callback) => {
               setTimeout(() => {
                 if (value === "") {
@@ -240,7 +239,7 @@ export default {
           if (dataType == "integer" || dataType == "float") {
             var validatePass = (rule, value, callback) => {
               setTimeout(() => {
-                if (value && genList[i].options.integerbits) {
+                if (value) {
                   if ((value + "").indexOf(".") > -1) {
                     const temp = (value + "").split(".");
                     if (
@@ -263,6 +262,8 @@ export default {
                       callback();
                     }
                   }
+                }else{
+                    callback(new Error("不能为空"));
                 }
               }, 200);
             };

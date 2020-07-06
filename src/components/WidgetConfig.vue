@@ -553,7 +553,7 @@ export default {
       }
 
       // todo 排除密码和确认密码 (单独自定义校验方法)
-      if (val && val !== "password" && val !== "againpassword" && val !== "singletext") {
+        if (val && val !== "password" && val !== "againpassword" && val !== "text" && val !== "integer" && val !== "float") {
         this.validator.type = {type: val, message: this.data.name + this.$t('fm.config.widget.validatorType')}
       } else {
         this.validator.type = null

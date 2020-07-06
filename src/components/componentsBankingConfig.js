@@ -90,6 +90,8 @@ export const bankingComponents = [
       width: "100%",
       defaultValue: "",
       required: false,
+      integerbits: 17,
+      decimalbits: 3,
       dataType: "integer",
       pattern: "",
       placeholder: "",

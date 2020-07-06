@@ -3,7 +3,7 @@
     :label="widget.type != 'buttonCom' ? widget.name : ''"
     :prop="widget.model"
   >
-    <!-- widget: {{widget}} -->
+    <!--widget: {{widget}}-->
     <!-- {{rules}} -->
     <!--金额控件-->
     <template v-if="widget.type == 'amount'">
@@ -914,7 +914,6 @@ export default {
     /*按钮*/
     buttonfun(event_name, title) {
       //alert(event_name)
-      debugger;
       if (this.widget.options.buttonfun) {
         try {
           this[this.widget.options.buttonfun](title);
