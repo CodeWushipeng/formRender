@@ -8,7 +8,7 @@ import preview from "../demo/preView.vue";
 import flowDemo3 from "../demo/demo3/flow-demo3";
 import testJs from "../demo/testjs/index";
 import testUntil from "../demo/testUntil/index";
-import image from "../demo/image";
+//import image from "../demo/image";
 
 Vue.use(Router);
 
@@ -52,11 +52,11 @@ export default new Router({
               name: 'until',
               component: testUntil
           },
-          {
+          /*{
               path: 'image',
               name: 'image',
               component: image
-          },
+          },*/
       ]
     }
   ]
