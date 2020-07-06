@@ -41,8 +41,8 @@ class FG {
             platform:this.platform,
             CURFORM:this.CURFORM ,
             OUTFLAG:this.OUTFLAG ,
-            // func:this.func,
             list:this.list,
+            nodes:this.nodes,
         }
     }
 
@@ -187,8 +187,9 @@ class FG {
      * @param value
      */
     saveNode(nodeCode, value) {
-        this.flow[nodeCode] = value;
-        console.log('flow', this.flow)
+        // this.flow[nodeCode] = value;
+        this.nodes[nodeCode] = value;
+        console.log('nodes', JSON.stringify(this.nodes))
     }
 
     /**
