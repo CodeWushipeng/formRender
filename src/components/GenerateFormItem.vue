@@ -3,7 +3,7 @@
     :label="widget.type != 'buttonCom' ? widget.name : ''"
     :prop="widget.model"
   >
-    <!-- widget: {{widget}} -->
+    <!--widget: {{widget}}-->
     <!-- {{rules}} -->
     <!--金额控件-->
     <template v-if="widget.type == 'amount'">
@@ -817,56 +817,70 @@ export default {
       this.amountvisible = false;
     },
     //身份证
-    async indentcart() {
-      var paraObj = {};
-      if (this.widget.type == "idencard") {
-        paraObj.para1 = "GNQ_04";
-        paraObj.para2 = "";
-      } else if (
-        this.widget.type == "readcard" &&
-        this.widget.options.cardType == "01"
-      ) {
-        paraObj.para1 = "GNQ_10";
-        const para2Obj = {};
-        (para2Obj.tradeCode = "0101"), //四位交易码
-          (para2Obj.cardInfoPara = "AA"), //两位参数具体如下
-          (paraObj.para2 = JSON.stringify(para2Obj));
-      } else if (
-        this.widget.type == "readcard" &&
-        this.widget.options.cardType == "02"
-      ) {
-        paraObj.para1 = "GNQ_05";
-        paraObj.para2 = "";
-      }
-      const idenTemp = await smartClient.allDevice(
-        paraObj.para1,
-        paraObj.para2
-      );
-      if (idenTemp) {
-        const idenTempObj = JSON.parse(idenTemp);
-        //alert(idenTempObj.rCode)
-        if (idenTempObj.rCode == 0) {
-          if (this.widget.type == "idencard") {
-            this.dataModel = idenTempObj.idInfo.IDNumber;
-          } else if (
-            this.widget.type == "readcard" &&
-            this.widget.options.cardType == "01"
-          ) {
-            this.dataModel = idenTempObj.cardInfo.cardNO;
-          } else if (
-            this.widget.type == "readcard" &&
-            this.widget.options.cardType == "02"
-          ) {
-            this.dataModel = idenTempObj.szTrack2;
-            //todo szTrack3 暂时不知道可不可用
-            var szTrack3 = idenTempObj.szTrack3;
-          }
-        } else {
-          alert("检测失败：" + idenTemp);
+    indentcart() {
+      var _this = this
+      function indentcartreq() {
+        var paraObj = {};
+        if (_this.widget.type == "idencard") {
+            paraObj.para1 = "GNQ_04";
+            paraObj.para2 = "";
+        } else if (
+            _this.widget.type == "readcard" &&
+            _this.widget.options.cardType == "01"
+        ) {
+            paraObj.para1 = "GNQ_10";
+            const para2Obj = {};
+            (para2Obj.tradeCode = "0101"), //四位交易码
+                (para2Obj.cardInfoPara = "AA"), //两位参数具体如下
+                (paraObj.para2 = JSON.stringify(para2Obj));
+        } else if (
+            _this.widget.type == "readcard" &&
+            _this.widget.options.cardType == "02"
+        ) {
+            paraObj.para1 = "GNQ_05";
+            paraObj.para2 = "";
         }
-      } else {
-        alert("无");
+        return new Promise(function (resolve, reject) {
+          try {
+              const idenTemp = smartClient.allDevice(
+                  paraObj.para1,
+                  paraObj.para2
+              );
+              //return idenTemp;
+              resolve(idenTemp)
+          }catch (err){
+              console.log(err)
+              alert('请连接设备或手输')
+          }
+        })
       }
+      indentcartreq().then(idenTemp => {
+          if (idenTemp) {
+              const idenTempObj = JSON.parse(idenTemp);
+              //alert(idenTempObj.rCode)
+              if (idenTempObj.rCode == 0) {
+                  if (this.widget.type == "idencard") {
+                      this.dataModel = idenTempObj.idInfo.IDNumber;
+                  } else if (
+                      this.widget.type == "readcard" &&
+                      this.widget.options.cardType == "01"
+                  ) {
+                      this.dataModel = idenTempObj.cardInfo.cardNO;
+                  } else if (
+                      this.widget.type == "readcard" &&
+                      this.widget.options.cardType == "02"
+                  ) {
+                      this.dataModel = idenTempObj.szTrack2;
+                      //todo szTrack3 暂时不知道可不可用
+                      var szTrack3 = idenTempObj.szTrack3;
+                  }
+              } else {
+                  alert("检测失败：" + idenTemp);
+              }
+          } else {
+              alert("无");
+          }
+      })
     },
     inputHandler(refId) {
       // const keyType = event.type;
@@ -921,7 +935,6 @@ export default {
     /*按钮*/
     buttonfun(event_name, title) {
       //alert(event_name)
-      debugger;
       if (this.widget.options.buttonfun) {
         try {
           this[this.widget.options.buttonfun](title);

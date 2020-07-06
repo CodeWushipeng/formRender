@@ -1,20 +1,91 @@
 <template>
     <div class="render-wrap" style="padding: 20px;" ref="loadingArea">
-        <!--<flowItem ref="flow"
-                   :data="data"
-                   v-if="data">
-        </flowItem>-->
+        <router-view></router-view>
+        <!--流程数据-->
+        <el-dialog title="流程数据" :visible.sync="flowDialogTableVisible" width="1000px">
+            <!--{{listData}}-->
+            <el-table :data="listData">
+                <el-table-column property="nodeCode" label="节点ID" width="150"></el-table-column>
+                <el-table-column property="nodeName" label="节点名称" width="200"></el-table-column>
+                <el-table-column property="type" label="节点类型">
+                    <template slot-scope="scope">
+                        <span><el-tag :type="filterStatus(scope)['type']">{{ filterStatus(scope)['text'] }}</el-tag></span>
+                    </template>
+                </el-table-column>
+                <el-table-column property="nextNode" label="下一节点"></el-table-column>
+                <el-table-column property="returnNode" label="返回节点"></el-table-column>
+                <el-table-column property="inputConfig" label="提取配置">
+                    <template slot-scope="scope">
+                        <span style="margin-left: 10px">{{ scope.row.inputConfig ? "有" : "" }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column property="outputConfig" label="响应配置">
+                    <template slot-scope="scope">
+                        <span style="margin-left: 10px">{{ scope.row.outputConfig ? "有" : "暂未实现" }}</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+
+        <!--user数据-->
+        <el-dialog title="user数据" :visible.sync="userDialogTableVisible" >
+            <!--{{usreData}}-->
+            <el-table :data="usreDataSolve">
+                <el-table-column property="key" label="KEY" width="150"></el-table-column>
+                <el-table-column property="value" label="VALUE" width=""></el-table-column>
+            </el-table>
+
+        </el-dialog>
+        <!--platform数据-->
+        <el-dialog title="platform数据" :visible.sync="platformDialogTableVisible" >
+            <!--{{platformData}}-->
+            <!--{{platformDataSolve}}-->
+            <el-table :data="platformDataSolve">
+                <el-table-column property="key" label="KEY" width="150"></el-table-column>
+                <el-table-column property="value" label="VALUE" width=""></el-table-column>
+            </el-table>
+        </el-dialog>
+        <!--nodes数据-->
+        <el-dialog title="nodes数据" :visible.sync="nodesDialogTableVisible" width="1000px">
+            <!--{{nodesData}}-->
+            <el-table :data="nodesDataSolve">
+                <el-table-column property="key" label="节点名称" width="150"></el-table-column>
+                <el-table-column property="value_up" label="节点数据(up)" width="">
+                </el-table-column>
+                <el-table-column property="value_down" label="节点数据(down)" width="">
+                    <!--<template slot-scope="scope">
+                        <el-input
+                                type="textarea"
+                                autosize
+                                placeholder="请输入内容"
+                                :value="JSON.stringify(scope.row.value_down,null,4) ">
+                        </el-input>
+                    </template>-->
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+
+        <el-row>
+            <el-button type="primary" @click="flowHandler">流程数据</el-button>
+            <el-button type="success" @click="userHandler">user数据</el-button>
+            <el-button type="info" @click="platformHandler">platform数据</el-button>
+            <el-button type="warning" @click="nodesHandler">节点数据</el-button>
+            <el-button type="danger" @click="getFormHandle">获取表单数据</el-button>
+
+            <!--<el-button @click="page('12')">12</el-button>-->
+            <!--<el-button @click="page('13')">13</el-button>-->
+        </el-row>
         <!--remoteFuncs:{{remoteFuncs}}-->
         <hr>
-        configdata.list:{{configdata}}
+        <!--configdata:{{configdata}}-->
         <hr>
         <!--data:{{data}}-->
         <hr>
         <!--func:{{func}}-->
         <hr>
-        <h3>{{node_name}}</h3>
+
         <div>
-            {{type}}
+            <h3>{{node_name}} <sub>节点类型：{{type}}</sub> &nbsp;<sub>共{{recordsLength}}个节点</sub></h3>
         </div>
         <div v-if="type=='01'">
             可以开始
@@ -57,6 +128,8 @@
                 <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
             </span>
         </el-dialog>
+
+        <router-view></router-view>
     </div>
 </template>
 
@@ -84,13 +157,29 @@
                 },
                 remoteFuncs: {
                 },
-                // 处理数据
-                data: {
-                    nodeName:null,
-                },
+                // 当前节点数据
+                data: {},
+
+
+                // =========数据显示================
+                records:[], // 流程数据
+                flowDialogTableVisible:false,
+                userDialogTableVisible:false,
+                platformDialogTableVisible:false,
+                nodesDialogTableVisible:false,
+                listData:[],
+                usreData:[],
+                usreDataSolve:[],
+                platformData:[],
+                platformDataSolve:[],
+                nodesData:[],
+                nodesDataSolve:[],
             };
         },
         computed: {
+            recordsLength(){
+                return this.records.length
+            },
             type() {
                 const { type} = this.data;
                 return type
@@ -101,10 +190,104 @@
             }
         },
         created() {
+            // console.log("xxxxxxxxxxxx"+Math.random())
             this._getStartNode();
             this._remote();
         },
         methods: {
+            page(num){
+                this.$router.push('/zh-CN/flow/'+num)
+            },
+            filterStatus(scope) {
+                const type = scope.row.type;
+                if (!type) return '';
+                const fsTxt = {
+                    '01':"开始节点",
+                    '02':"结束节点",
+                    '03':"表单节点",
+                };
+                const elTag = {
+                    '01':"",
+                    '02':"danger",
+                    '03':"success",
+                };
+
+                return {
+                    type:elTag[type],
+                    text:fsTxt[type]
+                };
+            },
+            flowHandler(){
+                this.listData = FG.list;
+                this.flowDialogTableVisible = true;
+            },
+            userHandler(){
+                let res =[];
+                for(let key in FG.user){
+                    // console.log('key',key,FG.user[key])
+                    const value = FG.user[key];
+                    res.push({
+                        key:key,
+                        value: typeof  value == "object" ? JSON.stringify(value) : value
+                    })
+                }
+                this.usreData = FG.user;
+                this.usreDataSolve = res;
+                this.userDialogTableVisible = true;
+            },
+            platformHandler(){
+                let res =[];
+                for(let key in FG.platform){
+                    const value = FG.platform[key]
+                    res.push({
+                        key:key,
+                        value: typeof  value == "object" ? JSON.stringify(value) : value
+                    })
+                }
+                this.platformData = FG.platform;
+                this.platformDataSolve = res;
+                this.platformDialogTableVisible = true;
+            },
+            nodesHandler(){
+                console.log('FG.nodes',JSON.stringify(FG.nodes))
+                const keys = Object.keys(FG.nodes);
+                if(keys.length){
+                      let res =[];
+                      for(let key in FG.nodes){
+                          const value_up = FG.nodes[key]['up'];
+                          const value_down = FG.nodes[key]['down'];
+                          res.push({
+                              key:key,
+                              // value_up,
+                              // value_down,
+                              value_up:   typeof value_up == "object" ? JSON.stringify(value_up) : value_up,
+                              value_down: typeof value_down == "object" ? JSON.stringify(value_down) : value_down
+                          })
+                      }
+
+                      this.nodesData = FG.nodes;
+                      this.nodesDataSolve = res;
+                      this.nodesDialogTableVisible  = true;
+                }else{
+                    this.$notify.info({
+                        title: '消息',
+                        message: '暂无节点数据'
+                    });
+                }
+            },
+            getFormHandle(){
+                if(this.$refs.renderForm){
+                    this.$refs.renderForm.getData().then(data=>{
+                        alert(JSON.stringify(data));
+                    })
+                }else{
+                    this.$notify.info({
+                        title: '消息',
+                        message: '当前节点没有表单,不能获取数据'
+                    });
+                }
+            },
+
             _remote(){
                 // console.log('remote..... start')
                 // 加载远程数据
@@ -157,27 +340,31 @@
                 queryFlowDetail(params).then((res) => {
                     console.log('res', res)
                     const list = res.detail.records;
-                    let utils1 = res.define.funcCollection;
-                    console.log('queryFlowDetail utils', utils1);
+                    let funcCollection = res.define.funcCollection;
+                    // console.log('queryFlowDetail funcCollection', funcCollection);
                     const {rspCode} = res;
                     if(rspCode == "00000000"){
+                        const funcObject = FG.solveCommonJS(funcCollection);
+                        this.configdata.utils = funcObject;
+                        // 挂载数据
                         FG.setters('user',user);
                         FG.setters('platform',platform);
                         FG.setters('list',list);
-                        FG.setters('utils',eval(utils1));
-                        this.configdata.utils = eval(utils1);
-                        // console.log('FG',FG.utils)
+                        FG.setters('utils',funcObject);
 
-                        const start = FG.list.filter(item => item.type == '01')[0];
-                        const {checkStart, nodeCode} = start;
+                        this.records = list;
+
+                        // 启动开始节点
+                        const startNode = list.filter(item => item.type == '01')[0];
+                        const {checkStart, nodeCode} = startNode;
                         if (FG.checkStart(checkStart)) {
-                            this.data = start;
-                            this.configdata.list = [start];
+                            this.data = startNode;
+                            this.configdata.list = [startNode];
                             FG.ISOK = true;
                             console.log(`开始节点${nodeCode}，检查通过,可以执行`);
                         } else {
                             // this.$handleWarning(`当前节点${node_code}不能执行`);
-                            alert(`当前节点${nodeCode}不能执行`)
+                            alert(`当前节点${nodeCode}不能执行`);
                         }
                     }
                 }).catch((error) => {
@@ -283,26 +470,27 @@
                     nodePromise.then(data => {
                         console.log('res', data);
                         // 提交类型
-                        if (commitType == FG.COMMIT_TYPE_DEFAULT) {
+                        if (commitType == FG.COMMIT_DEFAULT) {
                             const Obj = {
                                 up: data,
                                 down: null
                             };
                             FG.commitDefault(data).then(res => {
                                 Obj['down'] = res;
-                                FG.saveNode(nodeCode, Obj);
+                                // 深拷贝
+                                const copyObj= JSON.parse(JSON.stringify(Obj));
+                                FG.saveNode(nodeCode, copyObj);
                                 alert("提交数据：" + JSON.stringify(Obj));
                                 const outConfig =  `
                                     function main(){
                                         return {
-                                            user:"lisi",
-                                            desc:"this is lisi's description",
+                                            user: "lisi",
+                                            desc: "this is lisi's description",
                                         }
                                     }
-                                `
+                                `;
                                 // TODO 有响应页面
                                 if (outputFromCode) {
-                                    // this.$refs.flow.outPut(outputFromCode);
                                     this.$refs.renderForm.changeJsonData(outputFromCode, outConfig);
                                     FG.OUTFLAG = true;
                                     FG.CURFORM = "inputFormCode";
@@ -311,11 +499,11 @@
                                     this.nextHandle(nextNode);
                                 }
                             })
-                        } else if (commitType == FG.COMMIT_TYPE_DEFINE) {
+                        } else if (commitType == FG.COMMIT_DEFINE) {
                             commit && commit(data)
-                        } else if (commitType == FG.COMMIT_TYPE_ORDER) {
+                        } else if (commitType == FG.COMMIT_ORDER) {
 
-                        } else if (commitType == FG.COMMIT_TYPE_LOCAL) {
+                        } else if (commitType == FG.COMMIT_LOCAL) {
 
                         }
                     }).catch(e => {
@@ -337,6 +525,7 @@
                 alert("已清理这个流程");
                 console.log('FG', FG)
             },
+
             _get(){
                 this.dialogVisible = true
                 // this.allData = FG.getAllData();
@@ -346,8 +535,23 @@
     };
 </script>
 
-<style>
+<style lang="scss" scoped>
     .render-wrap {
         margin-top: 20px;
     }
+
+   /* .el-table-box {
+        .el-table_{
+            border-collapse:collapse;
+        }
+        .el-table_ th,
+        .el-table_ td {
+            text-align: left;
+            border: #ccc solid 1px;
+            padding: 0;
+        }
+        .cell{
+            padding:10px 10px;
+        }
+    }*/
 </style>

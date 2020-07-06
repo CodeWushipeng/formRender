@@ -13,10 +13,10 @@ class FG {
         this.END   = "02"; // 结束
         this.DOING = "03"; // 业务类型
         // 提交方式
-        this.COMMIT_TYPE_DEFAULT = "01"; // 默认提交
-        this.COMMIT_TYPE_DEFINE  = "02"; // 自定义提交
-        this.COMMIT_TYPE_ORDER   = "03"; // 订单提交
-        this.COMMIT_TYPE_LOCAL   = "04"; // 本地提交
+        this.COMMIT_DEFAULT = "01"; // 默认提交
+        this.COMMIT_DEFINE  = "02"; // 自定义提交
+        this.COMMIT_ORDER   = "03"; // 订单提交
+        this.COMMIT_LOCAL   = "04"; // 本地提交
 
         this.user = {};
         this.platform =  {};
@@ -41,8 +41,8 @@ class FG {
             platform:this.platform,
             CURFORM:this.CURFORM ,
             OUTFLAG:this.OUTFLAG ,
-            // func:this.func,
             list:this.list,
+            nodes:this.nodes,
         }
     }
 
@@ -61,31 +61,46 @@ class FG {
      */
     checkStart(checkstart) {
         if(checkstart){
-            return this._solve(checkstart)
+            return this._solveConfigJs(checkstart)
         }
         return true;
     }
 
     /**
-     *
-     * @param inputConfig
+     * 处理公共函数js代码
+     * @param JsCode
+     * @returns {any}
+     * @private
+     */
+    solveCommonJS(JsCode){
+        try {
+            return eval(JsCode)
+        }catch (error) {
+            console.log('===commonJs===',JsCode)
+            throw  new Error(error)
+        }
+    }
+
+    /**
+     * 处理配置数据js代码
+     * @param inputConfigJs
      * @returns {*}
      * @private
      */
-    _solve(inputConfig){
+    _solveConfigJs(JsCode){
         try {
             const platform = this.platform;
             const user = this.user;
             const nodes = this.nodes;
             const utils = this.utils;
             console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )
-            const resCode = `function _execute(user, platform, nodes, utils){  ${inputConfig}  return main(...arguments);}`;
+            const resCode = `function _execute(user, platform, nodes, utils){  ${JsCode}  return main(...arguments);}`;
             // console.log('resCode',resCode)
             const exeCode = eval("(" + resCode + ")");
             let rs = exeCode(user, platform, nodes, utils);
             return rs;
         } catch (error) {
-            console.log('===inputConfig===',inputConfig)
+            console.log('===inputConfigJs===',JsCode)
             throw new Error(error)
         }
     }
@@ -172,8 +187,9 @@ class FG {
      * @param value
      */
     saveNode(nodeCode, value) {
-        this.flow[nodeCode] = value;
-        console.log('flow', this.flow)
+        // this.flow[nodeCode] = value;
+        this.nodes[nodeCode] = value;
+        console.log('nodes', JSON.stringify(this.nodes))
     }
 
     /**

@@ -7,7 +7,10 @@ import LanguageView from "./LanguageView.vue";
 import preview from "../demo/preView.vue";
 import flowDemo3 from "../demo/demo3/flow-demo3";
 import testJs from "../demo/testjs/index";
+
 import testUntil from "../demo/testUntil/index";
+import nofound from "../demo/testUntil/404";
+//import image from "../demo/image";
 
 Vue.use(Router);
 
@@ -39,7 +42,7 @@ export default new Router({
           {
               path: 'flow',
               name: 'flow',
-              component: flowDemo3
+              component: flowDemo3,
           },
           {
               path: 'testjs',
@@ -56,6 +59,17 @@ export default new Router({
               name: 'camera',
               component: camera
           },
+          {
+              path: '/404',
+              component: nofound,
+              hidden: true
+          },
+          { path: '*', redirect: '/404', hidden: true }
+          /*{
+              path: 'image',
+              name: 'image',
+              component: image
+          },*/
       ]
     }
   ]

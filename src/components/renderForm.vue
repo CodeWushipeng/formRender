@@ -35,10 +35,6 @@ export default {
             type: Object,
             default:()=>{}
         },
-        func: {
-            type: Object,
-            default:()=>{}
-        },
         url: { // 查询表单的服务
             type: String,
             default:()=> ''
@@ -78,9 +74,14 @@ export default {
     },
   },
   methods: {
+      _reset(){
+          this.$refs.generateForm && this.$refs.generateForm.reset();
+      },
     _inits() {
       const {list} = this.configdata;
-      console.log(this.configdata);
+
+
+      // console.log(this.configdata);
       if (list instanceof Array && list.length) {
         const { inputFormCode } = list[0];
         inputFormCode &&
@@ -119,35 +120,8 @@ export default {
         platform,
         user,
       };
+
       this.tempValue = this.getInputData();
-    },
-    // 提取函数的返回数据
-    solve(inputConfig){
-        try {
-            const { platform, user, nodes, utils} = this.configdata;
-            console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )
-            console.log('{ configdata} ',JSON.stringify(this.configdata))
-            const resCode = `function _execute(user, platform, nodes, utils){  ${inputConfig}  return main(...arguments);}`;
-            const exeCode = eval("(" + resCode + ")");
-            let rs =  exeCode(user,platform,nodes,utils);
-            return rs;
-        }catch (error) {
-            console.log(inputConfig);
-            throw new Error(error);
-        }
-    },
-    // 将流控引擎input数据绑定到value
-    getInputData() {
-        const {list} = this.configdata;
-        // console.log(list)
-        if (list.length) {
-            const { inputConfig } = list[0]; // 注入数据
-            if(!inputConfig) return {};
-            let transObj = this.solve(inputConfig);
-            console.log('transObj',JSON.stringify(transObj));
-            return transObj;
-        }
-        return {};
     },
     // 处理流控数据中带有的动态数据
     handelDynamicInFlow(temp) {
@@ -192,7 +166,7 @@ export default {
           }
       }
     },
-    
+
     // 响应页面
     changeJsonData(inputConfig, outConfig = {}) {
       console.log("inputConfig", inputConfig);
@@ -204,8 +178,8 @@ export default {
                     const formContent = rest.records[0]['formContent'];
                     const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
                     this.jsonData = result;
-                    this.formdata = this.solve(outConfig);
-                    console.log('this.solve(outConfig)',this.solve(outConfig))
+                    this.formdata = this._solveConfigJs(outConfig);
+                    console.log('this._solveConfigJs(outConfig)',this._solveConfigJs(outConfig))
                 }else{
                     this.$notify.error({
                         title: '消息',
@@ -220,18 +194,18 @@ export default {
             }
         });
     },
-    // 提取函数的返回数据
-    solve(inputConfig){
+    // 处理配置数据js代码
+    _solveConfigJs(JsCode){
         try {
             const { platform, user, nodes, utils} = this.configdata;
             console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )
             // console.log('{ configdata} ',JSON.stringify(this.configdata))
-            const resCode = `function _execute(user, platform, nodes, utils){  ${inputConfig}  return main(...arguments);}`;
+            const resCode = `function _execute(user, platform, nodes, utils){  ${JsCode}  return main(...arguments);}`;
             const exeCode = eval("(" + resCode + ")");
             let rs =  exeCode(user,platform,nodes,utils);
             return rs;
         }catch (error) {
-            console.log(inputConfig);
+            console.log(JsCode);
             throw new Error(error);
         }
     },
@@ -242,7 +216,7 @@ export default {
         if (list.length) {
             const { inputConfig } = list[0]; // 注入数据
             if(!inputConfig) return {};
-            let transObj = this.solve(inputConfig);
+            let transObj = this._solveConfigJs(inputConfig);
             console.log('transObj',JSON.stringify(transObj));
             return transObj;
         }
@@ -272,6 +246,12 @@ export default {
         this._inits();
       },
     },
+   /* formdata: {
+        handler: function (val, oldVal) {
+            this.formdata = Object.assign({},...val);
+        },
+        deep: true
+    },*/
   },
 };
 </script>

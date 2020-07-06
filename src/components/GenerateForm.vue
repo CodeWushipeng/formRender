@@ -2,8 +2,9 @@
   <!--<div v-if="!isDataNull">-->
   <div class="generateForm">
     <!--data:{{data.config}} <br>-->
-    <!--models:{{models}} <br>-->
-    <!--rules:{{rules}} <br>-->
+      <!--value:{{value}} <br>
+    models:{{models}} <br>
+    rules:{{rules}} <br>-->
     <el-form
       v-if="keysLength"
       ref="generateForm"
@@ -88,8 +89,8 @@
 
 <script>
 import GenetateFormItem from "./GenerateFormItem";
-import { loadJs } from "../util/index.js";
-import request from "../util/request.js";
+// import { loadJs } from "../util/index.js";
+// import request from "../util/request.js";
 import { IdentityCodeValid } from "../util/idencardUtil";
 import handler from "./handler";
 
@@ -128,9 +129,11 @@ export default {
   methods: {
     // 生成models、rules对象
     generateModle(genList) {
+      console.log("xxxxxxxxxxxxxxxx2333333333333333333xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
       if (!genList) {
         return;
       }
+
       for (let i = 0; i < genList.length; i++) {
         if (genList[i].type === "grid") {
           genList[i].columns.forEach((item) => {
@@ -141,7 +144,7 @@ export default {
           if (
             // 如果value对象不为空且具有与当前组件model同名的属性，则将值赋给models的该属性（这样就修改了组件原始值）
             this.value &&
-            Object.keys(this.value).indexOf(genList[i].model) >= 0
+             Object.keys(this.value).indexOf(genList[i].model) >= 0
           ) {
             this.models[genList[i].model] = this.value[genList[i].model];
           } else {
@@ -220,14 +223,10 @@ export default {
             });
           }
 
-          if (dataType == "singletext") {
+          if (dataType == "text") {
             var validatePass = (rule, value, callback) => {
               setTimeout(() => {
-                if (value === "") {
-                  callback(new Error("请输入文本内容"));
-                } else {
                   callback();
-                }
               }, 200);
             };
             this.rules[genList[i].model].push({
@@ -239,7 +238,7 @@ export default {
           if (dataType == "integer" || dataType == "float") {
             var validatePass = (rule, value, callback) => {
               setTimeout(() => {
-                if (value && genList[i].options.integerbits) {
+                if (value) {
                   if ((value + "").indexOf(".") > -1) {
                     const temp = (value + "").split(".");
                     if (
@@ -262,6 +261,8 @@ export default {
                       callback();
                     }
                   }
+                }else{
+                    callback(new Error("不能为空"));
                 }
               }, 200);
             };
@@ -312,12 +313,21 @@ export default {
       // 向container组件发射on-change事件，将 key value 以及models（form表单的key value对象）传入
       this.$emit("on-change", field, value, this.models);
     },
+    // 重置models
+    resetModelsFields(){
+        const keys = Object.keys(this.models);
+        keys.length && keys.forEach(key=>{
+            delete  this.models[key]
+        })
+    }
   },
   watch: {
     data: {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
       handler(val) {
+          // console.error("=====GenerateForm=====watch data=================")
+        this.resetModelsFields();
         // this.generateModle(val.list);
         this.isDataNull = false;
       },
@@ -327,6 +337,7 @@ export default {
       deep: true,
       handler(val) {
         console.log(JSON.stringify(val));
+        // console.error("=====GenerateForm====watch value=================")
         this.models = { ...this.models, ...val };
       },
     },
