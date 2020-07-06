@@ -5,12 +5,13 @@ let handlers = {
     return {
       comArr: [], //组件list数组
       allItems: [],
-      isEnter: "",
-      startIndex: 0,
+      focusIndex: 0,
+      mark: 0,
       singleError: false,
       rangeError: false,
       conditionError: false,
       remoteError: false,
+      oldCanFocusArr: [],
       canFocusArr: [],
       canFocusType: [
         "input",
@@ -29,45 +30,47 @@ let handlers = {
   methods: {
     // 光标聚焦时获取当前节点model
     getIndex(params) {
-      for(let i=0;i<this.canFocusArr.length;i++){
-        if(this.canFocusArr[i].model==params){
-          this.startIndex = this.canFocusArr[i].index
+      console.log(params);
+      for (let i = 0; i < this.canFocusArr.length; i++) {
+        if (this.canFocusArr[i].model == params) {
+          console.log(this.canFocusArr);
+          // this.focusIndex = this.canFocusArr[i].index
+          this.focusIndex = i;
         }
       }
-      console.log(this.startIndex)
+      console.log("当前聚焦元素序号", this.focusIndex);
+      this.singleValidate(this.focusIndex);
+      this.handelRange(this.focusIndex);
+      this.handelCondition(this.focusIndex);
+      this.remoteValidate(this.focusIndex);
+      // this.handelAssignment(this.focusIndex);
     },
     // 光标失去焦点
-    getPreIndex(params) {
-      params = params * 1;
-      let index;
-      if(this.isEnter == "enter"){
-        for(let i=0;i<this.canFocusArr.length;i++){
-          if(this.canFocusArr[i].index==this.startIndex-1){
-            index = i
-          }
-        }
-      }else if(this.isEnter == ""){
-        this.isEnter == "blur";
-        for(let i=0;i<this.canFocusArr.length;i++){
-          if(this.canFocusArr[i].index==this.startIndex){
-            index = i
-          }
-        }
-      }
-      console.log("失去焦点",index)
-        this.singleValidate(index);
-        this.handelRange(index);
-        this.handelCondition(index);
-        this.remoteValidate(index);
+    getPreIndex() {
+      // 判断页面是否有聚焦元素
+      // console.log("浏览器是否有聚焦元素", document.activeElement.tagName);
+      // if (document.activeElement.tagName == "BODY") {
+      //   console.log("失去焦点且页面没有聚焦元素");
+      //   this.singleValidate(this.focusIndex);
+      //   this.handelRange(this.focusIndex);
+      //   this.handelCondition(this.focusIndex);
+      //   this.remoteValidate(this.focusIndex);
+      //   this.handelAssignment(this.focusIndex);
+      // } else {
+      //   return;
+      // }
     },
     // 隐藏
     handelHidden() {
       this.comArr.forEach((item) => {
-        let flag = eval(item.hidden);
-        if (flag) {
-          item.options.hidden = true;
-        } else {
-          item.options.hidden = false;
+        if (item.hidden && item.hidden != "") {
+          let flag = this.evalWrap(item.hidden);
+          console.log(flag);
+          if (flag) {
+            item.options.hidden = true;
+          } else {
+            item.options.hidden = false;
+          }
         }
       });
     },
@@ -77,6 +80,7 @@ let handlers = {
     },
     // 全部可聚焦input节点下标加入一个全局数组维护
     getFocusEle() {
+      this.oldCanFocusArr = this.canFocusArr
       this.canFocusArr = [];
       for (let i = 0; i < this.comArr.length; i++) {
         if (
@@ -86,7 +90,7 @@ let handlers = {
         ) {
           continue;
         } else {
-          let temp = {index: i,model: this.comArr[i].model}
+          let temp = { index: i, model: this.comArr[i].model };
           if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
             this.canFocusArr.push(temp);
           } else if (this.comArr[i].type == "textarea") {
@@ -98,21 +102,30 @@ let handlers = {
     },
     // 光标操作控制流程
     handelFocus() {
-      for (let i = this.startIndex; i < this.canFocusArr.length; i++) {
-        console.log(this.allItems,this.canFocusArr[i].index)
-        let nowInput = this.allItems[this.canFocusArr[i].index].querySelector(
-          "input"
-        );
-        let nowTextraea = this.allItems[this.canFocusArr[i].index].querySelector(
-          "textarea"
-        );
+      // debugger
+      console.log(this.oldCanFocusArr,this.canFocusArr)
+      for(let i=0;i<this.mark;i++){
+        if(this.oldCanFocusArr[i].index !== this.canFocusArr[i].index){
+          this.mark = i;
+          console.log("新的mark",i,this.mark)
+          break
+        }
+      }
+      console.log(this.mark, this.canFocusArr);
+      let nowInput = this.allItems[
+        this.canFocusArr[this.mark].index
+      ].querySelector("input");
+      let nowTextraea = this.allItems[
+        this.canFocusArr[this.mark].index
+      ].querySelector("textarea");
+      console.log(nowInput)
+      this.$nextTick(()=>{
         if (nowInput) {
           nowInput.focus();
         } else if (nowTextraea) {
           nowTextraea.focus();
         }
-        break;
-      }
+      })
     },
     // textarea ctrl+enter触发光标离开事件
     textEnter() {
@@ -120,6 +133,7 @@ let handlers = {
     },
     // 流程控制
     handelFlow() {
+      // debugger
       if (
         this.singleError ||
         this.rangeError ||
@@ -128,16 +142,18 @@ let handlers = {
       ) {
         return;
       }
-      this.startIndex = this.startIndex * 1 + 1;
+      this.mark++;
       this.handelHidden();
       this.enterCheck();
+      this.getAllItems()
       this.getFocusEle();
       this.handelFocus();
     },
     // 组件单独校验
     singleValidate(j) {
       let lists = this.comArr;
-      for (let i = 0; i <= this.canFocusArr[j].index; i++) {
+      console.log("jjjjjjjjjjj", j);
+      for (let i = 0; i < this.canFocusArr[j].index; i++) {
         this.$refs["generateForm"].validateField(lists[i].model, (valid) => {
           console.log("valid", valid);
           if (valid != "" && valid != undefined) {
@@ -149,17 +165,16 @@ let handlers = {
           }
         });
       }
-      
     },
     // 手动触发校验提示函数
     handelValidate(statu, msg, index) {
       console.log(statu, index);
       this.$refs["generateForm"].fields[index].validateState = statu;
       if (statu == "error") {
-        this.$notify.error({
-          title: '错误',
-          message: msg
-        });
+        // this.$notify.error({
+        //   title: "错误",
+        //   message: msg,
+        // });
         this.$refs["generateForm"].fields[index].validateMessage = msg;
         console.log(this.$refs["generateForm"].fields[index], msg);
       }
@@ -167,10 +182,12 @@ let handlers = {
     // eval封装
     evalWrap(targetEval) {
       let result;
+      console.log(targetEval);
       if (targetEval.indexOf("function") != -1) {
         try {
-          let tmpFunc = eval("(" + targetEval + ")");
-          result = tmpFunc.call(this);
+          let tempFunc = eval("(" + targetEval + ")");
+          result = tempFunc(this.models)
+          console.log(result);
         } catch (error) {
           throw new Error(error);
         }
@@ -185,6 +202,7 @@ let handlers = {
           throw new Error(error);
         }
       } else {
+        console.log("else");
         try {
           result = eval(targetEval);
         } catch (error) {
@@ -206,10 +224,10 @@ let handlers = {
           console.log(range, nowValue);
           let result, resultType;
           try {
-            result = eval(range);
+            result = this.evalWrap(range);
             resultType = Object.prototype.toString.call(result);
           } catch (error) {
-            this.handelValidate("error", "语法错误", this.canFocusArr[j].index);
+            this.handelValidate("error", "语法错误", i);
             throw new Error(error, "取值范围条件解析出错");
           }
           console.log(resultType);
@@ -219,27 +237,29 @@ let handlers = {
               this.handelValidate(
                 "error",
                 "不在取值范围内",
-                this.canFocusArr[j].index
+                i
               );
               this.allItems[i].querySelector("input").focus();
               this.rangeError = true;
+              break;
             } else {
-              this.handelValidate("success", "", this.canFocusArr[j].index);
+              this.handelValidate("success", "", i);
               this.rangeError = false;
             }
           } else if (resultType == "[object RegExp]") {
             console.log(result, result.test(nowValue));
             if (result.test(nowValue)) {
-              this.handelValidate("success", "", this.canFocusArr[j].index);
+              this.handelValidate("success", "", i);
               this.rangeError = false;
             } else {
               this.allItems[i].querySelector("input").focus();
               this.handelValidate(
                 "error",
                 "不在取值范围内",
-                this.canFocusArr[j].index
+                i
               );
               this.rangeError = true;
+              break;
             }
           } else if (
             resultType == "[object String]" ||
@@ -248,23 +268,26 @@ let handlers = {
             let resultReg = new RegExp("[" + range + "]");
             console.log(resultReg, resultReg.test(nowValue));
             if (resultReg.test(nowValue)) {
-              this.handelValidate("success", "", this.canFocusArr[j].index);
+              this.handelValidate("success", "", i);
               this.rangeError = false;
             } else {
               this.allItems[i].querySelector("input").focus();
               this.handelValidate(
                 "error",
                 "不在取值范围内",
-                this.canFocusArr[j].index
+                i
               );
               this.rangeError = true;
+              break;
             }
           }
         } else {
-          this.handelValidate("success", "", this.canFocusArr[j].index);
+          this.handelValidate("success", "", i);
           this.rangeError = false;
         }
+        console.log("循环了", i);
       }
+      console.log(this.rangeError);
     },
     // 离开条件检测
     handelCondition(j) {
@@ -275,7 +298,7 @@ let handlers = {
       for (let i = 0; i <= this.canFocusArr[j].index; i++) {
         if (lists[i].condition && lists[i].condition != "") {
           let condition = this.evalWrap(lists[i].condition);
-          console.log(condition);
+          console.log("conditionconditioncondition",condition);
           if (condition) {
             this.handelValidate("success", "", this.canFocusArr[j].index);
             this.conditionError = false;
@@ -284,7 +307,7 @@ let handlers = {
             this.handelValidate(
               "error",
               "不满足离开条件",
-              this.canFocusArr[j].index
+              i
             );
             this.conditionError = true;
           }
@@ -370,11 +393,15 @@ let handlers = {
         return;
       }
       let lists = this.comArr;
-      for (let i = 0; i <= this.canFocusArr[j].index; i++) {
-        if (lists[i].assignment && lists[i].assignment != "") {
-          this.evalWrap(lists[i].assignment);
-        }
+      console.log("离开赋值", j);
+      console.log(lists[this.canFocusArr[j].index].assignment);
+      if (
+        lists[this.canFocusArr[j].index].assignment &&
+        lists[this.canFocusArr[j].index].assignment != ""
+      ) {
+        this.evalWrap(lists[this.canFocusArr[j].index].assignment)
       }
+      console.log("离开赋值", this.models);
     },
     // 进入条件检测
     enterCheck() {
@@ -393,17 +420,20 @@ let handlers = {
     },
     // 回车事件
     onElChange() {
-      console.log("回车", this.startIndex);
-      this.isEnter = "enter";
-      if (this.startIndex < this.canFocusArr.length - 1) {
-        this.singleValidate(this.startIndex);
-        this.handelRange(this.startIndex);
-        this.handelCondition(this.startIndex);
-        this.remoteValidate(this.startIndex);
-        this.handelAssignment(this.startIndex);
+      console.log("回车", this.mark, this.canFocusArr.length);
+      if (this.mark < this.canFocusArr.length - 1) {
+        this.singleValidate(this.mark);
+        this.handelRange(this.mark);
+        this.handelCondition(this.mark);
+        this.remoteValidate(this.mark);
+        this.handelAssignment(this.mark);
         this.handelFlow();
-      } else {
-        console.log("到底了");
+      } else if(this.mark == this.canFocusArr.length - 1) {
+        this.singleValidate(this.mark);
+        this.handelRange(this.mark);
+        this.handelCondition(this.mark);
+        this.remoteValidate(this.mark);
+        this.handelAssignment(this.mark);
       }
     },
     // 获取组件数据

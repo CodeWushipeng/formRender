@@ -96,7 +96,7 @@
         :data-index="nowindex"
         @focus="getIndex($event)"
         @blur="setPreIndex($event)"
-        @keyup.native.enter="change"
+        @keyup.native.enter="change($event)"
         :ref="widget.model"
         ><el-button
           v-if="widget.options.tips != ''"
@@ -369,8 +369,8 @@
         :automatic-dropdown="true"
         :data-index="nowindex"
         @focus="getIndex($event)"
-        @blur="setPreIndex($event)"
         @keyup.native.enter="selectChange"
+        @visible-change="visibleChange"
         :class="dataModel"
       >
         <el-option
@@ -775,6 +775,13 @@ export default {
       }
       this.$emit("pushIndex", this.widget.model);
     },
+    visibleChange(params){
+      console.log("下拉选择",params)
+      if(params==true){
+        console.log(this.$refs)
+        
+      }
+    },
     // 获取设置的index
     getPre(ele) {
       if (ele.dataset.index == undefined) {
@@ -785,13 +792,13 @@ export default {
     },
     // 组件失去焦点设置index
     setPreIndex(e) {
-      console.log(e);
-      this.getPre(e.target);
-      console.log("index=========", this.blurIndex);
-      this.$emit("pushPreIndex", this.blurIndex);
+      // this.getPre(e.target);
+      // console.log("index=========", this.blurIndex);
+      this.$emit("pushPreIndex");
     },
     // element change事件，回车和失去焦点时触发
-    change() {
+    change(e) {
+      e.preventDefault()
       // 出发change事件时发射 el-change事件，generateform组件监听该事件
       this.$emit("el-change", this);
     },
@@ -971,6 +978,7 @@ export default {
       // 深度监听组件绑定的数据，执行赋值操作并发射更新models的事件，发射input-change事件，将值和对应的key传入
       deep: true,
       handler(val) {
+        console.log(val)
         this.models[this.widget.model] = val;
         this.$emit("update:models", {
           ...this.models,
@@ -984,7 +992,6 @@ export default {
       deep: true,
       handler(val) {
         this.dataModel = val[this.widget.model];
-        console.log(this.dataModel);
         // setTimeout(()=>{
         //     this.remoteFunc()
         // },200)

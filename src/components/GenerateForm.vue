@@ -123,7 +123,8 @@ export default {
   created() {
     this.generateModle(this.data.list);
   },
-  mounted() {},
+ mounted(){
+},
   methods: {
     // 生成models、rules对象
     generateModle(genList) {
@@ -147,8 +148,9 @@ export default {
             // 如果value为空判断当前组件的类型是否为空类型
             if (genList[i].type === "blank") {
               // 如果为空类型则为models添加对应的响应式属性，并赋值为默认值
+              let testa = {}
               this.$set(
-                this.models,
+                testa,
                 genList[i].model,
                 genList[i].options.defaultType === "String" // 如果默认类型为字符串类型赋值为空字符串
                   ? ""
@@ -156,12 +158,10 @@ export default {
                   ? {}
                   : []
               );
+              this.models = testa
             } else {
               // 如果value为空并且组件为非空类型组件将组件默认值赋值给models对应属性
-              // 这个if条件为后期加入的，判断是否已触发过隐藏条件
-              if (!this.haveHide) {
                 this.models[genList[i].model] = genList[i].options.defaultValue;
-              }
 
               // 组件创建完成后models为组件 key:value 键值对json
             }
@@ -221,7 +221,6 @@ export default {
           }
 
           if (dataType == "singletext") {
-            debugger;
             var validatePass = (rule, value, callback) => {
               setTimeout(() => {
                 if (value === "") {
@@ -319,7 +318,7 @@ export default {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
       handler(val) {
-        this.generateModle(val.list);
+        // this.generateModle(val.list);
         this.isDataNull = false;
       },
     },
@@ -329,7 +328,6 @@ export default {
       handler(val) {
         console.log(JSON.stringify(val));
         this.models = { ...this.models, ...val };
-        this.enterCheck(); //进入条件
       },
     },
   },
