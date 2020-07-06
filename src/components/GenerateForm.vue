@@ -327,7 +327,7 @@ export default {
       deep: true,
       handler(val) {
           // console.error("=====GenerateForm=====watch data=================")
-        this.resetModelsFields();
+        // this.resetModelsFields();
         // this.generateModle(val.list);
         this.isDataNull = false;
       },
