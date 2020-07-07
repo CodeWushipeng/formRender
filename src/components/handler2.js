@@ -106,6 +106,9 @@ let handlers = {
     },
     // eval封装
     evalWrap(targetEval) {
+      if(!targetEval){
+        return
+      }
       let result;
       if (targetEval.indexOf("function") != -1) {
         try {
@@ -382,7 +385,7 @@ let handlers = {
       this.$nextTick(()=>{
         focusEle.focus();
       })
-      
+
     },
     // 回车事件
     onElChange() {

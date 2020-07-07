@@ -87,7 +87,8 @@ export default {
       _reset(){
           this.$refs.generateForm && this.$refs.generateForm.reset();
       },
-    _inits() {
+      _inits() {
+          console.log("_inits===============================")
 
        // 1
       const { platform, user,list,rollbackData } = this.configdata;
@@ -150,7 +151,7 @@ export default {
       var platform = this.dyData.platform;
       var user = this.dyData.user;
       let formLists = temp.list;
-      console.log(this.dyData);
+      // console.log(this.dyData);
       for (let i = 0; i < formLists.length; i++) {
           if (formLists[i].type != "grid"){
             if (
@@ -211,7 +212,7 @@ export default {
                 });
             }
         }).catch(err=>{
-            console.log('getFormList',err)
+            throw new Error(err)
             this.hideLoading()
         });
     },
@@ -254,18 +255,12 @@ export default {
     },
   },
   watch: {
-    "configdata.list": {
-      deep: true,
-      handler(list) {
-        this._inits();
+      "configdata.list": {
+          deep: true,
+          handler(list) {
+              this._inits();
+          },
       },
-    },
-   /* formdata: {
-        handler: function (val, oldVal) {
-            this.formdata = Object.assign({},...val);
-        },
-        deep: true
-    },*/
   },
 };
 </script>
