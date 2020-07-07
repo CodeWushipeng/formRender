@@ -3,11 +3,11 @@
     class="form-wrap"
     ref="renderForm"
   >
-      jsonData: {{jsonData}}
-      <hr>
-      formdata: {{formdata}}
-      <!--utliTools: {{utliTools}}-->
-      <hr>
+      <!--jsonData: {{jsonData}}-->
+      <!--<hr>-->
+      <!--formdata: {{formdata}}-->
+      tempValue: {{tempValue}}
+      <!--<hr>-->
     <fm-generate-form
       :remote="remoteFuncs"
       :data="jsonData"
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { Loading } from 'element-ui';
 import fmGenerateForm from "./GenerateForm";
 import { getFormList } from '../api/forms';
 export default {
@@ -46,6 +47,7 @@ export default {
       tempValue: {}, //处理流控数据的变量
       formdata: {},
       dyData: {}, //动态数据
+      loadingInstance:null
     };
   },
   created() {
@@ -74,14 +76,27 @@ export default {
     },
   },
   methods: {
+      showLoading(){
+          this.loadingInstance = Loading.service();
+      },
+      hideLoading(){
+          setTimeout(()=>{
+              this.loadingInstance.close();
+          },500)
+      },
       _reset(){
           this.$refs.generateForm && this.$refs.generateForm.reset();
       },
     _inits() {
-      const {list} = this.configdata;
 
+       // 1
+      const { platform, user,list,rollbackData } = this.configdata;
+      this.dyData = {platform, user};
 
-      // console.log(this.configdata);
+      // 2 判断是否有回退数据
+      this.tempValue = Object.keys(rollbackData).length > 0 ? rollbackData : this.getInputData();
+
+      // 3
       if (list instanceof Array && list.length) {
         const { inputFormCode } = list[0];
         inputFormCode &&
@@ -92,12 +107,12 @@ export default {
                 const rest = res.define;
                 if(rest && rest.records.length>0){
                     const formContent = rest.records[0]['formContent'];
-                    const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
-                    let temp = result;
-                    this.handelDynamicInFlow(temp);
+                    // 设置数据
+                    let temp = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
                     this.dynamicData(temp);
-                    console.log(temp);
+                    this.handelDynamicInFlow(temp);
                     this.jsonData = temp;
+                    console.log(temp);
                 }else{
                     this.$notify.error({
                         title: '消息',
@@ -115,13 +130,6 @@ export default {
           console.log(error);
         });
       }
-      const { platform, user } = this.setDynamicData();
-      this.dyData = {
-        platform,
-        user,
-      };
-
-      this.tempValue = this.getInputData();
     },
     // 处理流控数据中带有的动态数据
     handelDynamicInFlow(temp) {
@@ -170,15 +178,25 @@ export default {
     // 响应页面
     changeJsonData(inputConfig, outConfig = {}) {
       console.log("inputConfig", inputConfig);
-        inputConfig && getFormList(this.url,{formCode: inputConfig}).then((res) => {
+        if(inputConfig){
+            this.showLoading()
+        } else{
+            return false;
+        }
+        getFormList(this.url,{formCode: inputConfig}).then((res) => {
             const {rspCode} = res;
+            this.hideLoading()
             if(rspCode=="00000000"){
                 const rest = res.define;
                 if(rest && rest.records.length>0){
                     const formContent = rest.records[0]['formContent'];
-                    const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
-                    this.jsonData = result;
-                    this.formdata = this._solveConfigJs(outConfig);
+                    const temp = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
+                    this.tempValue = this._solveConfigJs(outConfig);
+                    this.jsonData = temp;
+                    // this.formdata = this._solveConfigJs(outConfig);
+                    this.dynamicData(temp);
+                    this.handelDynamicInFlow(temp);
+
                     console.log('this._solveConfigJs(outConfig)',this._solveConfigJs(outConfig))
                 }else{
                     this.$notify.error({
@@ -192,6 +210,9 @@ export default {
                     message: '响应页面失败'
                 });
             }
+        }).catch(err=>{
+            console.log('getFormList',err)
+            this.hideLoading()
         });
     },
     // 处理配置数据js代码
@@ -222,14 +243,7 @@ export default {
         }
         return {};
     },
-    // 动态数据获取
-    setDynamicData() {
-      // console.log(this.configdata);
-      return {
-        platform: this.configdata.platform,
-        user: this.configdata.user,
-      };
-    },
+
     // 返回form表单键值对数据
     getFormData() {
       return this.$children[0].getData();

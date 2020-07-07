@@ -19,7 +19,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -44,7 +44,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -70,7 +70,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -115,7 +115,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -157,7 +157,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -188,7 +188,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -219,7 +219,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -242,7 +242,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -264,7 +264,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -310,7 +310,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -331,7 +331,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -358,7 +358,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -378,7 +378,7 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -431,7 +431,7 @@ export const advanceComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""
@@ -462,7 +462,7 @@ export const advanceComponents = [
     valueRange: '',
     assignment:"",
     remoteFactor:{
-      isRemote: false,
+      isRemote: "",
       url:"",
       data:"",
       success: ""

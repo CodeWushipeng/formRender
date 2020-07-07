@@ -97,7 +97,7 @@
         :data-index="nowindex"
         @focus="getIndex($event)"
         @blur="setPreIndex($event)"
-        @keyup.native.enter="change"
+        @keyup.native.enter="change($event)"
         :ref="widget.model"
         ><el-button
           v-if="widget.options.tips != ''"
@@ -370,8 +370,8 @@
         :automatic-dropdown="true"
         :data-index="nowindex"
         @focus="getIndex($event)"
-        @blur="setPreIndex($event)"
         @keyup.native.enter="selectChange"
+        @visible-change="visibleChange"
         :class="dataModel"
       >
         <el-option
@@ -770,7 +770,6 @@ export default {
     },
     // 组件聚焦获取model
     getIndex(e) {
-      console.log(this.widget);
       if (this.widget.type == "select") {
         this.selectModel = this.widget.model;
       }else if(this.widget.type == "password" || this.widget.type == "againpassword"){
@@ -780,21 +779,27 @@ export default {
       }
       this.$emit("pushIndex", this.widget.model);
     },
-    /*密码相关方法*/
-    passwordKeyup(event){
-        if(event.keyCode != 13 && event.keyCode != 8 && this.widget.options.peripheral && (this.widget.options.peripheral == true)){
-            this.dataModel=""
-            //alert("请用外设键盘输入")
-            this.$notify({
-                title: "fail",
-                message: "请用外设键盘输入",
-                type: "info",
-                duration: 2000
-            });
-        }
-    },
-    /*密码相关方法*/
+    visibleChange(params){
+      console.log("下拉选择",params)
+      if(params==true){
+        console.log(this.$refs)
 
+      }
+    },
+  /*密码相关方法*/
+  passwordKeyup(event){
+      if(event.keyCode != 13 && event.keyCode != 8 && this.widget.options.peripheral && (this.widget.options.peripheral == true)){
+          this.dataModel=""
+          //alert("请用外设键盘输入")
+          this.$notify({
+              title: "fail",
+              message: "请用外设键盘输入",
+              type: "info",
+              duration: 2000
+          });
+      }
+  },
+  /*密码相关方法*/
     // 获取设置的index
     getPre(ele) {
       if (ele.dataset.index == undefined) {
@@ -805,13 +810,13 @@ export default {
     },
     // 组件失去焦点设置index
     setPreIndex(e) {
-      console.log(e);
-      this.getPre(e.target);
-      console.log("index=========", this.blurIndex);
-      this.$emit("pushPreIndex", this.blurIndex);
+      // this.getPre(e.target);
+      // console.log("index=========", this.blurIndex);
+      this.$emit("pushPreIndex");
     },
     // element change事件，回车和失去焦点时触发
-    change() {
+    change(e) {
+      e.preventDefault()
       // 出发change事件时发射 el-change事件，generateform组件监听该事件
       this.$emit("el-change", this);
     },
@@ -1024,7 +1029,9 @@ export default {
     dataModel: {
       // 深度监听组件绑定的数据，执行赋值操作并发射更新models的事件，发射input-change事件，将值和对应的key传入
       deep: true,
+      immediate: true,
       handler(val) {
+        // console.log(val)
         this.models[this.widget.model] = val;
         this.$emit("update:models", {
           ...this.models,
@@ -1037,8 +1044,8 @@ export default {
       // 深度监听models，models修改时读取修改后的值赋值给dataModel
       deep: true,
       handler(val) {
+        // console.log(val)
         this.dataModel = val[this.widget.model];
-        console.log(this.dataModel);
         // setTimeout(()=>{
         //     this.remoteFunc()
         // },200)

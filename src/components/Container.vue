@@ -626,9 +626,21 @@ export default {
         if (this.nowEle.assignment != "") {
           this.code = this.nowEle.assignment;
         }
-      } else if (this.modify == "添加校验数据") {
+      } else if (this.modify == "入口数据") {
         if (this.nowEle.remoteFactor.data != "") {
           this.code = this.nowEle.remoteFactor.data;
+        }
+      } else if (this.modify == "启动条件") {
+        if (this.nowEle.remoteFactor.isRemote != "") {
+          this.code = this.nowEle.remoteFactor.isRemote;
+        }
+      } else if (this.modify == "校验地址") {
+        if (this.nowEle.remoteFactor.url != "") {
+          this.code = this.nowEle.remoteFactor.url;
+        }
+      } else if (this.modify == "出口数据") {
+        if (this.nowEle.remoteFactor.success != "") {
+          this.code = this.nowEle.remoteFactor.success;
         }
       }
       this.mirrorVisible = true;
@@ -649,13 +661,20 @@ export default {
         this.nowEle.enterCondition = this.code;
       } else if (this.modify == "离开赋值") {
         this.nowEle.assignment = this.code;
-      } else if (this.modify == "添加校验数据") {
-        let tmp;
-        try {
-          tmp = eval("(" + this.code + ")")();
-        } catch (error) {
-          throw new Error(error);
-        }
+      } else if (this.modify == "启动条件") {
+        this.nowEle.remoteFactor.isRemote = this.code;
+      } else if (this.modify == "校验地址") {
+        this.nowEle.remoteFactor.url = this.code;
+      } else if (this.modify == "出口数据") {
+        this.nowEle.remoteFactor.success = this.code;
+      } 
+      else if (this.modify == "入口数据") {
+        // let tmp;
+        // try {
+        //   tmp = eval("(" + this.code + ")")();
+        // } catch (error) {
+        //   throw new Error(error);
+        // }
         this.nowEle.remoteFactor.data = this.code;
       }
       this.mirrorVisible = false;

@@ -3,8 +3,9 @@
   <div class="generateForm">
     <!--data:{{data.config}} <br>-->
       <!--value:{{value}} <br>
-    models:{{models}} <br>
+
     rules:{{rules}} <br>-->
+      models:{{models}} <br>
     <el-form
       v-if="keysLength"
       ref="generateForm"
@@ -92,7 +93,7 @@ import GenetateFormItem from "./GenerateFormItem";
 // import { loadJs } from "../util/index.js";
 // import request from "../util/request.js";
 import { IdentityCodeValid } from "../util/idencardUtil";
-import handler from "./handler";
+import handler from "./handler2";
 
 export default {
   name: "fm-generate-form",
@@ -114,7 +115,6 @@ export default {
   },
   data() {
     return {
-      isDataNull: true, // 判断props传入的data是否有真实数据
       models: {}, // form表单对象所有组件key value组成的json
       rules: {}, // form表单对象所有组件对应校验规则
       haveHide: false, // 后期添加非form making自有属性，是否触发过节点隐藏
@@ -124,14 +124,8 @@ export default {
   created() {
     this.generateModle(this.data.list);
   },
-  mounted() {},
-    updated(){
-        // const keys = Object.keys(this.models);
-        // keys.length && keys.forEach(key=>{
-        //     delete  this.models[key]
-        // })
-
-    },
+ mounted(){
+},
   methods: {
     // 生成models、rules对象
     generateModle(genList) {
@@ -157,8 +151,9 @@ export default {
             // 如果value为空判断当前组件的类型是否为空类型
             if (genList[i].type === "blank") {
               // 如果为空类型则为models添加对应的响应式属性，并赋值为默认值
+              let testa = {}
               this.$set(
-                this.models,
+                testa,
                 genList[i].model,
                 genList[i].options.defaultType === "String" // 如果默认类型为字符串类型赋值为空字符串
                   ? ""
@@ -166,12 +161,10 @@ export default {
                   ? {}
                   : []
               );
+              this.models = testa
             } else {
               // 如果value为空并且组件为非空类型组件将组件默认值赋值给models对应属性
-              // 这个if条件为后期加入的，判断是否已触发过隐藏条件
-              if (!this.haveHide) {
                 this.models[genList[i].model] = genList[i].options.defaultValue;
-              }
 
               // 组件创建完成后models为组件 key:value 键值对json
             }
@@ -333,20 +326,17 @@ export default {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
       handler(val) {
-          // console.error("=====GenerateForm=====watch data=================")
-        this.resetModelsFields();
-        this.generateModle(val.list);
+        // this.resetModelsFields();
+        // this.generateModle(val.list);
         this.isDataNull = false;
       },
     },
     value: {
-      // 深度观察组件key值
+      // 深度观察组件key的值
       deep: true,
       handler(val) {
         console.log(JSON.stringify(val));
-        // console.error("=====GenerateForm====watch value=================")
         this.models = { ...this.models, ...val };
-        this.enterCheck(); //进入条件
       },
     },
   },
