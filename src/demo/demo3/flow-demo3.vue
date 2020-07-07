@@ -264,15 +264,17 @@
                 } else if (type == FG.END) {
                     res = {error: -1, text: "流程已经结束,不能回退"}
                 } else if (rollback == FG.CANNOT_ROLLBACK) {
-                    res = {error: -1, text: "当前不能回退"}
+                    res = {error: -1, text: "当前节点不能回退"}
                 }
                 return res;
             },
             processData(rollbackData,returnNode){
                 if(rollbackData == FG.KEEP_DATA){
+                    // 保留数据
                     const nodeData = FG.nodes[returnNode]['up'];
                     this.configdata.rollbackData = nodeData;
                 }else if(rollbackData == FG.CLEAR_DATA){
+                    // 清除数据
                     delete FG.nodes[returnNode]
                     this.configdata.rollbackData = {}
                 }else{
@@ -311,8 +313,8 @@
 
                     for (let j = 0; j < nodes.length; j++) {
                         const nextFlow = filters(j);
-                        const {checkStart} = nextFlow;
-                        const nextCode = nextFlow['nodeCode'];
+                        const checkStart = nextFlow['checkStart'];
+                        const nextCode   = nextFlow['nodeCode'];
                         try {
                             console.log('checkStart', checkStart)
                             if (FG.checkStart(checkStart)) {

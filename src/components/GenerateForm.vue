@@ -3,8 +3,9 @@
   <div class="generateForm">
     <!--data:{{data.config}} <br>-->
       <!--value:{{value}} <br>
-    models:{{models}} <br>
+
     rules:{{rules}} <br>-->
+      models:{{models}} <br>
     <el-form
       v-if="keysLength"
       ref="generateForm"

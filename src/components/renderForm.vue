@@ -107,11 +107,12 @@ export default {
                 const rest = res.define;
                 if(rest && rest.records.length>0){
                     const formContent = rest.records[0]['formContent'];
+                    // 设置数据
                     let temp = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
                     this.dynamicData(temp);
                     this.handelDynamicInFlow(temp);
-                    console.log(temp);
                     this.jsonData = temp;
+                    console.log(temp);
                 }else{
                     this.$notify.error({
                         title: '消息',
@@ -189,9 +190,13 @@ export default {
                 const rest = res.define;
                 if(rest && rest.records.length>0){
                     const formContent = rest.records[0]['formContent'];
-                    const result = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
-                    this.jsonData = result;
-                    this.formdata = this._solveConfigJs(outConfig);
+                    const temp = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
+                    this.tempValue = this._solveConfigJs(outConfig);
+                    this.jsonData = temp;
+                    // this.formdata = this._solveConfigJs(outConfig);
+                    this.dynamicData(temp);
+                    this.handelDynamicInFlow(temp);
+
                     console.log('this._solveConfigJs(outConfig)',this._solveConfigJs(outConfig))
                 }else{
                     this.$notify.error({
