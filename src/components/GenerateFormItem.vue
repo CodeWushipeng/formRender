@@ -3,7 +3,7 @@
     :label="widget.type != 'buttonCom' ? widget.name : ''"
     :prop="widget.model"
   >
-    <!--widget: {{widget}}-->
+    <!--widget: {{widget}} -->
     <!-- {{rules}} -->
     <!--金额控件-->
     <template v-if="widget.type == 'amount'">
