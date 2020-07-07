@@ -177,6 +177,7 @@ export default {
         againpassword: '确认密码',
         iccard: 'ic卡',
         magnetismcard: '磁卡',
+        peripheral: '启用外设',
         buttontext: '按钮文本内容',
         buttonicon: '按钮图标',
         buttonfun: '按钮调用函数',
