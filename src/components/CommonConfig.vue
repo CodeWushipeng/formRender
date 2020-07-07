@@ -17,7 +17,7 @@
         :label="$t('fm.config.common.valueRange')"
         v-if="data.type != 'grid'"
       >
-        <el-input v-model="data.valueRange"></el-input>
+        <el-input v-model="data.valueRange" placeholder="取值范围"></el-input>
       </el-form-item>
       <!-- 是否隐藏 -->
       <el-form-item
@@ -80,30 +80,43 @@
         :label="$t('fm.config.common.remoteFactor')"
         v-if="data.type != 'grid'"
       >
-        <el-checkbox
-          v-model="data.remoteFactor.isRemote"
-          label="是"
-          style="margin-bottom:10px"
-        ></el-checkbox>
         <!-- <el-button @click="handelMirror">点击配置外部条件访问</el-button> -->
-        <template v-if="data.remoteFactor.isRemote">
+          <el-input
+            v-model="data.remoteFactor.isRemote"
+            placeholder="启动条件"
+            style="margin-bottom:15px;text-overflow: ellipsis;"
+            @focus="handelMirror"
+            readonly
+          >
+            <template slot="prepend">启动条件</template>
+          </el-input>
           <el-input
             v-model="data.remoteFactor.url"
-            placeholder="添加校验地址"
-            style="margin-bottom:15px"
+            placeholder="校验地址"
+            style="margin-bottom:15px;text-overflow: ellipsis;"
+            @focus="handelMirror"
+            readonly
           >
             <template slot="prepend">URL</template>
+          </el-input>
+          <el-input
+            style="text-overflow: ellipsis;margin-bottom:15px"
+            readonly
+            @focus="handelMirror"
+            v-model="data.remoteFactor.data"
+            placeholder="入口数据"
+          >
+            <template slot="prepend">入口数据</template>
           </el-input>
           <el-input
             style="text-overflow: ellipsis;"
             readonly
             @focus="handelMirror"
-            v-model="data.remoteFactor.data"
-            placeholder="添加校验数据"
+            v-model="data.remoteFactor.success"
+            placeholder="出口数据"
           >
-            <template slot="prepend">DATA</template>
+            <template slot="prepend">出口数据</template>
           </el-input>
-        </template>
       </el-form-item>
     </el-form>
   </div>

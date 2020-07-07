@@ -769,7 +769,6 @@ export default {
     },
     // 组件聚焦获取model
     getIndex(e) {
-      console.log(this.widget);
       if (this.widget.type == "select") {
         this.selectModel = this.widget.model;
       }
@@ -990,8 +989,9 @@ export default {
     dataModel: {
       // 深度监听组件绑定的数据，执行赋值操作并发射更新models的事件，发射input-change事件，将值和对应的key传入
       deep: true,
+      immediate: true,
       handler(val) {
-        console.log(val)
+        // console.log(val)
         this.models[this.widget.model] = val;
         this.$emit("update:models", {
           ...this.models,
@@ -1004,6 +1004,7 @@ export default {
       // 深度监听models，models修改时读取修改后的值赋值给dataModel
       deep: true,
       handler(val) {
+        // console.log(val)
         this.dataModel = val[this.widget.model];
         // setTimeout(()=>{
         //     this.remoteFunc()

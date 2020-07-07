@@ -92,7 +92,7 @@ import GenetateFormItem from "./GenerateFormItem";
 // import { loadJs } from "../util/index.js";
 // import request from "../util/request.js";
 import { IdentityCodeValid } from "../util/idencardUtil";
-import handler from "./handler";
+import handler from "./handler2";
 
 export default {
   name: "fm-generate-form",
@@ -114,7 +114,6 @@ export default {
   },
   data() {
     return {
-      isDataNull: true, // 判断props传入的data是否有真实数据
       models: {}, // form表单对象所有组件key value组成的json
       rules: {}, // form表单对象所有组件对应校验规则
       haveHide: false, // 后期添加非form making自有属性，是否触发过节点隐藏
@@ -326,18 +325,15 @@ export default {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
       handler(val) {
-          // console.error("=====GenerateForm=====watch data=================")
         // this.resetModelsFields();
         // this.generateModle(val.list);
-        this.isDataNull = false;
       },
     },
     value: {
-      // 深度观察组件key值
+      // 深度观察组件key的值
       deep: true,
       handler(val) {
         console.log(JSON.stringify(val));
-        // console.error("=====GenerateForm====watch value=================")
         this.models = { ...this.models, ...val };
       },
     },

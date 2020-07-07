@@ -4,6 +4,7 @@ let handlers = {
   data() {
     return {
       comArr: [], //组件list数组
+      outMark: 0, //外层循环标记
       allItems: [],
       focusIndex: 0,
       mark: 0,
@@ -30,15 +31,12 @@ let handlers = {
   methods: {
     // 光标聚焦时获取当前节点model
     getIndex(params) {
-      console.log(params);
       for (let i = 0; i < this.canFocusArr.length; i++) {
         if (this.canFocusArr[i].model == params) {
-          console.log(this.canFocusArr);
           // this.focusIndex = this.canFocusArr[i].index
           this.focusIndex = i;
         }
       }
-      console.log("当前聚焦元素序号", this.focusIndex);
       this.singleValidate(this.focusIndex);
       this.handelRange(this.focusIndex);
       this.handelCondition(this.focusIndex);
@@ -65,7 +63,6 @@ let handlers = {
       this.comArr.forEach((item) => {
         if (item.hidden && item.hidden != "") {
           let flag = this.evalWrap(item.hidden);
-          console.log(flag);
           if (flag) {
             item.options.hidden = true;
           } else {
@@ -80,7 +77,7 @@ let handlers = {
     },
     // 全部可聚焦input节点下标加入一个全局数组维护
     getFocusEle() {
-      this.oldCanFocusArr = this.canFocusArr
+      this.oldCanFocusArr = this.canFocusArr;
       this.canFocusArr = [];
       for (let i = 0; i < this.comArr.length; i++) {
         if (
@@ -98,34 +95,29 @@ let handlers = {
           }
         }
       }
-      console.log(this.canFocusArr);
     },
     // 光标操作控制流程
     handelFocus() {
       // debugger
-      console.log(this.oldCanFocusArr,this.canFocusArr)
-      for(let i=0;i<this.mark;i++){
-        if(this.oldCanFocusArr[i].index !== this.canFocusArr[i].index){
+      for (let i = 0; i < this.mark; i++) {
+        if (this.oldCanFocusArr[i].index !== this.canFocusArr[i].index) {
           this.mark = i;
-          console.log("新的mark",i,this.mark)
-          break
+          break;
         }
       }
-      console.log(this.mark, this.canFocusArr);
       let nowInput = this.allItems[
         this.canFocusArr[this.mark].index
       ].querySelector("input");
       let nowTextraea = this.allItems[
         this.canFocusArr[this.mark].index
       ].querySelector("textarea");
-      console.log(nowInput)
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         if (nowInput) {
           nowInput.focus();
         } else if (nowTextraea) {
           nowTextraea.focus();
         }
-      })
+      });
     },
     // textarea ctrl+enter触发光标离开事件
     textEnter() {
@@ -145,17 +137,14 @@ let handlers = {
       this.mark++;
       this.handelHidden();
       this.enterCheck();
-      this.getAllItems()
       this.getFocusEle();
       this.handelFocus();
     },
     // 组件单独校验
     singleValidate(j) {
       let lists = this.comArr;
-      console.log("jjjjjjjjjjj", j);
       for (let i = 0; i < this.canFocusArr[j].index; i++) {
         this.$refs["generateForm"].validateField(lists[i].model, (valid) => {
-          console.log("valid", valid);
           if (valid != "" && valid != undefined) {
             let nowIndex = this.canFocusArr[j].index;
             this.allItems[nowIndex].querySelector("input").focus();
@@ -168,7 +157,6 @@ let handlers = {
     },
     // 手动触发校验提示函数
     handelValidate(statu, msg, index) {
-      console.log(statu, index);
       this.$refs["generateForm"].fields[index].validateState = statu;
       if (statu == "error") {
         // this.$notify.error({
@@ -176,18 +164,15 @@ let handlers = {
         //   message: msg,
         // });
         this.$refs["generateForm"].fields[index].validateMessage = msg;
-        console.log(this.$refs["generateForm"].fields[index], msg);
       }
     },
     // eval封装
     evalWrap(targetEval) {
       let result;
-      console.log(targetEval);
       if (targetEval.indexOf("function") != -1) {
         try {
           let tempFunc = eval("(" + targetEval + ")");
-          result = tempFunc(this.models)
-          console.log(result);
+          result = tempFunc(this.models);
         } catch (error) {
           throw new Error(error);
         }
@@ -202,7 +187,6 @@ let handlers = {
           throw new Error(error);
         }
       } else {
-        console.log("else");
         try {
           result = eval(targetEval);
         } catch (error) {
@@ -221,7 +205,6 @@ let handlers = {
         if (lists[i].valueRange != "" && lists[i].valueRange != undefined) {
           let range = lists[i].valueRange;
           let nowValue = this.models[lists[i].model];
-          console.log(range, nowValue);
           let result, resultType;
           try {
             result = this.evalWrap(range);
@@ -230,15 +213,9 @@ let handlers = {
             this.handelValidate("error", "语法错误", i);
             throw new Error(error, "取值范围条件解析出错");
           }
-          console.log(resultType);
           if (resultType == "[object Array]") {
             if (result.indexOf(nowValue) == -1) {
-              console.log("校验", result.indexOf(nowValue));
-              this.handelValidate(
-                "error",
-                "不在取值范围内",
-                i
-              );
+              this.handelValidate("error", "不在取值范围内", i);
               this.allItems[i].querySelector("input").focus();
               this.rangeError = true;
               break;
@@ -247,17 +224,12 @@ let handlers = {
               this.rangeError = false;
             }
           } else if (resultType == "[object RegExp]") {
-            console.log(result, result.test(nowValue));
             if (result.test(nowValue)) {
               this.handelValidate("success", "", i);
               this.rangeError = false;
             } else {
               this.allItems[i].querySelector("input").focus();
-              this.handelValidate(
-                "error",
-                "不在取值范围内",
-                i
-              );
+              this.handelValidate("error", "不在取值范围内", i);
               this.rangeError = true;
               break;
             }
@@ -266,17 +238,12 @@ let handlers = {
             resultType == "[object Number]"
           ) {
             let resultReg = new RegExp("[" + range + "]");
-            console.log(resultReg, resultReg.test(nowValue));
             if (resultReg.test(nowValue)) {
               this.handelValidate("success", "", i);
               this.rangeError = false;
             } else {
               this.allItems[i].querySelector("input").focus();
-              this.handelValidate(
-                "error",
-                "不在取值范围内",
-                i
-              );
+              this.handelValidate("error", "不在取值范围内", i);
               this.rangeError = true;
               break;
             }
@@ -285,9 +252,7 @@ let handlers = {
           this.handelValidate("success", "", i);
           this.rangeError = false;
         }
-        console.log("循环了", i);
       }
-      console.log(this.rangeError);
     },
     // 离开条件检测
     handelCondition(j) {
@@ -298,17 +263,12 @@ let handlers = {
       for (let i = 0; i <= this.canFocusArr[j].index; i++) {
         if (lists[i].condition && lists[i].condition != "") {
           let condition = this.evalWrap(lists[i].condition);
-          console.log("conditionconditioncondition",condition);
           if (condition) {
             this.handelValidate("success", "", this.canFocusArr[j].index);
             this.conditionError = false;
           } else {
             this.allItems[i].querySelector("input").focus();
-            this.handelValidate(
-              "error",
-              "不满足离开条件",
-              i
-            );
+            this.handelValidate("error", "不满足离开条件", i);
             this.conditionError = true;
           }
         } else {
@@ -324,7 +284,11 @@ let handlers = {
       }
       let lists = this.comArr;
       for (let i = 0; i <= this.canFocusArr[j].index; i++) {
-        if (lists[i].remoteFactor && lists[i].remoteFactor.isRemote == true) {
+        if (lists[i].remoteFactor && lists[i].remoteFactor.isRemote !== "") {
+          let flag = this.evalWrap(lists[i].remoteFactor.isRemote);
+          if (!flag) {
+            return;
+          }
           let url = lists[i].remoteFactor.url;
           let primitiveData = lists[i].remoteFactor.data;
           let nowModel = lists[i].model;
@@ -336,9 +300,7 @@ let handlers = {
           } else {
             postData = nowData;
           }
-          console.log(postData);
           let success = lists[i].remoteFactor.success;
-          console.log(lists[i].remoteFactor.success);
           request
             .post(url, {
               data: postData,
@@ -393,20 +355,19 @@ let handlers = {
         return;
       }
       let lists = this.comArr;
-      console.log("离开赋值", j);
-      console.log(lists[this.canFocusArr[j].index].assignment);
       if (
         lists[this.canFocusArr[j].index].assignment &&
         lists[this.canFocusArr[j].index].assignment != ""
       ) {
-        this.evalWrap(lists[this.canFocusArr[j].index].assignment)
+        this.evalWrap(lists[this.canFocusArr[j].index].assignment);
+        // this.models.a = 3
+        // this.$set(this.models,"a",3)
+        console.log(this.models);
       }
-      console.log("离开赋值", this.models);
     },
     // 进入条件检测
     enterCheck() {
       let lists = this.comArr;
-      console.log("enterCondition", lists);
       for (let i = 0; i < lists.length; i++) {
         if (lists[i].enterCondition && lists[i].enterCondition != "") {
           let condition = this.evalWrap(lists[i].enterCondition);
@@ -418,9 +379,41 @@ let handlers = {
         }
       }
     },
+    // 全部节点循环事件
+    iteratorAllEle() {
+      for (let i = this.outMark; i < this.comArr.length; i++) {
+        if (
+          this.comArr[i].options.disabled ||
+          this.comArr[i].options.hidden ||
+          this.comArr[i].options.readonly == "readonly"
+        ) {
+          let unfocus = [];
+          unfocus.push(this.comArr[i])
+          continue;
+        } else {
+          this.setFocus(this.allItems[i])
+          this.outMark = i;
+        }
+      }
+    },
+    // 循环过去的节点
+    iteratorUnfocus(){
+      for(let i=0;i<unfocus.length;i++){
+        if(!unfocus[i].options.disabled && !unfocus[i].options.hidden && unfocus[i].options.readonly !== "readonly"){
+          this.outMark = i;
+          this.iteratorAllEle()
+        }
+      }
+    },
+    // 获取并聚焦元素
+    setFocus(ele) {
+      let focusEle = ele.querySelector("input")
+        ? ele.querySelector("input")
+        : ele.querySelector("textarea");
+      focusEle.focus();
+    },
     // 回车事件
     onElChange() {
-      console.log("回车", this.mark, this.canFocusArr.length);
       if (this.mark < this.canFocusArr.length - 1) {
         this.singleValidate(this.mark);
         this.handelRange(this.mark);
@@ -428,7 +421,7 @@ let handlers = {
         this.remoteValidate(this.mark);
         this.handelAssignment(this.mark);
         this.handelFlow();
-      } else if(this.mark == this.canFocusArr.length - 1) {
+      } else if (this.mark == this.canFocusArr.length - 1) {
         this.singleValidate(this.mark);
         this.handelRange(this.mark);
         this.handelCondition(this.mark);
@@ -452,7 +445,6 @@ let handlers = {
   },
   created() {},
   mounted() {
-    console.log(this.data.list);
     let inter = setInterval(() => {
       if (this.data.list && this.data.list.length > 0) {
         clearInterval(inter);
