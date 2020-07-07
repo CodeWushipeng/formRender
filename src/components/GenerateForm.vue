@@ -3,8 +3,9 @@
   <div class="generateForm">
     <!--data:{{data.config}} <br>-->
       <!--value:{{value}} <br>
-    models:{{models}} <br>
+
     rules:{{rules}} <br>-->
+      models:{{models}} <br>
     <el-form
       v-if="keysLength"
       ref="generateForm"
@@ -327,6 +328,7 @@ export default {
       handler(val) {
         // this.resetModelsFields();
         // this.generateModle(val.list);
+        this.isDataNull = false;
       },
     },
     value: {
