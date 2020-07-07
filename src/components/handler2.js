@@ -7,6 +7,7 @@ let handlers = {
       outMark: 0, //外层循环标记
       allItems: [],
       unfocus: [],
+      canFocusLength: 0,
       preIndex: 0, //上次聚焦元素序号
       singleError: false,
       rangeError: false,
@@ -44,12 +45,9 @@ let handlers = {
     },
     // 光标失去焦点
     getPreIndex() {
-      // this.singleValidate(this.outMark);
-      // this.handelRange(this.outMark);
-      // this.handelCondition(this.outMark);
-      // this.remoteValidate(this.outMark);
-      // this.handelAssignment(this.outMark);
-      // this.handelFlow();
+      if(document.activeElement=="BODY"){
+        this.allValidate(this.outMark);
+      }
     },
     // 隐藏
     handelHidden() {
@@ -82,12 +80,14 @@ let handlers = {
       this.outMark++;
       this.preIndex = this.outMark
       this.handelHidden();
+      this.getShowLength();
       this.enterCheck();
       this.iteratorAllEle();
     },
     // 组件单独校验
     singleValidate(i) {
       let lists = this.comArr;
+      console.log("当前",i)
       this.$refs["generateForm"].validateField(lists[i].model, (valid) => {
         if (valid != "" && valid != undefined) {
           this.setFocus(this.allItems[i]);
@@ -316,6 +316,21 @@ let handlers = {
         }
       }
     },
+    // 获取页面显示的元素的长度
+    getShowLength(){
+      for(let i = this.outMark; i < this.comArr.length; i++){
+        if (
+          this.comArr[i].options.disabled ||
+          this.comArr[i].options.hidden ||
+          this.comArr[i].options.readonly == "readonly"
+        ) {
+          continue
+        }else{
+          this.canFocusLength++
+        }
+      }
+      console.log(this.canFocusLength)
+    },
     // 综合校验
     allValidate(target) {
       for (let i = 0; i <= target; i++) {
@@ -373,15 +388,16 @@ let handlers = {
     onElChange() {
       if (this.preIndex != this.outMark) {
         this.allValidate(this.outMark);
-        this.setFocus(this.allItems[this.outMark])
-        console.log(this.allItems[this.outMark])
+        this.outMark = this.preIndex;
+        this.handelFlow();
+        console.log(this.outMark)
         return
       }
-      if (this.outMark < this.comArr.length - 1) {
+      if (this.outMark < this.canFocusLength-1) {
         this.allValidate(this.outMark);
         this.handelAssignment(this.outMark);
         this.handelFlow();
-      } else {
+      } else if(this.outMark == this.canFocusLength-1) {
         this.allValidate(this.outMark);
         this.handelAssignment(this.outMark);
       }
@@ -404,7 +420,14 @@ let handlers = {
       console.log(this.comArr);
     },
   },
-  created() {},
+  created() {
+    let inter = setInterval(() => {
+      if (this.data.list && this.data.list.length > 0) {
+        clearInterval(inter);
+        this.handelHidden();
+      }
+    }, 300);
+  },
   mounted() {
     let inter = setInterval(() => {
       if (this.data.list && this.data.list.length > 0) {
@@ -413,6 +436,7 @@ let handlers = {
         this.handelHidden();
         this.enterCheck();
         this.getAllItems();
+        this.getShowLength();
         this.iteratorAllEle();
       }
     }, 300);
