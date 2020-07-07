@@ -17,6 +17,13 @@ class FG {
         this.COMMIT_DEFINE  = "02"; // 自定义提交
         this.COMMIT_ORDER   = "03"; // 订单提交
         this.COMMIT_LOCAL   = "04"; // 本地提交
+        // 返回设置
+        this.CAN_ROLLBACK = "01"; // 可以回退
+        this.CANNOT_ROLLBACK = "02"; // 不可回退
+        // 是否保留数据
+        this.CLEAR_DATA = "01", // 清除数据
+        this.KEEP_DATA = "02", // 保留数据
+
 
         this.user = {};
         this.platform =  {};
@@ -190,6 +197,9 @@ class FG {
         // this.flow[nodeCode] = value;
         this.nodes[nodeCode] = value;
         console.log('nodes', JSON.stringify(this.nodes))
+    }
+    getNodes(){
+        return this.nodes;
     }
 
     /**
