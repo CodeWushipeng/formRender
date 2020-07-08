@@ -42,13 +42,7 @@
         @focus="getIndex($event)"
         @blur="setPreIndex($event)"
         :ref="widget.model"
-        ><el-button
-          v-if="widget.options.tips"
-          slot="prepend"
-          icon="el-icon-question"
-          @click="showTips(widget.options.tips)"
-        ></el-button
-      ></el-input>
+        ></el-input>
     </template>
     <!--确认密码-->
     <template v-if="widget.type == 'againpassword'">
@@ -63,13 +57,7 @@
         @blur="setPreIndex($event)"
         @keyup.native.enter="change"
         :ref="widget.model"
-        ><el-button
-          v-if="widget.options.tips"
-          slot="prepend"
-          icon="el-icon-question"
-          @click="showTips(widget.options.tips)"
-        ></el-button
-      ></el-input>
+        ></el-input>
     </template>
 
     <template v-if="widget.type == 'input'">
@@ -926,10 +914,11 @@ export default {
       // const keyCode = event.keyCode;
       // console.log('event.keyType',event.type);
       // console.log('event.keyCode',event.keyCode);
-
-      this.amountvisible = !!this.dataModel;
-      let amountObj = getInputValue(this.models[this.widget.model]);
-      this.bigPastAdjustFee = amountObj.bigPastAdjustFee;
+      if(event.type == "focus"){
+          this.amountvisible = !!this.dataModel;
+          let amountObj = getInputValue(this.models[this.widget.model]);
+          this.bigPastAdjustFee = amountObj.bigPastAdjustFee;
+      }
       if (typeof refId == "string") {
         const refsId = this.$refs[refId];
         // console.log('refsid',refsId)
@@ -941,7 +930,11 @@ export default {
     keyupHandler(refId) {
       if (typeof refId == "string") {
         const refsId = this.$refs[refId];
-        // console.log('value',refsId.value)
+        this.amountvisible = !!this.dataModel;
+        let amountObj = getInputValue(refsId.value);
+        this.bigPastAdjustFee = amountObj.bigPastAdjustFee;
+
+        console.log('value',refsId.value)
         this.dataModel = refsId.value;
         this.amountvisible = !!this.dataModel;
       }

@@ -205,14 +205,22 @@ export default {
             var validatePass = (rule, value, callback) => {
               // console.log('this.models',JSON.stringify(_this.models));
               setTimeout(() => {
-                if (this.models[confirm_field]) {
-                  if (value === "") {
-                    callback(new Error("请输入确认密码"));
-                  } else if (this.models[confirm_field] !== value) {
-                    callback(new Error("两次输入密码不一致!"));
-                  } else {
-                    callback();
-                  }
+                if(confirm_field){
+                    if (this.models[confirm_field]) {
+                        if (value === "") {
+                            callback(new Error("请输入确认密码"));
+                        } else if (this.models[confirm_field] !== value) {
+                            callback(new Error("两次输入密码不一致!"));
+                        } else {
+                            callback();
+                        }
+                    } else if (!this.models[confirm_field] && !value){
+                        callback();
+                    } else if (!this.models[confirm_field] && value){
+                        callback(new Error("两次输入密码不一致!"));
+                    }
+                }else{
+                    callback(new Error("请在属性中设置确认字段"));
                 }
               }, 200);
             };
@@ -325,7 +333,7 @@ export default {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
       handler(val) {
-        // this.resetModelsFields();
+        this.resetModelsFields();
         this.generateModle(val.list);
         // this.isDataNull = false;
       },

@@ -33,7 +33,6 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
-
         <!--user数据-->
         <el-dialog title="user数据" :visible.sync="userDialogTableVisible">
             <!--{{usreData}}-->
@@ -72,6 +71,16 @@
                         </el-input>
                     </template>-->
                 </el-table-column>
+            </el-table>
+        </el-dialog>
+
+        <!--表单数据-->
+        <el-dialog title="nodes数据" :visible.sync="formDialogTableVisible" width="1000px">
+            <!--{{curFormData}}-->
+            <el-table :data="curFromDataSolve">
+                <el-table-column label="序号" type="index" width="50"></el-table-column>
+                <el-table-column property="key" label="KEY" width="150"></el-table-column>
+                <el-table-column property="value" label="VALUE"></el-table-column>
             </el-table>
         </el-dialog>
 
