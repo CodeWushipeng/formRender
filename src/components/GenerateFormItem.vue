@@ -3,7 +3,7 @@
     :label="widget.type != 'buttonCom' ? widget.name : ''"
     :prop="widget.model"
   >
-    <!--widget: {{widget}}-->
+    <!--widget: {{widget}} -->
     <!-- {{rules}} -->
     <!--金额控件-->
     <template v-if="widget.type == 'amount'">
@@ -37,6 +37,7 @@
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
         @keyup.native.enter="change"
+        @keyup.native="passwordKeyup"
         :data-index="nowindex"
         @focus="getIndex($event)"
         @blur="setPreIndex($event)"
@@ -107,7 +108,7 @@
       ></el-input>
     </template>
 
-    <!--身份证-->
+    <!--身份证 读卡-->
     <template v-if="(widget.type == 'idencard') | (widget.type == 'readcard')">
       <el-input
         :type="widget.options.dataType"
@@ -123,7 +124,7 @@
           v-if="widget.options.ifperipheral"
           slot="prepend"
           icon="el-icon-question"
-          @click="indentcart()"
+          @click="peripheral()"
           >读取</el-button
         ></el-input
       >
@@ -771,6 +772,10 @@ export default {
     getIndex(e) {
       if (this.widget.type == "select") {
         this.selectModel = this.widget.model;
+      }else if(this.widget.type == "password" || this.widget.type == "againpassword"){
+          if(this.widget.options.peripheral && (this.widget.options.peripheral == true)){
+              this.peripheral()
+          }
       }
       this.$emit("pushIndex", this.widget.model);
     },
@@ -778,9 +783,23 @@ export default {
       console.log("下拉选择",params)
       if(params==true){
         console.log(this.$refs)
-        
+
       }
     },
+  /*密码相关方法*/
+  passwordKeyup(event){
+      if(event.keyCode != 13 && event.keyCode != 8 && this.widget.options.peripheral && (this.widget.options.peripheral == true)){
+          this.dataModel=""
+          //alert("请用外设键盘输入")
+          this.$notify({
+              title: "fail",
+              message: "请用外设键盘输入",
+              type: "info",
+              duration: 2000
+          });
+      }
+  },
+  /*密码相关方法*/
     // 获取设置的index
     getPre(ele) {
       if (ele.dataset.index == undefined) {
@@ -815,10 +834,10 @@ export default {
     blurHandler() {
       this.amountvisible = false;
     },
-    //身份证
-    indentcart() {
+    //身份证   peripheral
+    peripheral() {
       var _this = this
-      function indentcartreq() {
+      function peripheralreq() {
         var paraObj = {};
         if (_this.widget.type == "idencard") {
             paraObj.para1 = "GNQ_04";
@@ -838,25 +857,41 @@ export default {
         ) {
             paraObj.para1 = "GNQ_05";
             paraObj.para2 = "";
+        } else if (
+            _this.widget.type == "password"
+        ) {
+            paraObj.para1 = "GWQ_11";
+            paraObj.para2 = "01234567890123";//字符串第一位为标志位 0-请输入密码 1-请再次输入密码，标志位后面是待加密数据，一般为银行账号
+        } else if (
+            _this.widget.type == "againpassword"
+        ) {
+            paraObj.para1 = "GWQ_11";
+            paraObj.para2 = "11234567890123";//字符串第一位为标志位 0-请输入密码 1-请再次输入密码，标志位后面是待加密数据，一般为银行账号
         }
+
         return new Promise(function (resolve, reject) {
           try {
-              const idenTemp = smartClient.allDevice(
-                  paraObj.para1,
-                  paraObj.para2
-              );
-              //return idenTemp;
-              resolve(idenTemp)
+            const idenTemp = smartClient.allDevice(
+                paraObj.para1,
+                paraObj.para2
+            );
+            resolve(idenTemp)
           }catch (err){
               console.log(err)
-              alert('请连接设备或手输')
+              //alert('请连接设备或手输')
+              _this.$notify({
+                  title: "fail",
+                  message: "请连接设备",
+                  type: "info",
+                  duration: 2000
+              });
           }
         })
       }
-      indentcartreq().then(idenTemp => {
+      peripheralreq().then(idenTemp => {
           if (idenTemp) {
               const idenTempObj = JSON.parse(idenTemp);
-              //alert(idenTempObj.rCode)
+              //alert(idenTempObj)
               if (idenTempObj.rCode == 0) {
                   if (this.widget.type == "idencard") {
                       this.dataModel = idenTempObj.idInfo.IDNumber;
@@ -872,6 +907,11 @@ export default {
                       this.dataModel = idenTempObj.szTrack2;
                       //todo szTrack3 暂时不知道可不可用
                       var szTrack3 = idenTempObj.szTrack3;
+                  } else if (
+                      this.widget.type == "password" ||
+                      this.widget.type == "againpassword"
+                  ) {
+                      this.dataModel = idenTempObj.password
                   }
               } else {
                   alert("检测失败：" + idenTemp);

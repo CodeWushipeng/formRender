@@ -79,6 +79,14 @@
         </el-form-item>
       </el-form-item>
 
+      <!--密码相关属性-->
+      <el-form-item v-if="data.type=='password' | data.type=='againpassword'">
+        <el-switch
+          v-model="data.options.peripheral"
+          :inactive-text="$t('fm.config.widget.peripheral')">
+        </el-switch>
+      </el-form-item>
+
       <!--图片属性-->
       <el-form-item v-if="data.type=='imageshow'">
         <el-form-item :label="$t('fm.config.widget.imagesrc')">

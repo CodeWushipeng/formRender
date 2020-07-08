@@ -326,9 +326,9 @@ export default {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
       handler(val) {
-        // this.resetModelsFields();
-        // this.generateModle(val.list);
-        this.isDataNull = false;
+        this.resetModelsFields();
+        this.generateModle(val.list);
+        // this.isDataNull = false;
       },
     },
     value: {
