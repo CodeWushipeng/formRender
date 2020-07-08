@@ -31,6 +31,7 @@ const flowMixin= {
             userDialogTableVisible:false,
             platformDialogTableVisible:false,
             nodesDialogTableVisible:false,
+            formDialogTableVisible:false,
             listData:[],
             usreData:[],
             usreDataSolve:[],
@@ -38,6 +39,8 @@ const flowMixin= {
             platformDataSolve:[],
             nodesData:[],
             nodesDataSolve:[],
+            curFormData:[],
+            curFromDataSolve:[],
         }
     },
     computed: {
@@ -119,7 +122,21 @@ const flowMixin= {
         getFormHandle(){
             if(this.$refs.renderForm){
                 this.$refs.renderForm.getData().then(data=>{
-                    alert(JSON.stringify(data));
+                    // alert(JSON.stringify(data));
+
+                    let res =[];
+                    for(let key in data){
+                        const value = data[key]
+                        res.push({
+                            key:key,
+                            value: typeof  value == "object" ? JSON.stringify(value) : value
+                        })
+                    }
+
+                    this.curFormData = data;
+                    this.curFromDataSolve = res;
+                    this.formDialogTableVisible = true;
+
                 })
             }else{
                 this.$notify.info({
