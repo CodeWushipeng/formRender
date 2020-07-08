@@ -8,7 +8,7 @@
       <!--formdata: {{formdata}}-->
       tempValue: {{tempValue}}
       <!--<hr>-->
-    <fm-generate-form
+    <fm-generate-form v-if="hackRest"
       :remote="remoteFuncs"
       :data="jsonData"
       :value="formdata"
@@ -43,6 +43,7 @@ export default {
     },
   data() {
     return {
+        hackRest:true, // 设置重新渲染组件
       jsonData: {},
       tempValue: {}, //处理流控数据的变量
       formdata: {},
@@ -54,6 +55,10 @@ export default {
     console.log('created...');
     this._inits();
   },
+    destroyed(){
+      // console.log("destroyed......")
+        console.error("===============================destroyed......===============================")
+    },
   computed: {
     nodesLength() {
       return this.configdata && this.configdata.list.length > 0;
@@ -258,7 +263,11 @@ export default {
       "configdata.list": {
           deep: true,
           handler(list) {
-              this._inits();
+              this.hackRest = false;
+              this.$nextTick(()=>{
+                  this.hackRest = true;
+                  this._inits();
+              })
           },
       },
   },

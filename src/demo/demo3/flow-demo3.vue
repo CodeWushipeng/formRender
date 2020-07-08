@@ -159,7 +159,7 @@
 
         <div v-if="type=='03'">
             <!--render-form-->
-            <render-form v-if="configdata.list.length>0"
+            <render-form v-if="hackRest && configdata.list.length>0"
                          :url="url"
                          :configdata="configdata"
                          :remoteFuncs="remoteFuncs"
@@ -197,7 +197,7 @@
 <script>
     // import getFG from 'fg-control';
     import getFG from './fg-control';
-    import handler from './fg-utils'
+    import handler from './fg-utils';
 
     const FG = new getFG();
     import {queryFlowDetail} from '../../api/flows';
@@ -220,6 +220,7 @@
         },
         data() {
             return {
+                hackRest:true, // 设置重新渲染组件
                 url: "",
                 dialogVisible: false,
                 allData: null,
@@ -275,11 +276,24 @@
                         }
                     }
                 }).catch((error) => {
-                    console.log(error);
+                    throw new Error(error);
                 });
                 // this._remote();
             },
+
+            // 销毁组件
+            resetComponent(callback){
+                return new Promise((reslove,reject)=>{
+                    this.hackRest = false;
+                    this.$nextTick(()=>{
+                        this.hackRest = true;
+                        reslove();
+                    })
+                })
+
+            },
             _config(next_node) {
+                // this.resetComponent();
                 this.data = FG.getNext(next_node);
                 this.configdata.list = [FG.getNext(next_node)];
                 this.configdata.rollbackData = {};
@@ -415,10 +429,19 @@
                                 const copyObj = JSON.parse(JSON.stringify(Obj));
                                 FG.saveNode(nodeCode, copyObj);
                                  this.configdata.nodes = FG.getNodes(); // 节点数据
-                                 return Promise.resolve()
+                                 // return Promise.resolve();
                             }).then(res=>{
                                  if (outputFromCode) {
                                      // TODO 有响应页面
+                                    /* this.resetComponent().then(()=>{
+                                         setTimeout(()=>{
+                                             if(this.$refs.renderForm){
+                                                 this.$refs.renderForm.changeJsonData(outputFromCode, outputConfig);
+                                                 FG.OUTFLAG = true;
+                                                 FG.CURFORM = "inputFormCode";
+                                             }
+                                         })
+                                     })*/
                                      this.$refs.renderForm.changeJsonData(outputFromCode, outputConfig);
                                      FG.OUTFLAG = true;
                                      FG.CURFORM = "inputFormCode";
