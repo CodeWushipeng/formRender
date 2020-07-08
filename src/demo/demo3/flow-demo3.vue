@@ -101,7 +101,7 @@
         <!--<hr>-->
 
         <!--当前节点信息-->
-        <div class="current-node">
+        <div class="current-node" v-if="Object.keys(data).length>0">
             <h3>{{data.nodeName}}</h3>
             <el-card class="box-card">
                 <el-row :gutter="20">
@@ -279,9 +279,11 @@
 
             config(next_node) {
                 // this.resetComponent();
-                this.data = FG.getNext(next_node);
-                this.configdata.list = [FG.getNext(next_node)];
-                this.configdata.rollbackData = {};
+                if(next_node){
+                    this.data = FG.getNext(next_node);
+                    this.configdata.list = [FG.getNext(next_node)];
+                    this.configdata.rollbackData = {};
+                }
             },
             getStart() {
                 const flowCode = this.$route.name;
@@ -368,7 +370,14 @@
                 }
 
                 // 执行
-                this.config(findMyNode);
+                if(findMyNode){
+                    this.config(findMyNode);
+                }else{
+                    this.$notify.error({
+                        title: '错误',
+                        message: '往下执行的节点没有通过启动验证'
+                    });
+                }
             },
             // 提交
             submit() {
