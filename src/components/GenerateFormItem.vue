@@ -17,6 +17,7 @@
       <div class="el-input el-input--small">
         <input
           class="el-input__inner"
+          :maxlength = "widget.options.maxlength"
           @keydown="inputHandler(widget.key)"
           @focus="inputHandler(widget.key)"
           @keyup="keyupHandler(widget.key)"
@@ -36,6 +37,7 @@
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
+        :maxlength = "widget.options.maxlength"
         @keyup.native.enter="change"
         @keyup.native="passwordKeyup"
         :data-index="nowindex"
@@ -49,6 +51,7 @@
       <el-input
         type="password"
         v-model="dataModel"
+        :maxlength = "widget.options.maxlength"
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
@@ -586,8 +589,8 @@ export default {
   },
   data() {
     return {
-      /*imagesrc:require(this.widget.options.imagesrc),*/
-      imagesrc: "",
+      imagesrc:require("../assets/wenjian.png"),
+      /*imagesrc: "",*/
       radioVisible: false,
       cameraVisible: false,
       cameraList: [],

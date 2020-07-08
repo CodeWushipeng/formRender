@@ -4,6 +4,7 @@ export const bankingComponents = [
     icon: "icon-input",
     options: {
       hidden: false,
+      maxlength: 17,
       width: "100%",
       defaultValue: "",
       required: false,
@@ -31,6 +32,7 @@ export const bankingComponents = [
     icon: "icon-input",
     options: {
       hidden: false,
+      maxlength: 17,
       width: "100%",
       defaultValue: "",
       required: false,
@@ -58,6 +60,7 @@ export const bankingComponents = [
     icon: "icon-input",
     options: {
       hidden: false,
+      maxlength: 20,
       width: "100%",
       defaultValue: "",
       required: false,
