@@ -421,7 +421,10 @@
                              insertNodeData(data).then(res => {
                                 console.log("=======res..", res)
                                 const {header, body} = res;
-                                Obj['down'] = body;
+                                Obj['down'] = {
+                                    ...body.data,
+                                    resCode:body.resCode
+                                };
                                  alert("提交数据：" + JSON.stringify(Obj));
                                 // 深拷贝
                                 const copyObj = JSON.parse(JSON.stringify(Obj));
