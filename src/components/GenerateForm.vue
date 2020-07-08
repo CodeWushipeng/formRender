@@ -52,8 +52,7 @@
                   :nowindex="index"
                   @pushIndex="getIndex"
                   @pushPreIndex="getPreIndex"
-                  :ref="item.model"
-                  v-show="!item.options.hidden"
+                  v-show="!citem.options.hidden"
                 ></genetate-form-item>
               </template>
             </el-col>
@@ -326,8 +325,8 @@ export default {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
       handler(val) {
-        this.resetModelsFields();
-        this.generateModle(val.list);
+        // this.resetModelsFields();
+        // this.generateModle(val.list);
         // this.isDataNull = false;
       },
     },

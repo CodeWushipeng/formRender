@@ -4,8 +4,8 @@
       v-if="configdata != null"
       :configdata="configdata"
       ref="renderForm"
-    ></render-form>
-    <el-button @click="acceptFormData">获取数据</el-button> -->
+    ></render-form> -->
+    <!-- <el-button @click="acceptFormData">获取数据</el-button> -->
     <fm-generate-form v-if="configdata != null" :data="configdata" ref="generateForm"></fm-generate-form>
   </div>
 </template>

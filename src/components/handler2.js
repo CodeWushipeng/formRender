@@ -223,12 +223,11 @@ let handlers = {
         if (!flag) {
           return;
         }
-        let url = lists[i].remoteFactor.url;
-        let primitiveData = lists[i].remoteFactor.data;
+        let url = "/dev-api/dictionary/quertDicNoPage"
+        let primitiveData = this.evalWrap(lists[i].remoteFactor.data);
         let nowModel = lists[i].model;
         let nowData = this.models[nowModel];
         let postData;
-        var result;
         if (primitiveData != undefined && primitiveData != "") {
           postData = primitiveData;
         } else {
@@ -237,12 +236,17 @@ let handlers = {
         let success = lists[i].remoteFactor.success;
         request
           .post(url, {
-            data: postData,
+            body: {
+              dicName: "cityList",
+              selType: 2,
+            },
+            header: { pageIndex: 1, pageSize: 1, gloSeqNo: new Date(),"reqSeqNo": "sit anim","reqTime": "officia ad anim",},
           })
           .then((res) => {
-            if (res.code == 0) {
+            console.log(res)
+            if (res.header.rspCode == "SP000000") {
               // 提取返回数据对象名
-              let targetKeys = Object.keys(res.data);
+              let targetKeys = Object.keys(res.body.dicList);
               // 解析返回数据对应的属性名并赋值对应组件
               for (let j = 0; j < targetKeys.length; j++) {
                 if (this.models[targetKeys[j]] != undefined) {
@@ -433,14 +437,6 @@ let handlers = {
       });
       console.log(this.comArr);
     },
-  },
-  created() {
-    let inter = setInterval(() => {
-      if (this.data.list && this.data.list.length > 0) {
-        clearInterval(inter);
-        this.handelHidden();
-      }
-    }, 300);
   },
   mounted() {
     let inter = setInterval(() => {

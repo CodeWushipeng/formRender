@@ -22,6 +22,7 @@
 import { Loading } from 'element-ui';
 import fmGenerateForm from "./GenerateForm";
 import { getFormList } from '../api/forms';
+import handler from "../components/render";
 export default {
   name: "render-form",
   components: {
@@ -41,6 +42,7 @@ export default {
             default:()=> ''
         },
     },
+  mixins: [handler],
   data() {
     return {
       jsonData: {},
@@ -51,7 +53,7 @@ export default {
     };
   },
   created() {
-    console.log('created...');
+    console.log('created...',this.configdata);
     this._inits();
   },
   computed: {
@@ -112,6 +114,7 @@ export default {
                     let temp = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
                     this.dynamicData(temp);
                     this.handelDynamicInFlow(temp);
+                    this.tranData(temp)
                     this.jsonData = temp;
                     console.log(temp);
                 }else{
