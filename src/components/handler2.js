@@ -77,8 +77,9 @@ let handlers = {
       ) {
         return;
       }
-      this.outMark++;
-      this.preIndex = this.outMark
+      if(this.outMark < this.canFocusLength){
+        this.outMark++;
+      }
       this.handelHidden();
       this.getShowLength();
       this.enterCheck();
@@ -87,8 +88,8 @@ let handlers = {
     // 组件单独校验
     singleValidate(i) {
       let lists = this.comArr;
-      console.log("当前",i)
       this.$refs["generateForm"].validateField(lists[i].model, (valid) => {
+        console.log("组件单独校验",valid,lists[i].model)
         if (valid != "" && valid != undefined) {
           this.setFocus(this.allItems[i]);
           this.singleError = true;
@@ -277,6 +278,7 @@ let handlers = {
       }
       let lists = this.comArr;
       if (lists[j].assignment && lists[j].assignment != "") {
+        console.log("离开赋值",lists[j].assignment)
         this.evalWrap(lists[j].assignment);
       }
     },
@@ -296,7 +298,7 @@ let handlers = {
     },
     // 全部节点循环事件
     iteratorAllEle() {
-      this.iteratorUnfocus()
+      // this.iteratorUnfocus()
       this.unfocus=[];
       for (let i = this.outMark; i < this.comArr.length; i++) {
         if (
@@ -309,8 +311,9 @@ let handlers = {
         } else {
           if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
             this.setFocus(this.allItems[i]);
-            console.log(this.outMark, i, this.allItems[i]);
+            console.log( "获取节点",this.outMark, i, this.allItems[i]);
             this.outMark = i;
+            this.preIndex = this.outMark
             break;
           }
         }
@@ -318,7 +321,8 @@ let handlers = {
     },
     // 获取页面显示的元素的长度
     getShowLength(){
-      for(let i = this.outMark; i < this.comArr.length; i++){
+      this.canFocusLength=0
+      for(let i = this.comArr.length-1; i >= 0; i--){
         if (
           this.comArr[i].options.disabled ||
           this.comArr[i].options.hidden ||
@@ -326,7 +330,9 @@ let handlers = {
         ) {
           continue
         }else{
-          this.canFocusLength++
+          console.log("1111")
+          this.canFocusLength = i;
+          break
         }
       }
       console.log(this.canFocusLength)
@@ -357,6 +363,7 @@ let handlers = {
     },
     // 循环过去的节点
     iteratorUnfocus() {
+      console.log(this.unfocus)
       for (let i = 0; i < this.unfocus.length; i++) {
         if (
           !this.unfocus[i].options.disabled &&
@@ -387,19 +394,23 @@ let handlers = {
     // 回车事件
     onElChange() {
       if (this.preIndex != this.outMark) {
-        this.allValidate(this.outMark);
+        this.allValidate(this.preIndex);
         this.outMark = this.preIndex;
+        console.log(this.outMark)
         this.handelFlow();
         console.log(this.outMark)
         return
       }
-      if (this.outMark < this.canFocusLength-1) {
+      console.log("回车",this.outMark)
+      if (this.outMark < this.canFocusLength) {
         this.allValidate(this.outMark);
         this.handelAssignment(this.outMark);
         this.handelFlow();
-      } else if(this.outMark == this.canFocusLength-1) {
+      } else if(this.outMark == this.canFocusLength) {
+        console.log("2222")
         this.allValidate(this.outMark);
         this.handelAssignment(this.outMark);
+        this.handelFlow();
       }
     },
     // textarea ctrl+enter触发光标离开事件
