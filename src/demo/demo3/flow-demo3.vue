@@ -16,8 +16,7 @@
                 <el-table-column property="nodeName" label="节点名称" width="200"></el-table-column>
                 <el-table-column property="type" label="节点类型">
                     <template slot-scope="scope">
-                        <span><el-tag
-                                :type="filterType(scope.row.type)">{{ filterStatus(scope.row.type)}}</el-tag></span>
+                        <span><el-tag :type="filterType(scope.row.type)">{{ filterStatus(scope.row.type)}}</el-tag></span>
                     </template>
                 </el-table-column>
                 <el-table-column property="nextNode" label="下一节点"></el-table-column>
@@ -197,27 +196,16 @@
 <script>
     // import getFG from 'fg-control';
     import getFG from './fg-control';
-    import handler from './fg-utils'
+    import flowMixin from './fg-utils';
 
     const FG = new getFG();
     import {queryFlowDetail} from '../../api/flows';
-    import {insertNodeData} from '../../api/submit';
-    import {platform, user} from './flowData';
+    import {insertNodeData}  from '../../api/submit';
+    import {platform, user}  from './flowData';
 
     export default {
         name: 'flow-demo',
-        mixins: [handler],
-        filters: {
-            filter_Status(type) {
-                const fsTxt = {
-                    '01': "开始节点",
-                    '02': "结束节点",
-                    '03': "表单节点",
-                };
-
-                return fsTxt[type];
-            }
-        },
+        mixins: [flowMixin],
         data() {
             return {
                 url: "",
@@ -241,7 +229,7 @@
         methods: {
             _inits() {
                 this.showLoading();
-                this._getStart().then((res) => {
+                this.getStart().then((res) => {
                     // console.log('res', res)
                     const {rspCode} = res;
                     this.hideLoading()
@@ -257,8 +245,8 @@
                         // 挂载数据
                         FG.setters('user', user);
                         FG.setters('platform', platform);
-                        FG.setters('list', list);
-                        FG.setters('utils', funcObject);
+                        FG.setters('list', list);        // 流控数据
+                        FG.setters('utils', funcObject); // 公共函数
 
                         // 启动开始节点
                         const startNode = list.filter(item => item.type == '01')[0];
@@ -275,16 +263,18 @@
                         }
                     }
                 }).catch((error) => {
-                    console.log(error);
+                    throw new Error(error);
                 });
                 // this._remote();
             },
-            _config(next_node) {
+
+            config(next_node) {
+                // this.resetComponent();
                 this.data = FG.getNext(next_node);
                 this.configdata.list = [FG.getNext(next_node)];
                 this.configdata.rollbackData = {};
             },
-            _getStart() {
+            getStart() {
                 const flowCode = this.$route.name;
                 const query = this.$route.query;
                 console.log('this.$routes.name:', this.$route.name)
@@ -318,13 +308,14 @@
                     delete FG.nodes[returnNode];
                 }
             },
+            // 上一节点
             prev() {
                 this.configdata.rollbackData = {};
                 // rollbackData 回退数据处理：01-清除，02-保留不处理
                 const {returnNode, rollback, rollbackData, type} = this.data;
                 let message = this.rollValidate(type, rollback);
                 if (message.error == -1) {
-                    alert(message.text)
+                    alert(message.text);
                     return;
                 }
                 if (rollback == FG.CAN_ROLLBACK && returnNode) {
@@ -338,16 +329,15 @@
                 }
             },
             // 下一节点(跳转的业务判断)
-            next(next_node) {
-                if (next_node && next_node.includes(",")) {
-                    const nodes = next_node.split(",");
-                    const flow_list = FG.list;
-
+            next(nextNodes) {
+                let findMyNode = ""; // 最终要执行的节点
+                if (nextNodes && nextNodes.includes(",")) {
+                    // 多节点
+                    const nodes = nextNodes.split(",");
                     function filters(j) {
-                        let fs = nodes[j];
-                        return flow_list.filter(fl => fl.nodeCode == fs)[0];
+                        let oneNode = nodes[j];
+                        return FG.list.filter(fl => fl.nodeCode == oneNode)[0];
                     }
-
                     for (let j = 0; j < nodes.length; j++) {
                         const nextFlow = filters(j);
                         const checkStart = nextFlow['checkStart'];
@@ -355,7 +345,7 @@
                         try {
                             // console.log('checkStart', checkStart)
                             if (FG.checkStart(checkStart)) {
-                                this._config(nextCode);
+                                findMyNode = nextCode
                                 break;
                             }
                         } catch (error) {
@@ -364,8 +354,12 @@
                         }
                     }
                 } else {
-                    this._config(next_node);
+                    // 单节点
+                    findMyNode = nextNodes;
                 }
+
+                // 执行
+                this.config(findMyNode);
             },
             // 提交
             submit() {
@@ -384,7 +378,7 @@
                 }
                 // 开始节点
                 if (type == FG.START) {
-                    this._config(nextNode);
+                    this.config(nextNode);
                     return;
                 }
 
@@ -414,14 +408,14 @@
                                 // 深拷贝
                                 const copyObj = JSON.parse(JSON.stringify(Obj));
                                 FG.saveNode(nodeCode, copyObj);
-                                 this.configdata.nodes = FG.getNodes(); // 节点数据
-                                 return Promise.resolve()
+                                this.configdata.nodes = FG.getNodes(); // 节点数据
+                                 // return Promise.resolve();
                             }).then(res=>{
                                  if (outputFromCode) {
                                      // TODO 有响应页面
                                      this.$refs.renderForm.changeJsonData(outputFromCode, outputConfig);
                                      FG.OUTFLAG = true;
-                                     FG.CURFORM = "inputFormCode";
+                                     // FG.CURFORM = "inputFormCode";
                                  } else {
                                      // TODO 无响应页面,直接跳转到下一节点
                                      this.next(nextNode);

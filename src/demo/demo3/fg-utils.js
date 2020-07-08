@@ -7,13 +7,23 @@
 import { Loading } from 'element-ui';
 import getFG from './fg-control';
 const FG = new getFG();
-const handler= {
+const flowMixin= {
+    filters: {
+        filter_Status(type) {
+            const fsTxt = {
+                '01': "开始节点",
+                '02': "结束节点",
+                '03': "表单节点",
+            };
+            return fsTxt[type];
+        }
+    },
     data(){
         return {
             loadingInstance:null,
             // 当前节点数据
             data: {
-                outputFromCode:null
+                // outputFromCode:null
             },
             // =========数据显示================
             records:[], // 流程数据
@@ -176,4 +186,4 @@ const handler= {
         },
     }
 }
-export default handler;
+export default flowMixin;

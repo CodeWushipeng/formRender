@@ -8,7 +8,7 @@
       <!--formdata: {{formdata}}-->
       tempValue: {{tempValue}}
       <!--<hr>-->
-    <fm-generate-form
+    <fm-generate-form v-if="hackRest"
       :remote="remoteFuncs"
       :data="jsonData"
       :value="formdata"
@@ -45,10 +45,11 @@ export default {
   mixins: [handler],
   data() {
     return {
+      hackRest:true, // 设置重新渲染组件
       jsonData: {},
       tempValue: {}, //处理流控数据的变量
       formdata: {},
-      dyData: {}, //动态数据
+      dyData: {},    //动态数据
       loadingInstance:null
     };
   },
@@ -56,6 +57,10 @@ export default {
     console.log('created...',this.configdata);
     this._inits();
   },
+    destroyed(){
+      // console.log("destroyed......")
+        console.error("===============================destroyed......===============================")
+    },
   computed: {
     nodesLength() {
       return this.configdata && this.configdata.list.length > 0;
@@ -86,9 +91,6 @@ export default {
               this.loadingInstance.close();
           },500)
       },
-      _reset(){
-          this.$refs.generateForm && this.$refs.generateForm.reset();
-      },
       _inits() {
           console.log("_inits===============================")
 
@@ -112,8 +114,8 @@ export default {
                     const formContent = rest.records[0]['formContent'];
                     // 设置数据
                     let temp = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
-                    this.dynamicData(temp);
-                    this.handelDynamicInFlow(temp);
+                    this.handleDynamicData(temp);
+                    this.handleDynamicInFlow(temp);
                     this.tranData(temp)
                     this.jsonData = temp;
                     console.log(temp);
@@ -136,7 +138,7 @@ export default {
       }
     },
     // 处理流控数据中带有的动态数据
-    handelDynamicInFlow(temp) {
+    handleDynamicInFlow(temp) {
       console.log(this.tempValue, this.formdata);
       var platform = this.dyData.platform;
       var user = this.dyData.user;
@@ -150,7 +152,7 @@ export default {
       }
     },
     //  动态数据处理函数
-    dynamicData(temp) {
+    handleDynamicData(temp) {
       var platform = this.dyData.platform;
       var user = this.dyData.user;
       let formLists = temp.list;
@@ -180,14 +182,14 @@ export default {
     },
 
     // 响应页面
-    changeJsonData(inputConfig, outConfig = {}) {
-      console.log("inputConfig", inputConfig);
-        if(inputConfig){
+    changeJsonData(outputFromCode, outputCofig = {}) {
+      console.log("outputFromCode", outputFromCode);
+        if(outputFromCode){
             this.showLoading()
         } else{
             return false;
         }
-        getFormList(this.url,{formCode: inputConfig}).then((res) => {
+        getFormList(this.url,{formCode: outputFromCode}).then((res) => {
             const {rspCode} = res;
             this.hideLoading()
             if(rspCode=="00000000"){
@@ -195,13 +197,12 @@ export default {
                 if(rest && rest.records.length>0){
                     const formContent = rest.records[0]['formContent'];
                     const temp = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
-                    this.tempValue = this._solveConfigJs(outConfig);
+                    this.tempValue = this._solveConfigJs(outputCofig);
                     this.jsonData = temp;
-                    // this.formdata = this._solveConfigJs(outConfig);
-                    this.dynamicData(temp);
-                    this.handelDynamicInFlow(temp);
+                    this.handleDynamicData(temp);
+                    this.handleDynamicInFlow(temp);
 
-                    console.log('this._solveConfigJs(outConfig)',this._solveConfigJs(outConfig))
+                    console.log('this._solveConfigJs(outputCofig)',this._solveConfigJs(outputCofig))
                 }else{
                     this.$notify.error({
                         title: '消息',
@@ -256,12 +257,24 @@ export default {
     getData() {
       return this.$refs.generateForm.getData();
     },
+    // 销毁组件
+    resetComponent(callback){
+        return new Promise((reslove,reject)=>{
+          this.hackRest = false;
+          this.$nextTick(()=>{
+              this.hackRest = true;
+              reslove();
+          })
+        })
+    },
   },
   watch: {
       "configdata.list": {
           deep: true,
           handler(list) {
-              this._inits();
+              this.resetComponent().then(()=>{
+                  this._inits();
+              })
           },
       },
   },

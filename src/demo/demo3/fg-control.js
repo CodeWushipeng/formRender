@@ -24,7 +24,7 @@ class FG {
         this.CLEAR_DATA = "01", // 清除数据
         this.KEEP_DATA = "02", // 保留数据
 
-
+        // 数据
         this.user = {};
         this.platform =  {};
         this.nodes =  {};
@@ -32,7 +32,7 @@ class FG {
         this.utils =  {};
 
         // 流控数据
-        this.flow = {};
+        // this.flow = {};
     }
 
     /**
@@ -42,6 +42,10 @@ class FG {
         console.log('engine init...')
     }
 
+    /**
+     * 预览数据
+     * @returns {{user: ({}|*), platform: ({}|*), CURFORM: null, OUTFLAG: null, list: ({}|*), nodes: ({}|*)}}
+     */
     getAllData(){
         return {
             user:this.user,
@@ -113,25 +117,6 @@ class FG {
     }
 
     /**
-     * 获取流控节点中配置的数据
-     * @param fn
-     * @returns {any}
-     */
-    _getFieldsData(fn) {
-        try {
-            const flow = this.flow;
-            const obj = eval(fn);
-            for (let key in obj) {
-                // console.log(key,(obj[key]))
-                obj[key] = eval(obj[key]);
-            }
-            return obj;
-        } catch (e) {
-            throw new Error('init func[input_config] 执行出错了')
-        }
-    }
-
-    /**
      * 过滤数据
      * @param node_code
      * @returns {*}
@@ -139,23 +124,6 @@ class FG {
      */
     _filter(node_code) {
         return this.list.filter(item => item.nodeCode == node_code);
-    }
-
-    /**
-     * 获取流控中配置的数据
-     * @param node_code
-     * @returns {*}
-     */
-    getInputData(node_code) {
-        const flw = this._filter(node_code)[0];
-        const {input_config} = flw;
-        const {func} = this.flow;
-        if (func && input_config) {
-            const fn = func[input_config];
-            return this._getFieldsData(fn);
-        } else {
-            return {}
-        }
     }
 
     /**
@@ -180,7 +148,6 @@ class FG {
     getNext(next_node) {
         console.log('next_node', next_node)
         if (next_node) {
-            // const next = this.flow.list.filter(item => item.node_code == next_node);
             const next = this._filter(next_node);
             if (next instanceof Array && next.length > 0) {
                 return next[0];
@@ -198,20 +165,13 @@ class FG {
         this.nodes[nodeCode] = value;
         console.log('nodes', JSON.stringify(this.nodes))
     }
-    getNodes(){
-        return this.nodes;
-    }
 
     /**
-     * 默认提交
-     * @param Obj
-     * @returns {Promise<any>}
+     * 获取节点所有节点数据
+     * @returns {{}|*}
      */
-    commitDefault(Obj) {
-        return new Promise((resolve, reject) => {
-            console.log("执行默认的提交", Obj)
-            resolve(Obj)
-        })
+    getNodes(){
+        return this.nodes;
     }
 
 }

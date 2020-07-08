@@ -22,17 +22,16 @@
               >
               </el-option>
             </el-select>
+            <el-button type="primary" style="marginLeft:20px" icon="el-icon-search">搜索</el-button>
           </div>
           <el-table :data="gridData">
             <el-table-column
               property="itemValue"
               label="城市列表"
-              width="150"
             ></el-table-column>
             <el-table-column
               property="itemCode"
               label="代码"
-              width="200"
             ></el-table-column>
           </el-table>
         </el-dialog>
