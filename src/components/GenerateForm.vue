@@ -343,7 +343,6 @@ export default {
       handler(val) {
         this.resetModelsFields();
         this.generateModle(val.list);
-        // this.isDataNull = false;
       },
     },
     value: {

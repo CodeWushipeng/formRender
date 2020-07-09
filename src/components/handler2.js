@@ -17,6 +17,7 @@ let handlers = {
       canFocusArr: [],
       canFocusType: [
         "input",
+        "textarea",
         "date",
         "time",
         "number",
@@ -77,9 +78,10 @@ let handlers = {
       ) {
         return;
       }
-      if(this.outMark < this.canFocusLength){
-        this.outMark++;
-      }
+      // if(this.outMark < this.canFocusLength){
+      //   this.outMark++;
+      // }
+      this.outMark++;
       this.handelHidden();
       this.getShowLength();
       this.enterCheck();
@@ -306,14 +308,12 @@ let handlers = {
     // 全部节点循环事件
     iteratorAllEle() {
       // this.iteratorUnfocus()
-      this.unfocus=[];
       for (let i = this.outMark; i < this.comArr.length; i++) {
         if (
           this.comArr[i].options.disabled ||
           this.comArr[i].options.hidden ||
           this.comArr[i].options.readonly == "readonly"
         ) {
-          this.unfocus.push(this.comArr[i]);
           continue;
         } else {
           if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
@@ -337,7 +337,6 @@ let handlers = {
         ) {
           continue
         }else{
-          console.log("1111")
           this.canFocusLength = i;
           break
         }
@@ -370,8 +369,7 @@ let handlers = {
     },
     // 循环过去的节点
     iteratorUnfocus() {
-      console.log(this.unfocus)
-      for (let i = 0; i < this.unfocus.length; i++) {
+      for (let i = 0; i < this.outMark; i++) {
         if (
           !this.unfocus[i].options.disabled &&
           !this.unfocus[i].options.hidden &&
@@ -409,12 +407,7 @@ let handlers = {
         return
       }
       console.log("回车",this.outMark)
-      if (this.outMark < this.canFocusLength) {
-        this.allValidate(this.outMark);
-        this.handelAssignment(this.outMark);
-        this.handelFlow();
-      } else if(this.outMark == this.canFocusLength) {
-        console.log("2222")
+      if (this.outMark <= this.canFocusLength) {
         this.allValidate(this.outMark);
         this.handelAssignment(this.outMark);
         this.handelFlow();

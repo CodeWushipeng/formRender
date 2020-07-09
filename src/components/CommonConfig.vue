@@ -12,28 +12,38 @@
           > -->
         </el-input>
         <el-dialog :visible.sync="dialogTableVisible">
-          <div>
-            <el-select v-model="value" filterable placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-            <el-button type="primary" style="marginLeft:20px" icon="el-icon-search">搜索</el-button>
+          <div style="display:flex;marginBottom:20px;">
+            <el-input style="width:200px" placeholder="请输入内容" v-model="value" clearable>
+            </el-input>
+            <el-button
+              type="primary"
+              style="marginLeft:20px"
+              @click="search"
+              icon="el-icon-search"
+              >搜索</el-button
+            >
           </div>
-          <el-table :data="gridData">
+          <el-table :data="gridData" border>
+            <el-table-column
+              property="dicName"
+              label="选项代码"
+            ></el-table-column>
             <el-table-column
               property="itemValue"
               label="城市列表"
             ></el-table-column>
-            <el-table-column
-              property="itemCode"
-              label="代码"
-            ></el-table-column>
+            <el-table-column property="itemCode" label="代码"></el-table-column>
           </el-table>
+          <el-pagination
+            style="marginTop:20px"
+            background
+            layout="prev, pager, next"
+            :total="total"
+            :page-size="pageSize"
+            :current-page="startPage"
+            @current-change="handleCurrentChange"
+          >
+          </el-pagination>
         </el-dialog>
       </el-form-item>
       <!-- 取值范围 -->
@@ -158,24 +168,11 @@ export default {
   data() {
     return {
       dialogTableVisible: false,
+      startPage: 1,
+      pageSize: 10,
+      total: 0,
       value: "",
-      options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-      gridData: []
+      gridData: [],
     };
   },
   mounted() {
@@ -195,17 +192,28 @@ export default {
       console.log(this.data);
       this.$emit("mirror", this.data, e.target.placeholder);
     },
+    // 分页查询
+    handleCurrentChange(val) {
+      this.startPage = val;
+      this.getData();
+    },
     // 获取字典服务数据
     getData(data) {
-      this.dialogTableVisible = true
+      this.dialogTableVisible = true;
       console.log(data);
       request
-        .post("/dev-api/dictionary/quertDicNoPage", {
+        .post("/dev-api/dictionary/getAllWithPageFromDB", {
           body: {
             dicName: "cityList",
             selType: 2,
           },
-          header: { pageIndex: 1, pageSize: 1, gloSeqNo: new Date(),"reqSeqNo": "sit anim","reqTime": "officia ad anim",},
+          header: {
+            pageIndex: this.startPage,
+            pageSize: 10,
+            gloSeqNo: new Date(),
+            reqSeqNo: "sit anim",
+            reqTime: "officia ad anim",
+          },
         })
         .then((res) => {
           console.log(res);
@@ -225,7 +233,60 @@ export default {
             });
             return;
           }
-          this.gridData = res.body.dicList
+          this.gridData = res.body.dics.records;
+          let tempArr = res.body.dics.records;
+          this.total = res.body.dics.total;
+          this.pageSize = res.body.dics.size;
+          let resultArr = [];
+          tempArr.forEach((item) => {
+            let tempJson = {
+              value: "",
+              label: "",
+            };
+            tempJson.label = item.itemValue;
+            tempJson.value = item.itemCode;
+            resultArr.push(tempJson);
+          });
+          console.log(tempArr, resultArr);
+          this.data.options.options = resultArr;
+        })
+        .catch((error) => console.log(error));
+    },
+    // 查询信息
+    search() {
+      request
+        .post("/dev-api/dictionary/getAllWithNoPage", {
+          body: {
+            dicName: "cityList",
+            selType: 2,
+          },
+          header: {
+            pageIndex: 1,
+            pageSize: 999,
+            gloSeqNo: new Date(),
+            reqSeqNo: "sit anim",
+            reqTime: "officia ad anim",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.header.rspCode == "SP000000") {
+            this.$notify({
+              title: "Success",
+              message: "查询成功",
+              type: "success",
+              duration: 2000,
+            });
+          } else if (res.header.rspCode == "99999999") {
+            this.$notify({
+              title: "fail",
+              message: "查询失败",
+              type: "info",
+              duration: 2000,
+            });
+            return;
+          }
+          this.gridData = res.body.dicList;
           let tempArr = res.body.dicList;
           let resultArr = [];
           tempArr.forEach((item) => {
