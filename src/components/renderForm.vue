@@ -102,7 +102,7 @@ export default {
       this.tempValue = Object.keys(rollbackData).length > 0 ? rollbackData : this.getInputData();
 
       // 3
-      if (list instanceof Array && list.length) {
+      if (list instanceof Array && list.length>0 && list[0]) {
         const { inputFormCode } = list[0];
         inputFormCode &&
         getFormList(this.url,{ formCode: inputFormCode}).then((res) => {
@@ -111,6 +111,7 @@ export default {
             if(rspCode=="00000000"){
                 const rest = res.define;
                 if(rest && rest.records.length>0){
+                    debugger
                     const formContent = rest.records[0]['formContent'];
                     // 设置数据
                     let temp = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
@@ -173,7 +174,7 @@ export default {
               if (tempJson != "" && tempJson != undefined) {
                 this.$set(formLists[i].options, "defaultValue", tempJson);
                 // formLists[i].options.defaultValue = tempJson;
-                // this.models[formLists[i].model] = tempJson
+                // this.models[formLists[i].modeltempJson] = tempJson
                 console.log(formLists[i].options.defaultValue);
               }
             }
@@ -185,7 +186,7 @@ export default {
     changeJsonData(outputFromCode, outputCofig = {}) {
       console.log("outputFromCode", outputFromCode);
         if(outputFromCode){
-            this.showLoading()
+            this.showLoading();
         } else{
             return false;
         }
@@ -239,7 +240,7 @@ export default {
     // 将流控引擎input数据绑定到value
     getInputData() {
         const {list} = this.configdata;
-        if (list.length) {
+        if (list && list.length>0 && list[0]) {
             const { inputConfig } = list[0]; // 注入数据
             if(!inputConfig) return {};
             let transObj = this._solveConfigJs(inputConfig);
