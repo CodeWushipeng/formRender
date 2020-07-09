@@ -346,7 +346,7 @@
       ></el-color-picker>
     </template>
     <template v-if="widget.type == 'select'">
-      <!--remoteOptions:{{widget.options.remoteOptions}}-->
+      <!--remoteOptions:{{widget.options.remoteOptions}} :automatic-dropdown="true"-->
       <el-select
         v-model="dataModel"
         :disabled="widget.options.disabled"
@@ -355,7 +355,7 @@
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
         :filterable="widget.options.filterable"
-        :automatic-dropdown="true"
+        
         :data-index="nowindex"
         @focus="getIndex($event)"
         @keyup.native.enter="selectChange"
