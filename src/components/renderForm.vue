@@ -111,7 +111,6 @@ export default {
             if(rspCode=="00000000"){
                 const rest = res.define;
                 if(rest && rest.records.length>0){
-                    debugger
                     const formContent = rest.records[0]['formContent'];
                     // 设置数据
                     let temp = typeof formContent == 'string' ? JSON.parse(formContent) : formContent;
