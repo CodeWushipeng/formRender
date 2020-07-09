@@ -61,7 +61,7 @@ service.interceptors.response.use(
     response => {
         const res = response.data
 
-        // console.log('==========res=============',res)
+        console.log('==========process.env.NODE_ENV =============',process.env.NODE_ENV )
         if(process.env.NODE_ENV === 'development') {
             const { header, body } = res;
             return Promise.resolve(Object.assign({},{"statusCode":200,...header,...body}))

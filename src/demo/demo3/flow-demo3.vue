@@ -34,7 +34,7 @@
             </el-table>
         </el-dialog>
         <!--user数据-->
-        <el-dialog title="user数据" :visible.sync="userDialogTableVisible">
+        <el-dialog title="user数据" :visible.sync="userDialogTableVisible" width="1000px">
             <!--{{usreData}}-->
             <el-table :data="usreDataSolve">
                 <el-table-column label="序号" type="index" width="50"></el-table-column>
@@ -44,7 +44,7 @@
 
         </el-dialog>
         <!--platform数据-->
-        <el-dialog title="platform数据" :visible.sync="platformDialogTableVisible">
+        <el-dialog title="platform数据" :visible.sync="platformDialogTableVisible" width="1000px">
             <!--{{platformData}}-->
             <!--{{platformDataSolve}}-->
             <el-table :data="platformDataSolve">
@@ -278,7 +278,6 @@
             },
 
             config(next_node) {
-                // this.resetComponent();
                 if(next_node){
                     this.data = FG.getNext(next_node);
                     this.configdata.list = [FG.getNext(next_node)];

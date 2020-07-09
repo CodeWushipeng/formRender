@@ -128,7 +128,7 @@ export default {
   methods: {
     // 生成models、rules对象
     generateModle(genList) {
-      // console.log("xxxxxxxxxxxxxxxx2333333333333333333xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+      console.log("xxxxxxxxxxxxxxxx2333333333333333333xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
       if (!genList) {
         return;
       }
