@@ -21,7 +21,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -49,7 +49,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -79,7 +79,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -107,7 +107,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -134,7 +134,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -157,7 +157,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -201,7 +201,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -242,7 +242,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -272,7 +272,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -302,7 +302,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -346,7 +346,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -374,7 +374,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -403,7 +403,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -427,7 +427,7 @@ export const bankingComponents = [
     valueRange: "",
     assignment: "",
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -455,7 +455,7 @@ export const bankingComponents = [
           action: "",
       },
       remoteFactor: {
-          isRemote: false,
+          isRemote: "",
           url: "",
           data: "",
           success: "",
@@ -483,7 +483,7 @@ export const bankingComponents = [
       action: "",
     },
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -511,7 +511,7 @@ export const bankingComponents = [
       action: "",
     },
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -539,7 +539,7 @@ export const bankingComponents = [
       action: "",
     },
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -558,7 +558,7 @@ export const bankingComponents = [
       tips: "暂无提示信息",
     },
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
@@ -577,7 +577,7 @@ export const bankingComponents = [
       tips: "暂无提示信息",
     },
     remoteFactor: {
-      isRemote: false,
+      isRemote: "",
       url: "",
       data: "",
       success: "",
