@@ -329,9 +329,17 @@ export default {
     }
   },
   watch: {
-    data: {
+    models: {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
+      handler(val) {
+        console.log("models",val)
+        // this.isDataNull = false;
+      },
+    },
+    data: {
+      // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
+      // deep: true,
       handler(val) {
         this.resetModelsFields();
         this.generateModle(val.list);
