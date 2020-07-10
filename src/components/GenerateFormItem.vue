@@ -75,6 +75,9 @@
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
         :disabled="widget.options.disabled"
+        @focus="getIndex($event)"
+        @blur="setPreIndex($event)"
+        @keyup.native.enter="change($event)"
       ></el-input>
 
       <!-- dataType为组件类型 dataModel为双向绑定的数据 -->
@@ -358,12 +361,11 @@
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
         :filterable="widget.options.filterable"
-        
+        :ref='widget.model'
         :data-index="nowindex"
         @focus="getIndex($event)"
         @keyup.native.enter="selectChange"
         @visible-change="visibleChange"
-        :class="dataModel"
       >
         <el-option
           v-for="item in widget.options.remote
@@ -763,6 +765,7 @@ export default {
     getIndex(e) {
       if (this.widget.type == "select") {
         this.selectModel = this.widget.model;
+        console.log(this.$refs)
       }else if(this.widget.type == "password" || this.widget.type == "againpassword"){
           if(this.widget.options.peripheral && (this.widget.options.peripheral == true)){
               this.peripheral()
@@ -947,6 +950,7 @@ export default {
       const refsId = this.$refs[refId];
       this.amountvisible = false;
       this.dataModel = delcommafy(refsId.value);
+      this.$emit("el-change", this)
     },
 
     /*摄像头*/

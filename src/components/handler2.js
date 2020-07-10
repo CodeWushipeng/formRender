@@ -13,7 +13,6 @@ let handlers = {
       rangeError: false,
       conditionError: false,
       remoteError: false,
-      oldCanFocusArr: [],
       canFocusArr: [],
       canFocusType: [
         "input",
@@ -308,6 +307,7 @@ let handlers = {
     // 全部节点循环事件
     iteratorAllEle() {
       // this.iteratorUnfocus()
+      // debugger
       for (let i = this.outMark; i < this.comArr.length; i++) {
         if (
           this.comArr[i].options.disabled ||
@@ -417,6 +417,25 @@ let handlers = {
     textEnter() {
       this.onElChange();
     },
+    // 发送remote方法
+    pushRemoteFunc(){
+      this.comArr.forEach(item => {
+        if(item.options.remoteFunc){
+          let result = this.evalWrap(item.options.remoteFunc);
+          let resultArr
+          result.forEach((resitem) => {
+            let tempJson = {
+              value: "",
+              label: "",
+            };
+            tempJson.label = resitem.itemValue;
+            tempJson.value = resitem.itemCode;
+            resultArr.push(tempJson);
+          });
+          item.options.options = resultArr
+        }
+      })
+    },
     // 获取组件数据
     tranData() {
       this.data.list.forEach((item) => {
@@ -433,6 +452,7 @@ let handlers = {
   },
   mounted() {
     let inter = setInterval(() => {
+      debugger
       if (this.data.list && this.data.list.length > 0) {
         clearInterval(inter);
         this.tranData();
