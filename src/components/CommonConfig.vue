@@ -29,10 +29,18 @@
             >
           </div>
           <el-table :data="gridData" border>
+            <el-table-column label="操作" width="80">
+              <template slot-scope="scope">
+                <el-button @click="setData(scope.row)" type="text" 
+                  >赋值</el-button
+                >
+              </template>
+            </el-table-column>
             <el-table-column
               property="dicName"
               label="选项代码"
-            ></el-table-column>
+            >
+            </el-table-column>
             <el-table-column
               property="itemValue"
               label="选项名称"
@@ -257,8 +265,13 @@ export default {
           });
           console.log(tempArr, resultArr);
           this.data.options.options = resultArr;
+          console.log(this.data.options.options)
         })
         .catch((error) => console.log(error));
+    },
+    setData(params) {
+      console.log("11111", params);
+      this.data.remoteCode = params.dicName
     },
     // 查询信息
     search() {
@@ -302,8 +315,10 @@ export default {
           tempArr.forEach((item) => {
             let tempJson = {
               value: "",
+              label: "",
             };
-            tempJson.value = item.itemValue;
+            tempJson.label = item.itemValue;
+            tempJson.value = item.itemCode;
             resultArr.push(tempJson);
           });
           console.log(tempArr, resultArr);

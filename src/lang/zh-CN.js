@@ -109,7 +109,7 @@ export default {
         assignment: '离开赋值', //新增离开赋值
         hidden: '隐藏条件',     //新增隐藏条件
         valueRange: '取值范围', //新增取值范围
-        remoteFactor: '远程校验', //新增控件访问外部条件
+        remoteFactor: '字段交易', //新增控件访问外部条件
       },
       widget: {
         showTips: '提示信息',       //新增是否显示提示信息

@@ -228,7 +228,7 @@ let handlers = {
         this.conditionError = false;
       }
     },
-    // 访问外部条件
+    // 字段交易
     remoteValidate(i) {
       if (this.singleError || this.rangeError || this.conditionError) {
         return;
@@ -239,7 +239,7 @@ let handlers = {
         if (!flag) {
           return;
         }
-        let url = "/dev-api/dictionary/quertDicNoPage"
+        let url = "/dev-api"+ lists[i].remoteFactor.url;
         let primitiveData = this.evalWrap(lists[i].remoteFactor.data);
         let nowModel = lists[i].model;
         let nowData = this.models[nowModel];
@@ -252,24 +252,14 @@ let handlers = {
         let success = lists[i].remoteFactor.success;
         request
           .post(url, {
-            body: {
-              dicName: "cityList",
-              selType: 2,
-            },
+            body: postData,
             header: { pageIndex: 1, pageSize: 1, gloSeqNo: new Date(),"reqSeqNo": "sit anim","reqTime": "officia ad anim",},
           })
           .then((res) => {
             console.log(res)
             if (res.header.rspCode == "SP000000") {
-              // 提取返回数据对象名
-              let targetKeys = Object.keys(res.body.dicList);
-              // 解析返回数据对应的属性名并赋值对应组件
-              for (let j = 0; j < targetKeys.length; j++) {
-                if (this.models[targetKeys[j]] != undefined) {
-                  this.models[targetKeys[j]] = res.data[targetKeys[j]];
-                }
-              }
-              this.evalWrap(success);
+              let tempFunc = eval("(" + success + ")");
+              tempFunc(this.models,res)
               this.handelValidate("success", "", i);
               this.remoteError = false;
             } else {
@@ -409,10 +399,20 @@ let handlers = {
       this.$nextTick(()=>{
         focusEle.focus();
       })
-
+    },
+    // 使组件失去焦点
+    setBlur(ele){
+      let blurEle = ele.querySelector("input")
+        ? ele.querySelector("input")
+        : ele.querySelector("textarea");
+      console.log("当前聚焦元素",blurEle)
+      this.$nextTick(()=>{
+        blurEle.blur();
+      })
     },
     // 回车事件
     onElChange() {
+      // this.setBlur(this.allItems[this.outMark])
       if (this.preIndex != this.outMark) {
         this.allValidate(this.preIndex);
         this.outMark = this.preIndex;
