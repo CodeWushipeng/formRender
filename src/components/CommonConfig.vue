@@ -13,7 +13,12 @@
         </el-input>
         <el-dialog :visible.sync="dialogTableVisible">
           <div style="display:flex;marginBottom:20px;">
-            <el-input style="width:200px" placeholder="请输入内容" v-model="value" clearable>
+            <el-input
+              style="width:200px"
+              placeholder="请输入内容"
+              v-model="value"
+              clearable
+            >
             </el-input>
             <el-button
               type="primary"
@@ -30,9 +35,12 @@
             ></el-table-column>
             <el-table-column
               property="itemValue"
-              label="城市列表"
+              label="选项名称"
             ></el-table-column>
-            <el-table-column property="itemCode" label="代码"></el-table-column>
+            <el-table-column
+              property="itemCode"
+              label="选项值"
+            ></el-table-column>
           </el-table>
           <el-pagination
             style="marginTop:20px"
@@ -202,7 +210,7 @@ export default {
       this.dialogTableVisible = true;
       console.log(data);
       request
-        .post("/dev-api/dictionary/getAllWithPageFromDB", {
+        .post("/dev-api/dictionary/quertDicByPage", {
           body: {
             dicName: "cityList",
             selType: 2,
@@ -255,10 +263,12 @@ export default {
     // 查询信息
     search() {
       request
-        .post("/dev-api/dictionary/getAllWithNoPage", {
+        .post("/dev-api/dictionary/quertDicByPage", {
           body: {
             dicName: "cityList",
             selType: 2,
+            itemCode: this.value,
+            itemValue: this.value,
           },
           header: {
             pageIndex: 1,
@@ -286,8 +296,8 @@ export default {
             });
             return;
           }
-          this.gridData = res.body.dicList;
-          let tempArr = res.body.dicList;
+          this.gridData = res.body.dics.records;
+          let tempArr = res.body.dics.records;
           let resultArr = [];
           tempArr.forEach((item) => {
             let tempJson = {

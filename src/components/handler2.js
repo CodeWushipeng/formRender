@@ -45,9 +45,24 @@ let handlers = {
     },
     // 光标失去焦点
     getPreIndex() {
-      if(document.activeElement=="BODY"){
-        this.allValidate(this.outMark);
-      }
+      console.log("光标失去焦点",document.activeElement.tagName)
+      // if (this.preIndex != this.outMark) {
+      //   this.allValidate(this.preIndex);
+      //   this.outMark = this.preIndex;
+      //   console.log(this.outMark)
+      //   this.handelFlow();
+      //   console.log(this.outMark)
+      //   return
+      // }
+      // console.log("回车",this.outMark)
+      // if (this.outMark <= this.canFocusLength) {
+      //   this.allValidate(this.outMark);
+      //   this.handelAssignment(this.outMark);
+      //   this.handelFlow();
+      // }
+      // if(document.activeElement.tagName=="BODY"){
+      //   this.allValidate(this.outMark);
+      // }
     },
     // 隐藏
     handelHidden() {
@@ -460,6 +475,13 @@ let handlers = {
         this.getAllItems();
         this.getShowLength();
         this.iteratorAllEle();
+        // document.body.addEventListener("click",(e)=>{
+        //   console.log(e.target.tagName)
+        //   if(e.target.tagName != 'INPUT' || e.target.tagName != 'TEXTAREA'){
+        //     console.log("111111")
+        //     this.allValidate(this.outMark);
+        //   }
+        // })
       }
     }, 300);
   },

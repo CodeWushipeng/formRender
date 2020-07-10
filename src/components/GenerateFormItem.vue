@@ -366,8 +366,7 @@
         @focus="comFocus($event)"
         @keyup.native.enter="selectChange"
         @keyup.native.space="showOptions"
-        :popper-class="widget.model"
-        :popper-append-to-body= "false"
+        @blur="comBlur($event)"
       >
         <el-option
           v-for="item in widget.options.remote
