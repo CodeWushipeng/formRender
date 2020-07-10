@@ -41,8 +41,8 @@
         @keyup.native.enter="change"
         @keyup.native="passwordKeyup"
         :data-index="nowindex"
-        @focus="getIndex($event)"
-        @blur="setPreIndex($event)"
+        @focus="comFocus($event)"
+        @blur="comBlur($event)"
         :ref="widget.model"
         ></el-input>
     </template>
@@ -56,8 +56,8 @@
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
         :data-index="nowindex"
-        @focus="getIndex($event)"
-        @blur="setPreIndex($event)"
+        @focus="comFocus($event)"
+        @blur="comBlur($event)"
         @keyup.native.enter="change"
         :ref="widget.model"
         ></el-input>
@@ -75,8 +75,8 @@
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
         :disabled="widget.options.disabled"
-        @focus="getIndex($event)"
-        @blur="setPreIndex($event)"
+        @focus="comFocus($event)"
+        @blur="comBlur($event)"
         @keyup.native.enter="change($event)"
       ></el-input>
 
@@ -89,8 +89,8 @@
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
         :data-index="nowindex"
-        @focus="getIndex($event)"
-        @blur="setPreIndex($event)"
+        @focus="comFocus($event)"
+        @blur="comBlur($event)"
         @keyup.native.enter="change($event)"
         :ref="widget.model"
         ><el-button
@@ -111,8 +111,8 @@
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
         :data-index="nowindex"
-        @focus="getIndex($event)"
-        @blur="setPreIndex($event)"
+        @focus="comFocus($event)"
+        @blur="comBlur($event)"
         @keyup.native.enter="change"
         ><el-button
           v-if="widget.options.ifperipheral"
@@ -136,8 +136,8 @@
         :maxlength="widget.options.textarealength"
         show-word-limit
         :data-index="nowindex"
-        @focus="getIndex($event)"
-        @blur="setPreIndex($event)"
+        @focus="comFocus($event)"
+        @blur="comBlur($event)"
         @keyup.native.enter="change"
       ></el-input>
     </template>
@@ -159,8 +159,8 @@
         :style="{ width: widget.options.width }"
         show-word-limit
         :data-index="nowindex"
-        @focus="getIndex($event)"
-        @blur="setPreIndex($event)"
+        @focus="comFocus($event)"
+        @blur="comBlur($event)"
         @keyup.native.ctrl.enter="areaHandel"
       ></el-input>
     </template>
@@ -173,8 +173,8 @@
         controls-position="right"
         :disabled="widget.options.disabled"
         :data-index="nowindex"
-        @focus="getIndex($event)"
-        @blur="setPreIndex($event)"
+        @focus="comFocus($event)"
+        @blur="comBlur($event)"
         @keyup.native.enter="change"
       ></el-input-number>
     </template>
@@ -301,7 +301,7 @@
         :value-format="widget.options.format"
         :style="{ width: widget.options.width }"
         :data-index="nowindex"
-        @focus="getIndex($event)"
+        @focus="comFocus($event)"
         @keyup.native.enter="change"
       ></el-time-picker>
     </template>
@@ -330,7 +330,7 @@
             : ''
         "
         :data-index="nowindex"
-        @focus="getIndex($event)"
+        @focus="comFocus($event)"
         @keyup.native.enter="change"
       ></el-date-picker>
     </template>
@@ -363,9 +363,11 @@
         :filterable="widget.options.filterable"
         :ref='widget.model'
         :data-index="nowindex"
-        @focus="getIndex($event)"
+        @focus="comFocus($event)"
         @keyup.native.enter="selectChange"
-        @visible-change="visibleChange"
+        @keyup.native.space="showOptions"
+        :popper-class="widget.model"
+        :popper-append-to-body= "false"
       >
         <el-option
           v-for="item in widget.options.remote
@@ -404,8 +406,8 @@
         :filterable="widget.options.filterable"
         style="width: 80%"
         :data-index="nowindex"
-        @focus="getIndex($event)"
-        @blur="setPreIndex($event)"
+        @focus="comFocus($event)"
+        @blur="comBlur($event)"
         @keyup.native.enter="change"
       >
         <el-option
@@ -599,7 +601,6 @@ export default {
       cameraimage: "",
       amountvisible: false, // 控制金额放大镜的显隐
       blurIndex: 0,
-      selectModel: "", //select 组件model值
       dataModel: this.models[this.widget.model], // 当前组件的默认值，是双向绑定的
       pickerOptionsDate: {
         disabledDate(time) {
@@ -761,24 +762,46 @@ export default {
         message: msg,
       });
     },
-    // 组件聚焦获取model
-    getIndex(e) {
-      if (this.widget.type == "select") {
-        this.selectModel = this.widget.model;
-        console.log(this.$refs)
-      }else if(this.widget.type == "password" || this.widget.type == "againpassword"){
+    // 组件聚焦事件获取model
+    comFocus(e) {
+      if(this.widget.type == "password" || this.widget.type == "againpassword"){
           if(this.widget.options.peripheral && (this.widget.options.peripheral == true)){
               this.peripheral()
           }
       }
       this.$emit("pushIndex", this.widget.model);
     },
-    visibleChange(params){
-      console.log("下拉选择",params)
-      if(params==true){
-        console.log(this.$refs)
-
+     // 获取设置的index
+    getPre(ele) {
+      if (ele.dataset.index == undefined) {
+        this.getPre(ele.parentNode);
+      } else {
+        this.blurIndex = ele.dataset.index;
       }
+    },
+    // 组件失去焦点事件
+    comBlur(e) {
+      this.$emit("pushPreIndex");
+    },
+    // element change事件，回车和失去焦点时触发
+    change(e) {
+      e.preventDefault()
+      // 出发change事件时发射 el-change事件，generateform组件监听该事件
+      this.$emit("el-change", this);
+    },
+    // select组件回车事件
+    selectChange() {
+      this.$refs[this.widget.model].blur()
+      this.$emit("el-change", this);
+    },
+    // textarea ctrl+enter事件
+    areaHandel(e) {
+      this.$emit("text-enter", this);
+    },
+    
+    // select组件空格事件
+    showOptions(){
+      this.$refs[this.widget.model].toggleMenu()
     },
   /*密码相关方法*/
   passwordKeyup(event){
@@ -793,41 +816,6 @@ export default {
           });
       }
   },
-  /*密码相关方法*/
-    // 获取设置的index
-    getPre(ele) {
-      if (ele.dataset.index == undefined) {
-        this.getPre(ele.parentNode);
-      } else {
-        this.blurIndex = ele.dataset.index;
-      }
-    },
-    // 组件失去焦点设置index
-    setPreIndex(e) {
-      // this.getPre(e.target);
-      // console.log("index=========", this.blurIndex);
-      this.$emit("pushPreIndex");
-    },
-    // element change事件，回车和失去焦点时触发
-    change(e) {
-      e.preventDefault()
-      // 出发change事件时发射 el-change事件，generateform组件监听该事件
-      this.$emit("el-change", this);
-    },
-    // select组件回车事件
-    selectChange() {
-      console.log(this.$el.querySelector("input"));
-      let ele = this.$el.querySelector("input");
-      ele.blur();
-      this.$emit("el-change", this);
-    },
-    // textarea ctrl+enter事件
-    areaHandel(e) {
-      this.$emit("text-enter", this);
-    },
-    blurHandler() {
-      this.amountvisible = false;
-    },
     //身份证   peripheral
     peripheral() {
       var _this = this
@@ -952,7 +940,9 @@ export default {
       this.dataModel = delcommafy(refsId.value);
       this.$emit("el-change", this)
     },
-
+    blurHandler() {
+      this.amountvisible = false;
+    },
     /*摄像头*/
     camera() {
       var _this = this;

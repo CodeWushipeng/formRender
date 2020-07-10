@@ -452,7 +452,6 @@ let handlers = {
   },
   mounted() {
     let inter = setInterval(() => {
-      debugger
       if (this.data.list && this.data.list.length > 0) {
         clearInterval(inter);
         this.tranData();
