@@ -6,10 +6,10 @@
         :label="$t('fm.config.common.remoteCode')"
         v-if="data.type == 'select'"
       >
-        <el-input size="mini" v-model="data.remoteCode" @focus="getData">
-          <!-- <el-button slot="append" @click="getData(data.remoteCode)"
+        <el-input size="mini" v-model="data.remoteCode">
+          <el-button slot="append" @click="getData(data.remoteCode)"
             >查询</el-button
-          > -->
+          >
         </el-input>
         <el-dialog :visible.sync="dialogTableVisible">
           <div style="display:flex;marginBottom:20px;">
@@ -212,7 +212,7 @@ export default {
       request
         .post("/dev-api/dictionary/quertDicByPage", {
           body: {
-            dicName: "cityList",
+            dicName: this.data.remoteCode,
             selType: 2,
           },
           header: {
@@ -265,10 +265,10 @@ export default {
       request
         .post("/dev-api/dictionary/quertDicByPage", {
           body: {
-            dicName: "cityList",
+            dicName: this.value,
             selType: 2,
-            itemCode: this.value,
-            itemValue: this.value,
+            // itemCode: this.value,
+            // itemValue: this.value,
           },
           header: {
             pageIndex: 1,
