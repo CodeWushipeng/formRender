@@ -167,7 +167,7 @@
 
         <div v-if="type=='03'">
             <!--render-form-->
-            <render-form v-if="configdata.list.length>0"
+            <render-form v-if="hackRest && configdata.list.length>0"
                          :url="url"
                          :configdata="configdata"
                          :remoteFuncs="remoteFuncs"
@@ -217,6 +217,7 @@
         mixins: [flowMixin],
         data() {
             return {
+                hackRest:true,
                 url: "",
                 dialogVisible: false,
                 allData: null,
@@ -235,7 +236,25 @@
         created() {
             this._inits();
         },
+        watch: {
+            "configdata.list": {
+                deep: true,
+                handler(list) {
+                    this.resetComponent()
+                },
+            },
+        },
         methods: {
+            // 销毁组件
+            resetComponent(callback){
+                return new Promise((reslove,reject)=>{
+                    this.hackRest = false;
+                    this.$nextTick(()=>{
+                        this.hackRest = true;
+                        reslove();
+                    })
+                })
+            },
             _inits() {
                 this.showLoading();
                 this.getStart().then((res) => {
