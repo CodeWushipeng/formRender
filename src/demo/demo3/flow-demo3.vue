@@ -246,7 +246,7 @@
         },
         methods: {
             // 销毁组件
-            resetComponent(callback){
+            resetComponent(){
                 return new Promise((reslove,reject)=>{
                     this.hackRest = false;
                     this.$nextTick(()=>{
@@ -256,11 +256,19 @@
                 })
             },
             _inits() {
-                this.showLoading();
-                this.getStart().then((res) => {
+                // this.showLoading();
+                const flowCode = this.$route.name;
+                const query = this.$route.query;
+                console.log('this.$routes.name:', this.$route.name)
+                console.log('this.$routes.query:', this.$route.query)
+                let params = {
+                    // flowCode:flowCode.replace('buss','')
+                    flowCode: query.id
+                }
+                queryFlowDetail(params).then((res) => {
                     // console.log('res', res)
                     const {rspCode} = res;
-                    this.hideLoading()
+                    // this.hideLoading()
                     if (rspCode == "00000000") {
                         const list = res.detail.records;
                         let funcCollection = res.define.funcCollection;
@@ -302,17 +310,6 @@
                     this.configdata.list = [FG.getNext(next_node)];
                     this.configdata.rollbackData = {};
                 }
-            },
-            getStart() {
-                const flowCode = this.$route.name;
-                const query = this.$route.query;
-                console.log('this.$routes.name:', this.$route.name)
-                console.log('this.$routes.query:', this.$route.query)
-                let params = {
-                    // flowCode:flowCode.replace('buss','')
-                    flowCode: query.id
-                }
-                return queryFlowDetail(params)
             },
             //验证是否可回退
             rollValidate(type, rollback) {
