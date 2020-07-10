@@ -34,7 +34,7 @@
             </el-table>
         </el-dialog>
         <!--user数据-->
-        <el-dialog title="user数据" :visible.sync="userDialogTableVisible">
+        <el-dialog title="user数据" :visible.sync="userDialogTableVisible" width="1000px">
             <!--{{usreData}}-->
             <el-table :data="usreDataSolve">
                 <el-table-column label="序号" type="index" width="50"></el-table-column>
@@ -44,7 +44,7 @@
 
         </el-dialog>
         <!--platform数据-->
-        <el-dialog title="platform数据" :visible.sync="platformDialogTableVisible">
+        <el-dialog title="platform数据" :visible.sync="platformDialogTableVisible" width="1000px">
             <!--{{platformData}}-->
             <!--{{platformDataSolve}}-->
             <el-table :data="platformDataSolve">
@@ -167,7 +167,7 @@
 
         <div v-if="type=='03'">
             <!--render-form-->
-            <render-form v-if="configdata.list.length>0"
+            <render-form v-if="hackRest && configdata.list.length>0"
                          :url="url"
                          :configdata="configdata"
                          :remoteFuncs="remoteFuncs"
@@ -217,6 +217,7 @@
         mixins: [flowMixin],
         data() {
             return {
+                hackRest:true,
                 url: "",
                 dialogVisible: false,
                 allData: null,
@@ -235,7 +236,25 @@
         created() {
             this._inits();
         },
+        watch: {
+            "configdata.list": {
+                deep: true,
+                handler(list) {
+                    this.resetComponent()
+                },
+            },
+        },
         methods: {
+            // 销毁组件
+            resetComponent(callback){
+                return new Promise((reslove,reject)=>{
+                    this.hackRest = false;
+                    this.$nextTick(()=>{
+                        this.hackRest = true;
+                        reslove();
+                    })
+                })
+            },
             _inits() {
                 this.showLoading();
                 this.getStart().then((res) => {
@@ -278,7 +297,6 @@
             },
 
             config(next_node) {
-                // this.resetComponent();
                 if(next_node){
                     this.data = FG.getNext(next_node);
                     this.configdata.list = [FG.getNext(next_node)];
