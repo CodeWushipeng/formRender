@@ -194,7 +194,7 @@ export default {
         .then(res => {
           const { rspCode } = res;
           this.hideLoading();
-          if (rspCode == "00000000") {
+          if (rspCode == "SP000000") {
             const rest = res.define;
             if (rest && rest.records.length > 0) {
               const formContent = rest.records[0]["formContent"];
