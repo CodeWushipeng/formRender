@@ -37,9 +37,9 @@ service.interceptors.request.use(
             "header":{
                 "pageIndex": pageIndex||0,
                 "pageSize": pageSize||999,
-                "gloSeqNo": new Date().getTime(),
-                "reqSeqNo":"1",
-                "reqTime":"1",
+                "gloSeqNo": new Date().getTime().toString(),
+                "reqSeqNo":new Date().getTime().toString(),
+                "reqTime":new Date().getTime().toString(),
 
                 // "antiWeightSeqNo": "qui",
                 // "gloSeqNo": "anim dolor deserunt",

@@ -1,4 +1,5 @@
-import request from '../util/request-form'
+// import request from '../util/request-form'
+import request from '../demo/demo3/request'
 
 //查询表单列表
 export function getFormList(url,data) {
