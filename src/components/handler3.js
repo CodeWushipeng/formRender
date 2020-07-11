@@ -30,7 +30,7 @@ let handlers = {
     };
   },
   methods: {
-    // 光标聚焦时获取当前节点model
+    // 鼠标点击获取焦点验证
     mouseValidate(params) {
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
@@ -42,12 +42,34 @@ let handlers = {
         return;
       }
       this.allValidate(this.preIndex);
+      if (
+        !this.singleError &&
+        !this.rangeError &&
+        !this.conditionError &&
+        !this.remoteError
+      ) {
+        this.outMark = this.preIndex;
+      }
     },
     // 光标失去焦点
     blurValidate() {
-      // if(document.activeElement.tagName=="BODY"){
-      //   this.allValidate(this.outMark);
-      // }
+      return new Promise(
+        (resolve) => {
+          if (this.preIndex != this.outMark) {
+            this.allValidate(this.preIndex);
+            this.outMark = this.preIndex;
+            return;
+          }
+          if (this.outMark <= this.canFocusLength) {
+            this.allValidate(this.outMark);
+            this.handelAssignment(this.outMark);
+          }
+          resolve();
+        },
+        (reject) => {
+          reject();
+        }
+      );
     },
     // 隐藏
     handelHidden() {
@@ -77,9 +99,6 @@ let handlers = {
       ) {
         return;
       }
-      // if(this.outMark < this.canFocusLength){
-      //   this.outMark++;
-      // }
       this.outMark++;
       this.handelHidden();
       this.getShowLength();
@@ -90,7 +109,7 @@ let handlers = {
     singleValidate(i) {
       let lists = this.comArr;
       this.$refs["generateForm"].validateField(lists[i].model, (valid) => {
-        console.log("组件单独校验",valid,lists[i].model)
+        console.log("组件单独校验", valid, lists[i].model);
         if (valid != "" && valid != undefined) {
           this.setFocus(this.allItems[i]);
           this.singleError = true;
@@ -108,8 +127,8 @@ let handlers = {
     },
     // eval封装
     evalWrap(targetEval) {
-      if(!targetEval){
-        return
+      if (!targetEval) {
+        return;
       }
       let result;
       if (targetEval.indexOf("function") != -1) {
@@ -224,7 +243,7 @@ let handlers = {
         if (!flag) {
           return;
         }
-        let url = "/dev-api"+ lists[i].remoteFactor.url;
+        let url = "/dev-api" + lists[i].remoteFactor.url;
         let primitiveData = this.evalWrap(lists[i].remoteFactor.data);
         let nowModel = lists[i].model;
         let nowData = this.models[nowModel];
@@ -238,13 +257,19 @@ let handlers = {
         request
           .post(url, {
             body: postData,
-            header: { pageIndex: 1, pageSize: 1, gloSeqNo: new Date(),"reqSeqNo": "sit anim","reqTime": "officia ad anim",},
+            header: {
+              pageIndex: 1,
+              pageSize: 1,
+              gloSeqNo: new Date(),
+              reqSeqNo: "sit anim",
+              reqTime: "officia ad anim",
+            },
           })
           .then((res) => {
-            console.log(res)
+            console.log(res);
             if (res.header.rspCode == "SP000000") {
               let tempFunc = eval("(" + success + ")");
-              tempFunc(this.models,res)
+              tempFunc(this.models, res);
               this.handelValidate("success", "", i);
               this.remoteError = false;
             } else {
@@ -276,7 +301,7 @@ let handlers = {
       }
       let lists = this.comArr;
       if (lists[j].assignment && lists[j].assignment != "") {
-        console.log("离开赋值",lists[j].assignment)
+        console.log("离开赋值", lists[j].assignment);
         this.evalWrap(lists[j].assignment);
       }
     },
@@ -296,8 +321,6 @@ let handlers = {
     },
     // 全部节点循环事件
     iteratorAllEle() {
-      // this.iteratorUnfocus()
-      // debugger
       for (let i = this.outMark; i < this.comArr.length; i++) {
         if (
           this.comArr[i].options.disabled ||
@@ -308,30 +331,30 @@ let handlers = {
         } else {
           if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
             this.setFocus(this.allItems[i]);
-            console.log( "获取节点",this.outMark, i, this.allItems[i]);
+            console.log("获取节点", this.outMark, i, this.allItems[i]);
             this.outMark = i;
-            this.preIndex = this.outMark
+            this.preIndex = this.outMark;
             break;
           }
         }
       }
     },
     // 获取页面显示的元素的长度
-    getShowLength(){
-      this.canFocusLength=0
-      for(let i = this.comArr.length-1; i >= 0; i--){
+    getShowLength() {
+      this.canFocusLength = 0;
+      for (let i = this.comArr.length - 1; i >= 0; i--) {
         if (
           this.comArr[i].options.disabled ||
           this.comArr[i].options.hidden ||
           this.comArr[i].options.readonly == "readonly"
         ) {
-          continue
-        }else{
+          continue;
+        } else {
           this.canFocusLength = i;
-          break
+          break;
         }
       }
-      console.log(this.canFocusLength)
+      console.log(this.canFocusLength);
     },
     // 综合校验
     allValidate(target) {
@@ -353,6 +376,7 @@ let handlers = {
           this.conditionError ||
           this.remoteError
         ) {
+          this.outMark = i
           break;
         }
       }
@@ -380,34 +404,39 @@ let handlers = {
       let focusEle = ele.querySelector("input")
         ? ele.querySelector("input")
         : ele.querySelector("textarea");
-      console.log("当前聚焦元素",focusEle)
-      this.$nextTick(()=>{
+      console.log("当前聚焦元素", focusEle);
+      this.$nextTick(() => {
         focusEle.focus();
-      })
+      });
+    },
+    // 使组件失去焦点
+    setBlur(ele) {
+      let blurEle = ele.querySelector("input")
+        ? ele.querySelector("input")
+        : ele.querySelector("textarea");
+      console.log("当前聚焦元素", blurEle);
+      this.$nextTick(() => {
+        blurEle.blur();
+      });
     },
     // 回车事件
     onElChange() {
-      if (this.preIndex != this.outMark) {
-        this.allValidate(this.preIndex);
-        this.outMark = this.preIndex;
-        console.log(this.outMark)
-        this.handelFlow();
-        console.log(this.outMark)
-        return
-      }
-      console.log("回车",this.outMark)
-      if (this.outMark <= this.canFocusLength) {
+      if (this.outMark < this.canFocusLength) {
+        this.setBlur(this.allItems[this.outMark]);
+        this.blurValidate().then(()=>{
+          this.handelFlow();
+        })
+      } else if (this.outMark == this.canFocusLength) {
         this.allValidate(this.outMark);
         this.handelAssignment(this.outMark);
-        this.handelFlow();
       }
     },
     // 发送remote方法
-    pushRemoteFunc(){
-      this.comArr.forEach(item => {
-        if(item.options.remoteFunc){
+    pushRemoteFunc() {
+      this.comArr.forEach((item) => {
+        if (item.options.remoteFunc) {
           let result = this.evalWrap(item.options.remoteFunc);
-          let resultArr
+          let resultArr;
           result.forEach((resitem) => {
             let tempJson = {
               value: "",
@@ -417,9 +446,9 @@ let handlers = {
             tempJson.value = resitem.itemCode;
             resultArr.push(tempJson);
           });
-          item.options.options = resultArr
+          item.options.options = resultArr;
         }
-      })
+      });
     },
     // 获取组件数据
     tranData() {

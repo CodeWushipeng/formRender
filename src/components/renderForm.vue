@@ -53,7 +53,6 @@ export default {
     };
   },
   created() {
-      debugger
     console.log('created...',this.configdata);
     this._inits();
   },

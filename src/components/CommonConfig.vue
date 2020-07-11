@@ -6,14 +6,19 @@
         :label="$t('fm.config.common.remoteCode')"
         v-if="data.type == 'select'"
       >
-        <el-input size="mini" v-model="data.remoteCode" @focus="getData">
-          <!-- <el-button slot="append" @click="getData(data.remoteCode)"
+        <el-input size="mini" v-model="data.remoteCode">
+          <el-button slot="append" @click="getData(data.remoteCode)"
             >查询</el-button
-          > -->
+          >
         </el-input>
         <el-dialog :visible.sync="dialogTableVisible">
           <div style="display:flex;marginBottom:20px;">
-            <el-input style="width:200px" placeholder="请输入内容" v-model="value" clearable>
+            <el-input
+              style="width:200px"
+              placeholder="请输入内容"
+              v-model="value"
+              clearable
+            >
             </el-input>
             <el-button
               type="primary"
@@ -24,15 +29,26 @@
             >
           </div>
           <el-table :data="gridData" border>
+            <el-table-column label="操作" width="80">
+              <template slot-scope="scope">
+                <el-button @click="setData(scope.row)" type="text" 
+                  >赋值</el-button
+                >
+              </template>
+            </el-table-column>
             <el-table-column
               property="dicName"
               label="选项代码"
-            ></el-table-column>
+            >
+            </el-table-column>
             <el-table-column
               property="itemValue"
-              label="城市列表"
+              label="选项名称"
             ></el-table-column>
-            <el-table-column property="itemCode" label="代码"></el-table-column>
+            <el-table-column
+              property="itemCode"
+              label="选项值"
+            ></el-table-column>
           </el-table>
           <el-pagination
             style="marginTop:20px"
@@ -202,9 +218,9 @@ export default {
       this.dialogTableVisible = true;
       console.log(data);
       request
-        .post("/dev-api/dictionary/getAllWithPageFromDB", {
+        .post("/dev-api/dictionary/quertDicByPage", {
           body: {
-            dicName: "cityList",
+            dicName: this.data.remoteCode,
             selType: 2,
           },
           header: {
@@ -249,16 +265,23 @@ export default {
           });
           console.log(tempArr, resultArr);
           this.data.options.options = resultArr;
+          console.log(this.data.options.options)
         })
         .catch((error) => console.log(error));
+    },
+    setData(params) {
+      console.log("11111", params);
+      this.data.remoteCode = params.dicName
     },
     // 查询信息
     search() {
       request
-        .post("/dev-api/dictionary/getAllWithNoPage", {
+        .post("/dev-api/dictionary/quertDicByPage", {
           body: {
-            dicName: "cityList",
+            dicName: this.value,
             selType: 2,
+            // itemCode: this.value,
+            // itemValue: this.value,
           },
           header: {
             pageIndex: 1,
@@ -286,14 +309,16 @@ export default {
             });
             return;
           }
-          this.gridData = res.body.dicList;
-          let tempArr = res.body.dicList;
+          this.gridData = res.body.dics.records;
+          let tempArr = res.body.dics.records;
           let resultArr = [];
           tempArr.forEach((item) => {
             let tempJson = {
               value: "",
+              label: "",
             };
-            tempJson.value = item.itemValue;
+            tempJson.label = item.itemValue;
+            tempJson.value = item.itemCode;
             resultArr.push(tempJson);
           });
           console.log(tempArr, resultArr);
