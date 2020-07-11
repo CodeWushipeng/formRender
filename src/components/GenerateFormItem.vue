@@ -161,7 +161,7 @@
         :data-index="nowindex"
         @focus="comFocus($event)"
         @blur="comBlur($event)"
-        @keyup.native.ctrl.enter="areaHandel"
+        @keyup.native.ctrl.enter="change"
       ></el-input>
     </template>
 
@@ -599,7 +599,6 @@ export default {
       cameraList: [],
       cameraimage: "",
       amountvisible: false, // 控制金额放大镜的显隐
-      blurIndex: 0,
       dataModel: this.models[this.widget.model], // 当前组件的默认值，是双向绑定的
       pickerOptionsDate: {
         disabledDate(time) {
@@ -768,19 +767,11 @@ export default {
               this.peripheral()
           }
       }
-      this.$emit("pushIndex", this.widget.model);
-    },
-     // 获取设置的index
-    getPre(ele) {
-      if (ele.dataset.index == undefined) {
-        this.getPre(ele.parentNode);
-      } else {
-        this.blurIndex = ele.dataset.index;
-      }
+      this.$emit("el-focus", this.widget.model);
     },
     // 组件失去焦点事件
     comBlur(e) {
-      this.$emit("pushPreIndex");
+      this.$emit("el-blur");
     },
     // element change事件，回车和失去焦点时触发
     change(e) {
@@ -788,16 +779,11 @@ export default {
       // 出发change事件时发射 el-change事件，generateform组件监听该事件
       this.$emit("el-change", this);
     },
-    // select组件回车事件
+    // select组件回车抬起事件
     selectChange() {
-      this.$refs[this.widget.model].blur()
+      // this.$refs[this.widget.model].blur()
       this.$emit("el-change", this);
     },
-    // textarea ctrl+enter事件
-    areaHandel(e) {
-      this.$emit("text-enter", this);
-    },
-    
     // select组件空格事件
     showOptions(){
       this.$refs[this.widget.model].toggleMenu()

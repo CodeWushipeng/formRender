@@ -73,10 +73,9 @@
             :widget="item"
             @input-change="onInputChange"
             @el-change="onElChange"
-            @text-enter="textEnter"
             :nowindex="index"
-            @pushIndex="getIndex"
-            @pushPreIndex="getPreIndex"
+            @el-focus="mouseValidate"
+            @el-blur="blurValidate"
             :remote="remote"
             :ref="item.model"
             v-show="!item.options.hidden"
@@ -92,7 +91,7 @@ import GenetateFormItem from "./GenerateFormItem";
 // import { loadJs } from "../util/index.js";
 // import request from "../util/request.js";
 import { IdentityCodeValid } from "../util/idencardUtil";
-import handler from "./handler2";
+import handler from "./handler3";
 
 export default {
   name: "fm-generate-form",
