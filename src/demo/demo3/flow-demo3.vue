@@ -222,7 +222,7 @@ export default {
         }).catch(() => {
             next(false)
         });
-      },300)
+      })
     },
   data() {
     return {
@@ -511,10 +511,6 @@ export default {
                 })
                 .then(res => {
                   if (outputFromCode) {
-                      if(!outputConfig){
-                          console.error('demo3 outputConfig is undefine',)
-                          return
-                      }
                     // TODO 有响应页面
                     this.$refs.renderForm.changeJsonData(
                       outputFromCode,
@@ -528,9 +524,27 @@ export default {
                   }
                 });
             } else if (commitType == FG.COMMIT_DEFINE) {
-              commit && commit(data);
+                // function commit(data){
+                //     return data;
+                // }
+              // commit && commit(data);
+
             } else if (commitType == FG.COMMIT_ORDER) {
             } else if (commitType == FG.COMMIT_LOCAL) {
+                // 本地提交
+                const nodePromise = this.$refs.renderForm.getData();
+                nodePromise.then(data => {
+                    const Obj = {
+                        up: data,
+                        down: {...data,resCode: "000000"}
+                    };
+                    alert("提交数据：" + JSON.stringify(Obj));
+                    const copyObj = JSON.parse(JSON.stringify(Obj));
+                    FG.saveNode(nodeCode, copyObj);
+                    this.configdata.nodes = FG.getNodes(); // 节点数据
+                    // 下一节点
+                    this.next(nextNode);
+                })
             }
           })
           .catch(error => {

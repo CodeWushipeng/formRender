@@ -208,12 +208,17 @@ export default {
                 typeof formContent == "string"
                   ? JSON.parse(formContent)
                   : formContent;
-              this.tempValue = this._solveConfigJs(outputCofig);
+              if(outputCofig){
+                  this.tempValue = this._solveConfigJs(outputCofig);
+              }else{
+                  this.tempValue = {}
+              }
               this.jsonData = temp;
               this.handleDynamicData(temp);
               this.handleDynamicInFlow(temp);
 
-              console.log(
+
+                outputCofig && console.log(
                 "this._solveConfigJs(outputCofig)",
                 this._solveConfigJs(outputCofig)
               );
