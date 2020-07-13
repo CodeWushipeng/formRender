@@ -7,7 +7,6 @@ class FG {
         this.ISOK = false;
         this.CURFORM= null;   // 当前展示的是input_config_code 还是 output_config_code 表单
         this.OUTFLAG= null;   // 提交标识
-        // this.FUNC= null;      // 函数列表
         // 流程节点
         this.START = "01"; // 开始
         this.END   = "02"; // 结束
@@ -22,7 +21,7 @@ class FG {
         this.CANNOT_ROLLBACK = "02"; // 不可回退
         // 是否保留数据
         this.CLEAR_DATA = "01", // 清除数据
-        this.KEEP_DATA = "02", // 保留数据
+        this.KEEP_DATA = "02",  // 保留数据
 
         // 数据
         this.user = {};
@@ -30,33 +29,31 @@ class FG {
         this.nodes =  {};
         this.list =  {};
         this.utils =  {};
-
-        // 流控数据
-        // this.flow = {};
+        // 流程当前的执行过程
+        this.process = [];
     }
 
     /**
-     * 初始化成功
+     * 开始节点
+     * @returns {*}
      */
-    init() {
-        console.log('engine init...')
-    }
-
-    /**
-     * 预览数据
-     * @returns {{user: ({}|*), platform: ({}|*), CURFORM: null, OUTFLAG: null, list: ({}|*), nodes: ({}|*)}}
-     */
-    getAllData(){
-        return {
-            user:this.user,
-            platform:this.platform,
-            CURFORM:this.CURFORM ,
-            OUTFLAG:this.OUTFLAG ,
-            list:this.list,
-            nodes:this.nodes,
+    getStartNode(){
+        if(this.list.length == 0){
+            return {}
         }
+        return this.list.filter(item => item.type == "01")[0]
     }
 
+    /**
+     * 结束节点
+     * @returns {*}
+     */
+    getEndNode(){
+        if(this.list.length == 0){
+            return {}
+        }
+        return this.list.filter(item => item.type == "02")[0]
+    }
     /**
      * 设置数据
      * @param object
@@ -141,6 +138,15 @@ class FG {
     }
 
     /**
+     * 节点数据
+     * @param nodeCode
+     * @returns {*}
+     */
+    getNodeData(nodeCode){
+        return this._filter(nodeCode)[0];
+    }
+
+    /**
      * 下一节点
      * @param next_node
      * @returns {*}
@@ -161,7 +167,6 @@ class FG {
      * @param value
      */
     saveNode(nodeCode, value) {
-        // this.flow[nodeCode] = value;
         this.nodes[nodeCode] = value;
         console.log('nodes', JSON.stringify(this.nodes))
     }
@@ -174,6 +179,31 @@ class FG {
         return this.nodes;
     }
 
+    /**
+     * 节点加入到执行流程
+     * @param nodeCode
+     */
+    pushProcess(nodeCode){
+        if(this.process.includes(nodeCode)){
+            return
+        }
+        this.process.push(nodeCode)
+    }
+
+    /**
+     * 获取执行流程
+     * @returns {Array}
+     */
+    getProcess(){
+        return this.process;
+    }
+
+    /**
+     * 删除最后一个元素
+     */
+    popProcess(){
+        this.process.pop()
+    }
 }
 
 // 返回单例

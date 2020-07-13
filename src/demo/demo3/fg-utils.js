@@ -32,6 +32,7 @@ const flowMixin= {
             platformDialogTableVisible:false,
             nodesDialogTableVisible:false,
             formDialogTableVisible:false,
+            processDialogTableVisible:false,
             listData:[],
             usreData:[],
             usreDataSolve:[],
@@ -41,6 +42,7 @@ const flowMixin= {
             nodesDataSolve:[],
             curFormData:[],
             curFromDataSolve:[],
+            processDataList:[]
         }
     },
     computed: {
@@ -51,6 +53,23 @@ const flowMixin= {
             const { type} = this.data;
             return type
         },
+        processDataListSolve(){
+            debugger
+            let ret = [];
+            this.processDataList.forEach(item=>{
+                let rds = this.records.filter(value =>{
+                    return value.nodeCode == item
+                });
+                console.log('rds...',rds)
+                if(rds.length>0){
+                    ret.push({
+                        title:item,
+                        description:rds[0]['nodeName'] || "没有文字提示"
+                    })
+                }
+            })
+            return ret;
+        }
     },
     methods:{
         showLoading(){
@@ -144,6 +163,10 @@ const flowMixin= {
                     message: '当前节点没有表单,不能获取数据'
                 });
             }
+        },
+        getProcessHandle(){
+            this.processDialogTableVisible = true;
+            this.processDataList = FG.getProcess()
         },
         _remote(){
             // console.log('remote..... start')
