@@ -49,8 +49,9 @@
                   @input-change="onInputChange"
                   @el-change="onElChange"
                   :nowindex="index"
-                  @comFocus="mouseValidate"
-                  @comBlur="blurValidate"
+                  @el-focus="mouseValidate"
+                  @el-blur="blurValidate"
+                  @date-blur="dateFlow"
                   v-show="!citem.options.hidden"
                 ></genetate-form-item>
               </template>
@@ -75,6 +76,7 @@
             :nowindex="index"
             @el-focus="mouseValidate"
             @el-blur="blurValidate"
+            @date-blur="dateFlow"
             :remote="remote"
             :ref="item.model"
             v-show="!item.options.hidden"

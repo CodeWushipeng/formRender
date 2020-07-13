@@ -302,7 +302,7 @@
         :style="{ width: widget.options.width }"
         :data-index="nowindex"
         @focus="comFocus($event)"
-        @keyup.native.enter="change"
+        @blur="dateBlur($event)"
       ></el-time-picker>
     </template>
 
@@ -331,7 +331,7 @@
         "
         :data-index="nowindex"
         @focus="comFocus($event)"
-        @keyup.native.enter="change"
+        @blur="dateBlur($event)"
       ></el-date-picker>
     </template>
 
@@ -854,6 +854,11 @@ export default {
             .catch((error) => console.log(error));
         }
       }
+    },
+    // date选择器失去焦点事件
+    dateBlur(){
+      console.log("date选择器失去焦点事件")
+      this.$emit("date-blur")
     },
     /*密码相关方法*/
     passwordKeyup(event) {

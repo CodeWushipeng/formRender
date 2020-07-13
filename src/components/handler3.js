@@ -71,6 +71,19 @@ let handlers = {
         }
       );
     },
+    // 日期组件失去焦点
+    dateFlow() {
+      if (this.preIndex != this.outMark) {
+        this.allValidate(this.preIndex);
+        this.outMark = this.preIndex;
+        return;
+      }
+      if (this.outMark <= this.canFocusLength) {
+        this.allValidate(this.outMark);
+        this.handelAssignment(this.outMark);
+        this.handelFlow();
+      }
+    },
     // 隐藏
     handelHidden() {
       this.comArr.forEach((item) => {
@@ -350,8 +363,10 @@ let handlers = {
         ) {
           continue;
         } else {
-          this.canFocusLength = i;
-          break;
+          if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
+            this.canFocusLength = i;
+            break;
+          }
         }
       }
       console.log(this.canFocusLength);
@@ -376,7 +391,7 @@ let handlers = {
           this.conditionError ||
           this.remoteError
         ) {
-          this.outMark = i
+          this.outMark = i;
           break;
         }
       }
@@ -421,11 +436,12 @@ let handlers = {
     },
     // 回车事件
     onElChange() {
+      console.log(this.outMark, this.canFocusLength);
       if (this.outMark < this.canFocusLength) {
         this.setBlur(this.allItems[this.outMark]);
-        this.blurValidate().then(()=>{
+        this.blurValidate().then(() => {
           this.handelFlow();
-        })
+        });
       } else if (this.outMark == this.canFocusLength) {
         this.allValidate(this.outMark);
         this.handelAssignment(this.outMark);
@@ -462,14 +478,14 @@ let handlers = {
           this.comArr = [...this.comArr, item];
         }
       });
-      console.log("获取组件数据",this.comArr);
+      console.log("获取组件数据", this.comArr);
     },
   },
   mounted() {
     let inter = setInterval(() => {
       if (this.data.list && this.data.list.length > 0) {
         clearInterval(inter);
-        console.log(this.data)
+        console.log(this.data);
         this.tranData(this.data);
         this.handelHidden();
         this.enterCheck();
