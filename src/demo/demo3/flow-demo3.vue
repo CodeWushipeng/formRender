@@ -101,10 +101,10 @@
     <el-row>
       <el-button type="primary" @click="flowHandler">流程数据</el-button>
       <el-button type="success" @click="userHandler">user数据</el-button>
-      <el-button type="info" @click="platformHandler">platform数据</el-button>
+      <el-button type="info"    @click="platformHandler">platform数据</el-button>
       <el-button type="warning" @click="nodesHandler">节点数据</el-button>
-      <el-button type="danger" @click="getFormHandle">获取表单数据</el-button>
-      <el-button type="warning" @click="getProcessHandle">获取执行过程</el-button>
+      <el-button type="danger"  @click="getFormHandler">获取表单数据</el-button>
+      <el-button type="warning" @click="getProcessHandler">获取执行过程</el-button>
     </el-row>
     <!--remoteFuncs:{{remoteFuncs}}-->
     <!--<hr>-->
@@ -211,6 +211,19 @@ import { platform, user } from "./flowData";
 export default {
   name: "flow-demo",
   mixins: [flowMixin],
+    beforeRouteLeave (to, from, next) {
+      setTimeout(()=>{
+        this.$confirm('您要离开当前流程吗?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+            next()
+        }).catch(() => {
+            next(false)
+        });
+      },300)
+    },
   data() {
     return {
       hackRest: true,
@@ -275,10 +288,10 @@ export default {
             this.records = list;
 
             // 挂载数据
-            FG.setters("user", user);
-            FG.setters("platform", platform);
-            FG.setters("list", list); // 流控数据
-            FG.setters("utils", funcObject); // 公共函数
+            FG.setData("user", user);
+            FG.setData("platform", platform);
+            FG.setData("list", list); // 流控数据
+            FG.setData("utils", funcObject); // 公共函数
 
             // 启动开始节点
             const startNode = FG.getStartNode();
@@ -289,7 +302,7 @@ export default {
               this.configdata.utils = funcObject;
               FG.ISOK = true;
               FG.pushProcess(nodeCode);
-              console.log(`开始节点${nodeCode}，检查通过,可以执行`);
+              console.log(`开始节点${nodeCode},检查通过,可以执行`);
             } else {
               // this.$handleWarning(`当前节点${node_code}不能执行`);
               alert(`当前节点${nodeCode}不能执行`);
@@ -303,12 +316,19 @@ export default {
 
     config(next_node) {
       if (next_node) {
-        this.data = FG.getNodeData(next_node);
-        console.log('this.next_node',next_node)
-        console.log('this.data',this.data)
-        this.configdata.list = [this.data];
-        this.configdata.rollbackData = {};
-        FG.pushProcess(next_node);
+          const temp = FG.getNodeData(next_node);
+          const { checkStart} = temp;
+          if (FG.checkStart(checkStart)) {
+              this.data = temp;
+              console.log('this.next_node',next_node)
+              console.log('this.data',this.data)
+              this.configdata.list = [this.data];
+              this.configdata.rollbackData = {};
+              FG.pushProcess(next_node);
+              console.log(`开始节点${next_node}，检查通过,可以执行一下步`);
+          } else {
+              alert(`当前节点${next_node}不能执行`);
+          }
       }
     },
     //验证是否可回退
@@ -422,7 +442,7 @@ export default {
       } else {
         this.$notify.error({
           title: "错误",
-          message: "往下执行的节点没有通过启动验证"
+          message: `往下执行的节点${nextNodes}没有通过启动验证`
         });
       }
     },

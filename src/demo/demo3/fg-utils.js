@@ -53,6 +53,7 @@ const flowMixin= {
             const { type} = this.data;
             return type
         },
+        // 当前流程执行过程
         processDataListSolve(){
             debugger
             let ret = [];
@@ -138,7 +139,7 @@ const flowMixin= {
                 });
             }
         },
-        getFormHandle(){
+        getFormHandler(){
             if(this.$refs.renderForm){
                 this.$refs.renderForm.getData().then(data=>{
                     // alert(JSON.stringify(data));
@@ -164,7 +165,7 @@ const flowMixin= {
                 });
             }
         },
-        getProcessHandle(){
+        getProcessHandler(){
             this.processDialogTableVisible = true;
             this.processDataList = FG.getProcess()
         },
