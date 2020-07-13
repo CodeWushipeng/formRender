@@ -86,7 +86,7 @@ let handlers = {
     },
     // 获取全部item节点
     getAllItems() {
-      this.allItems = document.querySelectorAll(".generateForm .el-form-item .el-input");
+      this.allItems = document.querySelectorAll(".generateForm .el-form-item");
     },
     // 流程控制
     handelFlow() {
