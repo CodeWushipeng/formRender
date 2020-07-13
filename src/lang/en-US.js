@@ -33,6 +33,9 @@ export default {
       },
       layout: {
         title: 'Layout',
+      },
+      table: {
+        title: 'Table',
       }
     },
     description: {
@@ -182,6 +185,24 @@ export default {
       preview: 'preview',
       edit: 'replace',
       delete: 'delete'
+    },
+    tableEvent: {
+      title: 'Table event',
+      config: {
+
+      }
+    },
+    tableWidget: {
+      title: 'Table properties',
+      widget: {
+        selectTableConfig: 'select the configured table',
+        dataIdentification: 'Data identification',
+        paginationConfig: 'Table pagination',
+        pageSize: "Page size",
+        isPagination: 'Pagination',
+        yes: 'Yes',
+        no: 'No',
+      }
     }
   }
 }

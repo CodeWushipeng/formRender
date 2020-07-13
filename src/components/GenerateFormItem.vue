@@ -568,6 +568,27 @@
     <template v-if="widget.type == 'text'">
       <span>{{ dataModel }}</span>
     </template>
+    <template v-if="widget.type == 'elTable'">
+      <fm-generate-table
+        v-model="widget.configdata"
+        :data="widget.configdata"
+        ref="generateTable"
+      >
+      </fm-generate-table>
+      <template v-if="widget.options.isPagination">
+        <div style="text-align: end;">
+        <el-pagination
+          @size-change="widget.options.pagination.handleSizeChange"
+          @current-change="widget.options.pagination.handleCurrentChange"
+          :current-page.sync="widget.options.pagination.currentPage"
+          :page-size="widget.options.pagination.pageSize"
+          layout="prev, pager, next"
+          :pager-count='widget.options.pagination.pagerCount'
+          :total="widget.options.pagination.total">
+        </el-pagination>
+        </div>
+      </template>
+    </template>
   </el-form-item>
 </template>
 
@@ -696,6 +717,10 @@ export default {
       this.remote[this.widget.options.tokenFunc]((data) => {
         this.widget.options.token = data;
       });
+    }
+    //table
+    if(this.widget.type === "elTable" && this.widget.options.remoteFunc){
+      this.handleRemoteFn(this.widget.options.remoteFunc)
     }
   },
   methods: {
@@ -1048,6 +1073,27 @@ export default {
       var dataURL = canvas.toDataURL("image/" + ext);
       return dataURL;
     },
+
+    //table
+    async  handleRemoteFn(fn){
+       var _this = this
+       try {
+        fn(this,request,function(tableCf){
+          if(_this.widget.configdata.list){
+            let tempTableCf = _this.widget.configdata.list[0]
+              tempTableCf.options.tableData = tableCf.records
+              //带有分页
+            if(_this.widget.options.isPagination === true){
+              _this.widget.options.pagination.pageSize = tableCf.size
+              _this.widget.options.pagination.currentPage = tableCf.current
+              _this.widget.options.pagination.total = tableCf.total
+            }        
+          }
+        })
+      } catch(err) {
+          console.log(err);
+      }
+    }
   },
   mounted() {
     if (this.widget.type == "camera") {

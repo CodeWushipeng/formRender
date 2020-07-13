@@ -239,7 +239,7 @@ export default {
           } else if (window.webkitURL != undefined) {
               // webkit or chrome
               url = window.webkitURL.createObjectURL(file);
-          } else if (window.URL != undefined) {debugger
+          } else if (window.URL != undefined) {
               // mozilla(firefox)
               url = window.URL.createObjectURL(file);
           }

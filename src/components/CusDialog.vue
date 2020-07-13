@@ -71,7 +71,7 @@ export default {
       this.dialogVisible = false
     },
     submit () {
-      this.loading = true
+      this.loading = false
 
       this.$emit('on-submit')
     },

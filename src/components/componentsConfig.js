@@ -466,3 +466,40 @@ export const layoutComponents = [
     }
   }
 ]
+
+export const tableComponents = [
+  {
+    type: 'elTable',
+    icon: 'icon-grid-',
+    options: {
+      isPagination: false,
+      pagination:{
+        pageSize:1,
+        currentPage:1,
+        pagerCount:5,
+        total:0,
+        handleSizeChange:function(page){
+          debugger
+          console.log(page)
+        },
+        handleCurrentChange: function (pageSize) {
+          debugger
+          console.log(pageSize)
+        }
+      },
+      eventConfig:{
+
+      }
+    },
+    remoteFactor: {
+      isRemote: "",
+      url: "",
+      data: "",
+      success: ""
+    },
+    configdata: {
+      list:[],
+      config:{}
+    }
+  }
+]
