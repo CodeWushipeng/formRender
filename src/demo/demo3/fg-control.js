@@ -41,7 +41,7 @@ class FG {
         if(this.list.length == 0){
             return {}
         }
-        return this.list.filter(item => item.type == "01")[0]
+        return this.list.filter(item => item.type == this.START)[0]
     }
 
     /**
@@ -52,13 +52,13 @@ class FG {
         if(this.list.length == 0){
             return {}
         }
-        return this.list.filter(item => item.type == "02")[0]
+        return this.list.filter(item => item.type == this.END)[0]
     }
     /**
      * 设置数据
      * @param object
      */
-    setters(key,value){
+    setData(key,value){
         this[key] = value;
     }
 
@@ -124,29 +124,6 @@ class FG {
     }
 
     /**
-     * 上一节点
-     * @param return_node
-     * @returns {*}
-     */
-    getPrev(return_node) {
-        if (return_node) {
-            const prev = this._filter(return_node);
-            if (prev instanceof Array && prev.length > 0) {
-                return prev[0]
-            }
-        }
-    }
-
-    /**
-     * 节点数据
-     * @param nodeCode
-     * @returns {*}
-     */
-    getNodeData(nodeCode){
-        return this._filter(nodeCode)[0];
-    }
-
-    /**
      * 下一节点
      * @param next_node
      * @returns {*}
@@ -159,6 +136,15 @@ class FG {
                 return next[0];
             }
         }
+    }
+
+    /**
+     * 节点数据
+     * @param nodeCode
+     * @returns {*}
+     */
+    getNodeData(nodeCode){
+        return this._filter(nodeCode)[0];
     }
 
     /**
