@@ -18,12 +18,10 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   },
   {
     type: 'textarea',
@@ -43,12 +41,10 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   },
   {
     type: 'number',
@@ -69,12 +65,10 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   },
   {
     type: 'radio',
@@ -114,12 +108,10 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   },
   {
     type: 'checkbox',
@@ -156,12 +148,10 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   },
   {
     type: 'time',
@@ -187,12 +177,10 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   },
   {
     type: 'date',
@@ -218,12 +206,10 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   },
   {
     type: 'rate',
@@ -241,12 +227,10 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   },
   {
     type: 'color',
@@ -263,12 +247,10 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   },
   {
     type: 'select',
@@ -303,18 +285,21 @@ export const basicComponents = [
       remoteFunc: '',
       remoteUrl: '',
     },
+    isCascader: false,
+    cascaderUrl: "",
+    fatherModel: "",
+    requestData: "",
+    responseData: "",
     hidden:"",
     remoteCode: '',
     enterCondition: '',
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
-      url:"",
-      data:"",
-      success: ""
-    }
+    isRemote: "",
+    url:"",
+    data:"",
+    success: ""
   },
   {
     type: 'switch',
@@ -330,12 +315,10 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   },
   {
     type: 'slider',
@@ -357,12 +340,10 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   },
   {
     type: 'text',
@@ -377,12 +358,10 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   }
 ]
 
@@ -430,12 +409,10 @@ export const advanceComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   },
   {
     type: 'cascader',
@@ -461,12 +438,10 @@ export const advanceComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    remoteFactor:{
-      isRemote: "",
+    isRemote: "",
       url:"",
       data:"",
-      success: ""
-    }
+      success: "",
   }
 ]
 

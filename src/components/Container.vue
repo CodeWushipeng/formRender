@@ -627,20 +627,28 @@ export default {
           this.code = this.nowEle.assignment;
         }
       } else if (this.modify == "入口数据") {
-        if (this.nowEle.remoteFactor.data != "") {
-          this.code = this.nowEle.remoteFactor.data;
+        if (this.nowEle.data != "") {
+          this.code = this.nowEle.data;
         }
       } else if (this.modify == "启动条件") {
-        if (this.nowEle.remoteFactor.isRemote != "") {
-          this.code = this.nowEle.remoteFactor.isRemote;
+        if (this.nowEle.isRemote != "") {
+          this.code = this.nowEle.isRemote;
         }
       } else if (this.modify == "校验地址") {
-        if (this.nowEle.remoteFactor.url != "") {
-          this.code = this.nowEle.remoteFactor.url;
+        if (this.nowEle.url != "") {
+          this.code = this.nowEle.url;
         }
       } else if (this.modify == "出口数据") {
-        if (this.nowEle.remoteFactor.success != "") {
-          this.code = this.nowEle.remoteFactor.success;
+        if (this.nowEle.success != "") {
+          this.code = this.nowEle.success;
+        }
+      } else if (this.modify == "请输入入口数据") {
+        if (this.nowEle.requestData != "") {
+          this.code = this.nowEle.requestData;
+        }
+      } else if (this.modify == "请输入出口数据") {
+        if (this.nowEle.responseData != "") {
+          this.code = this.nowEle.responseData;
         }
       }
       this.mirrorVisible = true;
@@ -662,20 +670,23 @@ export default {
       } else if (this.modify == "离开赋值") {
         this.nowEle.assignment = this.code;
       } else if (this.modify == "启动条件") {
-        this.nowEle.remoteFactor.isRemote = this.code;
+        this.nowEle.isRemote = this.code;
       } else if (this.modify == "校验地址") {
-        this.nowEle.remoteFactor.url = this.code;
+        this.nowEle.url = this.code;
       } else if (this.modify == "出口数据") {
-        this.nowEle.remoteFactor.success = this.code;
-      } 
-      else if (this.modify == "入口数据") {
+        this.nowEle.success = this.code;
+      } else if (this.modify == "入口数据") {
         // let tmp;
         // try {
         //   tmp = eval("(" + this.code + ")")();
         // } catch (error) {
         //   throw new Error(error);
         // }
-        this.nowEle.remoteFactor.data = this.code;
+        this.nowEle.data = this.code;
+      } else if (this.modify == "请输入入口数据") {
+        this.nowEle.requestData = this.code;
+      } else if (this.modify == "请输入出口数据") {
+        this.nowEle.responseData = this.code;
       }
       this.mirrorVisible = false;
     },

@@ -86,7 +86,7 @@ let handlers = {
     },
     // 获取全部item节点
     getAllItems() {
-      this.allItems = document.querySelectorAll(".generateForm .el-form-item");
+      this.allItems = document.querySelectorAll(".generateForm .el-form-item .el-input");
     },
     // 流程控制
     handelFlow() {
@@ -451,24 +451,26 @@ let handlers = {
       });
     },
     // 获取组件数据
-    tranData() {
-      this.data.list.forEach((item) => {
+    tranData(target) {
+      target.list.forEach((item) => {
         if (item.type === "grid") {
           item.columns.forEach((cloItem) => {
+            // this.tranData(cloItem)
             this.comArr = [...this.comArr, ...cloItem.list];
           });
         } else {
           this.comArr = [...this.comArr, item];
         }
       });
-      console.log(this.comArr);
+      console.log("获取组件数据",this.comArr);
     },
   },
   mounted() {
     let inter = setInterval(() => {
       if (this.data.list && this.data.list.length > 0) {
         clearInterval(inter);
-        this.tranData();
+        console.log(this.data)
+        this.tranData(this.data);
         this.handelHidden();
         this.enterCheck();
         this.getAllItems();

@@ -48,10 +48,9 @@
                   :widget="citem"
                   @input-change="onInputChange"
                   @el-change="onElChange"
-                  @text-enter="textEnter"
                   :nowindex="index"
-                  @pushIndex="getIndex"
-                  @pushPreIndex="getPreIndex"
+                  @comFocus="mouseValidate"
+                  @comBlur="blurValidate"
                   v-show="!citem.options.hidden"
                 ></genetate-form-item>
               </template>

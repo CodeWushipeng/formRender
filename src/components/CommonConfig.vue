@@ -1,6 +1,6 @@
 <template>
   <div v-if="show">
-    <el-form label-position="top">
+    <el-form label-position="top" v-show="data.type !='grid'">
       <!-- 字典服务 -->
       <el-form-item
         :label="$t('fm.config.common.remoteCode')"
@@ -132,7 +132,7 @@
       >
         <!-- <el-button @click="handelMirror">点击配置外部条件访问</el-button> -->
         <el-input
-          v-model="data.remoteFactor.isRemote"
+          v-model="data.isRemote"
           placeholder="启动条件"
           style="margin-bottom:15px;text-overflow: ellipsis;"
           @focus="handelMirror"
@@ -141,7 +141,7 @@
           <template slot="prepend">启动条件</template>
         </el-input>
         <el-input
-          v-model="data.remoteFactor.url"
+          v-model="data.url"
           placeholder="校验地址"
           style="margin-bottom:15px;text-overflow: ellipsis;"
           @focus="handelMirror"
@@ -153,7 +153,7 @@
           style="text-overflow: ellipsis;margin-bottom:15px"
           readonly
           @focus="handelMirror"
-          v-model="data.remoteFactor.data"
+          v-model="data.data"
           placeholder="入口数据"
         >
           <template slot="prepend">入口数据</template>
@@ -162,7 +162,7 @@
           style="text-overflow: ellipsis;"
           readonly
           @focus="handelMirror"
-          v-model="data.remoteFactor.success"
+          v-model="data.success"
           placeholder="出口数据"
         >
           <template slot="prepend">出口数据</template>

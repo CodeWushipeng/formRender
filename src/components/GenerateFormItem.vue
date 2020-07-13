@@ -17,7 +17,7 @@
       <div class="el-input el-input--small">
         <input
           class="el-input__inner"
-          :maxlength = "widget.options.maxlength"
+          :maxlength="widget.options.maxlength"
           @keydown="inputHandler(widget.key)"
           @focus="inputHandler(widget.key)"
           @keyup="keyupHandler(widget.key)"
@@ -37,21 +37,21 @@
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
-        :maxlength = "widget.options.maxlength"
+        :maxlength="widget.options.maxlength"
         @keyup.native.enter="change"
         @keyup.native="passwordKeyup"
         :data-index="nowindex"
         @focus="comFocus($event)"
         @blur="comBlur($event)"
         :ref="widget.model"
-        ></el-input>
+      ></el-input>
     </template>
     <!--确认密码-->
     <template v-if="widget.type == 'againpassword'">
       <el-input
         type="password"
         v-model="dataModel"
-        :maxlength = "widget.options.maxlength"
+        :maxlength="widget.options.maxlength"
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
@@ -60,7 +60,7 @@
         @blur="comBlur($event)"
         @keyup.native.enter="change"
         :ref="widget.model"
-        ></el-input>
+      ></el-input>
     </template>
 
     <template v-if="widget.type == 'input'">
@@ -361,8 +361,9 @@
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
         :filterable="widget.options.filterable"
-        :ref='widget.model'
+        :ref="widget.model"
         :data-index="nowindex"
+        @visible-change="optionStatu"
         @focus="comFocus($event)"
         @keyup.native.enter="selectChange"
         @keyup.native.space="showOptions"
@@ -592,10 +593,11 @@ export default {
   },
   data() {
     return {
-      imagesrc:require("../assets/wenjian.png"),
+      imagesrc: require("../assets/wenjian.png"),
       /*imagesrc: "",*/
       radioVisible: false,
       cameraVisible: false,
+      selectStatu: false,
       cameraList: [],
       cameraimage: "",
       amountvisible: false, // 控制金额放大镜的显隐
@@ -762,10 +764,16 @@ export default {
     },
     // 组件聚焦事件获取model
     comFocus(e) {
-      if(this.widget.type == "password" || this.widget.type == "againpassword"){
-          if(this.widget.options.peripheral && (this.widget.options.peripheral == true)){
-              this.peripheral()
-          }
+      if (
+        this.widget.type == "password" ||
+        this.widget.type == "againpassword"
+      ) {
+        if (
+          this.widget.options.peripheral &&
+          this.widget.options.peripheral == true
+        ) {
+          this.peripheral();
+        }
       }
       this.$emit("el-focus", this.widget.model);
     },
@@ -775,128 +783,188 @@ export default {
     },
     // element change事件，回车和失去焦点时触发
     change(e) {
-      e.preventDefault()
+      e.preventDefault();
       // 出发change事件时发射 el-change事件，generateform组件监听该事件
       this.$emit("el-change", this);
     },
     // select组件回车抬起事件
     selectChange() {
-      // this.$refs[this.widget.model].blur()
-      this.$emit("el-change", this);
+      if (this.selectStatu) {
+        return;
+      } else {
+        this.$emit("el-change", this);
+      }
     },
     // select组件空格事件
-    showOptions(){
-      this.$refs[this.widget.model].toggleMenu()
+    showOptions() {
+      this.$refs[this.widget.model].toggleMenu();
     },
-  /*密码相关方法*/
-  passwordKeyup(event){
-      if(event.keyCode != 13 && event.keyCode != 8 && this.widget.options.peripheral && (this.widget.options.peripheral == true)){
-          this.dataModel=""
-          //alert("请用外设键盘输入")
-          this.$notify({
-              title: "fail",
-              message: "请用外设键盘输入",
-              type: "info",
-              duration: 2000
-          });
+    // 下拉选择选项显示状态
+    optionStatu(params) {
+      this.selectStatu = params;
+      if (params) {
+        if (this.widget.isCascader) {
+          let father = this.widget.fatherModel && this.widget.fatherModel;
+          let fatherData = this.models[father];
+          let reqData = eval("(" + this.widget.requestData + ")");
+          let postData = Object.assign({}, father, reqData);
+          request
+            .post(this.widget.cascaderUrl, {
+              body: postData,
+              header: {
+                pageIndex: 1,
+                pageSize: 999,
+                gloSeqNo: new Date(),
+                reqSeqNo: "sit anim",
+                reqTime: "officia ad anim",
+              },
+            })
+            .then((res) => {
+              console.log(res);
+              if (res.header.rspCode == "SP000000") {
+                this.$notify({
+                  title: "Success",
+                  message: "查询成功",
+                  type: "success",
+                  duration: 2000,
+                });
+              } else if (res.header.rspCode == "99999999") {
+                this.$notify({
+                  title: "fail",
+                  message: "查询失败",
+                  type: "info",
+                  duration: 2000,
+                });
+                return;
+              }
+              let tempArr = res.body.dics.records;
+              let resultArr = [];
+              tempArr.forEach((item) => {
+                let tempJson = {
+                  value: "",
+                  label: "",
+                };
+                tempJson.label = item.itemValue;
+                tempJson.value = item.itemCode;
+                resultArr.push(tempJson);
+              });
+              console.log(tempArr, resultArr);
+              this.widget.options.options = resultArr;
+            })
+            .catch((error) => console.log(error));
+        }
       }
-  },
+    },
+    /*密码相关方法*/
+    passwordKeyup(event) {
+      if (
+        event.keyCode != 13 &&
+        event.keyCode != 8 &&
+        this.widget.options.peripheral &&
+        this.widget.options.peripheral == true
+      ) {
+        this.dataModel = "";
+        //alert("请用外设键盘输入")
+        this.$notify({
+          title: "fail",
+          message: "请用外设键盘输入",
+          type: "info",
+          duration: 2000,
+        });
+      }
+    },
     //身份证   peripheral
     peripheral() {
-      var _this = this
+      var _this = this;
       function peripheralreq() {
         var paraObj = {};
         if (_this.widget.type == "idencard") {
-            paraObj.para1 = "GNQ_04";
-            paraObj.para2 = "";
+          paraObj.para1 = "GNQ_04";
+          paraObj.para2 = "";
         } else if (
-            _this.widget.type == "readcard" &&
-            _this.widget.options.cardType == "01"
+          _this.widget.type == "readcard" &&
+          _this.widget.options.cardType == "01"
         ) {
-            paraObj.para1 = "GNQ_10";
-            const para2Obj = {};
-            (para2Obj.tradeCode = "0101"), //四位交易码
-                (para2Obj.cardInfoPara = "AA"), //两位参数具体如下
-                (paraObj.para2 = JSON.stringify(para2Obj));
+          paraObj.para1 = "GNQ_10";
+          const para2Obj = {};
+          (para2Obj.tradeCode = "0101"), //四位交易码
+            (para2Obj.cardInfoPara = "AA"), //两位参数具体如下
+            (paraObj.para2 = JSON.stringify(para2Obj));
         } else if (
-            _this.widget.type == "readcard" &&
-            _this.widget.options.cardType == "02"
+          _this.widget.type == "readcard" &&
+          _this.widget.options.cardType == "02"
         ) {
-            paraObj.para1 = "GNQ_05";
-            paraObj.para2 = "";
-        } else if (
-            _this.widget.type == "password"
-        ) {
-            paraObj.para1 = "GWQ_11";
-            paraObj.para2 = "01234567890123";//字符串第一位为标志位 0-请输入密码 1-请再次输入密码，标志位后面是待加密数据，一般为银行账号
-        } else if (
-            _this.widget.type == "againpassword"
-        ) {
-            paraObj.para1 = "GWQ_11";
-            paraObj.para2 = "11234567890123";//字符串第一位为标志位 0-请输入密码 1-请再次输入密码，标志位后面是待加密数据，一般为银行账号
+          paraObj.para1 = "GNQ_05";
+          paraObj.para2 = "";
+        } else if (_this.widget.type == "password") {
+          paraObj.para1 = "GWQ_11";
+          paraObj.para2 = "01234567890123"; //字符串第一位为标志位 0-请输入密码 1-请再次输入密码，标志位后面是待加密数据，一般为银行账号
+        } else if (_this.widget.type == "againpassword") {
+          paraObj.para1 = "GWQ_11";
+          paraObj.para2 = "11234567890123"; //字符串第一位为标志位 0-请输入密码 1-请再次输入密码，标志位后面是待加密数据，一般为银行账号
         }
 
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
           try {
             const idenTemp = smartClient.allDevice(
-                paraObj.para1,
-                paraObj.para2
+              paraObj.para1,
+              paraObj.para2
             );
-            resolve(idenTemp)
-          }catch (err){
-              console.log(err)
-              //alert('请连接设备或手输')
-              _this.$notify({
-                  title: "fail",
-                  message: "请连接设备",
-                  type: "info",
-                  duration: 2000
-              });
+            resolve(idenTemp);
+          } catch (err) {
+            console.log(err);
+            //alert('请连接设备或手输')
+            _this.$notify({
+              title: "fail",
+              message: "请连接设备",
+              type: "info",
+              duration: 2000,
+            });
           }
-        })
+        });
       }
-      peripheralreq().then(idenTemp => {
-          if (idenTemp) {
-              const idenTempObj = JSON.parse(idenTemp);
-              //alert(idenTempObj)
-              if (idenTempObj.rCode == 0) {
-                  if (this.widget.type == "idencard") {
-                      this.dataModel = idenTempObj.idInfo.IDNumber;
-                  } else if (
-                      this.widget.type == "readcard" &&
-                      this.widget.options.cardType == "01"
-                  ) {
-                      this.dataModel = idenTempObj.cardInfo.cardNO;
-                  } else if (
-                      this.widget.type == "readcard" &&
-                      this.widget.options.cardType == "02"
-                  ) {
-                      this.dataModel = idenTempObj.szTrack2;
-                      //todo szTrack3 暂时不知道可不可用
-                      var szTrack3 = idenTempObj.szTrack3;
-                  } else if (
-                      this.widget.type == "password" ||
-                      this.widget.type == "againpassword"
-                  ) {
-                      this.dataModel = idenTempObj.password
-                  }
-              } else {
-                  alert("检测失败：" + idenTemp);
-              }
+      peripheralreq().then((idenTemp) => {
+        if (idenTemp) {
+          const idenTempObj = JSON.parse(idenTemp);
+          //alert(idenTempObj)
+          if (idenTempObj.rCode == 0) {
+            if (this.widget.type == "idencard") {
+              this.dataModel = idenTempObj.idInfo.IDNumber;
+            } else if (
+              this.widget.type == "readcard" &&
+              this.widget.options.cardType == "01"
+            ) {
+              this.dataModel = idenTempObj.cardInfo.cardNO;
+            } else if (
+              this.widget.type == "readcard" &&
+              this.widget.options.cardType == "02"
+            ) {
+              this.dataModel = idenTempObj.szTrack2;
+              //todo szTrack3 暂时不知道可不可用
+              var szTrack3 = idenTempObj.szTrack3;
+            } else if (
+              this.widget.type == "password" ||
+              this.widget.type == "againpassword"
+            ) {
+              this.dataModel = idenTempObj.password;
+            }
           } else {
-              alert("无");
+            alert("检测失败：" + idenTemp);
           }
-      })
+        } else {
+          alert("无");
+        }
+      });
     },
     inputHandler(refId) {
       // const keyType = event.type;
       // const keyCode = event.keyCode;
       // console.log('event.keyType',event.type);
       // console.log('event.keyCode',event.keyCode);
-      if(event.type == "focus"){
-          this.amountvisible = !!this.dataModel;
-          let amountObj = getInputValue(this.models[this.widget.model]);
-          this.bigPastAdjustFee = amountObj.bigPastAdjustFee;
+      if (event.type == "focus") {
+        this.amountvisible = !!this.dataModel;
+        let amountObj = getInputValue(this.models[this.widget.model]);
+        this.bigPastAdjustFee = amountObj.bigPastAdjustFee;
       }
       if (typeof refId == "string") {
         const refsId = this.$refs[refId];
@@ -913,7 +981,7 @@ export default {
         let amountObj = getInputValue(refsId.value);
         this.bigPastAdjustFee = amountObj.bigPastAdjustFee;
 
-        console.log('value',refsId.value)
+        console.log("value", refsId.value);
         this.dataModel = refsId.value;
         this.amountvisible = !!this.dataModel;
       }
@@ -923,7 +991,7 @@ export default {
       const refsId = this.$refs[refId];
       this.amountvisible = false;
       this.dataModel = delcommafy(refsId.value);
-      this.$emit("el-change", this)
+      this.$emit("el-change", this);
     },
     blurHandler() {
       this.amountvisible = false;

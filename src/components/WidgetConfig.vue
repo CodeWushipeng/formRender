@@ -107,6 +107,34 @@
           >
           </el-switch>
       </el-form-item>
+      <!-- 下拉选择框是否用作级联选择器 -->
+      <el-form-item label="是否用作级联选择器" v-if="data.type=='select'">
+        <el-switch
+            v-model="data.isCascader"
+          >
+        </el-switch>
+      </el-form-item>
+      <el-form-item v-if="data.isCascader">
+        <el-input placeholder="请输入URL" v-model="data.cascaderUrl">
+           <template slot="prepend">URL</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item v-if="data.isCascader">
+        <el-input placeholder="请输入当前选择框父级model" v-model="data.fatherModel">
+           <template slot="prepend">父级Model</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item v-if="data.isCascader">
+        <el-input placeholder="请输入入口数据" @focus="handelMirror" readonly="readonly" v-model="data.requestData">
+           <template slot="prepend">入口数据</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item v-if="data.isCascader">
+        <el-input placeholder="请输入出口数据" @focus="handelMirror" readonly="readonly" v-model="data.responseData">
+           <template slot="prepend">出口数据</template>
+        </el-input>
+      </el-form-item>
+
       <el-form-item :label="$t('fm.config.widget.showLabel')" v-if="Object.keys(data.options).indexOf('showLabel')>=0">
         <el-switch
             v-model="data.options.showLabel"
