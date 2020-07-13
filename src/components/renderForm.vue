@@ -101,8 +101,14 @@ export default {
       // 3
       if (list instanceof Array && list.length > 0 && list[0]) {
         const { inputFormCode } = list[0];
-        inputFormCode &&
-          getFormList(this.url, { formCode: inputFormCode })
+        if(!inputFormCode){
+            this.$notify.error({
+                title: "消息",
+                message: "表单名称inputFormCode不能为空"
+            });
+            return;
+        }
+        getFormList(this.url, { formCode: inputFormCode })
             .then(res => {
               console.log("=====form-making-secondary===res============", res);
               const { rspCode } = res;
