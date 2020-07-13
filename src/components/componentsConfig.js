@@ -473,6 +473,13 @@ export const tableComponents = [
     icon: 'icon-grid-',
     options: {
       isPagination: false,
+      isAddBtn:false,
+      isEditBtn: false,
+      isDeleteBtn: false,
+      remoteFunc: function (currentObj, request, callBack){
+        let tableData = [];
+        return tableData;
+      },
       pagination:{
         pageSize:1,
         currentPage:1,
@@ -490,12 +497,6 @@ export const tableComponents = [
       eventConfig:{
 
       }
-    },
-    remoteFactor: {
-      isRemote: "",
-      url: "",
-      data: "",
-      success: ""
     },
     configdata: {
       list:[],

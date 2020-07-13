@@ -1,10 +1,16 @@
 <template>
   <div v-if="show">
     <el-form label-position="top">
-      <el-form-item
+      <el-form-item label-width="100px" label="添加新增按钮">
+        <el-radio-group v-model="data.options.isAddBtn">
+          <el-radio-button :label="false">{{$t('fm.tableWidget.widget.no')}}</el-radio-button>
+          <el-radio-button :label="true">{{$t('fm.tableWidget.widget.yes')}}</el-radio-button>
+        </el-radio-group>     
+      </el-form-item>
+      <el-form-item v-if="data.options.isAddBtn"
         label="新增方法"
       >
-        <el-input
+        <el-input 
           style="text-overflow: ellipsis;"
           readonly
           @focus="handelMirror"
@@ -13,8 +19,14 @@
         >
         </el-input>
       </el-form-item>
-      <!-- 进入条件 -->
-      <el-form-item
+      <!-- 编辑 -->
+      <el-form-item label-width="100px" label="添加编辑按钮">
+        <el-radio-group v-model="data.options.isEditBtn">
+          <el-radio-button :label="false">{{$t('fm.tableWidget.widget.no')}}</el-radio-button>
+          <el-radio-button :label="true">{{$t('fm.tableWidget.widget.yes')}}</el-radio-button>
+        </el-radio-group>     
+      </el-form-item>
+      <el-form-item v-if="data.options.isEditBtn"
         label="编辑方法"
       >
         <el-input
@@ -26,8 +38,14 @@
         >
         </el-input>
       </el-form-item>
-      <!-- 离开条件 -->
-      <el-form-item
+      <!-- 删除 -->
+      <el-form-item label-width="100px" label="添加删除按钮">
+        <el-radio-group v-model="data.options.isDeleteBtn">
+          <el-radio-button :label="false">{{$t('fm.tableWidget.widget.no')}}</el-radio-button>
+          <el-radio-button :label="true">{{$t('fm.tableWidget.widget.yes')}}</el-radio-button>
+        </el-radio-group>     
+      </el-form-item>
+      <el-form-item v-if="data.options.isDeleteBtn"
         label="删除方法"
       >
         <el-input

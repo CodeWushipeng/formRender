@@ -32,7 +32,7 @@
     "qiniu": "^7.2.1",
     "qiniu-js": "^2.5.1",
     "qs": "^6.9.4",
-    "table-making": "^0.0.10",
+    "table-making": "^0.0.11",
     "viewerjs": "^1.2.0",
     "vue": "^2.6.5",
     "vue-codemirror": "^4.0.6",

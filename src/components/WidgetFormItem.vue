@@ -264,6 +264,27 @@
           <span>{{element.options.defaultValue}}</span>
         </template>
          <template v-if="element.type == 'elTable'">
+           <template>
+             <div style="line-height: 45px;" v-if="element.options.isAddBtn || element.options.isEditBtn|| element.options.isDeleteBtn ">
+              <el-row type="flex" justify="end" :gutter="20">
+                <el-col v-if="element.options.isAddBtn" :span="3">
+                  <div>
+                    <el-button type="primary">添加数据</el-button>
+                  </div>
+                </el-col>
+                <el-col v-if="element.options.isEditBtn" :span="3">
+                  <div>
+                    <el-button type="primary">编辑数据</el-button>
+                  </div>
+                </el-col>
+                <el-col v-if="element.options.isDeleteBtn" :span="3">
+                  <div>
+                    <el-button type="primary">删除数据</el-button>
+                  </div>
+                </el-col>
+              </el-row>
+             </div>      
+           </template>
            <fm-generate-table
               :data="element.configdata"
               ref="generateTable"
@@ -355,7 +376,7 @@ export default {
       })
     },
     dblhandleCurrentRow(row, column, event){
-      //alert(row)
+      alert(row)
     }
   },
   watch: {

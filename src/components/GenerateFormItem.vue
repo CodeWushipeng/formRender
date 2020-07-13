@@ -569,9 +569,31 @@
       <span>{{ dataModel }}</span>
     </template>
     <template v-if="widget.type == 'elTable'">
+      <template>
+        <div style="line-height: 45px;" v-if="widget.options.isAddBtn || widget.options.isEditBtn|| widget.options.isDeleteBtn ">
+          <el-row type="flex" justify="end" :gutter="20">
+            <el-col v-if="widget.options.isAddBtn" :span="3">
+              <div>
+                <el-button type="primary">添加数据</el-button>
+              </div>
+            </el-col>
+            <el-col v-if="widget.options.isEditBtn" :span="3">
+              <div>
+                <el-button type="primary">编辑数据</el-button>
+              </div>
+            </el-col>
+            <el-col v-if="widget.options.isDeleteBtn" :span="3">
+              <div>
+                <el-button type="primary">删除数据</el-button>
+              </div>
+            </el-col>
+          </el-row> 
+        </div>
+      </template>
       <fm-generate-table
         v-model="widget.configdata"
         :data="widget.configdata"
+        @dblhandleCurrentRow = "dblhandleCurrentRow"
         ref="generateTable"
       >
       </fm-generate-table>
@@ -1093,6 +1115,10 @@ export default {
       } catch(err) {
           console.log(err);
       }
+    },
+    dblhandleCurrentRow(row, column, event){
+      debugger
+      alert(JSON.stringify(row))
     }
   },
   mounted() {

@@ -21,7 +21,7 @@
           <el-form-item
               :label="$t('fm.tableWidget.widget.dataIidentification')"
             >
-              <el-input v-model="tableRemotFun" size="mini" @focus = "openCode('tableRemotFun')">
+              <el-input v-model="data.options.remoteFunc.toString()" size="mini" @focus = "openCode('tableRemotFun')">
               </el-input>
           </el-form-item>
           <el-form-item label-width="100px" :label="$t('fm.tableWidget.widget.isPagination')+':'">
