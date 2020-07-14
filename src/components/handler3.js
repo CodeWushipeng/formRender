@@ -122,7 +122,7 @@ let handlers = {
     singleValidate(i) {
       let lists = this.comArr;
       this.$refs["generateForm"].validateField(lists[i].model, (valid) => {
-        console.log("组件单独校验", valid, lists[i].model);
+        // console.log("组件单独校验", valid, lists[i].model);
         if (valid != "" && valid != undefined) {
           this.setFocus(this.allItems[i]);
           this.singleError = true;
