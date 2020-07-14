@@ -1290,11 +1290,12 @@ export default {
         if (tempTableData) {
           tragtTableData.push(tempTableData);
         }
-      }else if(type == "edit"){
+      }else if(type == "edit"){debugger
         if (tragtTableData && tragtTableData.length>0) {
           tragtTableData.map(item =>{
             if(item.id === tempTableData.id || item.listCode == tempTableData.listCode){
-              item = tempTableData
+              for(let key in tempTableData)
+              item[key] = tempTableData[key]
             }
           })
         }
