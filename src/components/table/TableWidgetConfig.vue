@@ -1,6 +1,6 @@
 <template>
   <div v-if="show">
-    <el-form label-position="top">    
+    <el-form label-position="top">
       <template>
         <el-form-item
             :label="$t('fm.tableWidget.widget.selectTableConfig')"
@@ -28,7 +28,7 @@
             <el-radio-group v-model="data.options.isPagination">
               <el-radio-button :label="false">{{$t('fm.tableWidget.widget.no')}}</el-radio-button>
               <el-radio-button :label="true">{{$t('fm.tableWidget.widget.yes')}}</el-radio-button>
-            </el-radio-group>     
+            </el-radio-group>
           </el-form-item>
           <div v-if="data.options.isPagination">
             <el-form-item label-width="100px" label="每页条目个数">
@@ -42,7 +42,7 @@
                 @focus="openCode('handleSizeChange')"
                 v-model="data.options.pagination.handleSizeChange.toString()"
                 placeholder="条目个数改变的方法"
-              >    
+              >
               </el-input>
             </el-form-item>
             <el-form-item label-width="100px" label="当前页改变的方法">
@@ -52,7 +52,7 @@
                 @focus="openCode('handleCurrentChange')"
                 v-model="data.options.pagination.handleCurrentChange.toString()"
                 placeholder="当前页改变的方法"
-              >    
+              >
               </el-input>
             </el-form-item>
           </div>
@@ -210,9 +210,9 @@ export default {
       this.mirrorVisible = false
     },
     getCodeData(){
-      let type = this.tableCodeCf.codeType 
+      let type = this.tableCodeCf.codeType
       let temFen = ''
-      
+
       try {
         temFen =  eval("("+this.tableCodeCf.tableCodeFn+")");
       } catch(e) {
@@ -224,9 +224,9 @@ export default {
           duration: 2000,
         });
         return
-      } 
+      }
       if(type == "handleCurrentChange"){
-       
+
 
       }else if(type == "handleSizeChange"){
 
@@ -276,7 +276,7 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          if (res.header.rspCode == "00000000"&&res.header.rspCode == "SP000000") {
+          if (res.header.rspCode == "00000000" || res.header.rspCode == "SP000000") {
             this.$notify({
               title: "Success",
               message: "查询成功",

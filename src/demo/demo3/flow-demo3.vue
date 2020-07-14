@@ -207,7 +207,7 @@ const FG = new getFG();
 import { queryFlowDetail } from "../../api/flows";
 import { insertNodeData } from "../../api/submit";
 import { platform, user } from "./flowData";
-
+import {RES_OK} from "@/api/config";
 export default {
   name: "flow-demo",
   mixins: [flowMixin],
@@ -278,7 +278,7 @@ export default {
           console.log('res', res)
           const { rspCode } = res;
           // this.hideLoading()
-          if (rspCode == "SP000000") {
+          if (rspCode == RES_OK) {
             const list = res.detail.records;
             let funcCollection = res.define.funcCollection;
             const funcObject = FG.solveCommonJS(funcCollection);

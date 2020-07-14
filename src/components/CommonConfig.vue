@@ -31,7 +31,7 @@
           <el-table :data="gridData" border>
             <el-table-column label="操作" width="80">
               <template slot-scope="scope">
-                <el-button @click="setData(scope.row)" type="text" 
+                <el-button @click="setData(scope.row)" type="text"
                   >赋值</el-button
                 >
               </template>
@@ -175,7 +175,7 @@
 <script>
 import Draggable from "vuedraggable";
 import request from "../util/request";
-
+import {RES_OK} from "@/api/config";
 export default {
   components: {
     Draggable,
@@ -233,7 +233,7 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          if (res.header.rspCode == "SP000000") {
+          if (res.header.rspCode == RES_OK) {
             this.$notify({
               title: "Success",
               message: "查询成功",
@@ -293,7 +293,7 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          if (res.header.rspCode == "SP000000") {
+          if (res.header.rspCode == RES_OK) {
             this.$notify({
               title: "Success",
               message: "查询成功",
