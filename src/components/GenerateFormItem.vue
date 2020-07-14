@@ -205,7 +205,7 @@
       >
     </template>
 
-    <template v-if="widget.type == 'radio'">
+    <!-- <template v-if="widget.type == 'radio'">
       <el-radio-group
         @click.native="radioFun"
         v-model="dataModel"
@@ -227,8 +227,29 @@
           }}</template>
         </el-radio>
       </el-radio-group>
+    </template> -->
+    <template v-if="widget.type == 'radio'">
+      <el-radio-group
+        v-model="dataModel"
+        :style="{ width: widget.options.width }"
+        :disabled="widget.options.disabled"
+        @keyup.native.enter="change"
+      >
+        <el-radio
+          :style="{ display: widget.options.inline ? 'inline-block' : 'block' }"
+          :label="item.value"
+          v-for="(item, index) in widget.options.remote
+            ? widget.options.remoteOptions
+            : widget.options.options"
+          :key="index"
+        >
+          <template v-if="widget.options.remote">{{ item.label }}</template>
+          <template v-else>{{
+            widget.options.showLabel ? item.label : item.value
+          }}</template>
+        </el-radio>
+      </el-radio-group>
     </template>
-
     <!--radio-->
     <cus-dialog
       :visible="radioVisible"
@@ -269,6 +290,10 @@
         v-model="dataModel"
         :style="{ width: widget.options.width }"
         :disabled="widget.options.disabled"
+        @keyup.native.enter="change"
+        @keyup.native.up="checkUp"
+        @keyup.native.down="checkDown"
+        :class="widget.model"
       >
         <el-checkbox
           :style="{ display: widget.options.inline ? 'inline-block' : 'block' }"
@@ -637,6 +662,7 @@ export default {
   },
   data() {
     return {
+      checkIndex: 0,
       imagesrc: require("../assets/wenjian.png"),
       /*imagesrc: "",*/
       radioVisible: false,
@@ -908,6 +934,33 @@ export default {
     dateBlur(){
       console.log("date选择器失去焦点事件")
       this.$emit("date-blur")
+    },
+    // 多选框键盘上下键事件
+    checkUp(){
+      this.$emit("check-handle",this.widget)
+      let name = '.'+this.widget.model+" input"
+      let checks = document.querySelectorAll(name)
+      for(let i=this.checkIndex;i>=0;i--){
+        if(i==0){
+          return
+        }
+        this.checkIndex--
+        checks[this.checkIndex].focus()
+        break
+      }
+    },
+    checkDown(){
+      this.$emit("check-handle",this.widget)
+      let name = '.'+this.widget.model+" input"
+      let checks = document.querySelectorAll(name)
+      for(let i=this.checkIndex;i<checks.length;i++){
+        if(i==checks.length-1){
+          return
+        }
+        this.checkIndex++
+        checks[this.checkIndex].focus()
+        break
+      }
     },
     /*密码相关方法*/
     passwordKeyup(event) {

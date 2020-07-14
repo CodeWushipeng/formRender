@@ -300,9 +300,11 @@ export default {
     },
     // 验证并获取输入框当前的值
     getData() {
+      this.clearValidate()
       return new Promise((resolve, reject) => {
         // 执行form表单验证函数
-        this.$refs.generateForm.validate((valid) => {
+        this.$nextTick(()=>{
+          this.$refs.generateForm.validate((valid) => {
           if (valid) {
             // 逐条验证当前表单的校验规则
             resolve(this.models);
@@ -310,7 +312,22 @@ export default {
             reject(new Error(this.$t("fm.message.validError")).message);
           }
         });
+        })
+        
       });
+    },
+    clearValidate() {
+      let lists = this.data.list;
+      for (let i = 0; i < lists.length; i++) {
+        if (
+          lists[i].options.disabled ||
+          lists[i].options.hidden ||
+          lists[i].options.readonly == "readonly"
+        ) {
+          lists[i].model = ""
+        }
+      }
+      console.log(this.data)
     },
     // 重置表单
     reset() {

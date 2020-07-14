@@ -18,6 +18,8 @@ let handlers = {
       canFocusType: [
         "input",
         "textarea",
+        "checkbox",
+        "radio",
         "date",
         "time",
         "number",
@@ -420,9 +422,15 @@ let handlers = {
       let focusEle = ele.querySelector("input")
         ? ele.querySelector("input")
         : ele.querySelector("textarea");
+      let type = focusEle.getAttribute("type")
+      
       console.log("当前聚焦元素", focusEle);
       this.$nextTick(() => {
-        focusEle.focus();
+        if(type == 'radio'){
+          focusEle.parentNode.parentNode.focus()
+        }else{
+          focusEle.focus();
+        }
       });
     },
     // 使组件失去焦点
