@@ -1,63 +1,91 @@
 <template>
   <div v-if="show">
     <el-form label-position="top">
+      <!-- 增加 -->
       <el-form-item label-width="100px" label="添加新增按钮">
         <el-radio-group v-model="data.options.isAddBtn">
           <el-radio-button :label="false">{{$t('fm.tableWidget.widget.no')}}</el-radio-button>
           <el-radio-button :label="true">{{$t('fm.tableWidget.widget.yes')}}</el-radio-button>
-        </el-radio-group>     
+        </el-radio-group>
       </el-form-item>
-      <el-form-item v-if="data.options.isAddBtn"
-        label="新增方法"
-      >
-        <el-input 
+      <el-form-item v-if="data.options.isAddBtn" label="新增方法">
+        <el-input
           style="text-overflow: ellipsis;"
           readonly
           @focus="handelMirror"
-          v-model="data.hidden"
+          v-model="data.options.addFn.toString()"
           placeholder="新增方法"
-        >
-        </el-input>
+        ></el-input>
+      </el-form-item>
+      <el-form-item v-if="data.options.isAddBtn" label="新增数据表单编码">
+        <el-input
+          style="text-overflow: ellipsis;"
+          v-model="data.options.addFormId"
+          placeholder="表单编码"
+        ></el-input>
+      </el-form-item>
+       <!-- 增加 -->
+       <el-form-item label-width="100px" label="双击查看详情">
+        <el-radio-group v-model="data.options.isDetail">
+          <el-radio-button :label="false">{{$t('fm.tableWidget.widget.no')}}</el-radio-button>
+          <el-radio-button :label="true">{{$t('fm.tableWidget.widget.yes')}}</el-radio-button>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item v-if="data.options.isDetail" label="详情方法">
+        <el-input
+          style="text-overflow: ellipsis;"
+          readonly
+          @focus="handelMirror"
+          v-model="data.options.detailFn.toString()"
+          placeholder="详情方法"
+        ></el-input>
+      </el-form-item>
+      <el-form-item v-if="data.options.isDetail" label="数据详情表单编码">
+        <el-input
+          style="text-overflow: ellipsis;"
+          v-model="data.options.detailFormId"
+          placeholder="表单编码"
+        ></el-input>
       </el-form-item>
       <!-- 编辑 -->
       <el-form-item label-width="100px" label="添加编辑按钮">
         <el-radio-group v-model="data.options.isEditBtn">
           <el-radio-button :label="false">{{$t('fm.tableWidget.widget.no')}}</el-radio-button>
           <el-radio-button :label="true">{{$t('fm.tableWidget.widget.yes')}}</el-radio-button>
-        </el-radio-group>     
+        </el-radio-group>
       </el-form-item>
-      <el-form-item v-if="data.options.isEditBtn"
-        label="编辑方法"
-      >
+      <el-form-item v-if="data.options.isEditBtn" label="编辑方法">
         <el-input
           style="text-overflow: ellipsis;"
           readonly
           @focus="handelMirror"
-          v-model="data.enterCondition"
+          v-model="data.options.editFn.toString()"
           placeholder="编辑方法"
-        >
-        </el-input>
+        ></el-input>
+      </el-form-item>
+       <el-form-item v-if="data.options.isEditBtn" label="编辑数据表单ID">
+        <el-input
+          style="text-overflow: ellipsis;"
+          v-model="data.options.editFormId"
+          placeholder="表单编码"
+        ></el-input>
       </el-form-item>
       <!-- 删除 -->
       <el-form-item label-width="100px" label="添加删除按钮">
         <el-radio-group v-model="data.options.isDeleteBtn">
           <el-radio-button :label="false">{{$t('fm.tableWidget.widget.no')}}</el-radio-button>
           <el-radio-button :label="true">{{$t('fm.tableWidget.widget.yes')}}</el-radio-button>
-        </el-radio-group>     
+        </el-radio-group>
       </el-form-item>
-      <el-form-item v-if="data.options.isDeleteBtn"
-        label="删除方法"
-      >
+      <el-form-item v-if="data.options.isDeleteBtn" label="删除方法">
         <el-input
           style="text-overflow: ellipsis;"
           readonly
           @focus="handelMirror"
-          v-model="data.condition"
+          v-model="data.options.deleteFn.toString()"
           placeholder="删除方法"
-        >
-        </el-input>
+        ></el-input>
       </el-form-item>
-
     </el-form>
   </div>
 </template>
@@ -68,13 +96,11 @@ import request from "../../util/request";
 
 export default {
   components: {
-    Draggable,
+    Draggable
   },
   props: ["data"],
   data() {
-    return {
-     
-    };
+    return {};
   },
   mounted() {
     console.log(this.data);
@@ -85,7 +111,7 @@ export default {
         return true;
       }
       return false;
-    },
+    }
   },
   methods: {
     // codeMirror弹出函数
@@ -98,6 +124,6 @@ export default {
       this.startPage = val;
       this.getData();
     }
-  },
+  }
 };
 </script>

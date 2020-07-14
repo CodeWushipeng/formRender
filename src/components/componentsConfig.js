@@ -476,7 +476,27 @@ export const tableComponents = [
       isAddBtn:false,
       isEditBtn: false,
       isDeleteBtn: false,
+      isDetail: false,
+      addFormId:'',
+      editFormId: '',
+      detailFormId: '',
       remoteFunc: function (currentObj, request, callBack){
+        let tableData = [];
+        return tableData;
+      },
+      addFn: function (currentObj, request, callBack) {
+        let tableData = null;
+        return tableData;
+      },
+      editFn: function (currentObj, request, callBack) {
+        let tableData = null;
+        return tableData;
+      },
+      detailFn: function (currentObj, request, callBack) {
+        let tableData = [];
+        return tableData;
+      },
+      deleteFn: function (currentObj, request, callBack) {
         let tableData = [];
         return tableData;
       },
