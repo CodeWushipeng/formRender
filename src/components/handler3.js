@@ -445,6 +445,18 @@ let handlers = {
       } else if (this.outMark == this.canFocusLength) {
         this.allValidate(this.outMark);
         this.handelAssignment(this.outMark);
+        if (
+          this.singleError ||
+          this.rangeError ||
+          this.conditionError ||
+          this.remoteError
+        ) {
+          return;
+        }
+        this.handelHidden();
+        this.getShowLength();
+        this.enterCheck();
+        this.iteratorAllEle();
       }
     },
     // 发送remote方法

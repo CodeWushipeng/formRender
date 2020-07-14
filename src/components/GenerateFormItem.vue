@@ -826,13 +826,14 @@ export default {
     },
     // 组件失去焦点事件
     comBlur(e) {
+      console.log("失去焦点")
       this.$emit("el-blur");
     },
     // element change事件，回车和失去焦点时触发
     change(e) {
-      e.preventDefault();
+      console.log(this.widget)
       // 出发change事件时发射 el-change事件，generateform组件监听该事件
-      this.$emit("el-change", this);
+      this.$emit("el-change", this.widget);
     },
     // select组件回车抬起事件
     selectChange() {

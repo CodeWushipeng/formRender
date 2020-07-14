@@ -2,10 +2,10 @@
   <!--<div v-if="!isDataNull">-->
   <div class="generateForm">
     <!--data:{{data.config}} <br>-->
-      <!--value:{{value}} <br>
+    <!--value:{{value}} <br>
 
     rules:{{rules}} <br>-->
-      models:{{models}} <br>
+    models:{{ models }} <br />
     <el-form
       v-if="keysLength"
       ref="generateForm"
@@ -123,12 +123,13 @@ export default {
   created() {
     this.generateModle(this.data.list);
   },
- mounted(){
-},
+  mounted() {},
   methods: {
     // 生成models、rules对象
     generateModle(genList) {
-      console.log("xxxxxxxxxxxxxxxx2333333333333333333xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+      console.log(
+        "xxxxxxxxxxxxxxxx2333333333333333333xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      );
       if (!genList) {
         return;
       }
@@ -143,14 +144,14 @@ export default {
           if (
             // 如果value对象不为空且具有与当前组件model同名的属性，则将值赋给models的该属性（这样就修改了组件原始值）
             this.value &&
-             Object.keys(this.value).indexOf(genList[i].model) >= 0
+            Object.keys(this.value).indexOf(genList[i].model) >= 0
           ) {
             this.models[genList[i].model] = this.value[genList[i].model];
           } else {
             // 如果value为空判断当前组件的类型是否为空类型
             if (genList[i].type === "blank") {
               // 如果为空类型则为models添加对应的响应式属性，并赋值为默认值
-              let testa = {}
+              let testa = {};
               this.$set(
                 testa,
                 genList[i].model,
@@ -160,10 +161,10 @@ export default {
                   ? {}
                   : []
               );
-              this.models = testa
+              this.models = testa;
             } else {
               // 如果value为空并且组件为非空类型组件将组件默认值赋值给models对应属性
-                this.models[genList[i].model] = genList[i].options.defaultValue;
+              this.models[genList[i].model] = genList[i].options.defaultValue;
 
               // 组件创建完成后models为组件 key:value 键值对json
             }
@@ -205,22 +206,22 @@ export default {
             var validatePass = (rule, value, callback) => {
               // console.log('this.models',JSON.stringify(_this.models));
               setTimeout(() => {
-                if(confirm_field){
-                    if (this.models[confirm_field]) {
-                        if (value === "") {
-                            callback(new Error("请输入确认密码"));
-                        } else if (this.models[confirm_field] !== value) {
-                            callback(new Error("两次输入密码不一致!"));
-                        } else {
-                            callback();
-                        }
-                    } else if (!this.models[confirm_field] && !value){
-                        callback();
-                    } else if (!this.models[confirm_field] && value){
-                        callback(new Error("两次输入密码不一致!"));
+                if (confirm_field) {
+                  if (this.models[confirm_field]) {
+                    if (value === "") {
+                      callback(new Error("请输入确认密码"));
+                    } else if (this.models[confirm_field] !== value) {
+                      callback(new Error("两次输入密码不一致!"));
+                    } else {
+                      callback();
                     }
-                }else{
-                    callback(new Error("请在属性中设置确认字段"));
+                  } else if (!this.models[confirm_field] && !value) {
+                    callback();
+                  } else if (!this.models[confirm_field] && value) {
+                    callback(new Error("两次输入密码不一致!"));
+                  }
+                } else {
+                  callback(new Error("请在属性中设置确认字段"));
                 }
               }, 200);
             };
@@ -233,7 +234,7 @@ export default {
           if (dataType == "text") {
             var validatePass = (rule, value, callback) => {
               setTimeout(() => {
-                  callback();
+                callback();
               }, 200);
             };
             this.rules[genList[i].model].push({
@@ -268,8 +269,8 @@ export default {
                       callback();
                     }
                   }
-                }else{
-                    callback(new Error("不能为空"));
+                } else {
+                  callback(new Error("不能为空"));
                 }
               }, 200);
             };
@@ -321,19 +322,20 @@ export default {
       this.$emit("on-change", field, value, this.models);
     },
     // 重置models
-    resetModelsFields(){
-        const keys = Object.keys(this.models);
-        keys.length && keys.forEach(key=>{
-            delete  this.models[key]
-        })
-    }
+    resetModelsFields() {
+      const keys = Object.keys(this.models);
+      keys.length &&
+        keys.forEach((key) => {
+          delete this.models[key];
+        });
+    },
   },
   watch: {
     models: {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
       handler(val) {
-        console.log("models",val)
+        console.log("models", val);
         // this.isDataNull = false;
       },
     },
