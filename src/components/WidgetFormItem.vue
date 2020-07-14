@@ -263,6 +263,47 @@
         <template v-if="element.type == 'text'">
           <span>{{element.options.defaultValue}}</span>
         </template>
+         <template v-if="element.type == 'elTable'">
+           <template>
+             <div style="line-height: 45px;" v-if="element.options.isAddBtn || element.options.isEditBtn|| element.options.isDeleteBtn ">
+              <el-row type="flex" justify="end" :gutter="20">
+                <el-col v-if="element.options.isAddBtn" :span="3">
+                  <div>
+                    <el-button type="primary">添加数据</el-button>
+                  </div>
+                </el-col>
+                <el-col v-if="element.options.isEditBtn" :span="3">
+                  <div>
+                    <el-button type="primary">编辑数据</el-button>
+                  </div>
+                </el-col>
+                <el-col v-if="element.options.isDeleteBtn" :span="3">
+                  <div>
+                    <el-button type="primary">删除数据</el-button>
+                  </div>
+                </el-col>
+              </el-row>
+             </div>      
+           </template>
+           <fm-generate-table
+              :data="element.configdata"
+              ref="generateTable"
+            >
+            </fm-generate-table>
+            <template v-if="element.options.isPagination">                    
+              <div style="text-align: end;">
+                <el-pagination
+                  @size-change="element.options.pagination.handleSizeChange"
+                  @current-change="element.options.pagination.handleCurrentChange"
+                  :current-page.sync="element.options.pagination.currentPage"
+                  :page-size="element.options.pagination.pageSize"
+                  layout="prev, pager, next"
+                  :pager-count='element.options.pagination.pagerCount'
+                  :total="element.options.pagination.total">
+                </el-pagination>
+              </div>
+          </template>
+        </template>
 
         <div class="widget-view-action" v-if="selectWidget.key == element.key">
           <i class="iconfont icon-icon_clone" @click.stop="handleWidgetClone(index)"></i>
@@ -334,6 +375,9 @@ export default {
         this.selectWidget = this.data.list[index + 1]
       })
     },
+    dblhandleCurrentRow(row, column, event){
+      alert(row)
+    }
   },
   watch: {
     select (val) {

@@ -45,7 +45,8 @@ export default {
         table: '子表单',
         grid: '栅格布局',
         tabs: '标签页',
-        divider: '分割线'
+        divider: '分割线',
+        elTable: '表格'
       },
       banking:{
         title:"金融组件"
@@ -58,6 +59,9 @@ export default {
       },
       layout: {
         title: '布局字段',
+      },
+      table: {
+        title: '表格字段',
       }
     },
     description: {
@@ -245,6 +249,24 @@ export default {
       preview: '预览',
       edit: '替换',
       delete: '删除'
+    },
+    tableEvent: {
+      title: '表格事件',
+      config: {
+
+      }
+    },
+    tableWidget: {
+      title: '表格属性',
+      widget: {
+        selectTableConfig:'选择已配置的表格',
+        dataIidentification: '数据标识',
+        paginationConfig: '表格分页字段配置',
+        pageSize: "每页显示条目个数",
+        isPagination:'是否带有分页',
+        yes: '是',
+        no: '否',
+      }
     }
   }
 }

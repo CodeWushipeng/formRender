@@ -125,6 +125,35 @@
                 </li>
               </draggable>
             </template>
+            <template v-if="tableFields.length">
+              <div class="widget-cate">
+                {{ $t("fm.components.table.title") }}
+              </div>
+              <draggable
+                tag="ul"
+                :list="tableComponents"
+                v-bind="{
+                  group: { name: 'people', pull: 'clone', put: false },
+                  sort: false,
+                  ghostClass: 'ghost',
+                }"
+                @end="handleMoveEnd"
+                @start="handleMoveStart"
+                :move="handleMove"
+              >
+                <li
+                  v-if="tableFields.indexOf(item.type) >= 0"
+                  class="form-edit-widget-label no-put"
+                  v-for="(item, index) in tableComponents"
+                  :key="index"
+                >
+                  <a>
+                    <i class="icon iconfont" :class="item.icon"></i>
+                    <span>{{ item.name }}</span>
+                  </a>
+                </li>
+              </draggable>
+            </template>
           </div>
         </el-aside>
         <el-container class="center-container" direction="vertical">
@@ -189,7 +218,40 @@
           </el-main>
         </el-container>
 
-        <el-aside class="widget-config-container">
+        <el-aside v-if="widgetFormSelect && widgetFormSelect.type == 'elTable'" class="widget-config-container">
+          <el-container>
+            <el-header height="45px">
+              <div
+                class="config-tab"
+                :class="{ active: configTab == 'widget' }"
+                @click="handleConfigSelect('widget')"
+              >
+                {{ $t("fm.tableWidget.title") }}
+              </div>
+              <div
+                class="config-tab"
+                :class="{ active: configTab == 'common' }"
+                @click="handleConfigSelect('common')"
+              >
+                {{ $t("fm.tableEvent.title") }} 
+              </div>
+            </el-header>
+            <el-main class="config-content">
+              <table-widget-config
+                v-show="configTab == 'widget'"
+                :data="widgetFormSelect"
+                @mirror="showMirror"
+              ></table-widget-config>
+              <table-event-config
+                v-show="configTab == 'common'"
+                :data="widgetFormSelect"
+                @mirror="showMirror"
+              ></table-event-config>
+            </el-main>
+          </el-container>
+        </el-aside>
+
+        <el-aside v-else class="widget-config-container">
           <el-container>
             <el-header height="45px">
               <div
@@ -386,11 +448,15 @@ import {
   basicComponents,
   layoutComponents,
   advanceComponents,
+  tableComponents
 } from "./componentsConfig.js";
 import { bankingComponents } from "./componentsBankingConfig.js";
 import { loadJs, loadCss } from "../util/index.js";
 import request from "../util/request.js";
 import generateCode from "./generateCode.js";
+
+import TableWidgetConfig from "./table/TableWidgetConfig";
+import TableEventConfig from "./table/TableEventConfig";
 
 export default {
   name: "fm-making-form",
@@ -402,6 +468,8 @@ export default {
     WidgetForm,
     CusDialog,
     GenerateForm,
+    TableWidgetConfig,
+    TableEventConfig,
   },
   props: {
     preview: {
@@ -479,6 +547,10 @@ export default {
       type: Array,
       default: () => ["grid"],
     },
+    tableFields: {
+      type: Array,
+      default: () => ['elTable']
+    },
   },
   data() {
     return {
@@ -505,6 +577,7 @@ export default {
       basicComponents,
       layoutComponents,
       advanceComponents,
+      tableComponents,
       resetJson: false,
       widgetForm: {
         list: [],
@@ -595,6 +668,12 @@ export default {
         };
       });
       this.layoutComponents = this.layoutComponents.map((item) => {
+        return {
+          ...item,
+          name: this.$t(`fm.components.fields.${item.type}`),
+        };
+      });
+      this.tableComponents = this.tableComponents.map((item) => {
         return {
           ...item,
           name: this.$t(`fm.components.fields.${item.type}`),

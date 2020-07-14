@@ -13,7 +13,7 @@ module.exports = {
           compress: {
             warnings: false,
             drop_debugger: false,
-            drop_console: false,
+            drop_console: true,
           },
         },
         sourceMap: false,
@@ -39,6 +39,10 @@ module.exports = {
         target: "http://192.168.1.194:21004",
         pathRewrite: { "^/dev-api": "" },
       },
+      '/dev-api/tableDevelop': {
+        target: 'http://192.168.1.194:11004',
+        pathRewrite: { '^/dev-api/tableDevelop': '' }
+      }
     },
     overlay: {
       warnings: false,
