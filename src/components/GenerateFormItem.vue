@@ -587,7 +587,7 @@
                 <el-button type="primary">删除数据</el-button>
               </div>
             </el-col>
-          </el-row> 
+          </el-row>
         </div>
       </template>
       <fm-generate-table
@@ -624,6 +624,7 @@ import { getInputValue, delcommafy } from "../util/comother.js";
 import { InputMoney } from "../util/amtUtil";
 import request from "../util/request.js";
 import ElImage from "element-ui/packages/image/src/main";
+import {RES_OK,FAIL_CODE} from "@/api/config";
 export default {
   props: ["widget", "models", "rules", "remote", "nowindex"], // widget为当前组件json数据
   components: {
@@ -868,14 +869,14 @@ export default {
             })
             .then((res) => {
               console.log(res);
-              if (res.header.rspCode == "SP000000") {
+              if (res.header.rspCode == RES_OK) {
                 this.$notify({
                   title: "Success",
                   message: "查询成功",
                   type: "success",
                   duration: 2000,
                 });
-              } else if (res.header.rspCode == "99999999") {
+              } else if (res.header.rspCode == FAIL_CODE) {
                 this.$notify({
                   title: "fail",
                   message: "查询失败",
@@ -1109,7 +1110,7 @@ export default {
               _this.widget.options.pagination.pageSize = tableCf.size
               _this.widget.options.pagination.currentPage = tableCf.current
               _this.widget.options.pagination.total = tableCf.total
-            }        
+            }
           }
         })
       } catch(err) {

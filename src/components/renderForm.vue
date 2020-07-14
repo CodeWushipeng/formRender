@@ -15,6 +15,7 @@ import { Loading } from "element-ui";
 import fmGenerateForm from "./GenerateForm";
 import { getFormList } from "../api/forms";
 import handler from "../components/render";
+import {RES_OK} from "@/api/config";
 export default {
   name: "render-form",
   components: {
@@ -112,20 +113,19 @@ export default {
             .then(res => {
               console.log("=====form-making-secondary===res============", res);
               const { rspCode } = res;
-              if (rspCode == "SP000000") {
+              if (rspCode == RES_OK) {
                 const rest = res.define;
                 if (rest && rest.records.length > 0) {
                   const formContent = rest.records[0]["formContent"];
                   // 设置数据
                   let temp =
-                    typeof formContent == "string"
-                      ? JSON.parse(formContent)
-                      : formContent;
+                    typeof formContent == "string"  ? JSON.parse(formContent) : formContent;
                   this.handleDynamicData(temp);
                   this.handleDynamicInFlow(temp);
                   this.tranData(temp);
                   this.jsonData = temp;
-                  console.log(temp);
+                  console.log('temp',temp);
+                  console.log('jsonData',this.jsonData);
                 } else {
                   this.$notify.error({
                     title: "消息",
@@ -200,7 +200,7 @@ export default {
         .then(res => {
           const { rspCode } = res;
           this.hideLoading();
-          if (rspCode == "SP000000") {
+          if (rspCode == RES_OK) {
             const rest = res.define;
             if (rest && rest.records.length > 0) {
               const formContent = rest.records[0]["formContent"];
@@ -213,14 +213,10 @@ export default {
               }else{
                   this.tempValue = {}
               }
-              this.jsonData = temp;
               this.handleDynamicData(temp);
               this.handleDynamicInFlow(temp);
-
-
-                outputCofig && console.log(
-                "this._solveConfigJs(outputCofig)",
-                this._solveConfigJs(outputCofig)
+              this.jsonData = temp;
+                outputCofig && console.log("this._solveConfigJs(outputCofig)",this._solveConfigJs(outputCofig)
               );
             } else {
               this.$notify.error({

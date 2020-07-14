@@ -1,4 +1,5 @@
 import request from "../util/request";
+import {RES_OK} from "@/api/config";
 let handlers = {
   props: {},
   data() {
@@ -280,7 +281,7 @@ let handlers = {
           })
           .then((res) => {
             console.log(res);
-            if (res.header.rspCode == "SP000000") {
+            if (res.header.rspCode == RES_OK) {
               let tempFunc = eval("(" + success + ")");
               tempFunc(this.models, res);
               this.handelValidate("success", "", i);
