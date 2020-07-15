@@ -599,17 +599,17 @@
           <el-row type="flex" justify="end" :gutter="20">
             <el-col v-if="widget.options.isAddBtn" :span="3">
               <div>
-                <el-button type="primary">添加数据</el-button>
+                <el-button @click="handleTableEvent('add')" type="primary">添加数据</el-button>
               </div>
             </el-col>
             <el-col v-if="widget.options.isEditBtn" :span="3">
               <div>
-                <el-button type="primary">编辑数据</el-button>
+                <el-button @click="handleTableEvent('edit')" type="primary">编辑数据</el-button>
               </div>
             </el-col>
             <el-col v-if="widget.options.isDeleteBtn" :span="3">
               <div>
-                <el-button type="primary">删除数据</el-button>
+                <el-button @click="handleTableEvent('delete')" type="primary">删除数据</el-button>
               </div>
             </el-col>
           </el-row>
@@ -635,6 +635,21 @@
         </el-pagination>
         </div>
       </template>
+      <cus-dialog
+        :visible="tableCf.tableDataEAVisible"
+        @on-close="closeTableDataEA"
+        @on-submit="handelTableDataEA"
+        ref="tableeditCode"
+        width="800px"
+        form
+      >
+        <fm-generate-form
+          v-if="tableCf.configdata != null"
+          :data="tableCf.configdata"
+          :value="tableCf.editData" 
+          ref="addEditForm"
+        ></fm-generate-form>
+      </cus-dialog>
     </template>
   </el-form-item>
 </template>
@@ -650,6 +665,7 @@ import { InputMoney } from "../util/amtUtil";
 import request from "../util/request.js";
 import ElImage from "element-ui/packages/image/src/main";
 import {RES_OK,FAIL_CODE} from "@/api/config";
+import { getFormConfigDataById } from "../components/table/tableAction";
 export default {
   props: ["widget", "models", "rules", "remote", "nowindex"], // widget为当前组件json数据
   components: {
@@ -735,6 +751,12 @@ export default {
       dynamicTags: ["标签一", "标签二", "标签三"],
       inputVisible: false,
       inputValue: "",
+      tableCf: {
+        tableDataEAVisible: false,
+        configdata: null,
+        editData:null,
+        dialogType:""
+      }
     };
   },
   created() {
@@ -1171,9 +1193,116 @@ export default {
           console.log(err);
       }
     },
-    dblhandleCurrentRow(row, column, event){
-      debugger
-      alert(JSON.stringify(row))
+    dblhandleCurrentRow(row, column, event) {
+      this.$message(JSON.stringify(row));
+      this.handleTableEvent("detail",row)
+    },
+    handleTableEvent(action,currentRow) {
+      let _self = this;
+      switch (action) {
+        case "add":
+          let addFormId = this.widget.options.addFormId;
+          if (addFormId == "") {
+            this.$message("请配置表单编码");
+            return;
+          }
+          this.tableCf.tableDataEAVisible = true;
+          this.tableCf.dialogType = "add";
+          getFormConfigDataById(addFormId, function(data) {
+            if (data && data.formContent) {
+              _self.tableCf.configdata = JSON.parse(data.formContent);
+            }
+          });
+          break;
+        case "edit":
+          let editFormId = this.widget.options.editFormId;
+          let selecteRow = this.widget.configdata.list[0].options.multipleSelection;
+          if(selecteRow && selecteRow.length != 1){
+            this.$message("请选择一行数据");
+             return;
+          }else{
+            this.tableCf.editData = selecteRow[0];
+          }
+          if (editFormId == "") {
+            this.$message("请配置表单编码");
+            return;
+          }
+          this.tableCf.dialogType = "edit";
+          this.tableCf.tableDataEAVisible = true;
+          getFormConfigDataById(editFormId, function(data) {
+            if (data && data.formContent) {
+              _self.tableCf.configdata = JSON.parse(data.formContent);
+            }
+          });
+          break;
+        case "detail":
+          let detailFormId = this.widget.options.detailFormId;
+          let dbSelecteRow = currentRow;
+          if(dbSelecteRow == '' || dbSelecteRow == null){
+            this.$message("无数据");
+             return;
+          }else{
+            this.tableCf.editData = dbSelecteRow;
+          }
+          if (detailFormId == "") {
+            this.$message("请配置表单编码");
+            return;
+          }
+          this.tableCf.dialogType = "detail";
+          this.tableCf.tableDataEAVisible = true;
+          getFormConfigDataById(detailFormId, function(data) {
+            if (data && data.formContent) {
+              _self.tableCf.configdata = JSON.parse(data.formContent);
+            }
+          });
+          break;
+        case "delete":
+           let selecteDeleRow = this.widget.configdata.list[0].options.multipleSelection;
+          if(selecteDeleRow && selecteDeleRow.length < 1){
+            this.$message("请至少选择一行数据");
+             return;
+          }else{
+            let tragtTableData = this.widget.configdata.list[0].options.tableData;
+            if (tragtTableData && tragtTableData.length>0) {
+              tragtTableData.map((item,index) =>{
+                selecteDeleRow.map(j =>{
+                  if(item.id === j.id){
+                    tragtTableData.splice(index,1)
+                  }
+                })
+              })
+            }
+          }
+         
+          break;
+        default:
+          console.log(action);
+      }
+    },
+    closeTableDataEA() {
+      this.tableCf.tableDataEAVisible = false;
+    },
+    handelTableDataEA() {
+      let type = this.tableCf.dialogType;
+      let tempTableData = this.$refs.addEditForm.models;
+      let tragtTableData = this.widget.configdata.list[0].options.tableData;
+      if(type == "add"){
+        if (tempTableData) {
+          tragtTableData.push(tempTableData);
+        }
+      }else if(type == "edit"){debugger
+        if (tragtTableData && tragtTableData.length>0) {
+          tragtTableData.map(item =>{
+            if(item.id === tempTableData.id || item.listCode == tempTableData.listCode){
+              for(let key in tempTableData)
+              item[key] = tempTableData[key]
+            }
+          })
+        }
+      }
+
+
+      this.closeTableDataEA();
     }
   },
   mounted() {

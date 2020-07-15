@@ -139,6 +139,8 @@ export default {
           genList[i].columns.forEach((item) => {
             this.generateModle(item.list);
           });
+        }else if(genList[i].type === "elTable"){
+          this.models[genList[i].model] = genList[i].configdata.list[0].options.tableData
         } else {
           // 处理非表格类型的组件
           if (
