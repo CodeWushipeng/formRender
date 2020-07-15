@@ -183,6 +183,9 @@ class FG {
     getProcess(){
         return this.process;
     }
+    setProcess(arr){
+        this.process = arr;
+    }
 
     /**
      * 删除最后一个元素

@@ -98,6 +98,7 @@
           </el-steps>
       </el-dialog>
 
+      <!--操作button-->
     <el-row>
       <el-button type="primary" @click="flowHandler">流程数据</el-button>
       <el-button type="success" @click="userHandler">user数据</el-button>
@@ -371,8 +372,7 @@ export default {
         // 清除数据
         delete FG.nodes[returnNode];
       }
-      // 清除最后一个节点
-      FG.popProcess()
+
     },
 
     // 上一节点
@@ -387,8 +387,21 @@ export default {
         return;
       }
 
+
+        // 清除当前节点后面的执行过点的节点
+        const prevNodeCode = this._findBackNode(returnNode);
+        const processData = FG.getProcess();
+        const index = processData.findIndex(node => {
+            return node == prevNodeCode;
+        })
+        if (processData.length > 0) {
+            processData.splice(index)
+            FG.setProcess(processData)
+        }
+
+
       //  回退数据处理
-      const prevNodeCode = this._findBackNode(returnNode);
+
       if (rollback == FG.CAN_ROLLBACK && prevNodeCode) {
           const tempData= FG.getNodeData(prevNodeCode);
           const {checkStart} = tempData;
@@ -398,8 +411,12 @@ export default {
               this.configdata.list = [tempData];
               // 数据处理（清除|保留）
               this.processData(rollbackData, prevNodeCode);
+              FG.pushProcess(prevNodeCode);
           }
       }
+
+
+
     },
     // 下一节点(跳转的业务判断)
     next(nextNodes) {
