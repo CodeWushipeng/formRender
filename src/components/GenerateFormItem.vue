@@ -78,6 +78,12 @@
         @focus="comFocus($event)"
         @blur="comBlur($event)"
         @keyup.native.enter="change($event)"
+        ><template slot="prepend">
+          <el-button
+            type="info"
+            icon="el-icon-question"
+            circle
+          ></el-button></template
       ></el-input>
 
       <!-- dataType为组件类型 dataModel为双向绑定的数据 -->
@@ -93,12 +99,14 @@
         @blur="comBlur($event)"
         @keyup.native.enter="change($event)"
         :ref="widget.model"
-        ><el-button
-          v-if="widget.options.tips != ''"
-          @click="showTips(widget.options.tips)"
-          slot="prepend"
-          icon="el-icon-question"
-        ></el-button
+      >
+        <template slot="prepend"
+          ><el-button
+            v-if="widget.options.tips != ''"
+            @click="showTips(widget.options.tips)"
+            slot="prepend"
+            icon="el-icon-question"
+          ></el-button> </template
       ></el-input>
     </template>
 
@@ -595,21 +603,34 @@
     </template>
     <template v-if="widget.type == 'elTable'">
       <template>
-        <div style="line-height: 45px;" v-if="widget.options.isAddBtn || widget.options.isEditBtn|| widget.options.isDeleteBtn ">
+        <div
+          style="line-height: 45px;"
+          v-if="
+            widget.options.isAddBtn ||
+              widget.options.isEditBtn ||
+              widget.options.isDeleteBtn
+          "
+        >
           <el-row type="flex" justify="end" :gutter="20">
             <el-col v-if="widget.options.isAddBtn" :span="3">
               <div>
-                <el-button @click="handleTableEvent('add')" type="primary">添加数据</el-button>
+                <el-button @click="handleTableEvent('add')" type="primary"
+                  >添加数据</el-button
+                >
               </div>
             </el-col>
             <el-col v-if="widget.options.isEditBtn" :span="3">
               <div>
-                <el-button @click="handleTableEvent('edit')" type="primary">编辑数据</el-button>
+                <el-button @click="handleTableEvent('edit')" type="primary"
+                  >编辑数据</el-button
+                >
               </div>
             </el-col>
             <el-col v-if="widget.options.isDeleteBtn" :span="3">
               <div>
-                <el-button @click="handleTableEvent('delete')" type="primary">删除数据</el-button>
+                <el-button @click="handleTableEvent('delete')" type="primary"
+                  >删除数据</el-button
+                >
               </div>
             </el-col>
           </el-row>
@@ -618,21 +639,22 @@
       <fm-generate-table
         v-model="widget.configdata"
         :data="widget.configdata"
-        @dblhandleCurrentRow = "dblhandleCurrentRow"
+        @dblhandleCurrentRow="dblhandleCurrentRow"
         ref="generateTable"
       >
       </fm-generate-table>
       <template v-if="widget.options.isPagination">
         <div style="text-align: end;">
-        <el-pagination
-          @size-change="widget.options.pagination.handleSizeChange"
-          @current-change="widget.options.pagination.handleCurrentChange"
-          :current-page.sync="widget.options.pagination.currentPage"
-          :page-size="widget.options.pagination.pageSize"
-          layout="prev, pager, next"
-          :pager-count='widget.options.pagination.pagerCount'
-          :total="widget.options.pagination.total">
-        </el-pagination>
+          <el-pagination
+            @size-change="widget.options.pagination.handleSizeChange"
+            @current-change="widget.options.pagination.handleCurrentChange"
+            :current-page.sync="widget.options.pagination.currentPage"
+            :page-size="widget.options.pagination.pageSize"
+            layout="prev, pager, next"
+            :pager-count="widget.options.pagination.pagerCount"
+            :total="widget.options.pagination.total"
+          >
+          </el-pagination>
         </div>
       </template>
       <cus-dialog
@@ -646,7 +668,7 @@
         <fm-generate-form
           v-if="tableCf.configdata != null"
           :data="tableCf.configdata"
-          :value="tableCf.editData" 
+          :value="tableCf.editData"
           ref="addEditForm"
         ></fm-generate-form>
       </cus-dialog>
@@ -664,7 +686,7 @@ import { getInputValue, delcommafy } from "../util/comother.js";
 import { InputMoney } from "../util/amtUtil";
 import request from "../util/request.js";
 import ElImage from "element-ui/packages/image/src/main";
-import {RES_OK,FAIL_CODE} from "@/api/config";
+import { RES_OK, FAIL_CODE } from "@/api/config";
 import { getFormConfigDataById } from "../components/table/tableAction";
 export default {
   props: ["widget", "models", "rules", "remote", "nowindex"], // widget为当前组件json数据
@@ -754,9 +776,9 @@ export default {
       tableCf: {
         tableDataEAVisible: false,
         configdata: null,
-        editData:null,
-        dialogType:""
-      }
+        editData: null,
+        dialogType: "",
+      },
     };
   },
   created() {
@@ -790,8 +812,8 @@ export default {
       });
     }
     //table
-    if(this.widget.type === "elTable" && this.widget.options.remoteFunc){
-      this.handleRemoteFn(this.widget.options.remoteFunc)
+    if (this.widget.type === "elTable" && this.widget.options.remoteFunc) {
+      this.handleRemoteFn(this.widget.options.remoteFunc);
     }
   },
   methods: {
@@ -875,12 +897,12 @@ export default {
     },
     // 组件失去焦点事件
     comBlur(e) {
-      console.log("失去焦点")
+      console.log("失去焦点");
       this.$emit("el-blur");
     },
     // element change事件，回车和失去焦点时触发
     change(e) {
-      console.log(this.widget)
+      console.log(this.widget);
       // 出发change事件时发射 el-change事件，generateform组件监听该事件
       this.$emit("el-change", this.widget);
     },
@@ -953,35 +975,35 @@ export default {
       }
     },
     // date选择器失去焦点事件
-    dateBlur(){
-      console.log("date选择器失去焦点事件")
-      this.$emit("date-blur")
+    dateBlur() {
+      console.log("date选择器失去焦点事件");
+      this.$emit("date-blur");
     },
     // 多选框键盘上下键事件
-    checkUp(){
-      this.$emit("check-handle",this.widget)
-      let name = '.'+this.widget.model+" input"
-      let checks = document.querySelectorAll(name)
-      for(let i=this.checkIndex;i>=0;i--){
-        if(i==0){
-          return
+    checkUp() {
+      this.$emit("check-handle", this.widget);
+      let name = "." + this.widget.model + " input";
+      let checks = document.querySelectorAll(name);
+      for (let i = this.checkIndex; i >= 0; i--) {
+        if (i == 0) {
+          return;
         }
-        this.checkIndex--
-        checks[this.checkIndex].focus()
-        break
+        this.checkIndex--;
+        checks[this.checkIndex].focus();
+        break;
       }
     },
-    checkDown(){
-      this.$emit("check-handle",this.widget)
-      let name = '.'+this.widget.model+" input"
-      let checks = document.querySelectorAll(name)
-      for(let i=this.checkIndex;i<checks.length;i++){
-        if(i==checks.length-1){
-          return
+    checkDown() {
+      this.$emit("check-handle", this.widget);
+      let name = "." + this.widget.model + " input";
+      let checks = document.querySelectorAll(name);
+      for (let i = this.checkIndex; i < checks.length; i++) {
+        if (i == checks.length - 1) {
+          return;
         }
-        this.checkIndex++
-        checks[this.checkIndex].focus()
-        break
+        this.checkIndex++;
+        checks[this.checkIndex].focus();
+        break;
       }
     },
     /*密码相关方法*/
@@ -1174,30 +1196,30 @@ export default {
     },
 
     //table
-    async  handleRemoteFn(fn){
-       var _this = this
-       try {
-        fn(this,request,function(tableCf){
-          if(_this.widget.configdata.list){
-            let tempTableCf = _this.widget.configdata.list[0]
-              tempTableCf.options.tableData = tableCf.records
-              //带有分页
-            if(_this.widget.options.isPagination === true){
-              _this.widget.options.pagination.pageSize = tableCf.size
-              _this.widget.options.pagination.currentPage = tableCf.current
-              _this.widget.options.pagination.total = tableCf.total
+    async handleRemoteFn(fn) {
+      var _this = this;
+      try {
+        fn(this, request, function(tableCf) {
+          if (_this.widget.configdata.list) {
+            let tempTableCf = _this.widget.configdata.list[0];
+            tempTableCf.options.tableData = tableCf.records;
+            //带有分页
+            if (_this.widget.options.isPagination === true) {
+              _this.widget.options.pagination.pageSize = tableCf.size;
+              _this.widget.options.pagination.currentPage = tableCf.current;
+              _this.widget.options.pagination.total = tableCf.total;
             }
           }
-        })
-      } catch(err) {
-          console.log(err);
+        });
+      } catch (err) {
+        console.log(err);
       }
     },
     dblhandleCurrentRow(row, column, event) {
       this.$message(JSON.stringify(row));
-      this.handleTableEvent("detail",row)
+      this.handleTableEvent("detail", row);
     },
-    handleTableEvent(action,currentRow) {
+    handleTableEvent(action, currentRow) {
       let _self = this;
       switch (action) {
         case "add":
@@ -1216,11 +1238,12 @@ export default {
           break;
         case "edit":
           let editFormId = this.widget.options.editFormId;
-          let selecteRow = this.widget.configdata.list[0].options.multipleSelection;
-          if(selecteRow && selecteRow.length != 1){
+          let selecteRow = this.widget.configdata.list[0].options
+            .multipleSelection;
+          if (selecteRow && selecteRow.length != 1) {
             this.$message("请选择一行数据");
-             return;
-          }else{
+            return;
+          } else {
             this.tableCf.editData = selecteRow[0];
           }
           if (editFormId == "") {
@@ -1238,10 +1261,10 @@ export default {
         case "detail":
           let detailFormId = this.widget.options.detailFormId;
           let dbSelecteRow = currentRow;
-          if(dbSelecteRow == '' || dbSelecteRow == null){
+          if (dbSelecteRow == "" || dbSelecteRow == null) {
             this.$message("无数据");
-             return;
-          }else{
+            return;
+          } else {
             this.tableCf.editData = dbSelecteRow;
           }
           if (detailFormId == "") {
@@ -1257,23 +1280,25 @@ export default {
           });
           break;
         case "delete":
-           let selecteDeleRow = this.widget.configdata.list[0].options.multipleSelection;
-          if(selecteDeleRow && selecteDeleRow.length < 1){
+          let selecteDeleRow = this.widget.configdata.list[0].options
+            .multipleSelection;
+          if (selecteDeleRow && selecteDeleRow.length < 1) {
             this.$message("请至少选择一行数据");
-             return;
-          }else{
-            let tragtTableData = this.widget.configdata.list[0].options.tableData;
-            if (tragtTableData && tragtTableData.length>0) {
-              tragtTableData.map((item,index) =>{
-                selecteDeleRow.map(j =>{
-                  if(item.id === j.id){
-                    tragtTableData.splice(index,1)
+            return;
+          } else {
+            let tragtTableData = this.widget.configdata.list[0].options
+              .tableData;
+            if (tragtTableData && tragtTableData.length > 0) {
+              tragtTableData.map((item, index) => {
+                selecteDeleRow.map((j) => {
+                  if (item.id === j.id) {
+                    tragtTableData.splice(index, 1);
                   }
-                })
-              })
+                });
+              });
             }
           }
-         
+
           break;
         default:
           console.log(action);
@@ -1286,24 +1311,26 @@ export default {
       let type = this.tableCf.dialogType;
       let tempTableData = this.$refs.addEditForm.models;
       let tragtTableData = this.widget.configdata.list[0].options.tableData;
-      if(type == "add"){
+      if (type == "add") {
         if (tempTableData) {
           tragtTableData.push(tempTableData);
         }
-      }else if(type == "edit"){debugger
-        if (tragtTableData && tragtTableData.length>0) {
-          tragtTableData.map(item =>{
-            if(item.id === tempTableData.id || item.listCode == tempTableData.listCode){
-              for(let key in tempTableData)
-              item[key] = tempTableData[key]
+      } else if (type == "edit") {
+        debugger;
+        if (tragtTableData && tragtTableData.length > 0) {
+          tragtTableData.map((item) => {
+            if (
+              item.id === tempTableData.id ||
+              item.listCode == tempTableData.listCode
+            ) {
+              for (let key in tempTableData) item[key] = tempTableData[key];
             }
-          })
+          });
         }
       }
 
-
       this.closeTableDataEA();
-    }
+    },
   },
   mounted() {
     if (this.widget.type == "camera") {

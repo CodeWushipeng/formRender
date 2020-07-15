@@ -69,6 +69,13 @@
       >
         <el-input v-model="data.valueRange" placeholder="取值范围"></el-input>
       </el-form-item>
+      <!-- 提示信息 -->
+      <el-form-item
+        label="提示信息"
+        v-if="data.type != 'grid'"
+      >
+        <el-input v-model="data.options.tips" placeholder="提示信息"></el-input>
+      </el-form-item>
       <!-- 是否隐藏 -->
       <el-form-item
         :label="$t('fm.config.common.hidden')"

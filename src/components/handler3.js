@@ -254,13 +254,13 @@ let handlers = {
         return;
       }
       let lists = this.comArr;
-      if (lists[i].remoteFactor && lists[i].remoteFactor.isRemote !== "") {
-        let flag = this.evalWrap(lists[i].remoteFactor.isRemote);
+      if (lists[i].isRemote) {
+        let flag = this.evalWrap(lists[i].isRemote);
         if (!flag) {
           return;
         }
-        let url = "/dev-api" + lists[i].remoteFactor.url;
-        let primitiveData = this.evalWrap(lists[i].remoteFactor.data);
+        let url = "/dev-api" + lists[i].url;
+        let primitiveData = this.evalWrap(lists[i].data);
         let nowModel = lists[i].model;
         let nowData = this.models[nowModel];
         let postData;
@@ -269,7 +269,7 @@ let handlers = {
         } else {
           postData = nowData;
         }
-        let success = lists[i].remoteFactor.success;
+        let success = lists[i].success;
         request
           .post(url, {
             body: postData,
