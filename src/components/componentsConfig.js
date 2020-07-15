@@ -19,9 +19,10 @@ export const basicComponents = [
     valueRange: '',
     assignment:"",
     isRemote: "",
-      url:"",
-      data:"",
-      success: "",
+    url:"",
+    data:"",
+    success: "",
+    
   },
   {
     type: 'textarea',

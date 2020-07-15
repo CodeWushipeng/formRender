@@ -64,7 +64,7 @@ let handlers = {
       }
     },
     // 获取组件数据
-    tranData(data) {
+    flatGridData(data) {
       data.list.forEach((item) => {
         if (item.type === "grid") {
           item.columns.forEach((cloItem) => {

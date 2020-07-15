@@ -120,9 +120,9 @@ export default {
                   // 设置数据
                   let temp =
                     typeof formContent == "string"  ? JSON.parse(formContent) : formContent;
+                  this.flatGridData(temp)
                   this.handleDynamicData(temp);
                   this.handleDynamicInFlow(temp);
-                  this.tranData(temp);
                   this.jsonData = temp;
                   console.log('temp',temp);
                   console.log('jsonData',this.jsonData);

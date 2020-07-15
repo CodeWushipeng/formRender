@@ -423,7 +423,6 @@ let handlers = {
         ? ele.querySelector("input")
         : ele.querySelector("textarea");
       let type = focusEle.getAttribute("type")
-      
       console.log("当前聚焦元素", focusEle);
       this.$nextTick(() => {
         if(type == 'radio'){
@@ -438,7 +437,7 @@ let handlers = {
       let blurEle = ele.querySelector("input")
         ? ele.querySelector("input")
         : ele.querySelector("textarea");
-      console.log("当前聚焦元素", blurEle);
+      console.log("当前失焦元素", blurEle);
       this.$nextTick(() => {
         blurEle.blur();
       });
