@@ -1,7 +1,7 @@
 <template>
   <div class="render-wrap" style="padding: 20px;" ref="loadingArea">
     <!--data :{{data}}-->
-      list :{{configdata.list}}
+      <!--list :{{configdata.list}}-->
     <br />
     <!--rollbackData :{{configdata.rollbackData}} <br>-->
     <!--流程数据-->
@@ -176,7 +176,6 @@
     <!--当前-->
     <div v-if="type=='01'">可以开始</div>
     <div v-if="type=='02'">结束</div>
-
     <div v-if="type=='03'">
       <!--render-form-->
       <render-form
@@ -387,21 +386,18 @@ export default {
         return;
       }
 
-
         // 清除当前节点后面的执行过点的节点
-        const prevNodeCode = this._findBackNode(returnNode);
-        const processData = FG.getProcess();
-        const index = processData.findIndex(node => {
+        const prevNodeCode = this._findBackNode(returnNode); // 要回退到的节点
+        const processArr = FG.getProcess();
+        const index = processArr.findIndex(node => {
             return node == prevNodeCode;
         })
-        if (processData.length > 0) {
-            processData.splice(index)
-            FG.setProcess(processData)
+        if (processArr.length > 0) {
+            processArr.splice(index)
+            FG.setProcess(processArr)
         }
 
-
       //  回退数据处理
-
       if (rollback == FG.CAN_ROLLBACK && prevNodeCode) {
           const tempData= FG.getNodeData(prevNodeCode);
           const {checkStart} = tempData;
@@ -414,8 +410,6 @@ export default {
               FG.pushProcess(prevNodeCode);
           }
       }
-
-
 
     },
     // 下一节点(跳转的业务判断)
