@@ -1,5 +1,4 @@
-import request from '../util/request-submit'
-
+import request from '../demo/demo3/request'
 //提交数据
 export function insertNodeData(data) {
     // return request({

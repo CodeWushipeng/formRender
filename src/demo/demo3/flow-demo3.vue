@@ -26,7 +26,7 @@
         <el-table-column property="nextNode" label="下一节点" min-width="100">
             <template slot-scope="scope">
                 <!--{{scope.row.nextNode.split(',')}}-->
-                <div style="white-space: nowrap" v-for="tNOde in scope.row.nextNode.split(',')"> {{tNOde}}</div>
+                <div :key="index" style="white-space: nowrap" v-for="(tNOde,index) in scope.row.nextNode.split(',')"> {{tNOde}}</div>
             </template>
         </el-table-column>
         <el-table-column property="returnNode" label="返回节点"></el-table-column>
@@ -51,7 +51,7 @@
     <!--user数据-->
     <el-dialog title="user数据" :visible.sync="userDialogTableVisible" width="1000px">
       <!--{{usreData}}-->
-      <el-table :data="usreDataSolve">
+      <el-table :data="usreDataSolve" border>
         <el-table-column label="序号" type="index" width="50"></el-table-column>
         <el-table-column property="key" label="KEY" width="150"></el-table-column>
         <el-table-column property="value" label="VALUE" width></el-table-column>
@@ -61,16 +61,16 @@
     <el-dialog title="platform数据" :visible.sync="platformDialogTableVisible" width="1000px">
       <!--{{platformData}}-->
       <!--{{platformDataSolve}}-->
-      <el-table :data="platformDataSolve">
+      <el-table :data="platformDataSolve" border>
         <el-table-column label="序号" type="index" width="50"></el-table-column>
         <el-table-column property="key" label="KEY" width="150"></el-table-column>
         <el-table-column property="value" label="VALUE" width></el-table-column>
       </el-table>
     </el-dialog>
-    <!--nodes数据-->
-    <el-dialog title="nodes数据" :visible.sync="nodesDialogTableVisible" width="1000px">
+    <!--节点数据-->
+    <el-dialog title="节点数据" :visible.sync="nodesDialogTableVisible" width="1000px">
       <!--{{nodesData}}-->
-      <el-table :data="nodesDataSolve">
+      <el-table :data="nodesDataSolve" border>
         <el-table-column label="序号" type="index" width="50"></el-table-column>
         <el-table-column property="key" label="节点名称" width="150"></el-table-column>
         <el-table-column property="value_up" label="节点数据(up)" width></el-table-column>
@@ -79,9 +79,9 @@
     </el-dialog>
 
     <!--表单数据-->
-    <el-dialog title="nodes数据" :visible.sync="formDialogTableVisible" width="1000px">
+    <el-dialog title="表单数据" :visible.sync="formDialogTableVisible" width="1000px">
       <!--{{curFormData}}-->
-      <el-table :data="curFromDataSolve">
+      <el-table :data="curFromDataSolve" border>
         <el-table-column label="序号" type="index" width="50"></el-table-column>
         <el-table-column property="key" label="KEY" width="150"></el-table-column>
         <el-table-column property="value" label="VALUE"></el-table-column>
@@ -94,7 +94,7 @@
           <!--{{processDataList}} <br>-->
           <!--{{processDataListSolve}} <br>-->
           <el-steps :active="processDataListSolve.length" align-center>
-              <el-step v-for="item in processDataListSolve" :title="item.title" :description="item.description"></el-step>
+              <el-step :key="index" v-for="(item,index) in processDataListSolve" :title="item.title" :description="item.description"></el-step>
           </el-steps>
       </el-dialog>
 
@@ -264,6 +264,13 @@ export default {
       });
     },
     _inits() {
+        // const backNodes = ['a','ff',"sfs","fsdf"]
+        // const processData1 = ["a","c","d","e"]
+        // const processData = processData1.slice()
+        // console.log('ret',this.findBackNode(processData, backNodes))
+        // console.log('processData1',processData1)
+        // console.log('processData',processData)
+        // return
       // this.showLoading();
       const flowCode = this.$route.name;
       const query = this.$route.query;
@@ -331,6 +338,7 @@ export default {
           }
       }
     },
+
     //验证是否可回退
     rollValidate() {
         let res = {error: 0, text: null};
@@ -346,17 +354,8 @@ export default {
         }
         if(returnNode){
             // 判断上一节点是否在当前的返回列表中
-            let backNodes = [];
-            if (returnNode && returnNode.includes(",")) {
-                // 多节点
-                backNodes = returnNode.split(",");
-            }else{
-                // 单节点
-                backNodes.push(returnNode);
-            }
-            let processData = FG.getProcess();
-            let prevNodeCode = processData[processData.length - 2]; // 当前节点的上一节点
-            if(backNodes.includes(prevNodeCode) == false){
+            const ret = this._findBackNode(returnNode);
+            if(!ret){
                 res =  { error: -1, text: "上一节点不在设置的回退数组中，不能回退" };
             }
         }
@@ -372,13 +371,15 @@ export default {
         // 清除数据
         delete FG.nodes[returnNode];
       }
+      // 清除最后一个节点
+      FG.popProcess()
     },
 
     // 上一节点
     prev() {
       this.configdata.rollbackData = {};
       // rollbackData 回退数据处理：01-清除，02-保留不处理
-      const { rollback, rollbackData } = this.data;
+      const {rollback, rollbackData, returnNode} = this.data;
       // 判断能否回退
       let message = this.rollValidate();
       if (message.error == -1) {
@@ -387,8 +388,7 @@ export default {
       }
 
       //  回退数据处理
-      let processData = FG.getProcess();
-      let prevNodeCode = processData[processData.length - 2]; // 当前节点的上一节点
+      const prevNodeCode = this._findBackNode(returnNode);
       if (rollback == FG.CAN_ROLLBACK && prevNodeCode) {
           const tempData= FG.getNodeData(prevNodeCode);
           const {checkStart} = tempData;
@@ -398,7 +398,6 @@ export default {
               this.configdata.list = [tempData];
               // 数据处理（清除|保留）
               this.processData(rollbackData, prevNodeCode);
-              FG.popProcess()
           }
       }
     },

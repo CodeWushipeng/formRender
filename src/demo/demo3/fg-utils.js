@@ -225,6 +225,32 @@ const flowMixin= {
 
             return elTag[type];
         },
+        _findBackNode(returnNode){
+            let ret = null;
+            let processData = FG.getProcess().slice();
+            // 判断上一节点是否在当前的返回列表中
+            let backNodes = [] ;
+            if (returnNode && returnNode.includes(",")) {
+                // 多节点
+                backNodes = returnNode.split(",");
+            }else{
+                // 单节点
+                backNodes.push(returnNode);
+            }
+
+            function findBack() {
+                if(processData.length>0){
+                    let lastNode = processData.pop();
+                    if(backNodes.includes(lastNode) == false){
+                        findBack(processData, backNodes)
+                    }else{
+                        ret = lastNode
+                    }
+                }
+            }
+            findBack();
+            return ret;
+        },
     }
 }
 export default flowMixin;
