@@ -84,6 +84,22 @@
         </template>
       </template>
     </el-form>
+    <!-- 字段交易弹出框 -->
+    <el-dialog title="收货地址" :visible.sync="trade">
+      <el-table :data="gridData">
+        <el-table-column
+          property="date"
+          label="日期"
+          width="150"
+        ></el-table-column>
+        <el-table-column
+          property="name"
+          label="姓名"
+          width="200"
+        ></el-table-column>
+        <el-table-column property="address" label="地址"></el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -139,8 +155,9 @@ export default {
           genList[i].columns.forEach((item) => {
             this.generateModle(item.list);
           });
-        }else if(genList[i].type === "elTable"){
-          this.models[genList[i].model] = genList[i].configdata.list[0].options.tableData
+        } else if (genList[i].type === "elTable") {
+          this.models[genList[i].model] =
+            genList[i].configdata.list[0].options.tableData;
         } else {
           // 处理非表格类型的组件
           if (
@@ -302,20 +319,19 @@ export default {
     },
     // 验证并获取输入框当前的值
     getData() {
-      this.clearValidate()
+      this.clearValidate();
       return new Promise((resolve, reject) => {
         // 执行form表单验证函数
-        this.$nextTick(()=>{
+        this.$nextTick(() => {
           this.$refs.generateForm.validate((valid) => {
-          if (valid) {
-            // 逐条验证当前表单的校验规则
-            resolve(this.models);
-          } else {
-            reject(new Error(this.$t("fm.message.validError")).message);
-          }
+            if (valid) {
+              // 逐条验证当前表单的校验规则
+              resolve(this.models);
+            } else {
+              reject(new Error(this.$t("fm.message.validError")).message);
+            }
+          });
         });
-        })
-        
       });
     },
     clearValidate() {
@@ -326,10 +342,10 @@ export default {
           lists[i].options.hidden ||
           lists[i].options.readonly == "readonly"
         ) {
-          lists[i].model = ""
+          lists[i].model = "";
         }
       }
-      console.log(this.data)
+      console.log(this.data);
     },
     // 重置表单
     reset() {

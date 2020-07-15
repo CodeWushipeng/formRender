@@ -922,13 +922,15 @@ export default {
     optionStatu(params) {
       this.selectStatu = params;
       if (params) {
+        // 下拉选择框用作级联组件处理
         if (this.widget.isCascader) {
           let father = this.widget.fatherModel && this.widget.fatherModel;
           let fatherData = this.models[father];
-          let reqData = eval("(" + this.widget.requestData + ")");
-          let postData = Object.assign({}, father, reqData);
+          let reqData = eval("(" + this.widget.requestData + ")")();
+          let postData = Object.assign({}, {'itemParentCode':fatherData}, reqData);
+          console.log(reqData,postData)
           request
-            .post(this.widget.cascaderUrl, {
+            .post('/dev-api'+this.widget.cascaderUrl, {
               body: postData,
               header: {
                 pageIndex: 1,

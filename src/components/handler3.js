@@ -4,6 +4,7 @@ let handlers = {
   props: {},
   data() {
     return {
+      trade: false,  //字段交易弹出框
       comArr: [], //组件list数组
       outMark: 0, //外层循环标记
       allItems: [],
@@ -136,10 +137,12 @@ let handlers = {
     },
     // 手动触发校验提示函数
     handelValidate(statu, msg, index) {
-      this.$refs["generateForm"].fields[index].validateState = statu;
-      if (statu == "error") {
-        this.$refs["generateForm"].fields[index].validateMessage = msg;
-      }
+      this.$nextTick(()=>{
+        this.$set(this.$refs["generateForm"].fields[index],'validateState',statu)
+        if (statu == "error") {
+          this.$refs["generateForm"].fields[index].validateMessage = msg;
+        }
+      })
     },
     // eval封装
     evalWrap(targetEval) {
@@ -287,6 +290,7 @@ let handlers = {
               let tempFunc = eval("(" + success + ")");
               tempFunc(this.models, res);
               this.handelValidate("success", "", i);
+              this.trade = true
               this.remoteError = false;
             } else {
               this.setFocus(this.allItems[i]);
