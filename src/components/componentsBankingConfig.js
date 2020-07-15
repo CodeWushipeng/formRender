@@ -150,6 +150,7 @@ export const bankingComponents = [
       disabled: false,
       pattern: "",
       placeholder: "",
+      tips: "",
     },
     hidden: "",
     enterCondition: '',
@@ -194,6 +195,7 @@ export const bankingComponents = [
       },
       remoteFunc: "",
       disabled: false,
+      tips: "",
     },
     hidden: "",
     enterCondition: '',
@@ -235,6 +237,7 @@ export const bankingComponents = [
       },
       remoteFunc: "",
       disabled: false,
+      tips: "",
     },
     hidden: "",
     enterCondition: '',
@@ -265,6 +268,7 @@ export const bankingComponents = [
       format: "HH:mm:ss",
       required: false,
       width: "",
+      tips: "",
     },
     hidden: "",
     enterCondition: '',
@@ -295,6 +299,7 @@ export const bankingComponents = [
       timestamp: false,
       required: false,
       width: "",
+      tips: "",
     },
     hidden: "",
     enterCondition: '',
@@ -322,13 +327,19 @@ export const bankingComponents = [
       width: "",
       options: [
         {
-          value: "Option 1",
+          value: "value 1",
+          label: "label 1",
+          isCheck: false
         },
         {
-          value: "Option 2",
+          value: "value 2",
+          label: "label 2",
+          isCheck: false
         },
         {
-          value: "Option 3",
+          value: "value 3",
+          label: "label 3",
+          isCheck: false
         },
       ],
       remote: false,
@@ -339,6 +350,7 @@ export const bankingComponents = [
         label: "label",
       },
       remoteFunc: "",
+      tips: "",
     },
     hidden: "",
     enterCondition: '',
@@ -419,7 +431,6 @@ export const bankingComponents = [
       required: false,
       placeholder: "",
       disabled: false,
-      tips: "",
     },
     hidden: "",
     enterCondition: '',
@@ -574,7 +585,6 @@ export const bankingComponents = [
       required: false,
       placeholder: "",
       disabled: false,
-      tips: "",
     },
     remoteFactor: {
       isRemote: "",

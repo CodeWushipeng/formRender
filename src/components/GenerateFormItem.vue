@@ -412,6 +412,7 @@
         :show-alpha="widget.options.showAlpha"
       ></el-color-picker>
     </template>
+
     <template v-if="widget.type == 'select'">
       <!--remoteOptions:{{widget.options.remoteOptions}} :automatic-dropdown="true"-->
       <el-select
@@ -425,6 +426,7 @@
         :ref="widget.model"
         :data-index="nowindex"
         @visible-change="optionStatu"
+        @change="(val) => handleWeekChange(val)"
         @focus="comFocus($event)"
         @keyup.native.enter="selectChange"
         @keyup.native.space="showOptions"
@@ -436,18 +438,15 @@
             : widget.options.options"
           :key="item.value"
           :value="item.value"
-          :label="
-            widget.options.showLabel || widget.options.remote
-              ? item.label
-              : item.value
-          "
+          :label="item.label"
         >
-          <span style="float: left">{{
-            widget.options.showLabel || widget.options.remote
-              ? item.label
-              : item.value
+          <div style="display:inline-block;" @click="clickCheckbox" v-if="widget.options.multiple">
+            <el-checkbox v-model="item.isCheck" ></el-checkbox>
+          </div>
+          <span style="margin-left: 8px;">{{
+            item.label
           }}</span>
-          <span style="float: right; color: #8492a6; font-size: 13px">{{
+          <span style="margin-left: 8px;color: #8492a6; font-size: 13px">{{
             item.value
           }}</span>
         </el-option>
@@ -1177,6 +1176,29 @@ export default {
     blurHandler() {
       this.amountvisible = false;
     },
+    /*下拉框*/
+    // select下拉框的change事件
+    handleWeekChange (val) {
+        if(this.widget.options.multiple){
+            var weekList = this.widget.options.remote ? this.widget.options.remoteOptions : this.widget.options.options
+            weekList.forEach((v) => {
+                v.isCheck = false
+            })
+            val.forEach((el) => {
+                weekList.forEach((v) => {
+                    if (el === v.value) {
+                        v.isCheck = true
+                    }
+                })
+            })
+            this.widget.options.remote ? (this.widget.options.remoteOptions = weekList) : (this.widget.options.options = weekList)
+        }
+    },
+    clickCheckbox(e) {
+        e.preventDefault()
+    },
+    /*下拉框*/
+
     /*摄像头*/
     camera() {
       var _this = this;

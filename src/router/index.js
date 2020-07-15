@@ -10,7 +10,7 @@ import testJs from "../demo/testjs/index";
 
 import testUntil from "../demo/testUntil/index";
 import nofound from "../demo/testUntil/404";
-//import image from "../demo/image";
+import image from "../demo/image";
 
 Vue.use(Router);
 
@@ -40,9 +40,9 @@ export default new Router({
           component: preview,
         },
           {
-              path: 'flow',
-              name: 'flow1',
-              component: flowDemo3,
+              path: 'image',
+              name: 'image',
+              component: image,
           },
           {
               path: 'testjs',
@@ -64,12 +64,7 @@ export default new Router({
               component: nofound,
               hidden: true
           },
-          { path: '*', redirect: '/404', hidden: true }
-          /*{
-              path: 'image',
-              name: 'image',
-              component: image
-          },*/
+          { path: '*', redirect: '/404', hidden: true },
       ]
     }
   ]
