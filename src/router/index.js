@@ -10,62 +10,67 @@ import testJs from "../demo/testjs/index";
 
 import testUntil from "../demo/testUntil/index";
 import nofound from "../demo/testUntil/404";
-import image from "../demo/image";
+//import image from "../demo/image";
 
 Vue.use(Router);
 
 const language =
-  localStorage.getItem("language") ||
-  (navigator.language == "zh-CN" ? "zh-CN" : "en-US");
+    localStorage.getItem("language") ||
+    (navigator.language == "zh-CN" ? "zh-CN" : "en-US");
 
 export default new Router({
-  routes: [
-    {
-      path: "/",
-      redirect: (to) => ({ name: "index", params: { lang: language } }),
-    },
-    {
-      path: "/:lang",
-      // name: 'lang',
-      component: LanguageView,
-      children: [
+    routes: [
         {
-          path: "",
-          name: "index",
-          component: Home,
+            path: "/",
+            redirect: (to) => ({ name: "index", params: { lang: language } }),
         },
         {
-          path: "preview",
-          name: "preview",
-          component: preview,
-        },
-          {
-              path: 'image',
-              name: 'image',
-              component: image,
-          },
-          {
-              path: 'testjs',
-              name: 'testjs',
-              component: testJs
-          },
-          {
-              path: 'until',
-              name: 'until',
-              component: testUntil
-          },
-          {
-              path: 'camera',
-              name: 'camera',
-              component: camera
-          },
-          {
-              path: '/404',
-              component: nofound,
-              hidden: true
-          },
-          { path: '*', redirect: '/404', hidden: true },
-      ]
-    }
-  ]
+            path: "/:lang",
+            // name: 'lang',
+            component: LanguageView,
+            children: [
+                {
+                    path: "",
+                    name: "index",
+                    component: Home,
+                },
+                {
+                    path: "preview",
+                    name: "preview",
+                    component: preview,
+                },
+                {
+                    path: 'flow',
+                    name: 'flow1',
+                    component: flowDemo3,
+                },
+                {
+                    path: 'testjs',
+                    name: 'testjs',
+                    component: testJs
+                },
+                {
+                    path: 'until',
+                    name: 'until',
+                    component: testUntil
+                },
+                {
+                    path: 'camera',
+                    name: 'camera',
+                    component: camera
+                },
+                {
+                    path: '/404',
+                    component: nofound,
+                    hidden: true
+                },
+                { path: '*', redirect: '/404', hidden: true }
+                /*{
+                    path: 'image',
+                    name: 'image',
+                    component: image
+                },*/
+            ]
+        }
+    ]
 })
