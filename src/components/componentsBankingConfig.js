@@ -569,7 +569,7 @@ export const bankingComponents = [
     icon: "icon-tupian",
     options: {
       hidden: false,
-      width: "auto",
+      width: "",
       defaultValue: "",
       required: false,
       placeholder: "",

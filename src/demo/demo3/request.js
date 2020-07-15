@@ -90,7 +90,9 @@ service.interceptors.response.use(
      * You can also judge the status by HTTP Status Code
      */
     response => {
-        loading.close();
+        setTimeout(()=>{
+            loading.close()
+        },300)
         const res = response.data
         if(process.env.NODE_ENV === 'development') {
             // if(header.rspCode == RES_OK || header.rspCode == ERR_OK) {

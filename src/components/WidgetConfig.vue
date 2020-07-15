@@ -402,7 +402,6 @@
           </el-select>
         </el-form-item>
       </template>
-      
       <template v-if="data.type != 'grid'">
         <el-form-item :label="$t('fm.config.widget.attribute')">
           <el-checkbox v-model="data.options.readonly" v-if="Object.keys(data.options).indexOf('readonly')>=0">{{$t('fm.config.widget.readonly')}}</el-checkbox>

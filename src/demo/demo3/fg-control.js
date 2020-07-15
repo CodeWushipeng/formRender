@@ -5,7 +5,7 @@ class FG {
     constructor() {
 
         this.ISOK = false;
-        this.CURFORM= null;   // 当前展示的是input_config_code 还是 output_config_code 表单
+        // this.CURFORM= null;   // 当前展示的是input_config_code 还是 output_config_code 表单
         this.OUTFLAG= null;   // 提交标识
         // 流程节点
         this.START = "01"; // 开始
@@ -158,7 +158,7 @@ class FG {
     }
 
     /**
-     * 获取节点所有节点数据
+     * 获取所有节点数据
      * @returns {{}|*}
      */
     getNodes(){
@@ -182,6 +182,9 @@ class FG {
      */
     getProcess(){
         return this.process;
+    }
+    setProcess(arr){
+        this.process = arr;
     }
 
     /**
