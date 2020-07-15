@@ -270,6 +270,7 @@
         :style="{ width: widget.options.width }"
         :disabled="widget.options.disabled"
         @keyup.native.enter="change"
+        @change="valueChange"
       >
         <el-radio
           :style="{ display: widget.options.inline ? 'inline-block' : 'block' }"
@@ -933,6 +934,10 @@ export default {
       console.log(this.widget);
       // 出发change事件时发射 el-change事件，generateform组件监听该事件
       this.$emit("el-change", this.widget);
+    },
+    // radio组件change事件
+    valueChange(){
+      this.$emit("radio-change", this);
     },
     // select组件回车抬起事件
     selectChange() {

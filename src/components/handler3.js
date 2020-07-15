@@ -509,6 +509,14 @@ let handlers = {
         this.iteratorAllEle();
       }
     },
+    // radio change事件
+    radioChange(){
+      this.allValidate(this.outMark);
+      this.handelAssignment(this.outMark);
+      this.handelHidden();
+      this.getShowLength();
+      this.enterCheck();
+    },
     // 发送remote方法
     pushRemoteFunc() {
       this.comArr.forEach((item) => {
