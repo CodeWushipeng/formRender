@@ -44,7 +44,16 @@
         @focus="comFocus($event)"
         @blur="comBlur($event)"
         :ref="widget.model"
-      ></el-input>
+      >
+        <template slot="prepend"
+          ><el-button
+            v-if="widget.options.tips != ''"
+            @click="showTips(widget.options.tips)"
+            slot="prepend"
+            icon="el-icon-question"
+          ></el-button> </template
+      >
+      </el-input>
     </template>
     <!--确认密码-->
     <template v-if="widget.type == 'againpassword'">
@@ -60,7 +69,16 @@
         @blur="comBlur($event)"
         @keyup.native.enter="change"
         :ref="widget.model"
-      ></el-input>
+      >
+      <template slot="prepend"
+          ><el-button
+            v-if="widget.options.tips != ''"
+            @click="showTips(widget.options.tips)"
+            slot="prepend"
+            icon="el-icon-question"
+          ></el-button> </template
+      >
+      </el-input>
     </template>
 
     <template v-if="widget.type == 'input'">
@@ -78,12 +96,13 @@
         @focus="comFocus($event)"
         @blur="comBlur($event)"
         @keyup.native.enter="change($event)"
-        ><template slot="prepend">
-          <el-button
-            type="info"
+        ><template slot="prepend"
+          ><el-button
+            v-if="widget.options.tips != ''"
+            @click="showTips(widget.options.tips)"
+            slot="prepend"
             icon="el-icon-question"
-            circle
-          ></el-button></template
+          ></el-button> </template
       ></el-input>
 
       <!-- dataType为组件类型 dataModel为双向绑定的数据 -->
@@ -170,7 +189,16 @@
         @focus="comFocus($event)"
         @blur="comBlur($event)"
         @keyup.native.ctrl.enter="change"
-      ></el-input>
+      >
+      <template slot="prepend"
+          ><el-button
+            v-if="widget.options.tips != ''"
+            @click="showTips(widget.options.tips)"
+            slot="prepend"
+            icon="el-icon-question"
+          ></el-button> </template
+      >
+      </el-input>
     </template>
 
     <template v-if="widget.type == 'number'">
@@ -1217,7 +1245,7 @@ export default {
         console.log(err);
       }
     },
-    dblhandleCurrentRow(row, column, event) {
+    dblhandleCurrentRow(row, column, event) {debugger
       this.$message(JSON.stringify(row));
       this.handleTableEvent("detail", row);
     },

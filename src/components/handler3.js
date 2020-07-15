@@ -1,10 +1,10 @@
 import request from "../util/request";
-import {RES_OK} from "@/api/config";
+import { RES_OK } from "@/api/config";
 let handlers = {
   props: {},
   data() {
     return {
-      trade: false,  //字段交易弹出框
+      trade: false, //字段交易弹出框
       comArr: [], //组件list数组
       outMark: 0, //外层循环标记
       allItems: [],
@@ -137,12 +137,16 @@ let handlers = {
     },
     // 手动触发校验提示函数
     handelValidate(statu, msg, index) {
-      this.$nextTick(()=>{
-        this.$set(this.$refs["generateForm"].fields[index],'validateState',statu)
+      this.$nextTick(() => {
+        this.$set(
+          this.$refs["generateForm"].fields[index],
+          "validateState",
+          statu
+        );
         if (statu == "error") {
           this.$refs["generateForm"].fields[index].validateMessage = msg;
         }
-      })
+      });
     },
     // eval封装
     evalWrap(targetEval) {
@@ -290,7 +294,8 @@ let handlers = {
               let tempFunc = eval("(" + success + ")");
               tempFunc(this.models, res);
               this.handelValidate("success", "", i);
-              this.trade = true
+              this.searchTable(res.body);
+              this.trade = true;
               this.remoteError = false;
             } else {
               this.setFocus(this.allItems[i]);
@@ -308,6 +313,39 @@ let handlers = {
         this.handelValidate("success", "", i);
         this.remoteError = false;
       }
+    },
+    // 表格查询
+    searchTable(data) {
+      request
+        .post("/dev-api/tableDevelop/listManage/queryAllDefine", {
+          body: {
+            listCode: data.tabCode,
+          },
+          header: {
+            gloSeqNo: 1594800028104,
+            pageIndex: 0,
+            pageSize: 999,
+            projectId: "quis consectetur",
+            reqSeqNo: "1",
+            reqTime: "1",
+            serviceGroupid: "mollit sed",
+            serviceId: "officia non",
+            serviceName: "1",
+            subProjectId: "occaecat tempor dolor enim ex",
+          },
+        })
+        .then((res) => {
+          console.log(JSON.parse(res.body.define.records[0].listContent));
+          let temp =JSON.parse(res.body.define.records[0].listContent)
+          temp.list[0].options.tableData.forEach((element,index) => {
+            element.tradata = data.data[index]
+          });
+          this.gridData = temp
+          console.log(this.gridData)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     // 离开赋值
     handelAssignment(j) {
@@ -426,12 +464,12 @@ let handlers = {
       let focusEle = ele.querySelector("input")
         ? ele.querySelector("input")
         : ele.querySelector("textarea");
-      let type = focusEle.getAttribute("type")
+      let type = focusEle.getAttribute("type");
       console.log("当前聚焦元素", focusEle);
       this.$nextTick(() => {
-        if(type == 'radio'){
-          focusEle.parentNode.parentNode.focus()
-        }else{
+        if (type == "radio") {
+          focusEle.parentNode.parentNode.focus();
+        } else {
           focusEle.focus();
         }
       });

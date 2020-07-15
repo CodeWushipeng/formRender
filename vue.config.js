@@ -31,11 +31,6 @@ module.exports = {
         pathRewrite: { "^/dev-api": "" },
         changeOrigin: true,
       },
-      "/dev-api": {
-        target: "http://192.168.5.142:21000",
-        pathRewrite: { "^/dev-api": "" },
-        changeOrigin: true,
-      },
       "/dev-api/formDevelop": {
         target: "http://192.168.1.194:21004",
         pathRewrite: { "^/dev-api": "" },
@@ -47,7 +42,12 @@ module.exports = {
       '/dev-api/tableDevelop': {
         target: 'http://192.168.1.194:11004',
         pathRewrite: { '^/dev-api/tableDevelop': '' }
-      }
+      },
+      "/dev-api": {
+        target: "http://192.168.5.142:21000",
+        pathRewrite: { "^/dev-api": "" },
+        changeOrigin: true,
+      },
     },
     overlay: {
       warnings: false,

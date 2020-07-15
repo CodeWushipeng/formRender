@@ -163,6 +163,14 @@
               v-if="formConfig"
               type="text"
               size="medium"
+              icon="el-icon-edit-outline"
+              @click="handleEdit($event)"
+              >扩展函数</el-button
+            >
+            <el-button
+              v-if="formConfig"
+              type="text"
+              size="medium"
               icon="el-icon-tickets"
               @click="handleFormConfig"
               >{{ $t("fm.actions.formConfig") }}</el-button
@@ -555,6 +563,8 @@ export default {
   data() {
     return {
       code: "",
+      extendFunc:"",
+      extendDetail:"",
       cmOptions: {
         tabSize: 4,
         mode: "javascript",
@@ -732,6 +742,11 @@ export default {
       }
       this.mirrorVisible = true;
     },
+    // 扩展函数编辑器
+    handleEdit(e){
+      this.extendFunc = e.target.innerText
+      this.mirrorVisible = true;
+    },
     // 关闭mirror
     closeMirror() {
       this.code = "";
@@ -739,7 +754,7 @@ export default {
     },
     // 获取mirror输入的代码
     getCode() {
-      console.log(this.nowEle);
+      console.log(this.extendFunc);
       if (this.modify == "隐藏条件") {
         this.nowEle.hidden = this.code;
       } else if (this.modify == "离开条件") {
@@ -766,8 +781,13 @@ export default {
         this.nowEle.requestData = this.code;
       } else if (this.modify == "请输入出口数据") {
         this.nowEle.responseData = this.code;
+      } else if(this.extendFunc == "扩展函数"){
+        this.extendDetail = this.code
+        console.log(this.extendDetail)
       }
       this.mirrorVisible = false;
+      this.extendFunc = ""
+      this.modify = ""
     },
     // 显示form配置
     handleFormConfig() {

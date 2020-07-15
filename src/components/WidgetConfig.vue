@@ -415,10 +415,10 @@
 
         </el-form-item>
         <!-- 提示信息 -->
-      <el-form-item v-if="data.type =='input'" :label="$t('fm.config.widget.showTips')">
-        <span style="color: red">注意：设置只读属性不可以设置提示信息</span>
-        <el-input v-if="data.options.disabled" :disabled="data.options.disabled" placeholder="不可配置"></el-input>
-        <el-input v-else placeholder="输入提示信息" v-model="data.options.tips"></el-input>
+      <el-form-item v-if="data.type !='grid'" :label="$t('fm.config.widget.showTips')">
+        <!-- <span style="color: red">注意：设置只读属性不可以设置提示信息</span> -->
+        <!-- <el-input v-if="data.options.disabled" :disabled="data.options.disabled" placeholder="不可配置"></el-input> -->
+        <el-input placeholder="输入提示信息" v-model="data.options.tips"></el-input>
       </el-form-item>
         <el-form-item :label="$t('fm.config.widget.validate')">
           <div v-if="Object.keys(data.options).indexOf('required')>=0">
