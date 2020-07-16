@@ -527,6 +527,7 @@ export default {
         "videoupload",
         "camera",
         "buttonCom",
+        "alink",
       ],
     },
     basicFields: {
@@ -739,6 +740,10 @@ export default {
         if (this.nowEle.responseData != "") {
           this.code = this.nowEle.responseData;
         }
+      } else if (this.modify == "调用函数") {
+        if (this.nowEle.options.buttonfun != "") {
+          this.code = this.nowEle.options.buttonfun;
+        }
       }
       this.mirrorVisible = true;
     },
@@ -784,6 +789,9 @@ export default {
       } else if(this.extendFunc == "扩展函数"){
         this.extendDetail = this.code
         console.log(this.extendDetail)
+      } else if (this.modify == "调用函数") {
+        this.nowEle.options.buttonfun = this.code
+        console.log(this.nowEle.options.buttonfun)
       }
       this.mirrorVisible = false;
       this.extendFunc = ""

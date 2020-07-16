@@ -1,9 +1,9 @@
 <template>
   <el-form-item
-    :label="widget.type != 'buttonCom' ? widget.name : ''"
+    :label="(widget.type != 'buttonCom' && widget.type != 'alink') ? widget.name : ''"
     :prop="widget.model"
   >
-    <!--widget: {{widget}} -->
+    <!--widget: {{widget}}-->
     <!-- {{rules}} -->
     <!--金额控件-->
     <template v-if="widget.type == 'amount'">
@@ -525,7 +525,6 @@
     <!--按钮组件-->
     <template v-if="widget.type == 'buttonCom'">
       <el-button
-        :icon="widget.options.buttonicon"
         ref="buttonref"
         v-model="dataModel"
         @click="buttonfun(widget.options.buttonfun)"
@@ -534,8 +533,24 @@
         :style="{ width: widget.options.width }"
         :disabled="widget.options.disabled"
       >
-        按钮3
+        <el-button :icon="widget.options.buttonicon" v-if="widget.options.buttonicon" style = "border: 0;padding-left: 0px;"></el-button>
+        <span ref="buttonSpanRef">按钮3</span>
       </el-button>
+    </template>
+
+    <!--A 链接-->
+    <template v-if="widget.type == 'alink'">
+      <a
+         ref="alinkref"
+         v-model="dataModel"
+         @click="buttonfun(widget.options.buttonfun)"
+         :disabled="widget.options.disabled"
+         :placeholder="widget.options.placeholder"
+         :style="{width: widget.options.width}"
+         :options="widget.options.remoteOptions"
+      >
+        <span ref="alinkSpanRef">a 链接</span>
+      </a>
     </template>
 
     <!--{{widget.options.imagesrc}}&&&
@@ -1225,19 +1240,24 @@ export default {
 
     /*按钮*/
     buttonfun(event_name, title) {
-      //alert(event_name)
       if (this.widget.options.buttonfun) {
         try {
-          this[this.widget.options.buttonfun](title);
+            var buttonfun = this.widget.options.buttonfun;
+            if (buttonfun.indexOf("function") != -1) {
+                //执行函数
+                let tempFunc = eval("(" + buttonfun + ")");
+                //console.log(tempFunc);
+                var result = tempFunc();
+            }else{
+                //调用方法
+                this[buttonfun](title);
+            }
         } catch (error) {
           console.log(error);
         }
       } else if (this.widget.options.buttonurl) {
         window.location = this.widget.options.buttonurl;
       }
-    },
-    test() {
-      alert("button function");
     },
     /*按钮*/
 
@@ -1394,10 +1414,17 @@ export default {
     if (this.widget.type == "camera") {
       this.camera();
     } else if (
-      this.widget.type == "buttonCom" &&
+        this.widget.type == "buttonCom" &&
       (this.widget.options.buttontext || this.widget.options.defaultValue)
     ) {
-      this.$refs.buttonref.$el.textContent = this.widget.options.buttontext
+        this.$refs.buttonSpanRef.textContent = this.widget.options.buttontext
+        ? this.widget.options.buttontext
+        : this.widget.options.defaultValue;
+    } else if (
+        this.widget.type == "alink" &&
+      (this.widget.options.buttontext || this.widget.options.defaultValue)
+    ) {
+        this.$refs.alinkSpanRef.textContent = this.widget.options.buttontext
         ? this.widget.options.buttontext
         : this.widget.options.defaultValue;
     } else if (this.widget.type == "imageshow") {

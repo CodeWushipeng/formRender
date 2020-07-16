@@ -64,19 +64,21 @@
       </el-form-item>
 
       <!--按钮相关属性-->
-      <el-form-item v-if="data.type=='buttonCom'">
-        <el-form-item :label="$t('fm.config.widget.buttontext')">
-          <el-input v-model="data.options.buttontext"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.buttonicon')">
-          <el-input v-model="data.options.buttonicon"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.buttonfun')">
-          <el-input v-model="data.options.buttonfun"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.buttonurl')">
-          <el-input v-model="data.options.buttonurl"></el-input>
-        </el-form-item>
+      <el-form-item v-if="data.type=='buttonCom' | data.type=='alink'">
+          {{$t('fm.config.widget.buttontext')}}<el-input v-model="data.options.buttontext"></el-input>
+          <div v-if="data.type=='buttonCom'">
+            {{$t('fm.config.widget.buttonicon')}}<el-input v-model="data.options.buttonicon"></el-input>
+          </div>
+          {{$t('fm.config.widget.buttonfun')}}
+          <el-input
+                  style="text-overflow: ellipsis;"
+                  readonly
+                  @focus="handelMirror"
+                  v-model="data.options.buttonfun"
+                  placeholder="调用函数"
+          >
+          </el-input>
+          {{$t('fm.config.widget.buttonurl')}}<el-input v-model="data.options.buttonurl"></el-input>
       </el-form-item>
 
       <!--密码相关属性-->

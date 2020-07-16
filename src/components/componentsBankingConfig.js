@@ -568,5 +568,21 @@ export const bankingComponents = [
     data:"",
     success: "",
   },
+  {
+    type: "alink",
+    icon: "icon-tupian",
+    options: {
+      hidden: false,
+      width: "",
+      defaultValue: "",
+      required: false,
+      placeholder: "",
+      disabled: false,
+    },
+    isRemote: "",
+    url:"",
+    data:"",
+    success: "",
+  },
 
 ];
