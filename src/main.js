@@ -26,9 +26,9 @@ require('vue-video-player/src/custom-theme.css')
 //导入tablemaking组件
 import TableMaking from 'table-making'
 import 'table-making/dist/TableMaking.css'
+// import hrSelect from './components/select'
 
-
-
+// Vue.use(hrSelect)
 Vue.use(VideoPlayer)
 Vue.use(VueCodemirror)
 Vue.use(VueI18n)

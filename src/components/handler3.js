@@ -56,7 +56,8 @@ let handlers = {
       }
     },
     // 光标失去焦点
-    blurValidate() {
+    blurValidate(widget) {
+      console.log(widget)
       return new Promise(
         (resolve) => {
           if (this.preIndex != this.outMark) {

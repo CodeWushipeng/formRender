@@ -927,7 +927,7 @@ export default {
     // 组件失去焦点事件
     comBlur(e) {
       console.log("失去焦点");
-      this.$emit("el-blur");
+      this.$emit("el-blur",this.widget);
     },
     // element change事件，回车和失去焦点时触发
     change(e) {
@@ -942,10 +942,11 @@ export default {
     // select组件回车抬起事件
     selectChange() {
       if (this.selectStatu) {
-        return;
+        this.$refs[this.widget.model].blur()
       } else {
         this.$emit("el-change", this);
       }
+      // this.$emit("el-change", this);
     },
     // select组件空格事件
     showOptions() {
