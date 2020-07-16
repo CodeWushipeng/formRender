@@ -9,10 +9,12 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item v-if="data.options.isAddBtn" label="新增方法">
+        <el-checkbox v-model="data.options.isAddBtnCustom" >自定义新增按钮事件</el-checkbox>
         <el-input
           style="text-overflow: ellipsis;"
           readonly
-          @focus="handelMirror"
+          :disabled="!data.options.isAddBtnCustom"
+          @focus="handelMirror('add')"
           v-model="data.options.addFn.toString()"
           placeholder="新增方法"
         ></el-input>
@@ -20,11 +22,12 @@
       <el-form-item v-if="data.options.isAddBtn" label="新增数据表单编码">
         <el-input
           style="text-overflow: ellipsis;"
+          :disabled="data.options.isAddBtnCustom"
           v-model="data.options.addFormId"
           placeholder="表单编码"
         ></el-input>
       </el-form-item>
-       <!-- 增加 -->
+       <!-- 双击查看详情 -->
        <el-form-item label-width="100px" label="双击查看详情">
         <el-radio-group v-model="data.options.isDetail">
           <el-radio-button :label="false">{{$t('fm.tableWidget.widget.no')}}</el-radio-button>
@@ -32,10 +35,12 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item v-if="data.options.isDetail" label="详情方法">
+        <el-checkbox v-model="data.options.isDetailCustom" >自定义双击查看详情事件</el-checkbox>
         <el-input
           style="text-overflow: ellipsis;"
           readonly
-          @focus="handelMirror"
+          :disabled="!data.options.isDetailCustom"
+          @focus="handelMirror('detail')"
           v-model="data.options.detailFn.toString()"
           placeholder="详情方法"
         ></el-input>
@@ -43,6 +48,7 @@
       <el-form-item v-if="data.options.isDetail" label="数据详情表单编码">
         <el-input
           style="text-overflow: ellipsis;"
+           :disabled="data.options.isDetailCustom"
           v-model="data.options.detailFormId"
           placeholder="表单编码"
         ></el-input>
@@ -55,16 +61,19 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item v-if="data.options.isEditBtn" label="编辑方法">
+        <el-checkbox v-model="data.options.isEditBtnCustom" >自定义编辑按钮事件</el-checkbox>
         <el-input
           style="text-overflow: ellipsis;"
           readonly
-          @focus="handelMirror"
-          v-model="data.options.editFn.toString()"
+          :disabled="!data.options.isEditBtnCustom"
+          @focus="handelMirror('edit').toString()"
+          v-model="data.options.editFn"
           placeholder="编辑方法"
         ></el-input>
       </el-form-item>
-       <el-form-item v-if="data.options.isEditBtn" label="编辑数据表单ID">
+       <el-form-item v-if="data.options.isEditBtn" label="编辑数据表单编码">
         <el-input
+          :disabled="data.options.isEditBtnCustom"
           style="text-overflow: ellipsis;"
           v-model="data.options.editFormId"
           placeholder="表单编码"
@@ -78,29 +87,68 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item v-if="data.options.isDeleteBtn" label="删除方法">
+        <el-checkbox v-model="data.options.isDeleteBtnCustom" >自定义删除按钮事件</el-checkbox>
         <el-input
           style="text-overflow: ellipsis;"
           readonly
-          @focus="handelMirror"
-          v-model="data.options.deleteFn.toString()"
+          :disabled="!data.options.isDeleteBtnCustom"
+          @focus="handelMirror('delete').toString()"
+          v-model="data.options.deleteFn"
           placeholder="删除方法"
         ></el-input>
       </el-form-item>
     </el-form>
+    <cus-dialog
+      :visible="mirrorVisible"
+      @on-close="closeMirror"
+      @on-submit="getCodeData"
+      ref="tableEventCode"
+      width="800px"
+      form
+    >
+      <codemirror
+        ref="tableCm"
+        v-model="tableEventCodeCf.tableCodeFn"
+        :options="tableEventCodeCf.cmOptions"
+      ></codemirror>
+    </cus-dialog>
   </div>
 </template>
 
 <script>
 import Draggable from "vuedraggable";
 import request from "../../util/request";
+import CusDialog from "../CusDialog";
 
 export default {
   components: {
-    Draggable
+    Draggable,
+    CusDialog
   },
   props: ["data"],
   data() {
-    return {};
+    return {
+      mirrorVisible:false,
+      tableEventCodeCf: {
+        cmOptions: {
+          tabSize: 4,
+          mode: "javascript",
+          theme: "monokai",
+          lineNumbers: true,
+          smartIndent: true,
+          autofocus: true,
+          styleActiveLine: true,
+          scrollbarStyle: "overlay",
+          lineWrapping: true,
+          spellcheck: true,
+          autocorrect: true,
+          indentUnit: 2,
+          line: true
+        },
+        tableCodeFn: "",
+        codeType: ""
+      }
+    };
   },
   mounted() {
     console.log(this.data);
@@ -115,14 +163,61 @@ export default {
   },
   methods: {
     // codeMirror弹出函数
-    handelMirror(e) {
-      console.log(this.data);
-      this.$emit("mirror", this.data, e.target.placeholder);
+    handelMirror(type) {
+      this.mirrorVisible = true
+      this.tableEventCodeCf.codeType = type;
+      if (type == "add") {
+        this.tableEventCodeCf.tableCodeFn = this.data.options.addFn.toString()
+         
+      } else if (type == "detail") {
+        this.tableEventCodeCf.tableCodeFn = this.data.options.detailFn.toString()
+          
+      } else if (type == "edit") {
+        this.tableEventCodeCf.tableCodeFn = this.data.options.editFn.toString()
+      }else if (type == "delete") {
+        this.tableEventCodeCf.tableCodeFn = this.data.options.deleteFn.toString()
+      }
     },
-    // 分页查询
-    handleCurrentChange(val) {
-      this.startPage = val;
-      this.getData();
+
+    getCodeData() {
+      let type = this.tableEventCodeCf.codeType;
+      let temFen = "";
+
+      try {
+        temFen = eval("(" + this.tableEventCodeCf.tableCodeFn + ")");
+      } catch (e) {
+        console.log(e);
+        this.$notify({
+          title: "fail",
+          message: "语法错误",
+          type: "success",
+          duration: 2000
+        });
+        return;
+      }
+      if (type == "add") {
+        if (this.data.options && this.data.options.addFn) {
+          this.data.options.addFn = temFen;
+        }
+      } else if (type == "edit") {
+         if (this.data.options && this.data.options.editFn) {
+          this.data.options.editFn = temFen;
+        }
+      } else if (type == "detail") {
+         if (this.data.options && this.data.options.detailFn) {
+          this.data.options.detailFn = temFen;
+        }
+      }else if (type == "delete") {
+         if (this.data.options && this.data.options.deleteFn) {
+          this.data.options.deleteFn = temFen;
+        }    
+      }
+      this.mirrorVisible = false;
+    },
+    
+    //关闭code窗口
+    closeMirror(val) {
+     this.mirrorVisible = false
     }
   }
 };

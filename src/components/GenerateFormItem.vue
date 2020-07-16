@@ -10,7 +10,10 @@
       <!--放大镜-->
       <transition name="fade">
         <div v-if="widget.options.amountmoney && amountvisible" class="mglass">
-          <div class="mglass-data">{{ dataModel }} <br /></div>
+          <div class="mglass-data">
+            {{ dataModel }}
+            <br />
+          </div>
           <div class="mglass-big">{{ bigPastAdjustFee }}</div>
         </div>
       </transition>
@@ -45,14 +48,14 @@
         @blur="comBlur($event)"
         :ref="widget.model"
       >
-        <template slot="prepend"
-          ><el-button
+        <template slot="prepend">
+          <el-button
             v-if="widget.options.tips != ''"
             @click="showTips(widget.options.tips)"
             slot="prepend"
             icon="el-icon-question"
-          ></el-button> </template
-      >
+          ></el-button>
+        </template>
       </el-input>
     </template>
     <!--确认密码-->
@@ -70,14 +73,14 @@
         @keyup.native.enter="change"
         :ref="widget.model"
       >
-      <template slot="prepend"
-          ><el-button
+        <template slot="prepend">
+          <el-button
             v-if="widget.options.tips != ''"
             @click="showTips(widget.options.tips)"
             slot="prepend"
             icon="el-icon-question"
-          ></el-button> </template
-      >
+          ></el-button>
+        </template>
       </el-input>
     </template>
 
@@ -96,14 +99,16 @@
         @focus="comFocus($event)"
         @blur="comBlur($event)"
         @keyup.native.enter="change($event)"
-        ><template slot="prepend"
-          ><el-button
+      >
+        <template slot="prepend">
+          <el-button
             v-if="widget.options.tips != ''"
             @click="showTips(widget.options.tips)"
             slot="prepend"
             icon="el-icon-question"
-          ></el-button> </template
-      ></el-input>
+          ></el-button>
+        </template>
+      </el-input>
 
       <!-- dataType为组件类型 dataModel为双向绑定的数据 -->
       <el-input
@@ -119,14 +124,15 @@
         @keyup.native.enter="change($event)"
         :ref="widget.model"
       >
-        <template slot="prepend"
-          ><el-button
+        <template slot="prepend">
+          <el-button
             v-if="widget.options.tips != ''"
             @click="showTips(widget.options.tips)"
             slot="prepend"
             icon="el-icon-question"
-          ></el-button> </template
-      ></el-input>
+          ></el-button>
+        </template>
+      </el-input>
     </template>
 
     <!--身份证 读卡-->
@@ -141,14 +147,14 @@
         @focus="comFocus($event)"
         @blur="comBlur($event)"
         @keyup.native.enter="change"
-        ><el-button
+      >
+        <el-button
           v-if="widget.options.ifperipheral"
           slot="prepend"
           icon="el-icon-question"
           @click="peripheral()"
-          >读取</el-button
-        ></el-input
-      >
+        >读取</el-button>
+      </el-input>
     </template>
 
     <template v-if="widget.type == 'singletext'">
@@ -190,14 +196,14 @@
         @blur="comBlur($event)"
         @keyup.native.ctrl.enter="change"
       >
-      <template slot="prepend"
-          ><el-button
+        <template slot="prepend">
+          <el-button
             v-if="widget.options.tips != ''"
             @click="showTips(widget.options.tips)"
             slot="prepend"
             icon="el-icon-question"
-          ></el-button> </template
-      >
+          ></el-button>
+        </template>
       </el-input>
     </template>
 
@@ -223,9 +229,7 @@
         closable
         :disable-transitions="false"
         @close="handleClose(tag)"
-      >
-        {{ tag }}
-      </el-tag>
+      >{{ tag }}</el-tag>
       <el-input
         class="input-new-tag"
         v-if="inputVisible"
@@ -234,11 +238,8 @@
         size="small"
         @keyup.enter.native="handleInputConfirm"
         @blur="handleInputConfirm"
-      >
-      </el-input>
-      <el-button v-else class="button-new-tag" size="small" @click="showInput"
-        >+ New Tag</el-button
-      >
+      ></el-input>
+      <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
     </template>
 
     <!-- <template v-if="widget.type == 'radio'">
@@ -263,7 +264,7 @@
           }}</template>
         </el-radio>
       </el-radio-group>
-    </template> -->
+    </template>-->
     <template v-if="widget.type == 'radio'">
       <el-radio-group
         v-model="dataModel"
@@ -281,9 +282,11 @@
           :key="index"
         >
           <template v-if="widget.options.remote">{{ item.label }}</template>
-          <template v-else>{{
+          <template v-else>
+            {{
             widget.options.showLabel ? item.label : item.value
-          }}</template>
+            }}
+          </template>
         </el-radio>
       </el-radio-group>
     </template>
@@ -305,15 +308,8 @@
       >
         <template v-slot:blank="scope">
           Width
-          <el-input
-            v-model="scope.model.blank.width"
-            style="width: 100px"
-          ></el-input>
-          Height
-          <el-input
-            v-model="scope.model.blank.height"
-            style="width: 100px"
-          ></el-input>
+          <el-input v-model="scope.model.blank.width" style="width: 100px"></el-input>Height
+          <el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
         </template>
       </radioFormItem>
 
@@ -341,9 +337,11 @@
           :key="index"
         >
           <template v-if="widget.options.remote">{{ item.label }}</template>
-          <template v-else>{{
+          <template v-else>
+            {{
             widget.options.showLabel ? item.label : item.value
-          }}</template>
+            }}
+          </template>
         </el-checkbox>
       </el-checkbox-group>
     </template>
@@ -439,17 +437,24 @@
             : widget.options.options"
           :key="item.value"
           :value="item.value"
-          :label="item.label"
+          :label="
+            widget.options.showLabel || widget.options.remote
+              ? item.label
+              : item.value
+          "
         >
-          <div style="display:inline-block;" @click="clickCheckbox" v-if="widget.options.multiple">
-            <el-checkbox v-model="item.isCheck" ></el-checkbox>
-          </div>
-          <span style="margin-left: 8px;">{{
-            item.label
-          }}</span>
-          <span style="margin-left: 8px;color: #8492a6; font-size: 13px">{{
+          <span style="float: left">
+            {{
+            widget.options.showLabel || widget.options.remote
+            ? item.label
+            : item.value
+            }}
+          </span>
+          <span style="margin-left: 8px;color: #8492a6; font-size: 13px">
+            {{
             item.value
-          }}</span>
+            }}
+          </span>
         </el-option>
       </el-select>
       <span>{{ dataModel }}</span>
@@ -476,12 +481,9 @@
           :key="item.value"
           :value="item.value"
           :label="item.label"
-        >
-        </el-option>
+        ></el-option>
       </el-select>
-      <el-button type="primary" class="json-btn" @click="cameraFun"
-        >拍照</el-button
-      >
+      <el-button type="primary" class="json-btn" @click="cameraFun">拍照</el-button>
       <el-image :src="cameraimage" v-if="cameraimage != ''"></el-image>
     </template>
 
@@ -505,15 +507,8 @@
       >
         <template v-slot:blank="scope">
           Width
-          <el-input
-            v-model="scope.model.blank.width"
-            style="width: 100px"
-          ></el-input>
-          Height
-          <el-input
-            v-model="scope.model.blank.height"
-            style="width: 100px"
-          ></el-input>
+          <el-input v-model="scope.model.blank.width" style="width: 100px"></el-input>Height
+          <el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
         </template>
       </cameraFormItem>
 
@@ -533,7 +528,11 @@
         :style="{ width: widget.options.width }"
         :disabled="widget.options.disabled"
       >
-        <el-button :icon="widget.options.buttonicon" v-if="widget.options.buttonicon" style = "border: 0;padding-left: 0px;"></el-button>
+        <el-button
+          :icon="widget.options.buttonicon"
+          v-if="widget.options.buttonicon"
+          style="border: 0;padding-left: 0px;"
+        ></el-button>
         <span ref="buttonSpanRef">按钮3</span>
       </el-button>
     </template>
@@ -541,13 +540,13 @@
     <!--A 链接-->
     <template v-if="widget.type == 'alink'">
       <a
-         ref="alinkref"
-         v-model="dataModel"
-         @click="buttonfun(widget.options.buttonfun)"
-         :disabled="widget.options.disabled"
-         :placeholder="widget.options.placeholder"
-         :style="{width: widget.options.width}"
-         :options="widget.options.remoteOptions"
+        ref="alinkref"
+        v-model="dataModel"
+        @click="buttonfun(widget.options.buttonfun)"
+        :disabled="widget.options.disabled"
+        :placeholder="widget.options.placeholder"
+        :style="{width: widget.options.width}"
+        :options="widget.options.remoteOptions"
       >
         <span ref="alinkSpanRef">a 链接</span>
       </a>
@@ -556,14 +555,11 @@
     <!--{{widget.options.imagesrc}}&&&
     {{imagesrc}}-->
     <template v-if="widget.type == 'imageshow'">
-      <el-image :src="imagesrc"> </el-image>
+      <el-image :src="imagesrc"></el-image>
     </template>
 
     <template v-if="widget.type == 'switch'">
-      <el-switch
-        v-model="dataModel"
-        :disabled="widget.options.disabled"
-      ></el-switch>
+      <el-switch v-model="dataModel" :disabled="widget.options.disabled"></el-switch>
     </template>
 
     <template v-if="widget.type == 'slider'">
@@ -624,10 +620,7 @@
     </template>
 
     <template v-if="widget.type == 'editor'">
-      <vue-editor
-        v-model="dataModel"
-        :style="{ width: widget.options.width }"
-      ></vue-editor>
+      <vue-editor v-model="dataModel" :style="{ width: widget.options.width }"></vue-editor>
     </template>
 
     <template v-if="widget.type == 'cascader'">
@@ -657,23 +650,17 @@
           <el-row type="flex" justify="end" :gutter="20">
             <el-col v-if="widget.options.isAddBtn" :span="3">
               <div>
-                <el-button @click="handleTableEvent('add')" type="primary"
-                  >添加数据</el-button
-                >
+                <el-button @click="handleTableEvent('add')" type="primary">添加数据</el-button>
               </div>
             </el-col>
             <el-col v-if="widget.options.isEditBtn" :span="3">
               <div>
-                <el-button @click="handleTableEvent('edit')" type="primary"
-                  >编辑数据</el-button
-                >
+                <el-button @click="handleTableEvent('edit')" type="primary">编辑数据</el-button>
               </div>
             </el-col>
             <el-col v-if="widget.options.isDeleteBtn" :span="3">
               <div>
-                <el-button @click="handleTableEvent('delete')" type="primary"
-                  >删除数据</el-button
-                >
+                <el-button @click="handleTableEvent('delete')" type="primary">删除数据</el-button>
               </div>
             </el-col>
           </el-row>
@@ -684,8 +671,7 @@
         :data="widget.configdata"
         @dblhandleCurrentRow="dblhandleCurrentRow"
         ref="generateTable"
-      >
-      </fm-generate-table>
+      ></fm-generate-table>
       <template v-if="widget.options.isPagination">
         <div style="text-align: end;">
           <el-pagination
@@ -696,8 +682,7 @@
             layout="prev, pager, next"
             :pager-count="widget.options.pagination.pagerCount"
             :total="widget.options.pagination.total"
-          >
-          </el-pagination>
+          ></el-pagination>
         </div>
       </template>
       <cus-dialog
@@ -739,7 +724,7 @@ export default {
     FmUploadExtend,
     CusDialog,
     cameraFormItem,
-    radioFormItem,
+    radioFormItem
   },
   data() {
     return {
@@ -762,7 +747,7 @@ export default {
             text: "今天",
             onClick(picker) {
               picker.$emit("pick", new Date());
-            },
+            }
           },
           {
             text: "昨天",
@@ -770,7 +755,7 @@ export default {
               const date = new Date();
               date.setTime(date.getTime() - 3600 * 1000 * 24);
               picker.$emit("pick", date);
-            },
+            }
           },
           {
             text: "一周前",
@@ -778,9 +763,9 @@ export default {
               const date = new Date();
               date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
               picker.$emit("pick", date);
-            },
-          },
-        ],
+            }
+          }
+        ]
       },
       pickerOptionsRange: {
         shortcuts: [
@@ -791,7 +776,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
               picker.$emit("pick", [start, end]);
-            },
+            }
           },
           {
             text: "最近一个月",
@@ -800,7 +785,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
               picker.$emit("pick", [start, end]);
-            },
+            }
           },
           {
             text: "最近三个月",
@@ -809,9 +794,9 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
               picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
+            }
+          }
+        ]
       },
       dynamicTags: ["标签一", "标签二", "标签三"],
       inputVisible: false,
@@ -820,13 +805,13 @@ export default {
         tableDataEAVisible: false,
         configdata: null,
         editData: null,
-        dialogType: "",
-      },
+        dialogType: ""
+      }
     };
   },
   created() {
     if (this.widget.type == "taglable") {
-      this.$nextTick((_) => {
+      this.$nextTick(_ => {
         this.dataModel = this.dynamicTags;
       });
     }
@@ -836,21 +821,21 @@ export default {
       this.remote[this.widget.options.remoteFunc]
     ) {
       // 执行对应的回调函数
-      this.remote[this.widget.options.remoteFunc]((data) => {
+      this.remote[this.widget.options.remoteFunc](data => {
         //this.remote为所有回调函数组成的json对象
-        this.widget.options.remoteOptions = data.map((item) => {
+        this.widget.options.remoteOptions = data.map(item => {
           //remoteOptions 表单动态选项配置
           return {
             value: item[this.widget.options.props.value],
             label: item[this.widget.options.props.label],
-            children: item[this.widget.options.props.children],
+            children: item[this.widget.options.props.children]
           };
         });
       });
     }
     // 七牛图片上传
     if (this.widget.type === "imgupload" && this.widget.options.isQiniu) {
-      this.remote[this.widget.options.tokenFunc]((data) => {
+      this.remote[this.widget.options.tokenFunc](data => {
         this.widget.options.token = data;
       });
     }
@@ -867,7 +852,7 @@ export default {
     },
     showInput() {
       this.inputVisible = true;
-      this.$nextTick((_) => {
+      this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus();
       });
     },
@@ -920,7 +905,7 @@ export default {
       this.$message({
         showClose: true,
         duration: 5000,
-        message: msg,
+        message: msg
       });
     },
     // 组件聚焦事件获取model
@@ -941,7 +926,7 @@ export default {
     // 组件失去焦点事件
     comBlur(e) {
       console.log("失去焦点");
-      this.$emit("el-blur",this.widget);
+      this.$emit("el-blur", this.widget);
     },
     // element change事件，回车和失去焦点时触发
     change(e) {
@@ -950,13 +935,13 @@ export default {
       this.$emit("el-change", this.widget);
     },
     // radio组件change事件
-    valueChange(){
+    valueChange() {
       this.$emit("radio-change", this);
     },
     // select组件回车抬起事件
     selectChange() {
       if (this.selectStatu) {
-        this.$refs[this.widget.model].blur()
+        this.$refs[this.widget.model].blur();
       } else {
         this.$emit("el-change", this);
       }
@@ -975,43 +960,47 @@ export default {
           let father = this.widget.fatherModel && this.widget.fatherModel;
           let fatherData = this.models[father];
           let reqData = eval("(" + this.widget.requestData + ")")();
-          let postData = Object.assign({}, {'itemParentCode':fatherData}, reqData);
-          console.log(reqData,postData)
+          let postData = Object.assign(
+            {},
+            { itemParentCode: fatherData },
+            reqData
+          );
+          console.log(reqData, postData);
           request
-            .post('/dev-api'+this.widget.cascaderUrl, {
+            .post("/dev-api" + this.widget.cascaderUrl, {
               body: postData,
               header: {
                 pageIndex: 1,
                 pageSize: 999,
                 gloSeqNo: new Date(),
                 reqSeqNo: "sit anim",
-                reqTime: "officia ad anim",
-              },
+                reqTime: "officia ad anim"
+              }
             })
-            .then((res) => {
+            .then(res => {
               console.log(res);
               if (res.header.rspCode == RES_OK) {
                 this.$notify({
                   title: "Success",
                   message: "查询成功",
                   type: "success",
-                  duration: 2000,
+                  duration: 2000
                 });
               } else if (res.header.rspCode == FAIL_CODE) {
                 this.$notify({
                   title: "fail",
                   message: "查询失败",
                   type: "info",
-                  duration: 2000,
+                  duration: 2000
                 });
                 return;
               }
               let tempArr = res.body.dics.records;
               let resultArr = [];
-              tempArr.forEach((item) => {
+              tempArr.forEach(item => {
                 let tempJson = {
                   value: "",
-                  label: "",
+                  label: ""
                 };
                 tempJson.label = item.itemValue;
                 tempJson.value = item.itemCode;
@@ -1020,7 +1009,7 @@ export default {
               console.log(tempArr, resultArr);
               this.widget.options.options = resultArr;
             })
-            .catch((error) => console.log(error));
+            .catch(error => console.log(error));
         }
       }
     },
@@ -1070,7 +1059,7 @@ export default {
           title: "fail",
           message: "请用外设键盘输入",
           type: "info",
-          duration: 2000,
+          duration: 2000
         });
       }
     },
@@ -1119,12 +1108,12 @@ export default {
               title: "fail",
               message: "请连接设备",
               type: "info",
-              duration: 2000,
+              duration: 2000
             });
           }
         });
       }
-      peripheralreq().then((idenTemp) => {
+      peripheralreq().then(idenTemp => {
         if (idenTemp) {
           const idenTempObj = JSON.parse(idenTemp);
           //alert(idenTempObj)
@@ -1199,24 +1188,28 @@ export default {
     },
     /*下拉框*/
     // select下拉框的change事件
-    handleWeekChange (val) {
-        if(this.widget.options.multiple){
-            var weekList = this.widget.options.remote ? this.widget.options.remoteOptions : this.widget.options.options
-            weekList.forEach((v) => {
-                v.isCheck = false
-            })
-            val.forEach((el) => {
-                weekList.forEach((v) => {
-                    if (el === v.value) {
-                        v.isCheck = true
-                    }
-                })
-            })
-            this.widget.options.remote ? (this.widget.options.remoteOptions = weekList) : (this.widget.options.options = weekList)
-        }
+    handleWeekChange(val) {
+      if (this.widget.options.multiple) {
+        var weekList = this.widget.options.remote
+          ? this.widget.options.remoteOptions
+          : this.widget.options.options;
+        weekList.forEach(v => {
+          v.isCheck = false;
+        });
+        val.forEach(el => {
+          weekList.forEach(v => {
+            if (el === v.value) {
+              v.isCheck = true;
+            }
+          });
+        });
+        this.widget.options.remote
+          ? (this.widget.options.remoteOptions = weekList)
+          : (this.widget.options.options = weekList);
+      }
     },
     clickCheckbox(e) {
-        e.preventDefault()
+      e.preventDefault();
     },
     /*下拉框*/
 
@@ -1230,7 +1223,7 @@ export default {
           if (device.kind == "videoinput") {
             _this.cameraList.push({
               label: device.label,
-              value: device.deviceId,
+              value: device.deviceId
             });
           }
         });
@@ -1242,16 +1235,16 @@ export default {
     buttonfun(event_name, title) {
       if (this.widget.options.buttonfun) {
         try {
-            var buttonfun = this.widget.options.buttonfun;
-            if (buttonfun.indexOf("function") != -1) {
-                //执行函数
-                let tempFunc = eval("(" + buttonfun + ")");
-                //console.log(tempFunc);
-                var result = tempFunc();
-            }else{
-                //调用方法
-                this[buttonfun](title);
-            }
+          var buttonfun = this.widget.options.buttonfun;
+          if (buttonfun.indexOf("function") != -1) {
+            //执行函数
+            let tempFunc = eval("(" + buttonfun + ")");
+            //console.log(tempFunc);
+            var result = tempFunc();
+          } else {
+            //调用方法
+            this[buttonfun](title);
+          }
         } catch (error) {
           console.log(error);
         }
@@ -1293,48 +1286,75 @@ export default {
         console.log(err);
       }
     },
-    dblhandleCurrentRow(row, column, event) {debugger
-      this.$message(JSON.stringify(row));
-      this.handleTableEvent("detail", row);
+    dblhandleCurrentRow(row, column, event) {
+      if (this.widget.options.isDetail) {
+        if (this.widget.options.isDetailCustom) {
+          if (this.widget.options.detailFn) {
+            this.widget.options.detailFn(this, request, function(data) {
+              console.log(data);
+            });
+          }
+        } else {
+          // this.$message(JSON.stringify(row));
+          this.handleTableEvent("detail", row);
+        }
+      }
     },
     handleTableEvent(action, currentRow) {
+      ;
       let _self = this;
       switch (action) {
         case "add":
-          let addFormId = this.widget.options.addFormId;
-          if (addFormId == "") {
-            this.$message("请配置表单编码");
-            return;
-          }
-          this.tableCf.tableDataEAVisible = true;
-          this.tableCf.dialogType = "add";
-          getFormConfigDataById(addFormId, function(data) {
-            if (data && data.formContent) {
-              _self.tableCf.configdata = JSON.parse(data.formContent);
+          if (this.widget.options.isAddBtnCustom) {
+            if (this.widget.options.addFn) {
+              this.widget.options.addFn(this, request, function(data) {
+                console.log(data);
+              });
             }
-          });
+          } else {
+            let addFormId = this.widget.options.addFormId;
+            if (addFormId == "") {
+              this.$message("请配置表单编码");
+              return;
+            }
+            this.tableCf.tableDataEAVisible = true;
+            this.tableCf.dialogType = "add";
+            getFormConfigDataById(addFormId, function(data) {
+              if (data && data.formContent) {
+                _self.tableCf.configdata = JSON.parse(data.formContent);
+              }
+            });
+          }
           break;
         case "edit":
           let editFormId = this.widget.options.editFormId;
           let selecteRow = this.widget.configdata.list[0].options
             .multipleSelection;
-          if (selecteRow && selecteRow.length != 1) {
+          if (selecteRow && selecteRow.length != 1 || typeof selecteRow == "undefined") {
             this.$message("请选择一行数据");
             return;
           } else {
             this.tableCf.editData = selecteRow[0];
           }
-          if (editFormId == "") {
-            this.$message("请配置表单编码");
-            return;
-          }
-          this.tableCf.dialogType = "edit";
-          this.tableCf.tableDataEAVisible = true;
-          getFormConfigDataById(editFormId, function(data) {
-            if (data && data.formContent) {
-              _self.tableCf.configdata = JSON.parse(data.formContent);
+          if (this.widget.options.isEditBtnCustom) {
+            if (this.widget.options.editFn) {
+              this.widget.options.editFn(this, request, function(data) {
+                console.log(data);
+              });
             }
-          });
+          } else {
+            if (editFormId == "") {
+              this.$message("请配置表单编码");
+              return;
+            }
+            this.tableCf.dialogType = "edit";
+            this.tableCf.tableDataEAVisible = true;
+            getFormConfigDataById(editFormId, function(data) {
+              if (data && data.formContent) {
+                _self.tableCf.configdata = JSON.parse(data.formContent);
+              }
+            });
+          }
           break;
         case "detail":
           let detailFormId = this.widget.options.detailFormId;
@@ -1345,17 +1365,25 @@ export default {
           } else {
             this.tableCf.editData = dbSelecteRow;
           }
-          if (detailFormId == "") {
-            this.$message("请配置表单编码");
-            return;
-          }
-          this.tableCf.dialogType = "detail";
-          this.tableCf.tableDataEAVisible = true;
-          getFormConfigDataById(detailFormId, function(data) {
-            if (data && data.formContent) {
-              _self.tableCf.configdata = JSON.parse(data.formContent);
+          if (this.widget.options.isDetailCustom) {
+            if (this.widget.options.detailFn) {
+              this.widget.options.detailFn(this, request, function(data) {
+                console.log(data);
+              });
             }
-          });
+          } else {
+            if (detailFormId == "") {
+              this.$message("请配置表单编码");
+              return;
+            }
+            this.tableCf.dialogType = "detail";
+            this.tableCf.tableDataEAVisible = true;
+            getFormConfigDataById(detailFormId, function(data) {
+              if (data && data.formContent) {
+                _self.tableCf.configdata = JSON.parse(data.formContent);
+              }
+            });
+          }
           break;
         case "delete":
           let selecteDeleRow = this.widget.configdata.list[0].options
@@ -1364,16 +1392,24 @@ export default {
             this.$message("请至少选择一行数据");
             return;
           } else {
-            let tragtTableData = this.widget.configdata.list[0].options
-              .tableData;
-            if (tragtTableData && tragtTableData.length > 0) {
-              tragtTableData.map((item, index) => {
-                selecteDeleRow.map((j) => {
-                  if (item.id === j.id) {
-                    tragtTableData.splice(index, 1);
-                  }
+            if (this.widget.options.isDeleteBtnCustom) {
+              if (this.widget.options.deleteFn) {
+                this.widget.options.deleteFn(this, request, function(data) {
+                  console.log(data);
                 });
-              });
+              }
+            } else {
+              let tragtTableData = this.widget.configdata.list[0].options
+                .tableData;
+              if (tragtTableData && tragtTableData.length > 0) {
+                tragtTableData.map((item, index) => {
+                  selecteDeleRow.map(j => {
+                    if (item.id === j.id) {
+                      tragtTableData.splice(index, 1);
+                    }
+                  });
+                });
+              }
             }
           }
 
@@ -1396,7 +1432,7 @@ export default {
       } else if (type == "edit") {
         debugger;
         if (tragtTableData && tragtTableData.length > 0) {
-          tragtTableData.map((item) => {
+          tragtTableData.map(item => {
             if (
               item.id === tempTableData.id ||
               item.listCode == tempTableData.listCode
@@ -1408,23 +1444,23 @@ export default {
       }
 
       this.closeTableDataEA();
-    },
+    }
   },
   mounted() {
     if (this.widget.type == "camera") {
       this.camera();
     } else if (
-        this.widget.type == "buttonCom" &&
+      this.widget.type == "buttonCom" &&
       (this.widget.options.buttontext || this.widget.options.defaultValue)
     ) {
-        this.$refs.buttonSpanRef.textContent = this.widget.options.buttontext
+      this.$refs.buttonSpanRef.textContent = this.widget.options.buttontext
         ? this.widget.options.buttontext
         : this.widget.options.defaultValue;
     } else if (
-        this.widget.type == "alink" &&
+      this.widget.type == "alink" &&
       (this.widget.options.buttontext || this.widget.options.defaultValue)
     ) {
-        this.$refs.alinkSpanRef.textContent = this.widget.options.buttontext
+      this.$refs.alinkSpanRef.textContent = this.widget.options.buttontext
         ? this.widget.options.buttontext
         : this.widget.options.defaultValue;
     } else if (this.widget.type == "imageshow") {
@@ -1451,10 +1487,10 @@ export default {
         this.models[this.widget.model] = val;
         this.$emit("update:models", {
           ...this.models,
-          [this.widget.model]: val,
+          [this.widget.model]: val
         });
         this.$emit("input-change", val, this.widget.model);
-      },
+      }
     },
     models: {
       // 深度监听models，models修改时读取修改后的值赋值给dataModel
@@ -1465,9 +1501,9 @@ export default {
         // setTimeout(()=>{
         //     this.remoteFunc()
         // },200)
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

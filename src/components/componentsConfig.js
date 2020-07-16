@@ -495,6 +495,10 @@ export const tableComponents = [
       addFormId:'',
       editFormId: '',
       detailFormId: '',
+      isAddBtnCustom: false,
+      isEditBtnCustom: false,
+      isDeleteBtnCustom: false,
+      isDetailCustom: false,
       remoteFunc: function (currentObj, request, callBack){
         let tableData = [];
         return tableData;
@@ -521,11 +525,11 @@ export const tableComponents = [
         pagerCount:5,
         total:0,
         handleSizeChange:function(page){
-          debugger
+          
           console.log(page)
         },
         handleCurrentChange: function (pageSize) {
-          debugger
+          
           console.log(pageSize)
         }
       },
