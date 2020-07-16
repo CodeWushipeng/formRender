@@ -200,13 +200,14 @@ export default {
             }
           }
         } else if (formLists[i].type == "grid") {
+          debugger
           formLists[i].columns.forEach((element) => {
             element.list.forEach((item) => {
               if (
-                formLists[i].options.defaultValue &&
-                formLists[i].options.defaultValue[0] == "@"
+                item.options.defaultValue &&
+                item.options.defaultValue[0] == "@"
               ) {
-                var temp = formLists[i].options.defaultValue.substring(1);
+                var temp = item.options.defaultValue.substring(1);
                 try {
                   var tempJson = eval(temp);
                 } catch (error) {
@@ -214,8 +215,8 @@ export default {
                 }
                 console.log(tempJson, temp);
                 if (tempJson != "" && tempJson != undefined) {
-                  this.$set(formLists[i].options, "defaultValue", tempJson);
-                  console.log(formLists[i].options.defaultValue);
+                  this.$set(item.options, "defaultValue", tempJson);
+                  console.log(item.options.defaultValue);
                 }
               }
             });
