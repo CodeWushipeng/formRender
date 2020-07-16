@@ -200,7 +200,7 @@ let handlers = {
         }
         if (resultType == "[object Array]") {
           if (result.indexOf(nowValue) == -1) {
-            this.handelValidate("error", "不在取值范围内", i);
+            this.handelValidate("error", `取值范围${lists[i].valueRange}`, i);
             this.setFocus(this.allItems[i]);
             this.rangeError = true;
           } else {
@@ -213,7 +213,7 @@ let handlers = {
             this.rangeError = false;
           } else {
             this.setFocus(this.allItems[i]);
-            this.handelValidate("error", "不在取值范围内", i);
+            this.handelValidate("error", `取值范围${lists[i].valueRange}`, i);
             this.rangeError = true;
           }
         } else if (
@@ -226,7 +226,7 @@ let handlers = {
             this.rangeError = false;
           } else {
             this.setFocus(this.allItems[i]);
-            this.handelValidate("error", "不在取值范围内", i);
+            this.handelValidate("error", `取值范围${lists[i].valueRange}`, i);
             this.rangeError = true;
           }
         }
@@ -248,7 +248,7 @@ let handlers = {
           this.conditionError = false;
         } else {
           this.setFocus(this.allItems[i]);
-          this.handelValidate("error", "不满足离开条件", i);
+          this.handelValidate("error", lists[i].conditionError, i);
           this.conditionError = true;
         }
       } else {
