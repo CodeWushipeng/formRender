@@ -64,19 +64,21 @@
       </el-form-item>
 
       <!--按钮相关属性-->
-      <el-form-item v-if="data.type=='buttonCom'">
-        <el-form-item :label="$t('fm.config.widget.buttontext')">
-          <el-input v-model="data.options.buttontext"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.buttonicon')">
-          <el-input v-model="data.options.buttonicon"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.buttonfun')">
-          <el-input v-model="data.options.buttonfun"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.buttonurl')">
-          <el-input v-model="data.options.buttonurl"></el-input>
-        </el-form-item>
+      <el-form-item v-if="data.type=='buttonCom' | data.type=='alink'">
+          {{$t('fm.config.widget.buttontext')}}<el-input v-model="data.options.buttontext"></el-input>
+          <div v-if="data.type=='buttonCom'">
+            {{$t('fm.config.widget.buttonicon')}}<el-input v-model="data.options.buttonicon"></el-input>
+          </div>
+          {{$t('fm.config.widget.buttonfun')}}
+          <el-input
+                  style="text-overflow: ellipsis;"
+                  readonly
+                  @focus="handelMirror"
+                  v-model="data.options.buttonfun"
+                  placeholder="调用函数"
+          >
+          </el-input>
+          {{$t('fm.config.widget.buttonurl')}}<el-input v-model="data.options.buttonurl"></el-input>
       </el-form-item>
 
       <!--密码相关属性-->
@@ -414,11 +416,11 @@
 
         </el-form-item>
         <!-- 提示信息 -->
-      <el-form-item v-if="data.type !='grid'" :label="$t('fm.config.widget.showTips')">
+      <!-- <el-form-item v-if="data.type !='grid'" :label="$t('fm.config.widget.showTips')"> -->
         <!-- <span style="color: red">注意：设置只读属性不可以设置提示信息</span> -->
         <!-- <el-input v-if="data.options.disabled" :disabled="data.options.disabled" placeholder="不可配置"></el-input> -->
-        <el-input placeholder="输入提示信息" v-model="data.options.tips"></el-input>
-      </el-form-item>
+        <!-- <el-input placeholder="输入提示信息" v-model="data.options.tips"></el-input> -->
+      <!-- </el-form-item> -->
         <el-form-item :label="$t('fm.config.widget.validate')">
           <div v-if="Object.keys(data.options).indexOf('required')>=0">
             <el-checkbox v-model="data.options.required">{{$t('fm.config.widget.required')}}</el-checkbox>

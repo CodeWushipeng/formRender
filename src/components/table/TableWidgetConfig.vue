@@ -2,6 +2,9 @@
   <div v-if="show">
     <el-form label-position="top">
       <template>
+        <el-form-item :label="$t('fm.config.widget.model')">
+          <el-input v-model="data.model"></el-input>
+        </el-form-item>
         <el-form-item :label="$t('fm.tableWidget.widget.selectTableConfig')">
           <el-input v-model="tableName" size="mini" @focus="getTableListData"></el-input>
         </el-form-item>
@@ -11,13 +14,13 @@
             <el-input v-model="tableCode" size="mini" @focus="getTableListData">
             </el-input>
         </el-form-item>-->
-        <el-form-item :label="$t('fm.config.widget.name')" v-if="data.type!='grid'">
+        <el-form-item :label="$t('fm.config.widget.name')">
           <el-input v-model="data.name"></el-input>
         </el-form-item>
         <div v-if="tableName != ''">
           <el-form-item :label="$t('fm.tableWidget.widget.dataIidentification')">
             <el-input
-              v-model="data.options.remoteFunc.toString()"
+              v-model="data.options.remoteFunc"
               size="mini"
               @focus="openCode('tableRemotFun')"
             ></el-input>
@@ -37,7 +40,7 @@
                 style="text-overflow: ellipsis;"
                 readonly
                 @focus="openCode('handleSizeChange')"
-                v-model="data.options.pagination.handleSizeChange.toString()"
+                v-model="data.options.pagination.handleSizeChange"
                 placeholder="条目个数改变的方法"
               ></el-input>
             </el-form-item>
@@ -46,7 +49,7 @@
                 style="text-overflow: ellipsis;"
                 readonly
                 @focus="openCode('handleCurrentChange')"
-                v-model="data.options.pagination.handleCurrentChange.toString()"
+                v-model="data.options.pagination.handleCurrentChange"
                 placeholder="当前页改变的方法"
               ></el-input>
             </el-form-item>
@@ -130,7 +133,7 @@ export default {
       mirrorVisible: false,
       tablePageCf: {
         startPage: 1,
-        pageSize: 2,
+        pageSize: 5,
         total: 0,
         searchValue: "",
         tablesCfData: []
@@ -184,9 +187,13 @@ export default {
         this.tableCodeCf.tableCodeFn =
           "function mian(page){debugger; console.log(page);}";
       } else if (type == "tableRemotFun") {
-        this.tableCodeCf.tableCodeFn =
-          "function mian(currentObj, request, callBack) {debugger;}";
+        if(this.data.options.remoteFunc && this.data.options.remoteFunc.indexOf("func_")<0){
+          this.tableCodeCf.tableCodeFn = this.data.options.remoteFunc;
+        }else{
+          this.tableCodeCf.tableCodeFn ="function mian(currentObj, request, callBack) {debugger;}";
+        }
       }
+        
     },
     closeMirror() {
       this.mirrorVisible = false;
@@ -286,6 +293,7 @@ export default {
       this.tableName = temTableCfg.listName;
       this.tableCode = temTableCfg.listCode;
       this.dialogTableVisible = false;
+      this.tableCodeCf.tableCodeFn ="function mian(currentObj, request, callBack) {debugger;}";
     }
   },
   watch: {

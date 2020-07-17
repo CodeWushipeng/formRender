@@ -3,7 +3,7 @@
     class="widget-view"
     v-if="element && element.key"
     :class="{active: selectWidget.key == element.key, 'is_req': element.options.required}"
-    :label="element.type != 'buttonCom' ? element.name : ''"
+    :label="(element.type != 'buttonCom' && element.type != 'alink') ? element.name : ''"
     @click.native.stop="handleSelectWidget(index)"
   >
     <!--{{element.type}}-->
@@ -249,6 +249,16 @@
         :style="{width: element.options.width}"
         :options="element.options.remoteOptions"
       >按钮</el-button>
+    </template>
+
+    <template v-if="element.type == 'alink'">
+      <a href=""
+         target="_blank"
+         :disabled="element.options.disabled"
+         :placeholder="element.options.placeholder"
+         :style="{width: element.options.width}"
+         :options="element.options.remoteOptions"
+         >a 链接</a>
     </template>
 
     <template v-if="element.type == 'editor'">
