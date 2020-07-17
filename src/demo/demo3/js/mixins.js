@@ -6,6 +6,8 @@ const flowMixin= {
                 '01':"",
                 '02':"danger",
                 '03':"success",
+                '04':"info",
+                '05':"warning",
             };
 
             return elTag[type];
@@ -16,6 +18,8 @@ const flowMixin= {
                 '01': "开始节点",
                 '02': "结束节点",
                 '03': "表单节点",
+                '04': "复核节点",
+                '05': "授权节点",
             };
 
             return fsTxt[type];

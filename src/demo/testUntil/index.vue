@@ -1,6 +1,6 @@
 <template>
     <div>
-        until
+        until  1212
         <div class="box">
             {{add}}
         </div>
@@ -48,7 +48,7 @@
         },
         methods:{
             test(){
-                // console.log("created==========start==========");
+                console.log("created==========start==========");
                 try {
                     const exeCode = eval(commonJs1);
                     this.configdata.utils = exeCode;
@@ -67,6 +67,7 @@
             },
             // 提取函数的返回数据
             solve(inputConfig){
+                debugger
                 try {
                     const { platform, user, nodes, utils } = this.configdata;
                     // console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )

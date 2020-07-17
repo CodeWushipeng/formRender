@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import request from './js/request'
 import operationBtns from './operation-buttons'
 import currentNode from './current-node'
 // import getFG from 'fg-control';
@@ -71,8 +72,7 @@ export default {
     },
     computed: {
         type() {
-            const {type} = this.data;
-            return type
+            return this.data.type
         },
     },
     data() {
@@ -85,7 +85,6 @@ export default {
             records: [], // 流程数据
             hackRest: true,
             url: "",
-            allData: null,
             // 流控数据
             configdata: {
                 platform,
@@ -342,51 +341,81 @@ export default {
             if (type == FG.DOING) {
                 // 执行节点
                 const nodePromise = this.$refs.renderForm.getData();
-                nodePromise
-                    .then(data => {
+                nodePromise.then(data => {
                         console.log("res", data);
                         // 提交类型
                         if (commitType == FG.COMMIT_DEFAULT) {
+                            // TODO 通信提交
+                            request({
+                                url: `/requestForward/${commit}`,
+                                method: 'post',
+                                data
+                            }).then(response=>{
+                                const Obj = {
+                                    up: data,
+                                    down: null
+                                };
+                                Obj["down"] = {
+                                    ...response,
+                                    rspCode: "SP000000"
+                                };
+                                alert("通信提交响应数据：" + JSON.stringify(Obj));
+                                const copyObj = JSON.parse(JSON.stringify(Obj));
+                                FG.saveNode(nodeCode, copyObj);
+                                this.configdata.nodes = FG.getNodes(); // 节点数据
+                                // return Promise.resolve();
+                            }).then(()=>{
+                                if (outputFromCode) {
+                                    // 有响应页面
+                                    this.$refs.renderForm.changeJsonData(
+                                        outputFromCode,
+                                        outputConfig
+                                    );
+                                    FG.OUTFLAG = true;
+                                } else {
+                                    // 无响应页面
+                                    this.next(nextNode);
+                                }
+                            }).catch(err=>{
+                                throw new Error(err)
+                            })
+
+                        } else if (commitType == FG.COMMIT_DEFINE) {
+                            // 自定义提交
                             const Obj = {
                                 up: data,
                                 down: null
                             };
-                            insertNodeData(data)
-                                .then(res => {
-                                    console.log("=======res..", res);
-                                    const {header, body} = res;
-                                    Obj["down"] = {
-                                        ...body.data,
-                                        resCode: body.resCode
-                                    };
-                                    alert("提交数据：" + JSON.stringify(Obj));
-                                    // 深拷贝
-                                    const copyObj = JSON.parse(JSON.stringify(Obj));
-                                    FG.saveNode(nodeCode, copyObj);
-                                    this.configdata.nodes = FG.getNodes(); // 节点数据
-                                    // return Promise.resolve();
-                                })
-                                .then(res => {
-                                    if (outputFromCode) {
-                                        // TODO 有响应页面
-                                        this.$refs.renderForm.changeJsonData(
-                                            outputFromCode,
-                                            outputConfig
-                                        );
-                                        FG.OUTFLAG = true;
-                                        // FG.CURFORM = "inputFormCode";
-                                    } else {
-                                        // TODO 无响应页面,直接跳转到下一节点
-                                        this.next(nextNode);
-                                    }
-                                });
-                        } else if (commitType == FG.COMMIT_DEFINE) {
-                            // function commit(data){
-                            //     return data;
-                            // }
-                            // commit && commit(data);
-
+                            // console.log('commit....',commit)
+                            commit && this.handleRemoteFn(commit).then(response => {
+                                console.log('response...',response)
+                                Obj["down"] = {
+                                    ...response,
+                                    rspCode: "SP000000"
+                                };
+                                alert("响应数据：" + JSON.stringify(Obj));
+                                // 深拷贝
+                                const copyObj = JSON.parse(JSON.stringify(Obj));
+                                FG.saveNode(nodeCode, copyObj);
+                                this.configdata.nodes = FG.getNodes(); // 节点数据
+                                return Promise.resolve();
+                            }).then(()=>{
+                                if (outputFromCode) {
+                                    // 有响应页面
+                                    this.$refs.renderForm.changeJsonData(
+                                        outputFromCode,
+                                        outputConfig
+                                    );
+                                    FG.OUTFLAG = true;
+                                } else {
+                                    // 无响应页面
+                                    this.next(nextNode);
+                                }
+                            }).catch(err=>{
+                                throw new Error(err)
+                            })
                         } else if (commitType == FG.COMMIT_ORDER) {
+                            // TODO 订单提交
                         } else if (commitType == FG.COMMIT_LOCAL) {
                             // 本地提交
                             const nodePromise = this.$refs.renderForm.getData();
@@ -395,22 +424,20 @@ export default {
                                     up: data,
                                     down: {...data, resCode: "000000"}
                                 };
-                                alert("提交数据：" + JSON.stringify(Obj));
+                                alert("本地提交数据：" + JSON.stringify(Obj));
                                 const copyObj = JSON.parse(JSON.stringify(Obj));
                                 FG.saveNode(nodeCode, copyObj);
                                 this.configdata.nodes = FG.getNodes(); // 节点数据
-                                // 下一节点
-                                // this.next(nextNode);
                             }).then(res => {
                                 if (outputFromCode) {
-                                    // TODO 有响应页面
+                                    // 有响应页面
                                     this.$refs.renderForm.changeJsonData(
                                         outputFromCode,
                                         outputConfig
                                     );
                                     FG.OUTFLAG = true;
                                 } else {
-                                    // TODO 无响应页面,直接跳转到下一节点
+                                    // 无响应页面
                                     this.next(nextNode);
                                 }
                             });
@@ -447,6 +474,28 @@ export default {
                     message: '当前节点没有表单,不能获取数据'
                 });
             }
+        },
+        // 提交处理
+         handleRemoteFn(fn) {
+            return new Promise((resolve,reject)=>{
+                try {
+                    let fns = eval("(" + fn + ")");
+                    // console.log('fns',typeof fns)
+                    fns(request, function(tableCf) {
+                        debugger
+                        console.log('tableCf',tableCf)
+                        if(tableCf){
+                            resolve(tableCf)
+                        }else{
+                            reject("没有返回数据")
+                        }
+                    });
+                } catch (err) {
+                    console.log(err);
+                    throw new Error(err)
+                }
+            })
+
         },
         _findBackNode(returnNode) {
             let ret = null;
