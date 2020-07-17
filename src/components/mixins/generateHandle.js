@@ -37,9 +37,9 @@ let handlers = {
     };
   },
   methods: {
-    // 鼠标点击获取焦点验证
+    // 组件获取焦点
     mouseValidate(params) {
-      // 点击时存储组件旧值
+      // 获取焦点时存储组件旧值
       this.widgetPreValue = this.models[params];
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
@@ -60,7 +60,7 @@ let handlers = {
         this.outMark = this.preIndex;
       }
     },
-    // 光标失去焦点
+    // 组件失去焦点
     blurValidate(params) {
       if (this.blurByEnter) {
         return;
@@ -436,7 +436,6 @@ let handlers = {
     // 综合校验
     allValidate(target) {
       for (let i = 0; i <= target; i++) {
-        console.log("targettargettargettargettarget              " + target);
         if (
           this.comArr[i].options.disabled ||
           this.comArr[i].options.hidden ||
@@ -533,7 +532,8 @@ let handlers = {
       }
     },
     // radio change事件
-    radioChange() {
+    radioChange(params) {
+      this.mouseValidate(params)
       this.allValidate(this.outMark);
       this.handelAssignment(this.outMark);
       this.handelHidden();

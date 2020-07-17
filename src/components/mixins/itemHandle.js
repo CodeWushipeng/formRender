@@ -1,3 +1,5 @@
+import request from "../../util/request";
+import { RES_OK } from "@/api/config";
 let itemHandle = {
   data() {
     return {
@@ -32,18 +34,23 @@ let itemHandle = {
     },
     // radio组件change事件
     valueChange() {
-      this.$emit("radio-change", this);
+      this.$emit("radio-change", this.widget.model);
     },
     // select组件回车抬起事件
     selectChange() {
-      if(this.widget.options.filterable){
+      if (!this.models[this.widget.model]) {
         this.$refs[this.widget.model].blur();
         this.$emit("el-change", this.widget.type);
-      }else{
-        if (this.selectStatu) {
-          this.$refs[this.widget.model].blur(); 
-        } else {
+      } else {
+        if (this.widget.options.filterable) {
+          this.$refs[this.widget.model].blur();
           this.$emit("el-change", this.widget.type);
+        } else {
+          if (this.selectStatu) {
+            this.$refs[this.widget.model].blur();
+          } else {
+            this.$emit("el-change", this.widget.type);
+          }
         }
       }
     },
@@ -147,4 +154,4 @@ let itemHandle = {
     },
   },
 };
-export default itemHandle
+export default itemHandle;

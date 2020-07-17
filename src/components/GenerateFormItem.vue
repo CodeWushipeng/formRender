@@ -319,6 +319,7 @@
         @keyup.native.enter="change"
         @keyup.native.up="checkUp"
         @keyup.native.down="checkDown"
+        @change="valueChange"
         :class="widget.model"
       >
         <el-checkbox
