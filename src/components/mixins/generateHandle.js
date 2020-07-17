@@ -5,11 +5,12 @@ let handlers = {
   data() {
     return {
       trade: false, //字段交易弹出框
-      widgetPreValue:"",   // 组件旧值
+      widgetPreValue: "", // 组件旧值
       comArr: [], //组件list数组
       outMark: 0, //外层循环标记
       allItems: [],
       unfocus: [],
+      blurByEnter: false, // 标记select组件失去焦点事件是否是通过回车触发的
       canFocusLength: 0,
       preIndex: 0, //上次聚焦元素序号
       singleError: false,
@@ -39,7 +40,7 @@ let handlers = {
     // 鼠标点击获取焦点验证
     mouseValidate(params) {
       // 点击时存储组件旧值
-      this.widgetPreValue = this.models[params]
+      this.widgetPreValue = this.models[params];
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
           this.preIndex = i;
@@ -49,7 +50,7 @@ let handlers = {
       if (this.preIndex == this.outMark) {
         return;
       }
-      this.allValidate(this.preIndex-1);
+      this.allValidate(this.preIndex - 1);
       if (
         !this.singleError &&
         !this.rangeError &&
@@ -61,20 +62,24 @@ let handlers = {
     },
     // 光标失去焦点
     blurValidate(params) {
-      // 失去焦点时判断两次的值是否相同，相同则不再做验证
-      if(this.models[params] && this.widgetPreValue == this.models[params]){
-        return
+      if (this.blurByEnter) {
+        return;
+      } else {
+        // 失去焦点时判断两次的值是否相同，相同则不再做验证
+        if (this.models[params] && this.widgetPreValue == this.models[params]) {
+          return;
+        }
+        // if (this.preIndex != this.outMark) {
+        //   this.allValidate(this.preIndex);
+        //   this.outMark = this.preIndex;
+        //   return;
+        // }
+        if (this.outMark <= this.canFocusLength) {
+          this.allValidate(this.outMark);
+          this.handelAssignment(this.outMark);
+        }
       }
-      // if (this.preIndex != this.outMark) {
-      //   this.allValidate(this.preIndex);
-      //   this.outMark = this.preIndex;
-      //   return;
-      // }
-      if (this.outMark <= this.canFocusLength) {
-        this.allValidate(this.outMark);
-        this.handelAssignment(this.outMark);
-      }
-      this.widgetPreValue = ""
+      this.widgetPreValue = "";
     },
     // 日期组件失去焦点
     dateFlow() {
@@ -430,9 +435,8 @@ let handlers = {
     },
     // 综合校验
     allValidate(target) {
-      
       for (let i = 0; i <= target; i++) {
-        console.log("targettargettargettargettarget              "+target)
+        console.log("targettargettargettargettarget              " + target);
         if (
           this.comArr[i].options.disabled ||
           this.comArr[i].options.hidden ||
@@ -500,9 +504,16 @@ let handlers = {
       });
     },
     // 回车事件
-    onElChange() {
+    onElChange(params) {
       if (this.outMark < this.canFocusLength) {
-        this.setBlur(this.allItems[this.outMark]);
+        if (params == "select") {
+          this.blurByEnter = true;
+          this.allValidate(this.outMark);
+          this.handelAssignment(this.outMark);
+        } else {
+          this.blurByEnter = false;
+          this.setBlur(this.allItems[this.outMark]);
+        }
         this.handelFlow();
       } else if (this.outMark == this.canFocusLength) {
         this.allValidate(this.outMark);

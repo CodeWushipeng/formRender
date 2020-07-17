@@ -723,7 +723,6 @@ export default {
       /*imagesrc: "",*/
       radioVisible: false,
       cameraVisible: false,
-      selectStatu: false,
       cameraList: [],
       cameraimage: "",
       amountvisible: false, // 控制金额放大镜的显隐
@@ -1120,7 +1119,7 @@ export default {
     },
 
     //table
-    async handleRemoteFn(fn) {
+    handleRemoteFn(fn) {
       var _this = this;
       try {
         fn(this, request, function(tableCf) {

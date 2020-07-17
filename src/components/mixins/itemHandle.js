@@ -2,6 +2,7 @@ let itemHandle = {
   data() {
     return {
       checkIndex: 0,
+      selectStatu: false,
     };
   },
   methods: {
@@ -22,12 +23,10 @@ let itemHandle = {
     },
     // 组件失去焦点事件
     comBlur(e) {
-      console.log("失去焦点");
       this.$emit("el-blur", this.widget.model);
     },
     // element change事件，回车和失去焦点时触发
     change(e) {
-      console.log(this.widget);
       // 出发change事件时发射 el-change事件，generateform组件监听该事件
       this.$emit("el-change", this.widget);
     },
@@ -37,12 +36,16 @@ let itemHandle = {
     },
     // select组件回车抬起事件
     selectChange() {
-      if (this.selectStatu) {
+      if(this.widget.options.filterable){
         this.$refs[this.widget.model].blur();
-      } else {
-        this.$emit("el-change", this);
+        this.$emit("el-change", this.widget.type);
+      }else{
+        if (this.selectStatu) {
+          this.$refs[this.widget.model].blur(); 
+        } else {
+          this.$emit("el-change", this.widget.type);
+        }
       }
-      // this.$emit("el-change", this);
     },
     // select组件空格事件
     showOptions() {
