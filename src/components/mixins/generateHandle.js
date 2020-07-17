@@ -33,6 +33,9 @@ let handlers = {
         "singletext",
         "select",
         "idencard",
+        "readcard",
+        "camera",
+        "buttonCom"
       ],
     };
   },
@@ -481,7 +484,7 @@ let handlers = {
     setFocus(ele) {
       let focusEle = ele.querySelector("input")
         ? ele.querySelector("input")
-        : ele.querySelector("textarea");
+        : ele.querySelector("textarea")? ele.querySelector("textarea") :ele.querySelector(".el-form-item__content>button");
       let type = focusEle.getAttribute("type");
       console.log("当前聚焦元素", focusEle);
       this.$nextTick(() => {
@@ -496,7 +499,7 @@ let handlers = {
     setBlur(ele) {
       let blurEle = ele.querySelector("input")
         ? ele.querySelector("input")
-        : ele.querySelector("textarea");
+        : ele.querySelector("textarea")? ele.querySelector("textarea") :ele.querySelector(".el-form-item__content>button");
       console.log("当前失焦元素", blurEle);
       this.$nextTick(() => {
         blurEle.blur();
