@@ -200,7 +200,6 @@ export default {
             }
           }
         } else if (formLists[i].type == "grid") {
-          debugger
           formLists[i].columns.forEach((element) => {
             element.list.forEach((item) => {
               if (

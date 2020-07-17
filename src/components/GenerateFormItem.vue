@@ -319,6 +319,7 @@
         @keyup.native.enter="change"
         @keyup.native.up="checkUp"
         @keyup.native.down="checkDown"
+        @change="valueChange"
         :class="widget.model"
       >
         <el-checkbox
@@ -461,9 +462,12 @@
         :style="{ width: widget.options.width }"
         :filterable="widget.options.filterable"
         style="width: 80%"
+        @visible-change="optionStatu"
+        @change="(val) => handleWeekChange(val)"
         @focus="comFocus($event)"
+        @keyup.native.enter="selectChange"
+        @keyup.native.space="showOptions"
         @blur="comBlur($event)"
-        @keyup.native.enter="change"
       >
         <el-option
           v-for="item in cameraList"
@@ -516,6 +520,9 @@
         :size="widget.options.size"
         :style="{ width: widget.options.width }"
         :disabled="widget.options.disabled"
+        @keyup.native.enter="change"
+        @focus="comFocus($event)"
+        @blur="comBlur($event)"
       >
         <el-button
           :icon="widget.options.buttonicon"
