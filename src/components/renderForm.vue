@@ -19,7 +19,7 @@
 import { Loading } from "element-ui";
 import fmGenerateForm from "./GenerateForm";
 import { getFormList } from "../api/forms";
-import handler from "../components/render";
+import handler from "./mixins/renderHandle";
 import { RES_OK } from "@/api/config";
 export default {
   name: "render-form",

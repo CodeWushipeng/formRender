@@ -745,8 +745,6 @@ export default {
         if (this.nowEle.responseData != "") {
           this.code = this.nowEle.responseData;
         }
-      }else if(this.extendFunc == "扩展函数"){
-          this.code= this.widgetForm.extendDetail
       } else if (this.modify == "调用函数") {
         if (this.nowEle.options.buttonfun != "") {
           this.code = this.nowEle.options.buttonfun;
@@ -757,6 +755,7 @@ export default {
     // 扩展函数编辑器
     handleEdit(e){
       this.extendFunc = e.target.innerText
+      this.code= this.widgetForm.extendDetail
       this.mirrorVisible = true;
     },
     // 关闭mirror

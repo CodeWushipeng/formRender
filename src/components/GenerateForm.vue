@@ -16,7 +16,7 @@
       :label-position="data.config.labelPosition"
       :label-width="data.config.labelWidth + 'px'"
     >
-      <template v-for="(item, index) in data.list">
+      <template v-for="item in data.list">
         <template v-if="item.type == 'grid'">
           <el-row
             :key="item.key"
@@ -30,7 +30,7 @@
               :key="colIndex"
               :span="col.span"
             >
-              <template v-for="(citem, index) in col.list">
+              <template v-for="citem in col.list">
                 <el-form-item
                   v-if="citem.type == 'blank'"
                   :label="citem.name"
@@ -49,7 +49,6 @@
                   @input-change="onInputChange"
                   @el-change="onElChange"
                   @radio-change="radioChange"
-                  :nowindex="index"
                   @el-focus="mouseValidate"
                   @el-blur="blurValidate"
                   @date-blur="dateFlow"
@@ -75,7 +74,6 @@
             @input-change="onInputChange"
             @el-change="onElChange"
             @radio-change="radioChange"
-            :nowindex="index"
             @el-focus="mouseValidate"
             @el-blur="blurValidate"
             @date-blur="dateFlow"
@@ -111,7 +109,7 @@ import GenetateFormItem from "./GenerateFormItem";
 // import { loadJs } from "../util/index.js";
 // import request from "../util/request.js";
 import { IdentityCodeValid } from "../util/idencardUtil";
-import handler from "./handler3";
+import handler from "./mixins/generateHandle.js";
 
 export default {
   name: "fm-generate-form",
