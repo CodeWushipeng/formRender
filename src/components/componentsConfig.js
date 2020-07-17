@@ -13,9 +13,18 @@ export const basicComponents = [
       disabled: false,
       tips:""
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数"
+    +"\treturn true\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
     conditionError:"",
     valueRange: '',
     assignment:"",

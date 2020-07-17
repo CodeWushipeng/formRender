@@ -160,7 +160,7 @@
           <el-header class="btn-bar" style="height: 45px;">
             <slot name="action"> </slot>
             <el-button
-              v-if="formConfig"
+              v-if="extend"
               type="text"
               size="medium"
               icon="el-icon-edit-outline"
@@ -484,6 +484,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    extend:{
+      type: Boolean,
+      default: true,
+    },
     formConfig: {
       type: Boolean,
       default: false,
@@ -564,7 +568,6 @@ export default {
     return {
       code: "",
       extendFunc:"",
-      extendDetail:"",
       cmOptions: {
         tabSize: 4,
         mode: "javascript",
@@ -596,6 +599,8 @@ export default {
           labelPosition: "right",
           size: "small",
         },
+        extendDetail:"function main ()"+"{\n"
+          +"}",
       },
       configTab: "widget",
       widgetFormSelect: null,
@@ -739,6 +744,8 @@ export default {
         if (this.nowEle.responseData != "") {
           this.code = this.nowEle.responseData;
         }
+      }else if(this.extendFunc == "扩展函数"){
+          this.code= this.widgetForm.extendDetail
       }
       this.mirrorVisible = true;
     },
@@ -782,8 +789,8 @@ export default {
       } else if (this.modify == "请输入出口数据") {
         this.nowEle.responseData = this.code;
       } else if(this.extendFunc == "扩展函数"){
-        this.extendDetail = this.code
-        console.log(this.extendDetail)
+        this.widgetForm.extendDetail = this.code
+        console.log(this.widgetForm)
       }
       this.mirrorVisible = false;
       this.extendFunc = ""

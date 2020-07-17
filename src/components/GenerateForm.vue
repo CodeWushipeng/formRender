@@ -101,11 +101,7 @@
         ></el-table-column>
         <el-table-column property="address" label="地址"></el-table-column>
       </el-table> -->
-      <fm-generate-table
-      :data="gridData"
-      ref="grid"
-    >
-    </fm-generate-table>
+      <fm-generate-table :data="gridData" ref="grid"> </fm-generate-table>
     </el-dialog>
   </div>
 </template>
@@ -137,11 +133,10 @@ export default {
   },
   data() {
     return {
-      gridData:[],
+      gridData: [],
+      result: {},
       models: {}, // form表单对象所有组件key value组成的json
       rules: {}, // form表单对象所有组件对应校验规则
-      haveHide: false, // 后期添加非form making自有属性，是否触发过节点隐藏
-      remoteType: false, //添加用于标记远程校验状态  （因为promise返回值是promise所以添加）
     };
   },
   created() {
@@ -232,25 +227,23 @@ export default {
           if (dataType == "againpassword") {
             var validatePass = (rule, value, callback) => {
               // console.log('this.models',JSON.stringify(_this.models));
-              setTimeout(() => {
-                if (confirm_field) {
-                  if (this.models[confirm_field]) {
-                    if (value === "") {
-                      callback(new Error("请输入确认密码"));
-                    } else if (this.models[confirm_field] !== value) {
-                      callback(new Error("两次输入密码不一致!"));
-                    } else {
-                      callback();
-                    }
-                  } else if (!this.models[confirm_field] && !value) {
-                    callback();
-                  } else if (!this.models[confirm_field] && value) {
+              if (confirm_field) {
+                if (this.models[confirm_field]) {
+                  if (value === "") {
+                    callback(new Error("请输入确认密码"));
+                  } else if (this.models[confirm_field] !== value) {
                     callback(new Error("两次输入密码不一致!"));
+                  } else {
+                    callback();
                   }
-                } else {
-                  callback(new Error("请在属性中设置确认字段"));
+                } else if (!this.models[confirm_field] && !value) {
+                  callback();
+                } else if (!this.models[confirm_field] && value) {
+                  callback(new Error("两次输入密码不一致!"));
                 }
-              }, 200);
+              } else {
+                callback(new Error("请在属性中设置确认字段"));
+              }
             };
             this.rules[genList[i].model].push({
               validator: validatePass,
@@ -260,9 +253,7 @@ export default {
 
           if (dataType == "text") {
             var validatePass = (rule, value, callback) => {
-              setTimeout(() => {
-                callback();
-              }, 200);
+              callback();
             };
             this.rules[genList[i].model].push({
               validator: validatePass,
@@ -272,34 +263,30 @@ export default {
           //整数和数字类型     整数位、小数位位数
           if (dataType == "integer" || dataType == "float") {
             var validatePass = (rule, value, callback) => {
-              setTimeout(() => {
-                if (value) {
-                  if ((value + "").indexOf(".") > -1) {
-                    const temp = (value + "").split(".");
-                    if (
-                      (temp[0] + "").length > genList[i].options.integerbits
-                    ) {
-                      callback(new Error("超过整数位位数"));
-                    }
-                    if (
-                      genList[i].options.decimalbits &&
-                      (temp[1] + "").length > genList[i].options.decimalbits
-                    ) {
-                      callback(new Error("超过小数位位数"));
-                    } else {
-                      callback();
-                    }
+              if (value) {
+                if ((value + "").indexOf(".") > -1) {
+                  const temp = (value + "").split(".");
+                  if ((temp[0] + "").length > genList[i].options.integerbits) {
+                    callback(new Error("超过整数位位数"));
+                  }
+                  if (
+                    genList[i].options.decimalbits &&
+                    (temp[1] + "").length > genList[i].options.decimalbits
+                  ) {
+                    callback(new Error("超过小数位位数"));
                   } else {
-                    if ((value + "").length > genList[i].options.integerbits) {
-                      callback(new Error("超过整数位位数"));
-                    } else {
-                      callback();
-                    }
+                    callback();
                   }
                 } else {
-                  callback(new Error("不能为空"));
+                  if ((value + "").length > genList[i].options.integerbits) {
+                    callback(new Error("超过整数位位数"));
+                  } else {
+                    callback();
+                  }
                 }
-              }, 200);
+              } else {
+                callback(new Error("不能为空"));
+              }
             };
             this.rules[genList[i].model].push({
               validator: validatePass,
@@ -309,13 +296,11 @@ export default {
           //身份证校验
           if (genList[i].type == "idencard") {
             var validatePass = (rule, value, callback) => {
-              setTimeout(() => {
-                if (value && IdentityCodeValid(value)) {
-                  callback();
-                } else {
-                  callback(new Error("身份证验证错误"));
-                }
-              }, 200);
+              if (value && IdentityCodeValid(value)) {
+                callback();
+              } else {
+                callback(new Error("身份证验证错误"));
+              }
             };
             this.rules[genList[i].model].push({
               validator: validatePass,
@@ -334,12 +319,19 @@ export default {
           this.$refs.generateForm.validate((valid) => {
             if (valid) {
               // 逐条验证当前表单的校验规则
-              resolve(this.models);
+              this.trimModels(this.models);
+              resolve(this.result);
             } else {
               reject(new Error(this.$t("fm.message.validError")).message);
             }
           });
         });
+      });
+    },
+    // models值去除收尾空格
+    trimModels(temp) {
+      Object.keys(temp).forEach((item) => {
+        this.result[item] = temp[item].trim();
       });
     },
     clearValidate() {
