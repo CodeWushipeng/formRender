@@ -181,10 +181,8 @@ let handlers = {
     },
     // 组件单独校验
     singleValidate(i) {
-      return new Promise((resolve) => {
         let lists = this.comArr;
         this.$refs["generateForm"].validateField(lists[i].model, (valid) => {
-          console.log("组件单独校验", valid, lists[i].model);
           if (valid) {
             this.setFocus(this.allItems[i]);
             this.singleError = true;
@@ -192,12 +190,9 @@ let handlers = {
             this.singleError = false;
           }
         });
-        resolve();
-      });
     },
     // 取值范围校验
     handelRange(i) {
-      this.$nextTick(() => {
         if (this.singleError) {
           return;
         }
@@ -249,11 +244,9 @@ let handlers = {
           this.handelValidate("success", "", i);
           this.rangeError = false;
         }
-      });
     },
     // 离开条件检测
     handelCondition(i) {
-      this.$nextTick(() => {
         if (this.singleError || this.rangeError) {
           return;
         }
@@ -272,11 +265,9 @@ let handlers = {
           this.handelValidate("success", "", i);
           this.conditionError = false;
         }
-      });
     },
     // 字段交易
     remoteValidate(i) {
-      this.$nextTick(() => {
         if (this.singleError || this.rangeError || this.conditionError) {
           return;
         }
@@ -333,7 +324,6 @@ let handlers = {
           this.handelValidate("success", "", i);
           this.remoteError = false;
         }
-      });
     },
     // 表格查询
     searchTable(data) {
@@ -438,6 +428,7 @@ let handlers = {
     },
     // 综合校验
     allValidate(target) {
+      console.log(target)
       for (let i = 0; i <= target; i++) {
         if (
           this.comArr[i].options.disabled ||
@@ -446,21 +437,24 @@ let handlers = {
         ) {
           continue;
         }
-        this.singleValidate(i).then(() => {
-          this.handelRange(i);
-          this.handelCondition(i);
-          this.remoteValidate(i);
-        });
-        if (
-          this.singleError ||
-          this.rangeError ||
-          this.conditionError ||
-          this.remoteError
-        ) {
-          this.outMark = i;
-          break;
-        }
+        this.singleValidate(i)
+        this.handelRange(i);
+        this.handelCondition(i);
+        this.remoteValidate(i);
+        console.log('执行一次校验后',this.singleError,
+          this.rangeError,
+          this.conditionError,
+          this.remoteError)
+          if (
+            this.singleError ||
+            this.rangeError ||
+            this.conditionError ||
+            this.remoteError
+          ) {
+            this.outMark = i;
+          }
       }
+      console.log("执行一次校验后outmark值",this.outMark)
     },
     // 循环过去的节点
     iteratorUnfocus() {
