@@ -92,7 +92,6 @@ service.interceptors.response.use(
       }, 300)
       const res = response.data
       if (process.env.NODE_ENV === 'development') {
-        // if(header.rspCode == RES_OK || header.rspCode == ERR_OK) {
         if (typeof res == 'object') {
           if (res && res.header && res.body) {
             const {header, body} = res;
