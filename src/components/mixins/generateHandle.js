@@ -301,7 +301,7 @@ let handlers = {
             })
             .then((res) => {
               console.log(res);
-              if (res.header.rspCode == RES_OK) {
+              if (res.rspCode == RES_OK) {
                 let tempFunc = eval("(" + success + ")");
                 tempFunc(this.models, res);
                 this.handelValidate("success", "", i);
