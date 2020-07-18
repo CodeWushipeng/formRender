@@ -45,7 +45,7 @@ module.exports = {
       },
       "/dev-api": {
         // target: "http://192.168.5.142:21000",
-        target: 'http://localhost:8081',
+         target: 'http://localhost:8081',
         pathRewrite: { "^/dev-api": "" },
         changeOrigin: true,
       },
