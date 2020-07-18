@@ -1,4 +1,5 @@
 import request from "../../util/request";
+import {getDic} from '@/api/forms'
 import { RES_OK } from "@/api/config";
 let itemHandle = {
   data() {
@@ -73,8 +74,8 @@ let itemHandle = {
             reqData
           );
           console.log(reqData, postData);
-          request
-            .post("/dev-api" + this.widget.cascaderUrl, {
+          
+          getDic(this.widget.cascaderUrl, {
               body: postData,
               header: {
                 pageIndex: 1,

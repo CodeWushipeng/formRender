@@ -1,5 +1,6 @@
 import request from "../../util/request";
 import { RES_OK } from "@/api/config";
+import {getTrade} from '@/api/forms'
 let handlers = {
   props: {},
   data() {
@@ -277,7 +278,7 @@ let handlers = {
           if (!flag) {
             return;
           }
-          let url = "/dev-api" + lists[i].url;
+          let url = lists[i].url;
           let primitiveData = this.evalWrap(lists[i].data);
           let nowModel = lists[i].model;
           let nowData = this.models[nowModel];
@@ -288,8 +289,7 @@ let handlers = {
             postData = nowData;
           }
           let success = lists[i].success;
-          request
-            .post(url, {
+            getTrade(url, {
               body: postData,
               header: {
                 pageIndex: 1,
