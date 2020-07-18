@@ -31,34 +31,31 @@ service.interceptors.request.use(
       if (!config.hideLoging) {
         loading.open();
       }
-      let {pageIndex, pageSize, header, ...data} = config.data;
+      let { pageIndex, pageSize, header, ...data } = config.data;
       config.data = {
-        "body": data.body ? data.body : data,
+        body: data.body ? data.body : data,
         "header": {
-          "pageIndex": pageIndex || 0,
-          "pageSize": pageSize || 999,
-          "gloSeqNo": new Date().getTime().toString(),
-          "reqSeqNo": new Date().getTime().toString(),
-          "reqTime": new Date().getTime().toString(),
+          pageIndex: pageIndex || 0,
+          pageSize: pageSize || 999,
+          gloSeqNo: new Date().getTime(),
+          reqSeqNo: new Date().getTime().toString(),
+          reqTime: new Date().getTime().toString(),
 
           // "antiWeightSeqNo": "qui",
           // "gloSeqNo": "anim dolor deserunt",
           // "pageIndex": 1,
           // "pageSize": 999,
-          "projectId": "quis consectetur",
           // "reqSeqNo": "Duis et Ut tempor qui",
           // "reqTime": "Excepteur exercitation ut quis dolor",
-          "serviceGroupid": "mollit sed",
-          "serviceId": "officia non",
-          "serviceName": "1",
-          "subProjectId": "occaecat tempor dolor enim ex",
-          "userInfo": {
-            "role": [
-              "ea fugiat incididunt"
-            ],
-            "username": "dolore deserunt do"
+          projectId: "quis consectetur",
+          serviceGroupid: "mollit sed",
+          serviceId: "officia non",
+          serviceName: "1",
+          subProjectId: "occaecat tempor dolor enim ex",
+          userInfo: {
+            role: ["ea fugiat incididunt"],
+            username: "dolore deserunt do"
           },
-
 
           ...header
         }

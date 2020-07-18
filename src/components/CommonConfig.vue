@@ -267,10 +267,20 @@ export default {
             });
             return;
           }
-          this.gridData = res.dics.records;
-          let tempArr = res.dics.records;
-          this.total = res.dics.total;
-          this.pageSize = res.dics.size;
+
+          let tempArr = null;
+          if (res.header.rspCode == RES_OK && res.body) {
+            this.gridData = res.body.dics.records;
+            tempArr =       res.body.dics.records;
+            this.total =    res.body.dics.total;
+            this.pageSize = res.body.dics.size;
+          }else{
+            this.gridData = res.dics.records;
+            tempArr = res.dics.records;
+            this.total = res.dics.total;
+            this.pageSize = res.dics.size;
+          }
+
           let resultArr = [];
           tempArr.forEach((item) => {
             let tempJson = {
