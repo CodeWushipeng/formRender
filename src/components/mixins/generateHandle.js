@@ -305,8 +305,8 @@ let handlers = {
                 let tempFunc = eval("(" + success + ")");
                 tempFunc(this.models, res);
                 this.handelValidate("success", "", i);
-                this.searchTable(res.body);
-                this.trade = true;
+                // this.searchTable(res.body);
+                // this.trade = true;
                 this.remoteError = false;
               } else {
                 this.setFocus(this.allItems[i]);
