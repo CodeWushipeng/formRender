@@ -1,6 +1,7 @@
 import request from "../../util/request";
 import { RES_OK } from "@/api/config";
-import {getTrade,getTableList} from '@/api/forms'
+import { getTrade } from "@/api/forms";
+import { getTableList } from "@/api/tables";
 let handlers = {
   props: {},
   data() {
@@ -11,7 +12,7 @@ let handlers = {
       outMark: 0, //外层循环标记
       allItems: [],
       unfocus: [],
-      blurByEnter: false, // 标记select组件失去焦点事件是否是通过回车触发的
+      blurByEnter: false, // 标记组件失去焦点事件是否是通过回车触发的
       canFocusLength: 0,
       preIndex: 0, //上次聚焦元素序号
       singleError: false,
@@ -36,7 +37,7 @@ let handlers = {
         "idencard",
         "readcard",
         "camera",
-        "buttonCom"
+        "buttonCom",
       ],
     };
   },
@@ -73,11 +74,6 @@ let handlers = {
         if (this.models[params] && this.widgetPreValue == this.models[params]) {
           return;
         }
-        // if (this.preIndex != this.outMark) {
-        //   this.allValidate(this.preIndex);
-        //   this.outMark = this.preIndex;
-        //   return;
-        // }
         if (this.outMark <= this.canFocusLength) {
           this.allValidate(this.outMark);
           this.handelAssignment(this.outMark);
@@ -182,152 +178,152 @@ let handlers = {
     },
     // 组件单独校验
     singleValidate(i) {
-        let lists = this.comArr;
-        this.$refs["generateForm"].validateField(lists[i].model, (valid) => {
-          if (valid) {
-            this.setFocus(this.allItems[i]);
-            this.singleError = true;
-          } else {
-            this.singleError = false;
-          }
-        });
+      let lists = this.comArr;
+      this.$refs["generateForm"].validateField(lists[i].model, (valid) => {
+        if (valid) {
+          this.setFocus(this.allItems[i]);
+          this.singleError = true;
+        } else {
+          this.singleError = false;
+        }
+      });
     },
     // 取值范围校验
     handelRange(i) {
-        if (this.singleError) {
-          return;
+      if (this.singleError) {
+        return;
+      }
+      let lists = this.comArr;
+      if (lists[i].valueRange != "" && lists[i].valueRange != undefined) {
+        let range = lists[i].valueRange;
+        let nowValue = this.models[lists[i].model];
+        let result, resultType;
+        try {
+          result = this.evalWrap(range);
+          resultType = Object.prototype.toString.call(result);
+        } catch (error) {
+          this.handelValidate("error", "语法错误", i);
+          throw new Error(error, "取值范围条件解析出错");
         }
-        let lists = this.comArr;
-        if (lists[i].valueRange != "" && lists[i].valueRange != undefined) {
-          let range = lists[i].valueRange;
-          let nowValue = this.models[lists[i].model];
-          let result, resultType;
-          try {
-            result = this.evalWrap(range);
-            resultType = Object.prototype.toString.call(result);
-          } catch (error) {
-            this.handelValidate("error", "语法错误", i);
-            throw new Error(error, "取值范围条件解析出错");
+        if (resultType == "[object Array]") {
+          if (result.indexOf(nowValue) == -1) {
+            this.handelValidate("error", `取值范围${lists[i].valueRange}`, i);
+            this.setFocus(this.allItems[i]);
+            this.rangeError = true;
+          } else {
+            this.handelValidate("success", "", i);
+            this.rangeError = false;
           }
-          if (resultType == "[object Array]") {
-            if (result.indexOf(nowValue) == -1) {
-              this.handelValidate("error", `取值范围${lists[i].valueRange}`, i);
-              this.setFocus(this.allItems[i]);
-              this.rangeError = true;
-            } else {
-              this.handelValidate("success", "", i);
-              this.rangeError = false;
-            }
-          } else if (resultType == "[object RegExp]") {
-            if (result.test(nowValue)) {
-              this.handelValidate("success", "", i);
-              this.rangeError = false;
-            } else {
-              this.setFocus(this.allItems[i]);
-              this.handelValidate("error", `取值范围${lists[i].valueRange}`, i);
-              this.rangeError = true;
-            }
-          } else if (
-            resultType == "[object String]" ||
-            resultType == "[object Number]"
-          ) {
-            let resultReg = new RegExp("[" + range + "]");
-            if (resultReg.test(nowValue)) {
-              this.handelValidate("success", "", i);
-              this.rangeError = false;
-            } else {
-              this.setFocus(this.allItems[i]);
-              this.handelValidate("error", `取值范围${lists[i].valueRange}`, i);
-              this.rangeError = true;
-            }
+        } else if (resultType == "[object RegExp]") {
+          if (result.test(nowValue)) {
+            this.handelValidate("success", "", i);
+            this.rangeError = false;
+          } else {
+            this.setFocus(this.allItems[i]);
+            this.handelValidate("error", `取值范围${lists[i].valueRange}`, i);
+            this.rangeError = true;
           }
-        } else {
-          this.handelValidate("success", "", i);
-          this.rangeError = false;
+        } else if (
+          resultType == "[object String]" ||
+          resultType == "[object Number]"
+        ) {
+          let resultReg = new RegExp("[" + range + "]");
+          if (resultReg.test(nowValue)) {
+            this.handelValidate("success", "", i);
+            this.rangeError = false;
+          } else {
+            this.setFocus(this.allItems[i]);
+            this.handelValidate("error", `取值范围${lists[i].valueRange}`, i);
+            this.rangeError = true;
+          }
         }
+      } else {
+        this.handelValidate("success", "", i);
+        this.rangeError = false;
+      }
     },
     // 离开条件检测
     handelCondition(i) {
-        if (this.singleError || this.rangeError) {
-          return;
-        }
-        let lists = this.comArr;
-        if (lists[i].condition && lists[i].condition != "") {
-          let condition = this.evalWrap(lists[i].condition);
-          if (condition) {
-            this.handelValidate("success", "", i);
-            this.conditionError = false;
-          } else {
-            this.setFocus(this.allItems[i]);
-            this.handelValidate("error", lists[i].conditionError, i);
-            this.conditionError = true;
-          }
-        } else {
+      if (this.singleError || this.rangeError) {
+        return;
+      }
+      let lists = this.comArr;
+      if (lists[i].condition && lists[i].condition != "") {
+        let condition = this.evalWrap(lists[i].condition);
+        if (condition) {
           this.handelValidate("success", "", i);
           this.conditionError = false;
+        } else {
+          this.setFocus(this.allItems[i]);
+          this.handelValidate("error", lists[i].conditionError, i);
+          this.conditionError = true;
         }
+      } else {
+        this.handelValidate("success", "", i);
+        this.conditionError = false;
+      }
     },
     // 字段交易
     remoteValidate(i) {
-        if (this.singleError || this.rangeError || this.conditionError) {
+      if (this.singleError || this.rangeError || this.conditionError) {
+        return;
+      }
+      let lists = this.comArr;
+      if (lists[i].isRemote) {
+        let flag = this.evalWrap(lists[i].isRemote);
+        if (!flag) {
           return;
         }
-        let lists = this.comArr;
-        if (lists[i].isRemote) {
-          let flag = this.evalWrap(lists[i].isRemote);
-          if (!flag) {
-            return;
-          }
-          let url = lists[i].url;
-          let primitiveData = this.evalWrap(lists[i].data);
-          let nowModel = lists[i].model;
-          let nowData = this.models[nowModel];
-          let postData;
-          if (primitiveData != undefined && primitiveData != "") {
-            postData = primitiveData;
-          } else {
-            postData = nowData;
-          }
-          let success = lists[i].success;
-            getTrade(url, {
-              body: postData,
-              header: {
-                pageIndex: 1,
-                pageSize: 1,
-                gloSeqNo: new Date(),
-                reqSeqNo: "sit anim",
-                reqTime: "officia ad anim",
-              },
-            })
-            .then((res) => {
-              console.log(res);
-              if (res.rspCode == RES_OK) {
-                let tempFunc = eval("(" + success + ")");
-                tempFunc(this.models, res);
-                this.handelValidate("success", "", i);
-                this.searchTable(res.body);
-                this.trade = true;
-                this.remoteError = false;
-              } else {
-                this.setFocus(this.allItems[i]);
-                this.handelValidate("error", "验证失败，请重新验证", i);
-                this.remoteError = true;
-              }
-            })
-            .catch((error) => {
-              console.log(error);
+        let url = lists[i].url;
+        let primitiveData = this.evalWrap(lists[i].data);
+        let nowModel = lists[i].model;
+        let nowData = this.models[nowModel];
+        let postData;
+        if (primitiveData != undefined && primitiveData != "") {
+          postData = primitiveData;
+        } else {
+          postData = nowData;
+        }
+        let success = lists[i].success;
+        getTrade(url, {
+          body: postData,
+          header: {
+            pageIndex: 1,
+            pageSize: 1,
+            gloSeqNo: new Date(),
+            reqSeqNo: "sit anim",
+            reqTime: "officia ad anim",
+          },
+        })
+          .then((res) => {
+            console.log(res);
+            if (res.rspCode == RES_OK) {
+              let tempFunc = eval("(" + success + ")");
+              tempFunc(this.models, res);
+              this.handelValidate("success", "", i);
+              this.searchTable(res.body);
+              this.trade = true;
+              this.remoteError = false;
+            } else {
               this.setFocus(this.allItems[i]);
               this.handelValidate("error", "验证失败，请重新验证", i);
               this.remoteError = true;
-            });
-        } else {
-          this.handelValidate("success", "", i);
-          this.remoteError = false;
-        }
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            this.setFocus(this.allItems[i]);
+            this.handelValidate("error", "验证失败，请重新验证", i);
+            this.remoteError = true;
+          });
+      } else {
+        this.handelValidate("success", "", i);
+        this.remoteError = false;
+      }
     },
     // 表格查询
     searchTable(data) {
-      getTableList({
+      getTableList( {
           body: {
             listCode: data.tabCode,
           },
@@ -427,7 +423,7 @@ let handlers = {
     },
     // 综合校验
     allValidate(target) {
-      console.log(target)
+      console.log(target);
       for (let i = 0; i <= target; i++) {
         if (
           this.comArr[i].options.disabled ||
@@ -436,24 +432,27 @@ let handlers = {
         ) {
           continue;
         }
-        this.singleValidate(i)
+        this.singleValidate(i);
         this.handelRange(i);
         this.handelCondition(i);
         this.remoteValidate(i);
-        console.log('执行一次校验后',this.singleError,
+        console.log(
+          "执行一次校验后",
+          this.singleError,
           this.rangeError,
           this.conditionError,
-          this.remoteError)
-          if (
-            this.singleError ||
-            this.rangeError ||
-            this.conditionError ||
-            this.remoteError
-          ) {
-            this.outMark = i;
-          }
+          this.remoteError
+        );
+        if (
+          this.singleError ||
+          this.rangeError ||
+          this.conditionError ||
+          this.remoteError
+        ) {
+          this.outMark = i;
+        }
       }
-      console.log("执行一次校验后outmark值",this.outMark)
+      console.log("执行一次校验后outmark值", this.outMark);
     },
     // 循环过去的节点
     iteratorUnfocus() {
@@ -477,7 +476,9 @@ let handlers = {
     setFocus(ele) {
       let focusEle = ele.querySelector("input")
         ? ele.querySelector("input")
-        : ele.querySelector("textarea")? ele.querySelector("textarea") :ele.querySelector(".el-form-item__content>button");
+        : ele.querySelector("textarea")
+        ? ele.querySelector("textarea")
+        : ele.querySelector(".el-form-item__content>button");
       let type = focusEle.getAttribute("type");
       console.log("当前聚焦元素", focusEle);
       this.$nextTick(() => {
@@ -492,7 +493,9 @@ let handlers = {
     setBlur(ele) {
       let blurEle = ele.querySelector("input")
         ? ele.querySelector("input")
-        : ele.querySelector("textarea")? ele.querySelector("textarea") :ele.querySelector(".el-form-item__content>button");
+        : ele.querySelector("textarea")
+        ? ele.querySelector("textarea")
+        : ele.querySelector(".el-form-item__content>button");
       console.log("当前失焦元素", blurEle);
       this.$nextTick(() => {
         blurEle.blur();
@@ -500,19 +503,13 @@ let handlers = {
     },
     // 回车事件
     onElChange(params) {
+      this.blurByEnter = true;
       if (this.outMark < this.canFocusLength) {
-        if (params == "select") {
-          this.blurByEnter = true;
-          this.allValidate(this.outMark);
-          this.handelAssignment(this.outMark);
-        } else {
-          this.blurByEnter = false;
-          this.setBlur(this.allItems[this.outMark]);
-        }
+        this.blurValidate();
         this.handelFlow();
+        this.blurByEnter = false;
       } else if (this.outMark == this.canFocusLength) {
-        this.allValidate(this.outMark);
-        this.handelAssignment(this.outMark);
+        this.blurValidate();
         if (
           this.singleError ||
           this.rangeError ||
@@ -529,7 +526,7 @@ let handlers = {
     },
     // radio change事件
     radioChange(params) {
-      this.mouseValidate(params)
+      this.mouseValidate(params);
       this.allValidate(this.outMark);
       this.handelAssignment(this.outMark);
       this.handelHidden();
