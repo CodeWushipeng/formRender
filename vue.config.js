@@ -26,6 +26,12 @@ module.exports = {
   },
   devServer: {
     proxy: {
+      // 字段交易
+      "/dev-api/testProcess": {
+        target: "http://192.168.1.196:21000",
+        pathRewrite: { "^/dev-api": "" },
+        changeOrigin: true,
+      },
       "/dev-api/dictionary": {
         target: "http://192.168.1.194:21009",
         pathRewrite: { "^/dev-api": "" },
