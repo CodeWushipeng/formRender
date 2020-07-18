@@ -1,7 +1,5 @@
-import request from "../../util/request";
 import { RES_OK } from "@/api/config";
-import { getTrade } from "@/api/forms";
-import { getTableList } from "@/api/tables";
+import { getTrade,getTableList } from "@/api/forms";
 let handlers = {
   props: {},
   data() {
@@ -503,9 +501,10 @@ let handlers = {
     },
     // 回车事件
     onElChange(params) {
-      this.blurByEnter = true;
+      
       if (this.outMark < this.canFocusLength) {
         this.blurValidate();
+        this.blurByEnter = true;
         this.handelFlow();
         this.blurByEnter = false;
       } else if (this.outMark == this.canFocusLength) {

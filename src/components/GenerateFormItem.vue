@@ -1022,6 +1022,7 @@ export default {
         refsId.maxLength = 12;
         InputMoney(refsId);
       }
+      this.$emit("el-focus", this.widget.model);
     },
     keyupHandler(refId) {
       if (typeof refId == "string") {
@@ -1044,6 +1045,7 @@ export default {
     },
     blurHandler() {
       this.amountvisible = false;
+      this.$emit("el-blur", this.widget.model);
     },
     /*下拉框*/
     // select下拉框的change事件
