@@ -194,6 +194,7 @@
 import Draggable from "vuedraggable";
 import request from "../util/request";
 import {RES_OK} from "@/api/config";
+import {getDicTwo} from '@/api/forms'
 export default {
   components: {
     Draggable,
@@ -235,8 +236,7 @@ export default {
     getData(data) {
       this.dialogTableVisible = true;
       console.log(data);
-      request
-        .post("/dev-api/dictionary/quertDicByPage", {
+      getDicTwo({
           body: {
             dicName: this.data.remoteCode,
             selType: 2,
@@ -251,14 +251,14 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          if (res.header.rspCode == RES_OK) {
+          if (res.rspCode == RES_OK) {
             this.$notify({
               title: "Success",
               message: "查询成功",
               type: "success",
               duration: 2000,
             });
-          } else if (res.header.rspCode == "99999999") {
+          } else if (res.rspCode == "99999999") {
             this.$notify({
               title: "fail",
               message: "查询失败",
@@ -267,10 +267,10 @@ export default {
             });
             return;
           }
-          this.gridData = res.body.dics.records;
-          let tempArr = res.body.dics.records;
-          this.total = res.body.dics.total;
-          this.pageSize = res.body.dics.size;
+          this.gridData = res.dics.records;
+          let tempArr = res.dics.records;
+          this.total = res.dics.total;
+          this.pageSize = res.dics.size;
           let resultArr = [];
           tempArr.forEach((item) => {
             let tempJson = {
@@ -293,8 +293,7 @@ export default {
     },
     // 查询信息
     search() {
-      request
-        .post("/dev-api/dictionary/quertDicByPage", {
+      getDicTwo({
           body: {
             dicName: this.value,
             selType: 2,

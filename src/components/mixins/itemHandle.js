@@ -67,7 +67,13 @@ let itemHandle = {
         if (this.widget.isCascader) {
           let father = this.widget.fatherModel && this.widget.fatherModel;
           let fatherData = this.models[father];
-          let reqData = eval("(" + this.widget.requestData + ")")();
+          let reqData 
+          try {
+            reqData = eval("(" + this.widget.requestData + ")")();
+          } catch (error) {
+            throw new Error(error)
+          }
+          
           let postData = Object.assign(
             {},
             { itemParentCode: fatherData },
@@ -87,14 +93,14 @@ let itemHandle = {
             })
             .then((res) => {
               console.log(res);
-              if (res.header.rspCode == RES_OK) {
+              if (res.rspCode == RES_OK) {
                 this.$notify({
                   title: "Success",
                   message: "查询成功",
                   type: "success",
                   duration: 2000,
                 });
-              } else if (res.header.rspCode == FAIL_CODE) {
+              } else if (res.rspCode == FAIL_CODE) {
                 this.$notify({
                   title: "fail",
                   message: "查询失败",
@@ -103,7 +109,7 @@ let itemHandle = {
                 });
                 return;
               }
-              let tempArr = res.body.dics.records;
+              let tempArr = res.dics.records;
               let resultArr = [];
               tempArr.forEach((item) => {
                 let tempJson = {

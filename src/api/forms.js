@@ -8,11 +8,20 @@ export function getFormList(url,data) {
         data
     })
 }
-//查询字典服务
+//级联选择
 export function getDic(url,data) {
-    let _url = process.env.NODE_ENV === 'development' ? "/dev-api/"+url : url
+    let _url = process.env.NODE_ENV === 'development' ? "/dev-api"+url : url
     return request({
         url:_url,
+        method: 'post',
+        data
+    })
+}
+//查询字典服务
+export function getDicTwo(data) {
+    let url = process.env.NODE_ENV === 'development' ? "/dev-api" : ''
+    return request({
+        url:`${url}/dictionary/quertDicByPage`,
         method: 'post',
         data
     })
