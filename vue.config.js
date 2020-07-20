@@ -49,12 +49,6 @@ module.exports = {
         target: 'http://192.168.1.194:11004',
         pathRewrite: { '^/dev-api/tableDevelop': '' }
       },
-      "/dev-api": {
-        // target: "http://192.168.5.142:21000",
-         target: 'http://localhost:8081',
-        pathRewrite: { "^/dev-api": "" },
-        changeOrigin: true,
-      },
     },
     overlay: {
       warnings: false,

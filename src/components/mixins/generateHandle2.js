@@ -268,6 +268,7 @@ let handlers = {
         if (!flag) {
           return;
         }
+        // let url = lists[i].url;
         let url = lists[i].url;
         let primitiveData = this.evalWrap(lists[i].data);
         let nowModel = lists[i].model;
@@ -280,7 +281,10 @@ let handlers = {
         }
         let success = lists[i].success;
         getTrade(url, {
-          body: postData,
+          body: {
+            dicName: "cityList",
+            selType: 2,
+          },
           header: {
             pageIndex: 1,
             pageSize: 1,
@@ -295,7 +299,7 @@ let handlers = {
               let tempFunc = eval("(" + success + ")");
               tempFunc(this.models, res);
               this.handelValidate("success", "", i);
-              this.searchTable(res.body);
+              // this.searchTable(res.body);
               this.trade = true;
               this.remoteError = false;
               if(this.outMark == i){
@@ -320,7 +324,7 @@ let handlers = {
         this.handelValidate("success", "", i);
         this.remoteError = false;
         if(this.outMark == i){
-          this.handelAssignment()
+          this.handelAssignment(i)
           this.handelFlow()
         }
         
@@ -488,7 +492,6 @@ let handlers = {
     },
     // 回车事件
     onElChange(params) {
-      
       if(this.preIndex && this.widgetPreValue[params] == this.models[params]){
         return
       }
@@ -590,6 +593,48 @@ let handlers = {
       })
       
     },
+    // 上下键操作光标
+    handelCursorByArrow(){
+      this.$nextTick(()=>{
+        document.addEventListener("keyup", (e) => {
+            if (e.keyCode === 38) {
+              for (let i = this.outMark-1; i >=0; i--) {
+                if (
+                  this.comArr[i].options.disabled ||
+                  this.comArr[i].options.hidden ||
+                  this.comArr[i].options.readonly == "readonly"
+                ) {
+                  continue;
+                } else {
+                  if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
+                    this.setFocus(this.allItems[i]);
+                    console.log("获取节点", this.outMark, i, this.allItems[i]);
+                    this.outMark = i;
+                    break;
+                  }
+                }
+              }
+            }else if (e.keyCode === 40) {
+              for (let i = this.outMark+1; i < this.comArr.length; i++) {
+                if (
+                  this.comArr[i].options.disabled ||
+                  this.comArr[i].options.hidden ||
+                  this.comArr[i].options.readonly == "readonly"
+                ) {
+                  continue;
+                } else {
+                  if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
+                    this.setFocus(this.allItems[i]);
+                    console.log("获取节点", this.outMark, i, this.allItems[i]);
+                    this.outMark = i;
+                    break;
+                  }
+                }
+              }
+            }
+        });
+      })
+    },
   },
   mounted() {
     let inter = setInterval(() => {
@@ -604,6 +649,7 @@ let handlers = {
         this.iteratorAllEle();
         this.resetCursor();
         this.copyMOdels()
+        this.handelCursorByArrow()
       }
     }, 300);
   },
