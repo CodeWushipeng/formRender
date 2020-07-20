@@ -31,34 +31,31 @@ service.interceptors.request.use(
       if (!config.hideLoging) {
         loading.open();
       }
-      let {pageIndex, pageSize, header, ...data} = config.data;
+      let { pageIndex, pageSize, header, ...data } = config.data;
       config.data = {
-        "body": data.body ? data.body : data,
+        body: data.body ? data.body : data,
         "header": {
-          "pageIndex": pageIndex || 0,
-          "pageSize": pageSize || 999,
-          "gloSeqNo": new Date().getTime().toString(),
-          "reqSeqNo": new Date().getTime().toString(),
-          "reqTime": new Date().getTime().toString(),
+          pageIndex: pageIndex || 0,
+          pageSize: pageSize || 999,
+          gloSeqNo: new Date().getTime(),
+          reqSeqNo: new Date().getTime().toString(),
+          reqTime: new Date().getTime().toString(),
 
           // "antiWeightSeqNo": "qui",
           // "gloSeqNo": "anim dolor deserunt",
           // "pageIndex": 1,
           // "pageSize": 999,
-          "projectId": "quis consectetur",
           // "reqSeqNo": "Duis et Ut tempor qui",
           // "reqTime": "Excepteur exercitation ut quis dolor",
-          "serviceGroupid": "mollit sed",
-          "serviceId": "officia non",
-          "serviceName": "1",
-          "subProjectId": "occaecat tempor dolor enim ex",
-          "userInfo": {
-            "role": [
-              "ea fugiat incididunt"
-            ],
-            "username": "dolore deserunt do"
+          projectId: "quis consectetur",
+          serviceGroupid: "mollit sed",
+          serviceId: "officia non",
+          serviceName: "1",
+          subProjectId: "occaecat tempor dolor enim ex",
+          userInfo: {
+            role: ["ea fugiat incididunt"],
+            username: "dolore deserunt do"
           },
-
 
           ...header
         }
@@ -95,7 +92,6 @@ service.interceptors.response.use(
       }, 300)
       const res = response.data
       if (process.env.NODE_ENV === 'development') {
-        // if(header.rspCode == RES_OK || header.rspCode == ERR_OK) {
         if (typeof res == 'object') {
           if (res && res.header && res.body) {
             const {header, body} = res;

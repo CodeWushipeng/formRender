@@ -193,7 +193,7 @@
 <script>
 import Draggable from "vuedraggable";
 import request from "../util/request";
-import {RES_OK} from "@/api/config";
+import {RES_OK,FAIL_CODE} from "@/api/config";
 import {getDicTwo} from '@/api/forms'
 export default {
   components: {
@@ -251,14 +251,14 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          if (res.rspCode == RES_OK) {
+          if (res.rspCode == RES_OK || (res.header && res.header.rspCode == RES_OK)) {
             this.$notify({
               title: "Success",
               message: "查询成功",
               type: "success",
               duration: 2000,
             });
-          } else if (res.rspCode == "99999999") {
+          } else if (res.rspCode == FAIL_CODE || (res.header && res.header.rspCode == FAIL_CODE)) {
             this.$notify({
               title: "fail",
               message: "查询失败",
@@ -267,10 +267,20 @@ export default {
             });
             return;
           }
-          this.gridData = res.dics.records;
-          let tempArr = res.dics.records;
-          this.total = res.dics.total;
-          this.pageSize = res.dics.size;
+
+          let tempArr = null;
+          if (res.header && res.header.rspCode == RES_OK && res.body) {
+            this.gridData = res.body.dics.records;
+            tempArr =       res.body.dics.records;
+            this.total =    res.body.dics.total;
+            this.pageSize = res.body.dics.size;
+          }else{
+            this.gridData = res.dics.records;
+            tempArr = res.dics.records;
+            this.total = res.dics.total;
+            this.pageSize = res.dics.size;
+          }
+
           let resultArr = [];
           tempArr.forEach((item) => {
             let tempJson = {
@@ -310,14 +320,14 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          if (res.header.rspCode == RES_OK) {
+          if (res.rspCode == RES_OK || (res.header && res.header.rspCode == RES_OK)) {
             this.$notify({
               title: "Success",
               message: "查询成功",
               type: "success",
               duration: 2000,
             });
-          } else if (res.header.rspCode == "99999999") {
+          } else if (res.rspCode == FAIL_CODE || (res.header && res.header.rspCode == FAIL_CODE)) {
             this.$notify({
               title: "fail",
               message: "查询失败",
@@ -326,8 +336,16 @@ export default {
             });
             return;
           }
-          this.gridData = res.body.dics.records;
-          let tempArr = res.body.dics.records;
+
+          let tempArr = null;
+          if (res.header && res.header.rspCode == RES_OK && res.body) {
+            this.gridData = res.body.dics.records;
+            tempArr =       res.body.dics.records;
+          }else{
+            this.gridData = res.dics.records;
+            tempArr =       res.dics.records;
+          }
+
           let resultArr = [];
           tempArr.forEach((item) => {
             let tempJson = {
