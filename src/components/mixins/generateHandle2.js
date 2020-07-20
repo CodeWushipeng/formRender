@@ -5,12 +5,11 @@ let handlers = {
   data() {
     return {
       trade: false, //字段交易弹出框
-      widgetPreValue: "", // 组件旧值
+      widgetPreValue: {}, // 组件旧值
       comArr: [], //组件list数组
       outMark: 0, //外层循环标记
       allItems: [],
       unfocus: [],
-      blurByEnter: false, // 标记组件失去焦点事件是否是通过回车触发的
       canFocusLength: 0,
       preIndex: 0, //上次聚焦元素序号
       singleError: false,
@@ -42,16 +41,16 @@ let handlers = {
   methods: {
     // 组件获取焦点
     mouseValidate(params) {
-      // 获取焦点时存储组件旧值
-      this.widgetPreValue = this.models[params];
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
-          this.preIndex = i;
+          console.log(i,this.outMark,this.preIndex)
+          if (i == this.outMark) {
+            return;
+          }else{
+            this.preIndex = i;
+          }
+          break
         }
-      }
-      console.log(this.preIndex, this.outMark);
-      if (this.preIndex == this.outMark) {
-        return;
       }
       this.allValidate(this.preIndex - 1);
       if (
@@ -63,21 +62,13 @@ let handlers = {
         this.outMark = this.preIndex;
       }
     },
+    // 初始化时复制一份models数据
+    copyMOdels(){
+      Object.assign(this.widgetPreValue,this.models)
+    },
     // 组件失去焦点
     blurValidate(params) {
-      if (this.blurByEnter) {
-        return;
-      } else {
-        // 失去焦点时判断两次的值是否相同，相同则不再做验证
-        if (this.models[params] && this.widgetPreValue == this.models[params]) {
-          return;
-        }
-        if (this.outMark <= this.canFocusLength) {
-          this.allValidate(this.outMark);
-          this.handelAssignment(this.outMark);
-        }
-      }
-      this.widgetPreValue = "";
+      this.widgetPreValue[params] = this.models[params];
     },
     // 日期组件失去焦点
     dateFlow() {
@@ -142,7 +133,7 @@ let handlers = {
       });
     },
     // eval封装
-    evalWrap(targetEval) {
+    evalWrap(targetEval,i) {
       if (!targetEval) {
         return;
       }
@@ -150,7 +141,7 @@ let handlers = {
       if (targetEval.indexOf("function") != -1) {
         try {
           let tempFunc = eval("(" + targetEval + ")");
-          result = tempFunc(this.models, this.utils);
+          result = tempFunc(this.models, this.utils, this.handelValidate, i);
           console.log(tempFunc, result);
         } catch (error) {
           throw new Error(error);
@@ -181,6 +172,7 @@ let handlers = {
         if (valid) {
           this.setFocus(this.allItems[i]);
           this.singleError = true;
+          this.outMark = i;
         } else {
           this.singleError = false;
         }
@@ -208,6 +200,7 @@ let handlers = {
             this.handelValidate("error", `取值范围${lists[i].valueRange}`, i);
             this.setFocus(this.allItems[i]);
             this.rangeError = true;
+            this.outMark = i;
           } else {
             this.handelValidate("success", "", i);
             this.rangeError = false;
@@ -220,6 +213,7 @@ let handlers = {
             this.setFocus(this.allItems[i]);
             this.handelValidate("error", `取值范围${lists[i].valueRange}`, i);
             this.rangeError = true;
+            this.outMark = i;
           }
         } else if (
           resultType == "[object String]" ||
@@ -233,6 +227,7 @@ let handlers = {
             this.setFocus(this.allItems[i]);
             this.handelValidate("error", `取值范围${lists[i].valueRange}`, i);
             this.rangeError = true;
+            this.outMark = i;
           }
         }
       } else {
@@ -247,14 +242,15 @@ let handlers = {
       }
       let lists = this.comArr;
       if (lists[i].condition && lists[i].condition != "") {
-        let condition = this.evalWrap(lists[i].condition);
+        let condition = this.evalWrap(lists[i].condition,i);
         if (condition) {
           this.handelValidate("success", "", i);
           this.conditionError = false;
         } else {
           this.setFocus(this.allItems[i]);
-          this.handelValidate("error", lists[i].conditionError, i);
+          // this.handelValidate("error", lists[i].conditionError, i);
           this.conditionError = true;
+          this.outMark = i;
         }
       } else {
         this.handelValidate("success", "", i);
@@ -302,10 +298,15 @@ let handlers = {
               this.searchTable(res.body);
               this.trade = true;
               this.remoteError = false;
+              if(this.outMark == i){
+                this.handelAssignment()
+                this.handelFlow()
+              }
             } else {
               this.setFocus(this.allItems[i]);
               this.handelValidate("error", "验证失败，请重新验证", i);
               this.remoteError = true;
+              this.outMark = i;
             }
           })
           .catch((error) => {
@@ -313,10 +314,16 @@ let handlers = {
             this.setFocus(this.allItems[i]);
             this.handelValidate("error", "验证失败，请重新验证", i);
             this.remoteError = true;
+            this.outMark = i;
           });
       } else {
         this.handelValidate("success", "", i);
         this.remoteError = false;
+        if(this.outMark == i){
+          this.handelAssignment()
+          this.handelFlow()
+        }
+        
       }
     },
     // 表格查询
@@ -395,7 +402,6 @@ let handlers = {
             this.setFocus(this.allItems[i]);
             console.log("获取节点", this.outMark, i, this.allItems[i]);
             this.outMark = i;
-            this.preIndex = this.outMark;
             break;
           }
         }
@@ -434,20 +440,13 @@ let handlers = {
         this.handelRange(i);
         this.handelCondition(i);
         this.remoteValidate(i);
-        console.log(
-          "执行一次校验后",
-          this.singleError,
-          this.rangeError,
-          this.conditionError,
-          this.remoteError
-        );
         if (
           this.singleError ||
           this.rangeError ||
           this.conditionError ||
           this.remoteError
         ) {
-          this.outMark = i;
+          break;
         }
       }
       console.log("执行一次校验后outmark值", this.outMark);
@@ -487,28 +486,16 @@ let handlers = {
         }
       });
     },
-    // 使组件失去焦点
-    setBlur(ele) {
-      let blurEle = ele.querySelector("input")
-        ? ele.querySelector("input")
-        : ele.querySelector("textarea")
-        ? ele.querySelector("textarea")
-        : ele.querySelector(".el-form-item__content>button");
-      console.log("当前失焦元素", blurEle);
-      this.$nextTick(() => {
-        blurEle.blur();
-      });
-    },
     // 回车事件
     onElChange(params) {
       
+      if(this.preIndex && this.widgetPreValue[params] == this.models[params]){
+        return
+      }
       if (this.outMark < this.canFocusLength) {
-        this.blurValidate();
-        this.blurByEnter = true;
-        this.handelFlow();
-        this.blurByEnter = false;
+        this.allValidate(this.outMark);
       } else if (this.outMark == this.canFocusLength) {
-        this.blurValidate();
+        this.allValidate(this.outMark);
         if (
           this.singleError ||
           this.rangeError ||
@@ -579,12 +566,35 @@ let handlers = {
       this.utils = this.solveCommonJS(this.data.extendDetail);
       console.log(this.utils);
     },
+    // 判断页面是否有聚焦元素
+    hasFocusItem() {
+      let activeElement = document.activeElement.tagName;
+      if (activeElement && activeElement != "BODY") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    // F键复位函数
+    resetCursor() {
+      this.$nextTick(()=>{
+        document.addEventListener("keyup", (e) => {
+          if (!this.hasFocusItem()) {
+            console.log(e.keyCode)
+            if (e.keyCode === 70) {
+              let preEle = this.allItems[this.outMark];
+              this.setFocus(preEle);
+            }
+          }
+        });
+      })
+      
+    },
   },
   mounted() {
     let inter = setInterval(() => {
       if (this.data.list && this.data.list.length > 0) {
         clearInterval(inter);
-        console.log(this.data);
         this.mountExtendJS();
         this.tranData(this.data);
         this.handelHidden();
@@ -592,6 +602,8 @@ let handlers = {
         this.getAllItems();
         this.getShowLength();
         this.iteratorAllEle();
+        this.resetCursor();
+        this.copyMOdels()
       }
     }, 300);
   },

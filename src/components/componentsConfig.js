@@ -14,20 +14,23 @@ export const basicComponents = [
       tips:""
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数"
-    +"\treturn true\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn true\n"
     +"}",
-    condition:"function main (models,utils)"+"{\n"
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
+    valueRange: '',
+    assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn true\n"
     +"}",
-    conditionError:"",
-    valueRange: '',
-    assignment:"",
     isRemote: "",
     url:"",
     data:"",
@@ -47,9 +50,19 @@ export const basicComponents = [
       placeholder: '',
       tips:""
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: '',
     assignment:"",
     isRemote: "",
@@ -72,9 +85,19 @@ export const basicComponents = [
       disabled: false,
       controlsPosition: ''
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: '',
     assignment:"",
     isRemote: "",
@@ -116,9 +139,19 @@ export const basicComponents = [
       remoteFunc: '',
       disabled: false,
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     conditionError:"",
     valueRange: '',
     assignment:"",
@@ -157,9 +190,19 @@ export const basicComponents = [
       remoteFunc: '',
       disabled: false,
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     conditionError:"",
     valueRange: '',
     assignment:"",
@@ -187,9 +230,19 @@ export const basicComponents = [
       required: false,
       width: '',
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     conditionError:"",
     valueRange: '',
     assignment:"",
@@ -217,9 +270,19 @@ export const basicComponents = [
       required: false,
       width: '',
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     conditionError:"",
     valueRange: '',
     assignment:"",
@@ -239,9 +302,19 @@ export const basicComponents = [
       allowHalf: false,
       required: false
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: '',
     assignment:"",
     isRemote: "",
@@ -259,9 +332,19 @@ export const basicComponents = [
       showAlpha: false,
       required: false
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     conditionError:"",
     valueRange: '',
     assignment:"",
@@ -329,9 +412,19 @@ export const basicComponents = [
       required: false,
       disabled: false,
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     conditionError:"",
     valueRange: '',
     assignment:"",
@@ -355,9 +448,19 @@ export const basicComponents = [
       range: false,
       width: ''
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     conditionError:"",
     valueRange: '',
     assignment:"",
@@ -374,9 +477,19 @@ export const basicComponents = [
       defaultValue: 'This is a text',
       customClass: '',
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     conditionError:"",
     valueRange: '',
     assignment:"",
@@ -426,9 +539,19 @@ export const advanceComponents = [
       defaultValue: '',
       width: ''
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     conditionError:"",
     valueRange: '',
     assignment:"",
@@ -456,9 +579,19 @@ export const advanceComponents = [
       },
       remoteFunc: ''
     },
-    hidden:"",
-    enterCondition: '',
-    condition:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    condition:"function main (models,utils,cb,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){cb('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     conditionError:"",
     valueRange: '',
     assignment:"",

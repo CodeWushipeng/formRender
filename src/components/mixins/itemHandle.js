@@ -1,4 +1,3 @@
-import request from "../../util/request";
 import {getDic} from '@/api/forms'
 import { RES_OK } from "@/api/config";
 let itemHandle = {
@@ -31,7 +30,7 @@ let itemHandle = {
     // element change事件，回车和失去焦点时触发
     change(e) {
       // 出发change事件时发射 el-change事件，generateform组件监听该事件
-      this.$emit("el-change", this.widget);
+      this.$emit("el-change", this.widget.model);
     },
     // radio组件change事件
     valueChange() {

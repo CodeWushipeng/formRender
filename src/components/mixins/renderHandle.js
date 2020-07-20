@@ -42,9 +42,9 @@ let handlers = {
       if (item.hidden && item.hidden != "") {
         let flag = this.evalWrap(item.hidden);
         if (flag) {
-          item.options.hidden = true;
+          item.options.show = false;
         } else {
-          item.options.hidden = false;
+          item.options.show = true;
         }
       }
     },

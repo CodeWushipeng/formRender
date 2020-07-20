@@ -112,7 +112,7 @@ export default {
         },
         key,
         // 绑定键值
-        model: this.data.list[newIndex].type + '_' + key,
+        model: 'object',
         rules: []
       })
 

@@ -5,7 +5,8 @@
     <!--value:{{value}} <br>
 
     rules:{{rules}} <br>-->
-    models:{{ models }} <br />
+    models:{{ models }}
+    <br />
     <el-form
       v-if="keysLength"
       ref="generateForm"
@@ -25,11 +26,7 @@
             :justify="item.options.justify"
             :align="item.options.align"
           >
-            <el-col
-              v-for="(col, colIndex) in item.columns"
-              :key="colIndex"
-              :span="col.span"
-            >
+            <el-col v-for="(col, colIndex) in item.columns" :key="colIndex" :span="col.span">
               <template v-for="citem in col.list">
                 <el-form-item
                   v-if="citem.type == 'blank'"
@@ -98,8 +95,8 @@
           width="200"
         ></el-table-column>
         <el-table-column property="address" label="地址"></el-table-column>
-      </el-table> -->
-      <fm-generate-table :data="gridData" ref="grid"> </fm-generate-table>
+      </el-table>-->
+      <fm-generate-table :data="gridData" ref="grid"></fm-generate-table>
     </el-dialog>
   </div>
 </template>
@@ -109,12 +106,12 @@ import GenetateFormItem from "./GenerateFormItem";
 // import { loadJs } from "../util/index.js";
 // import request from "../util/request.js";
 import { IdentityCodeValid } from "../util/idencardUtil";
-import handler from "./mixins/generateHandle.js";
+import handler from "./mixins/generateHandle2.js";
 
 export default {
   name: "fm-generate-form",
   components: {
-    GenetateFormItem,
+    GenetateFormItem
   },
   /**
    * data为表单渲染原始数据
@@ -127,14 +124,14 @@ export default {
     keysLength() {
       // 解除报错
       return Object.keys(this.data).length;
-    },
+    }
   },
   data() {
     return {
       gridData: [],
       result: {},
       models: {}, // form表单对象所有组件key value组成的json
-      rules: {}, // form表单对象所有组件对应校验规则
+      rules: {} // form表单对象所有组件对应校验规则
     };
   },
   created() {
@@ -150,10 +147,12 @@ export default {
       if (!genList) {
         return;
       }
-
+      if(!this.checkModels(this.data.list)){
+        return
+      }
       for (let i = 0; i < genList.length; i++) {
         if (genList[i].type === "grid") {
-          genList[i].columns.forEach((item) => {
+          genList[i].columns.forEach(item => {
             this.generateModle(item.list);
           });
         } else if (genList[i].type === "elTable") {
@@ -194,7 +193,7 @@ export default {
             // 执行此段代码后rules的每个属性为组件默认校验规则和传入检验规则组成的数组
             this.rules[genList[i].model] = [
               ...this.rules[genList[i].model], // 将当前数组值展开
-              ...genList[i].rules.map((item) => {
+              ...genList[i].rules.map(item => {
                 // 展开当前组件的校验规则数组，遍历数组每一项（为json）
                 if (item.pattern) {
                   // 如果存在 pattern属性则返回一个新对象，该对象包含此条校验规则的所有属性以及pattern属性，值为item.pattern的返回值
@@ -203,18 +202,18 @@ export default {
                   // 不存在pattern属性则返回所有item组成的新对象
                   return { ...item };
                 }
-              }),
+              })
             ];
           } else {
             // 如果rules对象不存在当前组件的model属性
             this.rules[genList[i].model] = [
-              ...genList[i].rules.map((item) => {
+              ...genList[i].rules.map(item => {
                 if (item.pattern) {
                   return { ...item, pattern: eval(item.pattern) };
                 } else {
                   return { ...item };
                 }
-              }),
+              })
             ];
           }
           //  console.log(this.rules)
@@ -245,7 +244,7 @@ export default {
             };
             this.rules[genList[i].model].push({
               validator: validatePass,
-              trigger: "blur",
+              trigger: "blur"
             });
           }
 
@@ -255,7 +254,7 @@ export default {
             };
             this.rules[genList[i].model].push({
               validator: validatePass,
-              trigger: "blur",
+              trigger: "blur"
             });
           }
           //整数和数字类型     整数位、小数位位数
@@ -288,7 +287,7 @@ export default {
             };
             this.rules[genList[i].model].push({
               validator: validatePass,
-              trigger: "blur",
+              trigger: "blur"
             });
           }
           //身份证校验
@@ -302,7 +301,7 @@ export default {
             };
             this.rules[genList[i].model].push({
               validator: validatePass,
-              trigger: "blur",
+              trigger: "blur"
             });
           }
         }
@@ -314,7 +313,7 @@ export default {
       return new Promise((resolve, reject) => {
         // 执行form表单验证函数
         this.$nextTick(() => {
-          this.$refs.generateForm.validate((valid) => {
+          this.$refs.generateForm.validate(valid => {
             if (valid) {
               // 逐条验证当前表单的校验规则
               this.trimModels(this.models);
@@ -328,9 +327,27 @@ export default {
     },
     // models值去除收尾空格
     trimModels(temp) {
-      Object.keys(temp).forEach((item) => {
+      Object.keys(temp).forEach(item => {
         this.result[item] = temp[item].trim();
       });
+    },
+    // 检查model是否有重复
+    checkModels(item) {
+      for (let i = 0; i < item.length; i++) {
+        for (let j = i + 1; j < item.length; j++) {
+          if (item[i].model === item[j].model) {
+            this.$message({
+              showClose: true,
+              duration: 5000,
+              message: 'model不能重复',
+              type: 'error'
+            });
+            return false
+          }else{
+            return true
+          }
+        }
+      }
     },
     clearValidate() {
       let lists = this.data.list;
@@ -358,10 +375,10 @@ export default {
     resetModelsFields() {
       const keys = Object.keys(this.models);
       keys.length &&
-        keys.forEach((key) => {
+        keys.forEach(key => {
           delete this.models[key];
         });
-    },
+    }
   },
   watch: {
     models: {
@@ -370,7 +387,7 @@ export default {
       handler(val) {
         console.log("models", val);
         // this.isDataNull = false;
-      },
+      }
     },
     data: {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
@@ -378,7 +395,7 @@ export default {
       handler(val) {
         this.resetModelsFields();
         this.generateModle(val.list);
-      },
+      }
     },
     value: {
       // 深度观察组件key的值
@@ -386,9 +403,9 @@ export default {
       handler(val) {
         console.log(JSON.stringify(val));
         this.models = { ...this.models, ...val };
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>
 

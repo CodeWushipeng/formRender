@@ -15,15 +15,28 @@ export const bankingComponents = [
       disabled: false,
       tips: "",
     },
-    hidden: "",
-    condition: "",
-    conditionError:"",
-    enterCondition: '',
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
@@ -42,15 +55,28 @@ export const bankingComponents = [
       disabled: false,
       tips: "",
     },
-    hidden: "",
-    condition: "",
-    conditionError:"",
-    enterCondition: '',
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
@@ -71,15 +97,28 @@ export const bankingComponents = [
       disabled: false,
       tips: "",
     },
-    hidden: "",
-    condition: "",
-    conditionError:"",
-    enterCondition: '',
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
@@ -98,15 +137,28 @@ export const bankingComponents = [
       disabled: false,
       tips: "",
     },
-    hidden: "",
-    enterCondition: '',
-    condition: "",
-    conditionError:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
@@ -124,21 +176,35 @@ export const bankingComponents = [
       disabled: false,
       tips: "",
     },
-    hidden: "",
-    enterCondition: '',
-    condition: "",
-    conditionError:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
     type: "textarea",
     icon: "icon-diy-com-textarea",
     options: {
+      hidden: false,
       width: "100%",
       defaultValue: "",
       required: false,
@@ -147,21 +213,35 @@ export const bankingComponents = [
       placeholder: "",
       tips: "",
     },
-    hidden: "",
-    enterCondition: '',
-    condition: "",
-    conditionError:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
     type: "radio",
     icon: "icon-radio-active",
     options: {
+      hidden: false,
       inline: false,
       defaultValue: "",
       showLabel: false,
@@ -191,21 +271,35 @@ export const bankingComponents = [
       disabled: false,
       tips: "",
     },
-    hidden: "",
-    enterCondition: '',
-    condition: "",
-    conditionError:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
     type: "checkbox",
     icon: "icon-check-box",
     options: {
+      hidden: false,
       inline: false,
       defaultValue: [],
       showLabel: false,
@@ -232,21 +326,35 @@ export const bankingComponents = [
       disabled: false,
       tips: "",
     },
-    hidden: "",
-    enterCondition: '',
-    condition: "",
-    conditionError:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
     type: "time",
     icon: "icon-time",
     options: {
+      hidden: false,
       defaultValue: "21:19:56",
       readonly: false,
       disabled: false,
@@ -262,21 +370,35 @@ export const bankingComponents = [
       width: "",
       tips: "",
     },
-    hidden: "",
-    enterCondition: '',
-    condition: "",
-    conditionError:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
     type: "date",
     icon: "icon-date",
     options: {
+      hidden: false,
       defaultValue: "",
       readonly: false,
       disabled: false,
@@ -292,21 +414,35 @@ export const bankingComponents = [
       width: "",
       tips: "",
     },
-    hidden: "",
-    enterCondition: '',
-    condition: "",
-    conditionError:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
     type: "select",
     icon: "icon-select",
     options: {
+      hidden: false,
       defaultValue: "",
       multiple: false,
       disabled: false,
@@ -319,17 +455,17 @@ export const bankingComponents = [
         {
           value: "value 1",
           label: "label 1",
-          isCheck: false
+          isCheck: false,
         },
         {
           value: "value 2",
           label: "label 2",
-          isCheck: false
+          isCheck: false,
         },
         {
           value: "value 3",
           label: "label 3",
-          isCheck: false
+          isCheck: false,
         },
       ],
       remote: false,
@@ -342,15 +478,28 @@ export const bankingComponents = [
       remoteFunc: "",
       tips: "",
     },
-    hidden: "",
-    enterCondition: '',
-    condition: "",
-    conditionError:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
@@ -369,15 +518,28 @@ export const bankingComponents = [
       disabled: false,
       tips: "",
     },
-    hidden: "",
-    enterCondition: '',
-    condition: "",
-    conditionError:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
@@ -397,15 +559,28 @@ export const bankingComponents = [
       disabled: false,
       tips: "",
     },
-    hidden: "",
-    enterCondition: '',
-    condition: "",
-    conditionError:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
@@ -419,48 +594,35 @@ export const bankingComponents = [
       placeholder: "",
       disabled: false,
     },
-    hidden: "",
-    enterCondition: '',
-    condition: "",
-    conditionError:"",
+    hidden:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn true\n" +
+      "}",
+    condition:
+      "function main (models,utils,cb,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){cb('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
     assignment: "",
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
-      type: "imageshow",
-      icon: "icon-tupian",
-      options: {
-          defaultValue: [],
-          size: {
-              width: 100,
-              height: 100,
-          },
-          width: "",
-          tokenFunc: "",
-          token: "",
-          domain: "",
-          disabled: false,
-          min: 0,
-          length: 8,
-          multiple: false,
-          isDelete: true,
-          isEdit: true,
-          action: "",
-      },
-          isRemote: "",
-          url: "",
-          data: "",
-          success: "",
-      
-  },
-  {
-    type: "imageupload",
+    type: "imageshow",
     icon: "icon-tupian",
     options: {
+      hidden: false,
       defaultValue: [],
       size: {
         width: 100,
@@ -479,14 +641,42 @@ export const bankingComponents = [
       action: "",
     },
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
+    success: "",
+  },
+  {
+    type: "imageupload",
+    icon: "icon-tupian",
+    options: {
+      hidden: false,
+      defaultValue: [],
+      size: {
+        width: 100,
+        height: 100,
+      },
+      width: "",
+      tokenFunc: "",
+      token: "",
+      domain: "",
+      disabled: false,
+      min: 0,
+      length: 8,
+      multiple: false,
+      isDelete: true,
+      isEdit: true,
+      action: "",
+    },
+    isRemote: "",
+    url: "",
+    data: "",
     success: "",
   },
   {
     type: "fileupload",
     icon: "icon-tupian",
     options: {
+      hidden: false,
       defaultValue: [],
       size: {
         width: 100,
@@ -505,14 +695,15 @@ export const bankingComponents = [
       action: "",
     },
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
     type: "videoupload",
     icon: "icon-tupian",
     options: {
+      hidden: false,
       defaultValue: [],
       size: {
         width: 100,
@@ -531,8 +722,8 @@ export const bankingComponents = [
       action: "",
     },
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
@@ -548,8 +739,8 @@ export const bankingComponents = [
       tips: "",
     },
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
@@ -564,8 +755,8 @@ export const bankingComponents = [
       disabled: false,
     },
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
   {
@@ -580,9 +771,8 @@ export const bankingComponents = [
       disabled: false,
     },
     isRemote: "",
-    url:"",
-    data:"",
+    url: "",
+    data: "",
     success: "",
   },
-
 ];

@@ -674,7 +674,6 @@ export default {
         return {
           ...item,
           name: this.$t(`fm.components.fields.${item.type}`),
-          hidden: "",
         };
       });
       this.advanceComponents = this.advanceComponents.map((item) => {

@@ -119,7 +119,7 @@
         </el-input>
       </el-form-item>
       <!-- 错误提示 -->
-      <el-form-item
+      <!-- <el-form-item
         label="错误提示"
         v-if="data.type != 'grid'"
       >
@@ -128,7 +128,7 @@
           placeholder="离开条件错误提示"
         >
         </el-input>
-      </el-form-item>
+      </el-form-item> -->
       <!-- 离开赋值 -->
       <el-form-item
         :label="$t('fm.config.common.assignment')"
