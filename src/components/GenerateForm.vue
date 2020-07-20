@@ -244,7 +244,7 @@ export default {
             };
             this.rules[genList[i].model].push({
               validator: validatePass,
-              trigger: "blur"
+              trigger: "enter"
             });
           }
 
@@ -254,7 +254,7 @@ export default {
             };
             this.rules[genList[i].model].push({
               validator: validatePass,
-              trigger: "blur"
+              trigger: "enter"
             });
           }
           //整数和数字类型     整数位、小数位位数
@@ -287,7 +287,7 @@ export default {
             };
             this.rules[genList[i].model].push({
               validator: validatePass,
-              trigger: "blur"
+              trigger: "enter"
             });
           }
           //身份证校验
@@ -301,7 +301,7 @@ export default {
             };
             this.rules[genList[i].model].push({
               validator: validatePass,
-              trigger: "blur"
+              trigger: "enter"
             });
           }
         }

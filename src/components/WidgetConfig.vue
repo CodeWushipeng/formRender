@@ -574,7 +574,7 @@ export default {
 
     validateRequired (val) {
       if (val) {
-        this.validator.required = {required: true, message: `${this.data.name}${this.$t('fm.config.widget.validatorRequired')}`}
+        this.validator.required = {required: true, message: `${this.data.name}${this.$t('fm.config.widget.validatorRequired')}`,trigger: "enter"}
       } else {
         this.validator.required = null
       }
@@ -591,7 +591,7 @@ export default {
 
       // todo 排除密码和确认密码 (单独自定义校验方法)
         if (val && val !== "password" && val !== "againpassword" && val !== "text" && val !== "integer" && val !== "float") {
-        this.validator.type = {type: val, message: this.data.name + this.$t('fm.config.widget.validatorType')}
+        this.validator.type = {type: val, message: this.data.name + this.$t('fm.config.widget.validatorType'),trigger: "enter"}
       } else {
         this.validator.type = null
       }
@@ -604,7 +604,7 @@ export default {
       }
 
       if (val) {
-        this.validator.pattern = {pattern: val, message: this.data.name + this.$t('fm.config.widget.validatorPattern')}
+        this.validator.pattern = {pattern: val, message: this.data.name + this.$t('fm.config.widget.validatorPattern'),trigger: "enter"}
       } else {
         this.validator.pattern = null
       }
