@@ -5,8 +5,7 @@
     <!--value:{{value}} <br>
 
     rules:{{rules}} <br>-->
-    models:{{ models }}
-    <br />
+    models:{{ models }} <br />
     <el-form
       v-if="keysLength"
       ref="generateForm"
@@ -26,7 +25,11 @@
             :justify="item.options.justify"
             :align="item.options.align"
           >
-            <el-col v-for="(col, colIndex) in item.columns" :key="colIndex" :span="col.span">
+            <el-col
+              v-for="(col, colIndex) in item.columns"
+              :key="colIndex"
+              :span="col.span"
+            >
               <template v-for="citem in col.list">
                 <el-form-item
                   v-if="citem.type == 'blank'"
@@ -96,7 +99,7 @@
         ></el-table-column>
         <el-table-column property="address" label="地址"></el-table-column>
       </el-table>-->
-      <fm-generate-table :data="gridData" ref="grid"></fm-generate-table>
+      <fm-generate-table :data="gridData" ref="grid"> </fm-generate-table>
     </el-dialog>
   </div>
 </template>
@@ -213,7 +216,7 @@ export default {
                 } else {
                   return { ...item };
                 }
-              })
+              }),
             ];
           }
           //  console.log(this.rules)
@@ -309,15 +312,15 @@ export default {
     },
     // 验证并获取输入框当前的值
     getData() {
-      this.clearValidate();
+      // this.clearValidate();
       return new Promise((resolve, reject) => {
         // 执行form表单验证函数
         this.$nextTick(() => {
-          this.$refs.generateForm.validate(valid => {
+          this.$refs.generateForm.validate((valid) => {
             if (valid) {
               // 逐条验证当前表单的校验规则
-              this.trimModels(this.models);
-              resolve(this.result);
+              // this.trimModels(this.models);
+              resolve(this.models);
             } else {
               reject(new Error(this.$t("fm.message.validError")).message);
             }

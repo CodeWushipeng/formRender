@@ -640,7 +640,8 @@
           v-if="
             widget.options.isAddBtn ||
               widget.options.isEditBtn ||
-              widget.options.isDeleteBtn
+              widget.options.isDeleteBtn||
+              widget.options.isDisplayColumnBtn
           "
         >
           <el-row type="flex" justify="end" :gutter="20">
@@ -657,6 +658,24 @@
             <el-col v-if="widget.options.isDeleteBtn" :span="3">
               <div>
                 <el-button @click="handleTableEvent('delete')" type="primary">删除数据</el-button>
+              </div>
+            </el-col>
+            <el-col v-if="widget.options.isDisplayColumnBtn" :span="8">
+              <div style="display: inline-flex;">
+                <span>显示列:</span>
+                <el-select @change="displayColumnsChange()"
+                  v-model="widget.options.displayColumns"
+                  multiple
+                  filterable
+                  collapse-tags
+                  placeholder="列显示/隐藏">
+                  <el-option
+                    v-for="item in widget.configdata.list[0].options.columns"
+                    :key="item.prop"
+                    :label="item.label"
+                    :value="item.prop">
+                  </el-option>
+              </el-select>
               </div>
             </el-col>
           </el-row>
@@ -1279,6 +1298,23 @@ export default {
           console.log(action);
       }
     },
+    displayColumnsChange(){
+      let columns = [];
+      let flag = false;
+      if(this.widget.configdata){
+        columns = this.widget.configdata.list[0].options.columns
+        columns.map(c=>{
+          if(this.widget.options.displayColumns){
+            flag = this.widget.options.displayColumns.includes(c.prop)
+            if(flag){
+              c.isDisplay = true;
+            }else{
+              c.isDisplay = false;
+            }
+          }   
+        })
+      } 
+    },
     closeTableDataEA() {
       this.tableCf.tableDataEAVisible = false;
     },
@@ -1291,7 +1327,6 @@ export default {
           tragtTableData.push(tempTableData);
         }
       } else if (type == "edit") {
-        debugger;
         if (tragtTableData && tragtTableData.length > 0) {
           tragtTableData.map(item => {
             if (
