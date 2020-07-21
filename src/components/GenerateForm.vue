@@ -150,9 +150,6 @@ export default {
       if (!genList) {
         return;
       }
-      if (!this.checkModels(this.data.list)) {
-        return;
-      }
       for (let i = 0; i < genList.length; i++) {
         if (genList[i].type === "grid") {
           genList[i].columns.forEach(item => {
@@ -309,10 +306,13 @@ export default {
           }
         }
       }
+      if (!this.checkModels(this.data.list)) {
+        return;
+      }
     },
     // 验证并获取输入框当前的值
     getData() {
-      // this.clearValidate();
+      this.clearValidate();
       return new Promise((resolve, reject) => {
         // 执行form表单验证函数
         this.$nextTick(() => {
@@ -332,15 +332,17 @@ export default {
     trimModels(temp) {
       console.log(this.models)
       for (let i = 0; i < this.data.list.length; i++) {
-        if (this.data.list[i].type == "elTable") {
-          this.result[this.data.list[i].model] = this.models[
+        if( typeof this.models[
             this.data.list[i].model
-          ];
-        } else {
+          ]==='string') {
           this.result[this.data.list[i].model] = this.models[
             this.data.list[i].model
           ].trim();
-        }
+        } else {
+          this.result[this.data.list[i].model] = this.models[
+            this.data.list[i].model
+          ];
+        } 
       }
     },
     // 检查model是否有重复
