@@ -33,11 +33,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "againpassword",
@@ -73,11 +85,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "amount",
@@ -115,11 +139,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "input",
@@ -155,11 +191,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "singletext",
@@ -194,11 +242,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "textarea",
@@ -231,11 +291,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "radio",
@@ -289,11 +361,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "checkbox",
@@ -344,11 +428,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "time",
@@ -388,11 +484,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "date",
@@ -432,11 +540,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "select",
@@ -496,11 +616,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "idencard",
@@ -536,11 +668,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "readcard",
@@ -577,11 +721,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "taglable",
@@ -612,11 +768,23 @@ export const bankingComponents = [
       "\treturn true\n" +
       "}",
     valueRange: "",
-    assignment: "",
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn true\n"
+    +"}",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "imageshow",
@@ -640,10 +808,19 @@ export const bankingComponents = [
       isEdit: true,
       action: "",
     },
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "imageupload",
@@ -667,10 +844,19 @@ export const bankingComponents = [
       isEdit: true,
       action: "",
     },
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "fileupload",
@@ -694,10 +880,19 @@ export const bankingComponents = [
       isEdit: true,
       action: "",
     },
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "videoupload",
@@ -721,10 +916,19 @@ export const bankingComponents = [
       isEdit: true,
       action: "",
     },
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "camera",
@@ -738,10 +942,19 @@ export const bankingComponents = [
       disabled: false,
       tips: "",
     },
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "buttonCom",
@@ -754,10 +967,19 @@ export const bankingComponents = [
       placeholder: "",
       disabled: false,
     },
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: "alink",
@@ -770,9 +992,18 @@ export const bankingComponents = [
       placeholder: "",
       disabled: false,
     },
-    isRemote: "",
-    url: "",
-    data: "",
-    success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
 ];

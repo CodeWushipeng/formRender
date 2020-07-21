@@ -31,10 +31,19 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn true\n"
     +"}",
-    isRemote: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
     url:"",
-    data:"",
-    success: "",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
     
   },
   {
@@ -65,11 +74,19 @@ export const basicComponents = [
     +"}",
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
-      conditionError:"",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: 'number',
@@ -100,11 +117,19 @@ export const basicComponents = [
     +"}",
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
-      conditionError:"",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: 'radio',
@@ -151,14 +176,22 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
     +"\tif(false){cb('error','错误提示信息',i)}\n"
     +"\treturn true\n"
-    +"}",
-    conditionError:"",
+    +"}",   
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: 'checkbox',
@@ -202,14 +235,22 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
     +"\tif(false){cb('error','错误提示信息',i)}\n"
     +"\treturn true\n"
-    +"}",
-    conditionError:"",
+    +"}",    
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: 'time',
@@ -243,13 +284,21 @@ export const basicComponents = [
     +"\tif(false){cb('error','错误提示信息',i)}\n"
     +"\treturn true\n"
     +"}",
-    conditionError:"",
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: 'date',
@@ -283,13 +332,21 @@ export const basicComponents = [
     +"\tif(false){cb('error','错误提示信息',i)}\n"
     +"\treturn true\n"
     +"}",
-    conditionError:"",
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: 'rate',
@@ -317,10 +374,19 @@ export const basicComponents = [
     +"}",
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: 'color',
@@ -345,13 +411,21 @@ export const basicComponents = [
     +"\tif(false){cb('error','错误提示信息',i)}\n"
     +"\treturn true\n"
     +"}",
-    conditionError:"",
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: 'select',
@@ -395,7 +469,6 @@ export const basicComponents = [
     remoteCode: '',
     enterCondition: '',
     condition:"",
-    conditionError:"",
     valueRange: '',
     assignment:"",
     isRemote: "",
@@ -425,13 +498,21 @@ export const basicComponents = [
     +"\tif(false){cb('error','错误提示信息',i)}\n"
     +"\treturn true\n"
     +"}",
-    conditionError:"",
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: 'slider',
@@ -461,13 +542,21 @@ export const basicComponents = [
     +"\tif(false){cb('error','错误提示信息',i)}\n"
     +"\treturn true\n"
     +"}",
-    conditionError:"",
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: 'text',
@@ -490,13 +579,21 @@ export const basicComponents = [
     +"\tif(false){cb('error','错误提示信息',i)}\n"
     +"\treturn true\n"
     +"}",
-    conditionError:"",
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   }
 ]
 
@@ -552,13 +649,21 @@ export const advanceComponents = [
     +"\tif(false){cb('error','错误提示信息',i)}\n"
     +"\treturn true\n"
     +"}",
-    conditionError:"",
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   },
   {
     type: 'cascader',
@@ -592,13 +697,21 @@ export const advanceComponents = [
     +"\tif(false){cb('error','错误提示信息',i)}\n"
     +"\treturn true\n"
     +"}",
-    conditionError:"",
     valueRange: '',
     assignment:"",
-    isRemote: "",
-      url:"",
-      data:"",
-      success: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
+    url:"",
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
   }
 ]
 
