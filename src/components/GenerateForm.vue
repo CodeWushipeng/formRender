@@ -1,12 +1,13 @@
 <template>
   <!--<div v-if="!isDataNull">-->
-  <div class="generateForm">
+  <div>
     <!--data:{{data.config}} <br>-->
     <!--value:{{value}} <br>
 
     rules:{{rules}} <br>-->
     models:{{ models }} <br />
     <el-form
+      class="generateForm"
       v-if="keysLength"
       ref="generateForm"
       label-suffix=":"
@@ -398,6 +399,7 @@ export default {
     models: {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
+      immediate: true,
       handler(val) {
         console.log("models", val);
         // this.isDataNull = false;

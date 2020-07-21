@@ -1396,8 +1396,9 @@ export default {
       // 深度监听models，models修改时读取修改后的值赋值给dataModel
       deep: true,
       handler(val) {
-        // console.log(val)
+        console.log(val)
         this.dataModel = val[this.widget.model];
+        // this.handleRemoteFn(fn)
         // setTimeout(()=>{
         //     this.remoteFunc()
         // },200)

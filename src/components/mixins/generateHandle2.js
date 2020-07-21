@@ -40,7 +40,7 @@ let handlers = {
   },
   methods: {
     // 组件获取焦点
-    mouseValidate(params,statu) {
+    mouseValidate(params) {
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
           console.log(i,this.outMark,this.preIndex)
@@ -99,7 +99,8 @@ let handlers = {
     },
     // 获取全部item节点
     getAllItems() {
-      this.allItems = document.querySelectorAll(".generateForm .el-form-item");
+      this.allItems = document.querySelectorAll(".generateForm >.el-form-item");
+      console.log(this.allItems)
     },
     // 流程控制
     handelFlow() {
@@ -291,16 +292,12 @@ let handlers = {
           },
         })
           .then((res) => {
-            console.log(res);
-            debugger
+            console.log(res,this);
             if (res.rspCode == RES_OK) {
               let tempFunc = eval("(" + success + ")");
               console.log(tempFunc,this.models,res.voucherList)
               // tempFunc(this.models, res);
-              this.$nextTick(()=>{
-                this.models.voucherList = res.voucherList
-              })
-              this.models.voucherList = res.voucherList
+              this.data.list[1].configdata.list[0].options.tableData = res.voucherList
               this.handelValidate("success", "", i);
               // this.searchTable(res.body);
               // this.trade = true;
@@ -484,7 +481,7 @@ let handlers = {
         ? ele.querySelector("textarea")
         : ele.querySelector(".el-form-item__content>button");
       let type = focusEle.getAttribute("type");
-      console.log("当前聚焦元素", focusEle);
+      console.log("当前聚焦元素",focusEle);
       this.$nextTick(() => {
         if (type == "radio") {
           focusEle.parentNode.parentNode.focus();
@@ -654,7 +651,7 @@ let handlers = {
         this.iteratorAllEle();
         this.resetCursor();
         this.copyMOdels()
-        this.handelCursorByArrow()
+        // this.handelCursorByArrow()
       }
     }, 300);
   },
