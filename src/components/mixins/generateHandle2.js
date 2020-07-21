@@ -281,10 +281,7 @@ let handlers = {
         }
         let success = lists[i].success;
         getTrade(url, {
-          body: {
-            dicName: "cityList",
-            selType: 2,
-          },
+          body: postData,
           header: {
             pageIndex: 1,
             pageSize: 1,
@@ -295,17 +292,23 @@ let handlers = {
         })
           .then((res) => {
             console.log(res);
+            debugger
             if (res.rspCode == RES_OK) {
               let tempFunc = eval("(" + success + ")");
-              tempFunc(this.models, res);
+              console.log(tempFunc,this.models,res.voucherList)
+              // tempFunc(this.models, res);
+              this.$nextTick(()=>{
+                this.models.voucherList = res.voucherList
+              })
+              this.models.voucherList = res.voucherList
               this.handelValidate("success", "", i);
               // this.searchTable(res.body);
-              this.trade = true;
+              // this.trade = true;
               this.remoteError = false;
-              if(this.outMark == i){
-                this.handelAssignment()
-                this.handelFlow()
-              }
+              // if(this.outMark == i){
+              //   this.handelAssignment()
+              //   this.handelFlow()
+              // }
             } else {
               this.setFocus(this.allItems[i]);
               this.handelValidate("error", "验证失败，请重新验证", i);
@@ -634,9 +637,7 @@ let handlers = {
     // 上下键操作光标
     handelCursorByArrow(){
       this.$nextTick(()=>{
-        document.addEventListener("keyup", (e) => {
-          this.arrowListener(e,this)
-        });
+        document.addEventListener("keyup", this.arrowListener(e,this));
       })
     },
   },
@@ -653,7 +654,7 @@ let handlers = {
         this.iteratorAllEle();
         this.resetCursor();
         this.copyMOdels()
-        // this.handelCursorByArrow()
+        this.handelCursorByArrow()
       }
     }, 300);
   },
