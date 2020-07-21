@@ -163,6 +163,9 @@ export default {
     /*this.$nextTick(()=>{
             this.valiatePattern("/^\\d+$/" )
         })*/
+    if(this.data && this.data.configdata.list[0]){
+      this.tableName = this.data.configdata.list[0].name
+    }
   },
   computed: {
     show() {
