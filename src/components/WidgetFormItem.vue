@@ -278,7 +278,7 @@
       <template>
         <div
           style="line-height: 45px;"
-          v-if="element.options.isAddBtn || element.options.isEditBtn|| element.options.isDeleteBtn "
+          v-if="element.options.isAddBtn || element.options.isEditBtn|| element.options.isDeleteBtn ||  element.options.isDisplayColumnBtn"
         >
           <el-row type="flex" justify="end" :gutter="20">
             <el-col v-if="element.options.isAddBtn" :span="4">
@@ -294,6 +294,24 @@
             <el-col v-if="element.options.isDeleteBtn" :span="4">
               <div>
                 <el-button type="primary">删除数据</el-button>
+              </div>
+            </el-col>
+            <el-col v-if="element.options.isDisplayColumnBtn" :span="8">
+              <div style="display: inline-flex;">
+                <span>显示列:</span>
+                <el-select @change="displayColumnsChange()"
+                  v-model="element.options.displayColumns"
+                  multiple
+                  filterable
+                  collapse-tags
+                  placeholder="列显示/隐藏">
+                  <el-option
+                    v-for="item in element.configdata.list[0].options.columns"
+                    :key="item.prop"
+                    :label="item.label"
+                    :value="item.prop">
+                  </el-option>
+              </el-select>
               </div>
             </el-col>
           </el-row>
@@ -387,6 +405,24 @@ export default {
     },
     dblhandleCurrentRow(row, column, event) {
       alert(row);
+    },
+    displayColumnsChange(val){
+      let columns = [];
+      let flag = false;
+      if(this.element.configdata){
+        columns = this.element.configdata.list[0].options.columns
+        columns.map(c=>{
+          if(this.element.options.displayColumns){
+            flag = this.element.options.displayColumns.includes(c.prop)
+            if(flag){
+              c.isDisplay = true;
+            }else{
+              c.isDisplay = false;
+            }
+          }   
+        })
+      }
+     
     }
   },
   watch: {

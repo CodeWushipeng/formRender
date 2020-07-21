@@ -15,7 +15,7 @@
           readonly
           :disabled="!data.options.isAddBtnCustom"
           @focus="handelMirror('add')"
-          v-model="data.options.addFn.toString()"
+          v-model="data.options.addFn"
           placeholder="新增方法"
         ></el-input>
       </el-form-item>
@@ -41,7 +41,7 @@
           readonly
           :disabled="!data.options.isDetailCustom"
           @focus="handelMirror('detail')"
-          v-model="data.options.detailFn.toString()"
+          v-model="data.options.detailFn"
           placeholder="详情方法"
         ></el-input>
       </el-form-item>
@@ -66,7 +66,7 @@
           style="text-overflow: ellipsis;"
           readonly
           :disabled="!data.options.isEditBtnCustom"
-          @focus="handelMirror('edit').toString()"
+          @focus="handelMirror('edit')"
           v-model="data.options.editFn"
           placeholder="编辑方法"
         ></el-input>
@@ -92,10 +92,17 @@
           style="text-overflow: ellipsis;"
           readonly
           :disabled="!data.options.isDeleteBtnCustom"
-          @focus="handelMirror('delete').toString()"
+          @focus="handelMirror('delete')"
           v-model="data.options.deleteFn"
           placeholder="删除方法"
         ></el-input>
+      </el-form-item>
+      <!-- 列显示/隐藏控制按钮 -->
+      <el-form-item label-width="100px" label="添加列显示/隐藏控制按钮">
+        <el-radio-group v-model="data.options.isDisplayColumnBtn">
+          <el-radio-button :label="false">{{$t('fm.tableWidget.widget.no')}}</el-radio-button>
+          <el-radio-button :label="true">{{$t('fm.tableWidget.widget.yes')}}</el-radio-button>
+        </el-radio-group>
       </el-form-item>
     </el-form>
     <cus-dialog
@@ -167,15 +174,15 @@ export default {
       this.mirrorVisible = true
       this.tableEventCodeCf.codeType = type;
       if (type == "add") {
-        this.tableEventCodeCf.tableCodeFn = this.data.options.addFn.toString()
+        this.tableEventCodeCf.tableCodeFn = this.data.options.addFn
          
       } else if (type == "detail") {
-        this.tableEventCodeCf.tableCodeFn = this.data.options.detailFn.toString()
+        this.tableEventCodeCf.tableCodeFn = this.data.options.detailFn
           
       } else if (type == "edit") {
-        this.tableEventCodeCf.tableCodeFn = this.data.options.editFn.toString()
+        this.tableEventCodeCf.tableCodeFn = this.data.options.editFn
       }else if (type == "delete") {
-        this.tableEventCodeCf.tableCodeFn = this.data.options.deleteFn.toString()
+        this.tableEventCodeCf.tableCodeFn = this.data.options.deleteFn
       }
     },
 

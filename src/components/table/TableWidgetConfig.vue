@@ -229,7 +229,7 @@ export default {
       this.tablePageCf.startPage = val;
       this.getTableListData();
     },
-    // 获取字典服务数据
+    // 获取表格已经配置的表格信息
     getTableListData() {
       this.dialogTableVisible = true;
       request
@@ -287,13 +287,26 @@ export default {
         })
         .catch(error => console.log(error));
     },
-    handleSelectionRow(row, column, event) {
+    handleSelectionRow(row, column, event) {debugger
       let temTableCfg = deepClone(row);
       this.data.configdata = JSON.parse(temTableCfg.listContent);
+      this.handleDisplayColumns(this.data.configdata);
       this.tableName = temTableCfg.listName;
       this.tableCode = temTableCfg.listCode;
       this.dialogTableVisible = false;
       this.tableCodeCf.tableCodeFn ="function mian(currentObj, request, callBack) {debugger;}";
+    },
+    handleDisplayColumns(configdata){
+      if(configdata&&configdata.list[0]){
+        let columns = configdata.list[0].options.columns;
+        let displayColumns = [];
+        columns.map(item =>{
+          if(item.isDisplay){
+            displayColumns.push(item.prop);
+          }
+        })
+        this.data.options.displayColumns = displayColumns;
+      }
     }
   },
   watch: {

@@ -634,6 +634,7 @@ export const tableComponents = [
       isEditBtn: false,
       isDeleteBtn: false,
       isDetail: false,
+      isDisplayColumnBtn:false,
       addFormId:'',
       editFormId: '',
       detailFormId: '',
@@ -641,6 +642,7 @@ export const tableComponents = [
       isEditBtnCustom: false,
       isDeleteBtnCustom: false,
       isDetailCustom: false,
+      displayColumns:[],
       remoteFunc: function (currentObj, request, callBack){
         let tableData = [];
         return tableData;
