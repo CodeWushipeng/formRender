@@ -78,6 +78,7 @@
             @el-focus="mouseValidate"
             @el-blur="blurValidate"
             @date-blur="dateFlow"
+            @remove="removeKeyup"
             :remote="remote"
             :ref="item.model"
             v-show="!item.options.hidden"

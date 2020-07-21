@@ -61,6 +61,7 @@ let itemHandle = {
     // 下拉选择选项显示状态
     optionStatu(params) {
       this.selectStatu = params;
+      this.$emit("remove",params)
       if (params) {
         // 下拉选择框用作级联组件处理
         if (this.widget.isCascader) {

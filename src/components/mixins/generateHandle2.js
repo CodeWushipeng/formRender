@@ -296,8 +296,9 @@ let handlers = {
             if (res.rspCode == RES_OK) {
               let tempFunc = eval("(" + success + ")");
               console.log(tempFunc,this.models,res.voucherList)
-              // tempFunc(this.models, res);
-              this.data.list[1].configdata.list[0].options.tableData = res.voucherList
+              tempFunc(this.models, res);
+              console.log(this.$refs.voucherList)
+              // this.$refs.voucherList[0].$refs.generateTable.setData(res.voucherList)
               this.handelValidate("success", "", i);
               // this.searchTable(res.body);
               // this.trade = true;
@@ -594,8 +595,8 @@ let handlers = {
       
     },
     // arrow回调事件
-    arrowListener(e,that){
-      if (e.keyCode === 38) {
+    arrowListener(){
+      if (window.event.ctrlKey && window.event.keyCode === 37) {
         for (let i = this.outMark-1; i >=0; i--) {
           if (
             this.comArr[i].options.disabled ||
@@ -612,7 +613,7 @@ let handlers = {
             }
           }
         }
-      }else if (e.keyCode === 40) {
+      }else if (window.event.ctrlKey && window.event.keyCode === 39) {
         for (let i = this.outMark+1; i < this.comArr.length; i++) {
           if (
             this.comArr[i].options.disabled ||
@@ -633,10 +634,20 @@ let handlers = {
     },
     // 上下键操作光标
     handelCursorByArrow(){
-      this.$nextTick(()=>{
-        document.addEventListener("keyup", this.arrowListener(e,this));
-      })
+      window.addEventListener("keyup", this.arrowListener);
     },
+    // 监听item组件发射的remove事件
+    removeKeyup(params){
+      console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
+      if(params){
+        window.removeEventListener("keyup", this.arrowListener);
+      }else{
+        window.addEventListener("keyup", this.arrowListener);
+      }
+    }
+  },
+  created(){
+    this.removeKeyup()
   },
   mounted() {
     let inter = setInterval(() => {
@@ -651,7 +662,8 @@ let handlers = {
         this.iteratorAllEle();
         this.resetCursor();
         this.copyMOdels()
-        // this.handelCursorByArrow()
+        this.handelCursorByArrow()
+        
       }
     }, 300);
   },

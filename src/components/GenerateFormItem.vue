@@ -1398,10 +1398,9 @@ export default {
       handler(val) {
         console.log(val)
         this.dataModel = val[this.widget.model];
-        // this.handleRemoteFn(fn)
-        // setTimeout(()=>{
-        //     this.remoteFunc()
-        // },200)
+        if(this.$refs.generateTable){
+          this.$refs.generateTable.setData(val[this.widget.model])
+        }
       }
     }
   }
