@@ -1150,10 +1150,14 @@ export default {
     handleRemoteFn(fn) {
       var _this = this;
       try {
-        fn(this, request, function(tableCf) {
+        fn(this, request, function(tableCf) {debugger
           if (_this.widget.configdata.list) {
             let tempTableCf = _this.widget.configdata.list[0];
-            tempTableCf.options.tableData = tableCf.records;
+            if(tableCf instanceof  Array){
+              tempTableCf.options.tableData = tableCf;
+            }else{
+              tempTableCf.options.tableData = tableCf.records;
+            }        
             //带有分页
             if (_this.widget.options.isPagination === true) {
               _this.widget.options.pagination.pageSize = tableCf.size;
