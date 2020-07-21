@@ -40,7 +40,7 @@ let handlers = {
   },
   methods: {
     // 组件获取焦点
-    mouseValidate(params) {
+    mouseValidate(params,statu) {
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
           console.log(i,this.outMark,this.preIndex)
@@ -593,45 +593,49 @@ let handlers = {
       })
       
     },
+    // arrow回调事件
+    arrowListener(e,that){
+      if (e.keyCode === 38) {
+        for (let i = this.outMark-1; i >=0; i--) {
+          if (
+            this.comArr[i].options.disabled ||
+            this.comArr[i].options.hidden ||
+            this.comArr[i].options.readonly == "readonly"
+          ) {
+            continue;
+          } else {
+            if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
+              this.setFocus(this.allItems[i]);
+              console.log("获取节点", this.outMark, i, this.allItems[i]);
+              this.outMark = i;
+              break;
+            }
+          }
+        }
+      }else if (e.keyCode === 40) {
+        for (let i = this.outMark+1; i < this.comArr.length; i++) {
+          if (
+            this.comArr[i].options.disabled ||
+            this.comArr[i].options.hidden ||
+            this.comArr[i].options.readonly == "readonly"
+          ) {
+            continue;
+          } else {
+            if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
+              this.setFocus(this.allItems[i]);
+              console.log("获取节点", this.outMark, i, this.allItems[i]);
+              this.outMark = i;
+              break;
+            }
+          }
+        }
+      }
+    },
     // 上下键操作光标
     handelCursorByArrow(){
       this.$nextTick(()=>{
         document.addEventListener("keyup", (e) => {
-            if (e.keyCode === 38) {
-              for (let i = this.outMark-1; i >=0; i--) {
-                if (
-                  this.comArr[i].options.disabled ||
-                  this.comArr[i].options.hidden ||
-                  this.comArr[i].options.readonly == "readonly"
-                ) {
-                  continue;
-                } else {
-                  if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
-                    this.setFocus(this.allItems[i]);
-                    console.log("获取节点", this.outMark, i, this.allItems[i]);
-                    this.outMark = i;
-                    break;
-                  }
-                }
-              }
-            }else if (e.keyCode === 40) {
-              for (let i = this.outMark+1; i < this.comArr.length; i++) {
-                if (
-                  this.comArr[i].options.disabled ||
-                  this.comArr[i].options.hidden ||
-                  this.comArr[i].options.readonly == "readonly"
-                ) {
-                  continue;
-                } else {
-                  if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
-                    this.setFocus(this.allItems[i]);
-                    console.log("获取节点", this.outMark, i, this.allItems[i]);
-                    this.outMark = i;
-                    break;
-                  }
-                }
-              }
-            }
+          this.arrowListener(e,this)
         });
       })
     },
@@ -649,7 +653,7 @@ let handlers = {
         this.iteratorAllEle();
         this.resetCursor();
         this.copyMOdels()
-        this.handelCursorByArrow()
+        // this.handelCursorByArrow()
       }
     }, 300);
   },

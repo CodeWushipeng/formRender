@@ -150,8 +150,8 @@ export default {
       if (!genList) {
         return;
       }
-      if(!this.checkModels(this.data.list)){
-        return
+      if (!this.checkModels(this.data.list)) {
+        return;
       }
       for (let i = 0; i < genList.length; i++) {
         if (genList[i].type === "grid") {
@@ -319,7 +319,7 @@ export default {
           this.$refs.generateForm.validate((valid) => {
             if (valid) {
               // 逐条验证当前表单的校验规则
-              // this.trimModels(this.models);
+              this.trimModels(this.models);
               resolve(this.models);
             } else {
               reject(new Error(this.$t("fm.message.validError")).message);
@@ -330,9 +330,18 @@ export default {
     },
     // models值去除收尾空格
     trimModels(temp) {
-      Object.keys(temp).forEach(item => {
-        this.result[item] = temp[item].trim();
-      });
+      console.log(this.models)
+      for (let i = 0; i < this.data.list.length; i++) {
+        if (this.data.list[i].type == "elTable") {
+          this.result[this.data.list[i].model] = this.models[
+            this.data.list[i].model
+          ];
+        } else {
+          this.result[this.data.list[i].model] = this.models[
+            this.data.list[i].model
+          ].trim();
+        }
+      }
     },
     // 检查model是否有重复
     checkModels(item) {
@@ -342,12 +351,12 @@ export default {
             this.$message({
               showClose: true,
               duration: 5000,
-              message: 'model不能重复',
-              type: 'error'
+              message: "model不能重复",
+              type: "error"
             });
-            return false
-          }else{
-            return true
+            return false;
+          } else {
+            return true;
           }
         }
       }

@@ -5,9 +5,7 @@
         <el-aside width="250px">
           <div class="components-list">
             <template v-if="bankingFields.length">
-              <div class="widget-cate">
-                {{ $t("fm.components.banking.title") }}
-              </div>
+              <div class="widget-cate">{{ $t("fm.components.banking.title") }}</div>
               <draggable
                 tag="ul"
                 :list="bankingComponents"
@@ -35,9 +33,7 @@
               </draggable>
             </template>
             <template v-if="basicFields.length">
-              <div class="widget-cate">
-                {{ $t("fm.components.basic.title") }}
-              </div>
+              <div class="widget-cate">{{ $t("fm.components.basic.title") }}</div>
               <draggable
                 tag="ul"
                 :list="basicComponents"
@@ -66,9 +62,7 @@
             </template>
 
             <template v-if="advanceFields.length">
-              <div class="widget-cate">
-                {{ $t("fm.components.advance.title") }}
-              </div>
+              <div class="widget-cate">{{ $t("fm.components.advance.title") }}</div>
               <draggable
                 tag="ul"
                 :list="advanceComponents"
@@ -97,9 +91,7 @@
             </template>
 
             <template v-if="layoutFields.length">
-              <div class="widget-cate">
-                {{ $t("fm.components.layout.title") }}
-              </div>
+              <div class="widget-cate">{{ $t("fm.components.layout.title") }}</div>
               <draggable
                 tag="ul"
                 :list="layoutComponents"
@@ -126,9 +118,7 @@
               </draggable>
             </template>
             <template v-if="tableFields.length">
-              <div class="widget-cate">
-                {{ $t("fm.components.table.title") }}
-              </div>
+              <div class="widget-cate">{{ $t("fm.components.table.title") }}</div>
               <draggable
                 tag="ul"
                 :list="tableComponents"
@@ -158,63 +148,56 @@
         </el-aside>
         <el-container class="center-container" direction="vertical">
           <el-header class="btn-bar" style="height: 45px;">
-            <slot name="action"> </slot>
+            <slot name="action"></slot>
             <el-button
               v-if="extend"
               type="text"
               size="medium"
               icon="el-icon-edit-outline"
               @click="handleEdit($event)"
-              >扩展函数</el-button
-            >
+            >扩展函数</el-button>
             <el-button
               v-if="formConfig"
               type="text"
               size="medium"
               icon="el-icon-tickets"
               @click="handleFormConfig"
-              >{{ $t("fm.actions.formConfig") }}</el-button
-            >
+            >{{ $t("fm.actions.formConfig") }}</el-button>
             <el-button
               v-if="upload"
               type="text"
               size="medium"
               icon="el-icon-upload2"
               @click="handleUpload"
-              >{{ $t("fm.actions.import") }}</el-button
-            >
+            >{{ $t("fm.actions.import") }}</el-button>
             <el-button
               v-if="clearable"
               type="text"
               size="medium"
               icon="el-icon-delete"
               @click="handleClear"
-              >{{ $t("fm.actions.clear") }}</el-button
-            >
+            >{{ $t("fm.actions.clear") }}</el-button>
             <el-button
               v-if="preview"
               type="text"
               size="medium"
               icon="el-icon-view"
               @click="handlePreview"
-              >{{ $t("fm.actions.preview") }}</el-button
-            >
+            >{{ $t("fm.actions.preview") }}</el-button>
             <el-button
               v-if="generateJson"
               type="text"
               size="medium"
               icon="el-icon-tickets"
               @click="handleGenerateJson"
-              >{{ $t("fm.actions.json") }}</el-button
-            >
+            >{{ $t("fm.actions.json") }}</el-button>
             <el-button
               v-if="generateCode"
               type="text"
               size="medium"
               icon="el-icon-document"
               @click="handleGenerateCode"
-              >{{ $t("fm.actions.code") }}</el-button
-            >
+            >{{ $t("fm.actions.code") }}</el-button>
           </el-header>
           <el-main :class="{ 'widget-empty': widgetForm.list.length == 0 }">
             <widget-form
@@ -226,23 +209,22 @@
           </el-main>
         </el-container>
 
-        <el-aside v-if="widgetFormSelect && widgetFormSelect.type == 'elTable'" class="widget-config-container">
+        <el-aside
+          v-if="widgetFormSelect && widgetFormSelect.type == 'elTable'"
+          class="widget-config-container"
+        >
           <el-container>
             <el-header height="45px">
               <div
                 class="config-tab"
                 :class="{ active: configTab == 'widget' }"
                 @click="handleConfigSelect('widget')"
-              >
-                {{ $t("fm.tableWidget.title") }}
-              </div>
+              >{{ $t("fm.tableWidget.title") }}</div>
               <div
                 class="config-tab"
                 :class="{ active: configTab == 'common' }"
                 @click="handleConfigSelect('common')"
-              >
-                {{ $t("fm.tableEvent.title") }} 
-              </div>
+              >{{ $t("fm.tableEvent.title") }}</div>
             </el-header>
             <el-main class="config-content">
               <table-widget-config
@@ -266,16 +248,12 @@
                 class="config-tab"
                 :class="{ active: configTab == 'widget' }"
                 @click="handleConfigSelect('widget')"
-              >
-                {{ $t("fm.config.widget.title") }}
-              </div>
+              >{{ $t("fm.config.widget.title") }}</div>
               <div
                 class="config-tab"
                 :class="{ active: configTab == 'common' }"
                 @click="handleConfigSelect('common')"
-              >
-                {{ $t("fm.config.common.title") }}
-              </div>
+              >{{ $t("fm.config.common.title") }}</div>
               <!-- <div class="config-tab" :class="{active: configTab=='form'}" @click="handleConfigSelect('form')">{{$t('fm.config.form.title')}}</div> -->
             </el-header>
             <el-main class="config-content">
@@ -312,25 +290,22 @@
           >
             <template v-slot:blank="scope">
               Width
-              <el-input
-                v-model="scope.model.blank.width"
-                style="width: 100px"
-              ></el-input>
-              Height
-              <el-input
-                v-model="scope.model.blank.height"
-                style="width: 100px"
-              ></el-input>
+              <el-input v-model="scope.model.blank.width" style="width: 100px"></el-input>Height
+              <el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
             </template>
           </generate-form>
 
           <template slot="action">
-            <el-button type="primary" @click="handleTest">{{
+            <el-button type="primary" @click="handleTest">
+              {{
               $t("fm.actions.getData")
-            }}</el-button>
-            <el-button @click="handleReset">{{
+              }}
+            </el-button>
+            <el-button @click="handleReset">
+              {{
               $t("fm.actions.reset")
-            }}</el-button>
+              }}
+            </el-button>
           </template>
         </cus-dialog>
 
@@ -342,13 +317,8 @@
           width="800px"
           form
         >
-          <el-alert
-            type="info"
-            :title="$t('fm.description.uploadJsonInfo')"
-          ></el-alert>
-          <div id="uploadeditor" style="height: 400px;width: 100%;">
-            {{ jsonEg }}
-          </div>
+          <el-alert type="info" :title="$t('fm.description.uploadJsonInfo')"></el-alert>
+          <div id="uploadeditor" style="height: 400px;width: 100%;">{{ jsonEg }}</div>
         </cus-dialog>
 
         <cus-dialog
@@ -358,17 +328,14 @@
           width="800px"
           form
         >
-          <div id="jsoneditor" style="height: 400px;width: 100%;">
-            {{ jsonTemplate }}
-          </div>
+          <div id="jsoneditor" style="height: 400px;width: 100%;">{{ jsonTemplate }}</div>
 
           <template slot="action">
             <el-button
               type="primary"
               class="json-btn"
               :data-clipboard-text="jsonCopyValue"
-              >{{ $t("fm.actions.copyData") }}</el-button
-            >
+            >{{ $t("fm.actions.copyData") }}</el-button>
           </template>
         </cus-dialog>
 
@@ -382,12 +349,7 @@
         >
           <form-config :data="widgetForm.config"></form-config>
           <template slot="action">
-            <el-button
-              type="primary"
-              class="json-btn"
-              @click="formVisible = false"
-              >确认</el-button
-            >
+            <el-button type="primary" class="json-btn" @click="formVisible = false">确认</el-button>
           </template>
         </cus-dialog>
 
@@ -395,25 +357,17 @@
           :visible="codeVisible"
           @on-close="codeVisible = false"
           ref="codePreview"
-          width="800px"
+          width="900px"
           form
           :action="false"
         >
           <!-- <div id="codeeditor" style="height: 500px; width: 100%;">{{htmlTemplate}}</div> -->
-          <el-tabs
-            type="border-card"
-            style="box-shadow: none;"
-            v-model="codeActiveName"
-          >
+          <el-tabs type="border-card" style="box-shadow: none;" v-model="codeActiveName">
             <el-tab-pane label="Vue Component" name="vue">
-              <div id="vuecodeeditor" style="height: 500px; width: 100%;">
-                {{ vueTemplate }}
-              </div>
+              <div id="vuecodeeditor" style="height: 500px; width: 100%;">{{ vueTemplate }}</div>
             </el-tab-pane>
             <el-tab-pane label="HTML" name="html">
-              <div id="codeeditor" style="height: 500px; width: 100%;">
-                {{ htmlTemplate }}
-              </div>
+              <div id="codeeditor" style="height: 500px; width: 100%;">{{ htmlTemplate }}</div>
             </el-tab-pane>
           </el-tabs>
         </cus-dialog>
@@ -423,23 +377,26 @@
           @on-close="closeMirror"
           @on-submit="getCode"
           ref="jsonPreview"
-          width="800px"
+          width="900px"
           form
         >
-          <codemirror
-            ref="myCm"
-            v-model="code"
-            :options="cmOptions"
-          ></codemirror>
+          <div class="wrap">
+            <codemirror ref="myCm" v-model="code" :options="cmOptions"></codemirror>
+            <div class="data-list">
+              <div class="data">models</div>
+              <div class="data" v-for="item in widgetForm.list" :key="item.model">{{item.model}}</div>
+            </div>
+          </div>
         </cus-dialog>
       </el-container>
     </el-main>
-    <el-footer height="30px" style="font-weight: 600;"
-      >Powered by
-      <a target="_blank" href="https://github.com/GavinZhuLei/vue-form-making"
-        >vue-form-making</a
-      ></el-footer
-    >
+    <el-footer height="30px" style="font-weight: 600;">
+      Powered by
+      <a
+        target="_blank"
+        href="https://github.com/GavinZhuLei/vue-form-making"
+      >vue-form-making</a>
+    </el-footer>
   </el-container>
 </template>
 
@@ -477,36 +434,36 @@ export default {
     CusDialog,
     GenerateForm,
     TableWidgetConfig,
-    TableEventConfig,
+    TableEventConfig
   },
   props: {
     preview: {
       type: Boolean,
-      default: false,
+      default: false
     },
-    extend:{
+    extend: {
       type: Boolean,
-      default: true,
+      default: true
     },
     formConfig: {
       type: Boolean,
-      default: false,
+      default: false
     },
     generateCode: {
       type: Boolean,
-      default: false,
+      default: false
     },
     generateJson: {
       type: Boolean,
-      default: false,
+      default: false
     },
     upload: {
       type: Boolean,
-      default: false,
+      default: false
     },
     clearable: {
       type: Boolean,
-      default: false,
+      default: false
     },
     bankingFields: {
       type: Array,
@@ -531,8 +488,8 @@ export default {
         "videoupload",
         "camera",
         "buttonCom",
-        "alink",
-      ],
+        "alink"
+      ]
     },
     basicFields: {
       type: Array,
@@ -549,26 +506,26 @@ export default {
         "select",
         "switch",
         "slider",
-        "text",
-      ],
+        "text"
+      ]
     },
     advanceFields: {
       type: Array,
-      default: () => ["blank", "imgupload", "editor", "cascader"],
+      default: () => ["blank", "imgupload", "editor", "cascader"]
     },
     layoutFields: {
       type: Array,
-      default: () => ["grid"],
+      default: () => ["grid"]
     },
     tableFields: {
       type: Array,
-      default: () => ['elTable']
-    },
+      default: () => ["elTable"]
+    }
   },
   data() {
     return {
       code: "",
-      extendFunc:"",
+      extendFunc: "",
       cmOptions: {
         tabSize: 4,
         mode: "javascript",
@@ -582,7 +539,7 @@ export default {
         spellcheck: true,
         autocorrect: true,
         indentUnit: 2,
-        line: true,
+        line: true
       },
       mirrorVisible: false,
       nowEle: {}, //当前编辑的组件对象
@@ -598,10 +555,9 @@ export default {
         config: {
           labelWidth: 100,
           labelPosition: "right",
-          size: "small",
+          size: "small"
         },
-        extendDetail:"function main ()"+"{\n"
-          +"}",
+        extendDetail: "function main ()" + "{\n" + "}"
       },
       configTab: "widget",
       widgetFormSelect: null,
@@ -616,7 +572,7 @@ export default {
             const options = [
               { id: "1", name: "1111" },
               { id: "2", name: "2222" },
-              { id: "3", name: "3333" },
+              { id: "3", name: "3333" }
             ];
 
             resolve(options);
@@ -625,13 +581,13 @@ export default {
         funcGetToken(resolve) {
           request
             .get("http://tools-server.xiaoyaoji.cn/api/uptoken")
-            .then((res) => {
+            .then(res => {
               resolve(res.uptoken);
             });
         },
         upload_callback(response, file, fileList) {
           console.log("callback", response, file, fileList);
-        },
+        }
       },
       widgetModels: {},
       blank: "",
@@ -649,13 +605,13 @@ export default {
     "size": "small"
   }
 }`,
-      codeActiveName: "vue",
+      codeActiveName: "vue"
     };
   },
   computed: {
     codemirror() {
       return this.$refs.myCm.codemirror;
-    },
+    }
   },
   mounted() {
     this._loadComponents();
@@ -664,40 +620,40 @@ export default {
     // 为每个组件添加name属性
     _loadComponents() {
       // 金融控件
-      this.bankingComponents = this.bankingComponents.map((item) => {
+      this.bankingComponents = this.bankingComponents.map(item => {
         return {
           ...item,
-          name: this.$t(`fm.components.nFields.${item.type}`),
+          name: this.$t(`fm.components.nFields.${item.type}`)
         };
       });
-      this.basicComponents = this.basicComponents.map((item) => {
+      this.basicComponents = this.basicComponents.map(item => {
         return {
           ...item,
-          name: this.$t(`fm.components.fields.${item.type}`),
+          name: this.$t(`fm.components.fields.${item.type}`)
         };
       });
-      this.advanceComponents = this.advanceComponents.map((item) => {
+      this.advanceComponents = this.advanceComponents.map(item => {
         return {
           ...item,
-          name: this.$t(`fm.components.fields.${item.type}`),
+          name: this.$t(`fm.components.fields.${item.type}`)
         };
       });
-      this.layoutComponents = this.layoutComponents.map((item) => {
+      this.layoutComponents = this.layoutComponents.map(item => {
         return {
           ...item,
-          name: this.$t(`fm.components.fields.${item.type}`),
+          name: this.$t(`fm.components.fields.${item.type}`)
         };
       });
-      this.tableComponents = this.tableComponents.map((item) => {
+      this.tableComponents = this.tableComponents.map(item => {
         return {
           ...item,
-          name: this.$t(`fm.components.fields.${item.type}`),
+          name: this.$t(`fm.components.fields.${item.type}`)
         };
       });
     },
     // 字典查询值传给组件
     // setRemoteData(com,params){
-      
+
     // },
     // mirror控制函数
     showMirror(parms, modify) {
@@ -752,9 +708,9 @@ export default {
       this.mirrorVisible = true;
     },
     // 扩展函数编辑器
-    handleEdit(e){
-      this.extendFunc = e.target.innerText
-      this.code= this.widgetForm.extendDetail
+    handleEdit(e) {
+      this.extendFunc = e.target.innerText;
+      this.code = this.widgetForm.extendDetail;
       this.mirrorVisible = true;
     },
     // 关闭mirror
@@ -791,18 +747,18 @@ export default {
         this.nowEle.requestData = this.code;
       } else if (this.modify == "请输入出口数据") {
         this.nowEle.responseData = this.code;
-      } else if(this.extendFunc == "扩展函数"){
-        this.widgetForm.extendDetail = this.code
-        console.log(this.widgetForm)
-        this.extendDetail = this.code
-        console.log(this.extendDetail)
+      } else if (this.extendFunc == "扩展函数") {
+        this.widgetForm.extendDetail = this.code;
+        console.log(this.widgetForm);
+        this.extendDetail = this.code;
+        console.log(this.extendDetail);
       } else if (this.modify == "调用函数") {
-        this.nowEle.options.buttonfun = this.code
-        console.log(this.nowEle.options.buttonfun)
+        this.nowEle.options.buttonfun = this.code;
+        console.log(this.nowEle.options.buttonfun);
       }
       this.mirrorVisible = false;
-      this.extendFunc = ""
-      this.modify = ""
+      this.extendFunc = "";
+      this.modify = "";
     },
     // 显示form配置
     handleFormConfig() {
@@ -830,11 +786,11 @@ export default {
     handleTest() {
       this.$refs.generateForm
         .getData()
-        .then((data) => {
-          this.$alert(data, "").catch((e) => {});
+        .then(data => {
+          this.$alert(data, "").catch(e => {});
           this.$refs.widgetPreview.end();
         })
-        .catch((e) => {
+        .catch(e => {
           this.$refs.widgetPreview.end();
         });
     },
@@ -852,7 +808,7 @@ export default {
 
         if (!this.jsonClipboard) {
           this.jsonClipboard = new Clipboard(".json-btn");
-          this.jsonClipboard.on("success", (e) => {
+          this.jsonClipboard.on("success", e => {
             this.$message.success(this.$t("fm.message.copySuccess"));
           });
         }
@@ -894,8 +850,8 @@ export default {
           labelWidth: 100,
           labelPosition: "right",
           size: "small",
-          customClass: "",
-        },
+          customClass: ""
+        }
       };
       this.widgetFormSelect = {};
     },
@@ -923,24 +879,44 @@ export default {
     // 监听input组件通过form组件发射出来的事件
     inputChange() {
       console.log("input");
-    },
+    }
   },
   watch: {
     widgetForm: {
       deep: true,
       handler: function(val) {
         console.log(this.$refs.widgetForm);
-      },
+      }
     },
     $lang: function(val) {
       this._loadComponents();
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="scss">
 .widget-empty {
   background-position: 50%;
+}
+.wrap{
+  display: flex;
+  justify-content: space-between;
+}
+.vue-codemirror{
+  width: 550px;
+}
+.data-list{
+  width: 200px;
+  height: 300px;
+  overflow-y: scroll;
+  border-left: 1px solid #eee;
+}
+.data-list> .data{
+  height: 30px;
+  line-height: 30px;
+  padding: 0 5px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
 }
 </style>
