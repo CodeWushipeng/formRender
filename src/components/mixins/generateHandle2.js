@@ -328,7 +328,7 @@ let handlers = {
           this.handelAssignment(i)
           this.handelFlow()
         }
-        
+
       }
     },
     // 表格查询
@@ -476,6 +476,7 @@ let handlers = {
     },
     // 获取并聚焦元素
     setFocus(ele) {
+      if(!ele) return;
       let focusEle = ele.querySelector("input")
         ? ele.querySelector("input")
         : ele.querySelector("textarea")
@@ -592,7 +593,7 @@ let handlers = {
           }
         });
       })
-      
+
     },
     // arrow回调事件
     arrowListener(){
@@ -663,7 +664,7 @@ let handlers = {
         this.resetCursor();
         this.copyMOdels()
         this.handelCursorByArrow()
-        
+
       }
     }, 300);
   },

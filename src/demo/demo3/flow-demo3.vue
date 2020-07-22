@@ -15,15 +15,15 @@
     <!--data:{{data}}-->
     <!--<hr>-->
 
-    <div id="buss-container">
+    <div class="buss-container">
       <div class="buss" id="buss" :style="bussStyle">
         <div :class="mainClass">
           <!--节点信息-->
-          <current-node :data="data" :records="records"></current-node>
+          <flowNode :data="data" :records="records" />
           <!--当前-->
-          <div v-if="type=='01'">可以开始</div>
-          <div v-if="type=='02'">结束</div>
-          <div v-if="type=='03'">
+          <div v-if="NodeType=='01'">可以开始</div>
+          <div v-if="NodeType=='02'">结束</div>
+          <div v-if="NodeType=='03'">
             <!--render-form-->
             <render-form
                     v-if="hackRest && configdata.list.length>0"
@@ -31,7 +31,7 @@
                     :configdata="configdata"
                     :remoteFuncs="remoteFuncs"
                     ref="renderForm"
-            ></render-form>
+            />
           </div>
 
           <!--操作按钮-->
@@ -45,14 +45,12 @@
         <div class="drag" v-drag v-if="debug"></div>
       </div>
       <div class="debugs" id="debugs" v-if="debug">
-        <!--debugs-->
         <!--操作按钮-->
-        <operation-btns ref="operations"
+        <flowBtns ref="operations"
                         :data="data"
                         :records="records"
                         :formData="formData"
-                        @getFormHandler="getFormHandler">
-        </operation-btns>
+                        @getFormHandler="getFormHandler" />
       </div>
     </div>
   </div>
@@ -60,21 +58,20 @@
 
 <script>
   import request from './js/request'
-  import operationBtns from './operation-buttons'
-  import currentNode from './current-node'
+  import flowBtns from './flow-buttons'
+  import flowNode from './flow-node'
   // import getFG from 'fg-control';
   import getFG from "./js/fg-control";
-
   const FG = new getFG();
   import {queryFlowDetail} from "@/api/flows";
   import {RES_OK} from "@/api/config";
   import {platform, user} from "./js/flowData";
 
   export default {
-    name: "flow-demo",
+    name: "flowDemo",
     components: {
-      operationBtns,
-      currentNode
+      flowBtns,
+      flowNode
     },
     directives: {
       drag(el, bindings) {
@@ -127,8 +124,11 @@
       })
     },
     computed: {
-      type() {
+      NodeType() {
         return this.data.type;
+      },
+      isDebugMode() {
+        return true;
       },
       bussStyle() {
         return this.debug == false ? 'width:100%' : 'width:50%';
@@ -194,7 +194,9 @@
           }
           if (code === 1 && code2 === 1) {
             // alert('Shift+2');
-            _self.debug = !_self.debug;
+            if(_self.isDebugMode){
+              _self.debug = !_self.debug;
+            }
             code = 0;
             code2 = 0;
           }
@@ -635,7 +637,7 @@
     justify-content: flex-start;
   }
 
-  #buss-container {
+  .buss-container {
     @include no-wrap;
     div {
       min-height: 200px;

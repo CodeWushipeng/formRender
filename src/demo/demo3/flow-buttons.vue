@@ -137,7 +137,7 @@
   import flowMixin from './js/mixins'
 
   export default {
-    name: "operation-btns",
+    name: "flowBtns",
     mixins: [flowMixin],
     props: {
       data: {

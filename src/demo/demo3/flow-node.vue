@@ -68,7 +68,7 @@
 <script>
 import flowMixin from './js/mixins'
 export default {
-    name: "current-node",
+    name: "flowNode",
     mixins: [flowMixin],
     props: {
         data: {
