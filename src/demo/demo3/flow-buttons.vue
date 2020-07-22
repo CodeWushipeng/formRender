@@ -2,19 +2,23 @@
   <div>
     <!--activeName: {{activeName}}-->
     <el-tabs type="border-card" :activeName="activeName" @tab-click="handleClick">
+      <el-tab-pane name="currentNode" label="当前节点数据">
+        <!--当前节点数据-->
+        <flowNode :data="data" :records="records" />
+      </el-tab-pane>
       <el-tab-pane name="flow" label="流程数据">
         <!--流程数据-->
-        <!--<el-dialog title="流程数据" :visible.sync="flowDialogTableVisible" width="1200px">-->
         <!--{{ listData }}-->
         <el-table v-if="listData.length>0" :data="listData" border>
           <el-table-column label="序号" type="index" width="50"></el-table-column>
           <el-table-column property="nodeCode" label="节点ID" width="100">
+          </el-table-column>
+          <el-table-column property="nodeName" label="节点名称" width="120">
             <template slot-scope="scope">
-              <span>{{scope.row.nodeCode}}</span>
+              <span>{{scope.row.nodeName}}</span>
               <i v-if="data.nodeCode == scope.row.nodeCode" class="el-icon-check" title="当前节点"></i>
             </template>
           </el-table-column>
-          <el-table-column property="nodeName" label="节点名称" width="120"></el-table-column>
           <el-table-column property="type" label="节点类型">
             <template slot-scope="scope">
                 <span>
@@ -48,26 +52,23 @@
             </template>
           </el-table-column>
         </el-table>
-        <!--</el-dialog>-->
 
       </el-tab-pane>
+
       <el-tab-pane name="user" label="user数据">
 
         <!--user数据-->
-        <!--<el-dialog title="user数据" :visible.sync="userDialogTableVisible" width="1000px">-->
         <!--{{usreData}}-->
         <el-table :data="usreDataSolve" border>
           <el-table-column label="序号" type="index" width="50"></el-table-column>
           <el-table-column property="key" label="KEY" width="150"></el-table-column>
           <el-table-column property="value" label="VALUE" width></el-table-column>
         </el-table>
-        <!--</el-dialog>-->
 
       </el-tab-pane>
       <el-tab-pane name="platform" label="platform数据">
 
         <!--platform数据-->
-        <!--<el-dialog title="platform数据" :visible.sync="platformDialogTableVisible" width="1000px">-->
         <!--{{platformData}}-->
         <!--{{platformDataSolve}}-->
         <el-table :data="platformDataSolve" border>
@@ -75,11 +76,9 @@
           <el-table-column property="key" label="KEY" width="150"></el-table-column>
           <el-table-column property="value" label="VALUE" width></el-table-column>
         </el-table>
-        <!--</el-dialog>-->
       </el-tab-pane>
       <el-tab-pane name="nodes" label="节点数据">
         <!--节点数据-->
-        <!--<el-dialog title="节点数据" :visible.sync="nodesDialogTableVisible" width="1000px">-->
         <!--{{nodesData}}-->
         <el-table :data="nodesDataSolve" border>
           <el-table-column label="序号" type="index" width="50"></el-table-column>
@@ -87,11 +86,9 @@
           <el-table-column property="value_up" label="节点数据(up)" width></el-table-column>
           <el-table-column property="value_down" label="节点数据(down)" width></el-table-column>
         </el-table>
-        <!--</el-dialog>-->
       </el-tab-pane>
       <el-tab-pane name="form" label="获取表单数据">
         <!--表单数据-->
-        <!--<el-dialog title="表单数据" :visible.sync="formDialogTableVisible" width="1000px">-->
         <!--formData: <br>-->
         <!--{{formData}}-->
         <!--{{curFormData}}-->
@@ -100,12 +97,9 @@
           <el-table-column property="key" label="KEY" width="150"></el-table-column>
           <el-table-column property="value" label="VALUE"></el-table-column>
         </el-table>
-        <!--</el-dialog>-->
       </el-tab-pane>
       <el-tab-pane name="process" label="获取执行过程">
-
         <!--执行过程-->
-        <!--<el-dialog title="执行过程" :visible.sync="processDialogTableVisible" width="1000px">-->
         <!--{{curFormData}}-->
         <!--{{processDataList}} <br>-->
         <!--{{processDataListSolve}} <br>-->
@@ -113,20 +107,8 @@
           <el-step :key="index" v-for="(item,index) in processDataListSolve" :title="item.title"
                    :description="item.description"></el-step>
         </el-steps>
-        <!--</el-dialog>-->
-
       </el-tab-pane>
     </el-tabs>
-
-    <!--操作button-->
-    <!--<el-row>-->
-    <!--<el-button type="primary" @click="flowHandler">流程数据</el-button>-->
-    <!--<el-button type="success" @click="userHandler">user数据</el-button>-->
-    <!--<el-button type="info"    @click="platformHandler">platform数据</el-button>-->
-    <!--<el-button type="warning" @click="nodesHandler">节点数据</el-button>-->
-    <!--<el-button type="danger"  @click="getFormHandler">获取表单数据</el-button>-->
-    <!--<el-button type="warning" @click="getProcessHandler">获取执行过程</el-button>-->
-    <!--</el-row>-->
   </div>
 </template>
 
@@ -135,10 +117,13 @@
 
   const FG = new getFG();
   import flowMixin from './js/mixins'
-
+  import flowNode from './flow-node'
   export default {
     name: "flowBtns",
     mixins: [flowMixin],
+    components:{
+      flowNode
+    },
     props: {
       data: {
         type: Object,
@@ -155,7 +140,7 @@
     },
     data() {
       return {
-        activeName: "flow",
+        activeName: "currentNode",
         flowDialogTableVisible: false,
         userDialogTableVisible: false,
         platformDialogTableVisible: false,
@@ -195,7 +180,6 @@
     },
     created() {
       console.log("created....")
-      this.flowHandler();
       this._solveData(this.formData);
     },
     methods: {
@@ -206,6 +190,9 @@
         const name = tab.name;
         console.log('name', name);
         switch (name) {
+          case 'currentNode':
+            // do nothing...
+            break;
           case 'flow':
             this.flowHandler();
             break;

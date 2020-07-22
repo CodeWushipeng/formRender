@@ -49,6 +49,10 @@ module.exports = {
         target: 'http://192.168.1.194:11004',
         pathRewrite: { '^/dev-api/tableDevelop': '' }
       },
+      '/dev-api/requestForward': {
+        target: 'http://localhost:38081',
+        pathRewrite: { '^/dev-api': '' }
+      },
     },
     overlay: {
       warnings: false,

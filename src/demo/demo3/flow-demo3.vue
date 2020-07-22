@@ -19,7 +19,7 @@
       <div class="buss" id="buss" :style="bussStyle">
         <div :class="mainClass">
           <!--节点信息-->
-          <flowNode :data="data" :records="records" />
+          <h3>{{data.nodeName}}</h3>
           <!--当前-->
           <div v-if="NodeType=='01'">可以开始</div>
           <div v-if="NodeType=='02'">结束</div>
@@ -59,7 +59,6 @@
 <script>
   import request from './js/request'
   import flowBtns from './flow-buttons'
-  import flowNode from './flow-node'
   // import getFG from 'fg-control';
   import getFG from "./js/fg-control";
   const FG = new getFG();
@@ -71,7 +70,6 @@
     name: "flowDemo",
     components: {
       flowBtns,
-      flowNode
     },
     directives: {
       drag(el, bindings) {
@@ -225,6 +223,7 @@
           // flowCode:flowCode.replace('buss','')
           flowCode: query.id
         };
+        // return
         queryFlowDetail(params)
             .then(res => {
               console.log('res', res)
@@ -629,25 +628,27 @@
   }
 
   // flex
-  @mixin no-wrap() {
+  @mixin flexLayout() {
     display: flex;
     display: -webkit-flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-start;
+    align-items:stretch;
   }
 
   .buss-container {
-    @include no-wrap;
+    @include flexLayout;
+    height: 100%;
+    /*border:1px solid red;*/
     div {
       min-height: 200px;
     }
     .buss {
       width: 50%;
       order: 0;
-      @include no-wrap;
+      @include flexLayout;
       flex-grow: 0;
-
       .mains {
         width: 90%;
         flex-grow: 1;
@@ -658,7 +659,6 @@
         width: 100%;
         padding-right: 10px;
       }
-
       .drag {
         border-radius: 3px;
         width: 10px;
