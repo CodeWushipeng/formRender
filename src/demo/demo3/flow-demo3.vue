@@ -83,6 +83,8 @@
           // console.log("bindings", bindings);
           document.onmousemove = function (e) {
             console.log("onmousemove...");
+            // 取消文字的选中状态
+            window.getSelection().empty();
 
             let $buss   = document.getElementById('buss');
             let $debugs = document.getElementById('debugs');
@@ -106,8 +108,6 @@
             $debugs.style.width = rightWidth + "px";
           }
           document.onmouseup = function () {
-            // 取消文字的选中状态
-            window.getSelection().empty();
             document.onmousemove = document.onmouseup = null;
           }
         }
