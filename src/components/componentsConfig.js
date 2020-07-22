@@ -44,7 +44,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    
+    isAlert: false,
+    code: ''
   },
   {
     type: 'textarea',
@@ -87,6 +88,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: 'number',
@@ -130,6 +133,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: 'radio',
@@ -192,6 +197,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: 'checkbox',
@@ -251,6 +258,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: 'time',
@@ -299,6 +308,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: 'date',
@@ -347,6 +358,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: 'rate',
@@ -387,6 +400,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: 'color',
@@ -426,6 +441,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: 'select',
@@ -471,10 +488,21 @@ export const basicComponents = [
     condition:"",
     valueRange: '',
     assignment:"",
-    isRemote: "",
+    isRemote: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn false\n"
+    +"}",
     url:"",
-    data:"",
-    success: ""
+    data:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    success: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn {}\n"
+    +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: 'switch',
@@ -513,6 +541,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: 'slider',
@@ -557,6 +587,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: 'text',
@@ -594,6 +626,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   }
 ]
 
@@ -664,6 +698,8 @@ export const advanceComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: 'cascader',
@@ -712,6 +748,8 @@ export const advanceComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   }
 ]
 

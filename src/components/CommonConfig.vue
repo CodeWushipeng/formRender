@@ -2,53 +2,29 @@
   <div v-if="show">
     <el-form label-position="top" v-show="data.type !='grid'">
       <!-- 字典服务 -->
-      <el-form-item
-        :label="$t('fm.config.common.remoteCode')"
-        v-if="data.type == 'select'"
-      >
+      <el-form-item :label="$t('fm.config.common.remoteCode')" v-if="data.type == 'select'">
         <el-input size="mini" v-model="data.remoteCode">
-          <el-button slot="append" @click="getData(data.remoteCode)"
-            >查询</el-button
-          >
+          <el-button slot="append" @click="getData(data.remoteCode)">查询</el-button>
         </el-input>
         <el-dialog :visible.sync="dialogTableVisible">
           <div style="display:flex;marginBottom:20px;">
-            <el-input
-              style="width:200px"
-              placeholder="请输入内容"
-              v-model="value"
-              clearable
-            >
-            </el-input>
+            <el-input style="width:200px" placeholder="请输入内容" v-model="value" clearable></el-input>
             <el-button
               type="primary"
               style="marginLeft:20px"
               @click="search"
               icon="el-icon-search"
-              >搜索</el-button
-            >
+            >搜索</el-button>
           </div>
           <el-table :data="gridData" border>
             <el-table-column label="操作" width="80">
               <template slot-scope="scope">
-                <el-button @click="setData(scope.row)" type="text"
-                  >赋值</el-button
-                >
+                <el-button @click="setData(scope.row)" type="text">赋值</el-button>
               </template>
             </el-table-column>
-            <el-table-column
-              property="dicName"
-              label="选项代码"
-            >
-            </el-table-column>
-            <el-table-column
-              property="itemValue"
-              label="选项名称"
-            ></el-table-column>
-            <el-table-column
-              property="itemCode"
-              label="选项值"
-            ></el-table-column>
+            <el-table-column property="dicName" label="选项代码"></el-table-column>
+            <el-table-column property="itemValue" label="选项名称"></el-table-column>
+            <el-table-column property="itemCode" label="选项值"></el-table-column>
           </el-table>
           <el-pagination
             style="marginTop:20px"
@@ -58,65 +34,46 @@
             :page-size="pageSize"
             :current-page="startPage"
             @current-change="handleCurrentChange"
-          >
-          </el-pagination>
+          ></el-pagination>
         </el-dialog>
       </el-form-item>
       <!-- 取值范围 -->
-      <el-form-item
-        :label="$t('fm.config.common.valueRange')"
-        v-if="data.type != 'grid'"
-      >
+      <el-form-item :label="$t('fm.config.common.valueRange')" v-if="data.type != 'grid'">
         <el-input v-model="data.valueRange" placeholder="取值范围"></el-input>
       </el-form-item>
       <!-- 提示信息 -->
-      <el-form-item
-        label="提示信息"
-        v-if="data.type != 'grid'"
-      >
+      <el-form-item label="提示信息" v-if="data.type != 'grid'">
         <el-input v-model="data.options.tips" placeholder="提示信息"></el-input>
       </el-form-item>
       <!-- 是否隐藏 -->
-      <el-form-item
-        :label="$t('fm.config.common.hidden')"
-        v-if="data.type != 'grid'"
-      >
+      <el-form-item :label="$t('fm.config.common.hidden')" v-if="data.type != 'grid'">
         <el-input
           style="text-overflow: ellipsis;"
           readonly
           @focus="handelMirror"
           v-model="data.hidden"
           placeholder="隐藏条件"
-        >
-        </el-input>
+        ></el-input>
       </el-form-item>
       <!-- 进入条件 -->
-      <el-form-item
-        :label="$t('fm.config.common.enterCondition')"
-        v-if="data.type != 'grid'"
-      >
+      <el-form-item :label="$t('fm.config.common.enterCondition')" v-if="data.type != 'grid'">
         <el-input
           style="text-overflow: ellipsis;"
           readonly
           @focus="handelMirror"
           v-model="data.enterCondition"
           placeholder="进入条件"
-        >
-        </el-input>
+        ></el-input>
       </el-form-item>
       <!-- 离开条件 -->
-      <el-form-item
-        :label="$t('fm.config.common.condition')"
-        v-if="data.type != 'grid'"
-      >
+      <el-form-item :label="$t('fm.config.common.condition')" v-if="data.type != 'grid'">
         <el-input
           style="text-overflow: ellipsis;"
           readonly
           @focus="handelMirror"
           v-model="data.condition"
           placeholder="离开条件"
-        >
-        </el-input>
+        ></el-input>
       </el-form-item>
       <!-- 错误提示 -->
       <!-- <el-form-item
@@ -128,27 +85,32 @@
           placeholder="离开条件错误提示"
         >
         </el-input>
-      </el-form-item> -->
+      </el-form-item>-->
       <!-- 离开赋值 -->
-      <el-form-item
-        :label="$t('fm.config.common.assignment')"
-        v-if="data.type != 'grid'"
-      >
+      <el-form-item :label="$t('fm.config.common.assignment')" v-if="data.type != 'grid'">
         <el-input
           style="text-overflow: ellipsis;"
           readonly
           @focus="handelMirror"
           v-model="data.assignment"
           placeholder="离开赋值"
-        >
-        </el-input>
+        ></el-input>
       </el-form-item>
-      <!-- 访问外部条件 -->
-      <el-form-item
-        :label="$t('fm.config.common.remoteFactor')"
-        v-if="data.type != 'grid'"
-      >
+      <!-- 字段交易 -->
+      <el-form-item :label="$t('fm.config.common.remoteFactor')" v-if="data.type != 'grid'">
         <!-- <el-button @click="handelMirror">点击配置外部条件访问</el-button> -->
+        <!-- <el-switch
+        style="margin:15px 0"
+          v-model="data.isAlert"
+          inactive-text="是否弹出表格">
+        </el-switch>
+        <el-input
+          style="text-overflow: ellipsis;margin-bottom:15px"
+          v-model="data.code"
+          placeholder="表格编码"
+        >
+          <template slot="prepend">表格编码</template>
+        </el-input> -->
         <el-input
           v-model="data.isRemote"
           placeholder="启动条件"
@@ -193,11 +155,11 @@
 <script>
 import Draggable from "vuedraggable";
 import request from "../util/request";
-import {RES_OK,FAIL_CODE} from "@/api/config";
-import {getDicTwo} from '@/api/forms'
+import { RES_OK, FAIL_CODE } from "@/api/config";
+import { getDicTwo } from "@/api/forms";
 export default {
   components: {
-    Draggable,
+    Draggable
   },
   props: ["data"],
   data() {
@@ -207,7 +169,7 @@ export default {
       pageSize: 10,
       total: 0,
       value: "",
-      gridData: [],
+      gridData: []
     };
   },
   mounted() {
@@ -219,7 +181,7 @@ export default {
         return true;
       }
       return false;
-    },
+    }
   },
   methods: {
     // codeMirror弹出函数
@@ -237,33 +199,39 @@ export default {
       this.dialogTableVisible = true;
       console.log(data);
       getDicTwo({
-          body: {
-            dicName: this.data.remoteCode,
-            selType: 2,
-          },
-          header: {
-            pageIndex: this.startPage,
-            pageSize: 10,
-            gloSeqNo: new Date(),
-            reqSeqNo: "sit anim",
-            reqTime: "officia ad anim",
-          },
-        })
-        .then((res) => {
+        body: {
+          dicName: this.data.remoteCode,
+          selType: 2
+        },
+        header: {
+          pageIndex: this.startPage,
+          pageSize: 10,
+          gloSeqNo: new Date(),
+          reqSeqNo: "sit anim",
+          reqTime: "officia ad anim"
+        }
+      })
+        .then(res => {
           console.log(res);
-          if (res.rspCode == RES_OK || (res.header && res.header.rspCode == RES_OK)) {
+          if (
+            res.rspCode == RES_OK ||
+            (res.header && res.header.rspCode == RES_OK)
+          ) {
             this.$notify({
               title: "Success",
               message: "查询成功",
               type: "success",
-              duration: 2000,
+              duration: 2000
             });
-          } else if (res.rspCode == FAIL_CODE || (res.header && res.header.rspCode == FAIL_CODE)) {
+          } else if (
+            res.rspCode == FAIL_CODE ||
+            (res.header && res.header.rspCode == FAIL_CODE)
+          ) {
             this.$notify({
               title: "fail",
               message: "查询失败",
               type: "info",
-              duration: 2000,
+              duration: 2000
             });
             return;
           }
@@ -271,10 +239,10 @@ export default {
           let tempArr = null;
           if (res.header && res.header.rspCode == RES_OK && res.body) {
             this.gridData = res.body.dics.records;
-            tempArr =       res.body.dics.records;
-            this.total =    res.body.dics.total;
+            tempArr = res.body.dics.records;
+            this.total = res.body.dics.total;
             this.pageSize = res.body.dics.size;
-          }else{
+          } else {
             this.gridData = res.dics.records;
             tempArr = res.dics.records;
             this.total = res.dics.total;
@@ -282,10 +250,10 @@ export default {
           }
 
           let resultArr = [];
-          tempArr.forEach((item) => {
+          tempArr.forEach(item => {
             let tempJson = {
               value: "",
-              label: "",
+              label: ""
             };
             tempJson.label = item.itemValue;
             tempJson.value = item.itemCode;
@@ -293,46 +261,52 @@ export default {
           });
           console.log(tempArr, resultArr);
           this.data.options.options = resultArr;
-          console.log(this.data.options.options)
+          console.log(this.data.options.options);
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
     },
     setData(params) {
       console.log("11111", params);
-      this.data.remoteCode = params.dicName
+      this.data.remoteCode = params.dicName;
     },
     // 查询信息
     search() {
       getDicTwo({
-          body: {
-            dicName: this.value,
-            selType: 2,
-            // itemCode: this.value,
-            // itemValue: this.value,
-          },
-          header: {
-            pageIndex: 1,
-            pageSize: 999,
-            gloSeqNo: new Date(),
-            reqSeqNo: "sit anim",
-            reqTime: "officia ad anim",
-          },
-        })
-        .then((res) => {
+        body: {
+          dicName: this.value,
+          selType: 2
+          // itemCode: this.value,
+          // itemValue: this.value,
+        },
+        header: {
+          pageIndex: 1,
+          pageSize: 999,
+          gloSeqNo: new Date(),
+          reqSeqNo: "sit anim",
+          reqTime: "officia ad anim"
+        }
+      })
+        .then(res => {
           console.log(res);
-          if (res.rspCode == RES_OK || (res.header && res.header.rspCode == RES_OK)) {
+          if (
+            res.rspCode == RES_OK ||
+            (res.header && res.header.rspCode == RES_OK)
+          ) {
             this.$notify({
               title: "Success",
               message: "查询成功",
               type: "success",
-              duration: 2000,
+              duration: 2000
             });
-          } else if (res.rspCode == FAIL_CODE || (res.header && res.header.rspCode == FAIL_CODE)) {
+          } else if (
+            res.rspCode == FAIL_CODE ||
+            (res.header && res.header.rspCode == FAIL_CODE)
+          ) {
             this.$notify({
               title: "fail",
               message: "查询失败",
               type: "info",
-              duration: 2000,
+              duration: 2000
             });
             return;
           }
@@ -340,17 +314,17 @@ export default {
           let tempArr = null;
           if (res.header && res.header.rspCode == RES_OK && res.body) {
             this.gridData = res.body.dics.records;
-            tempArr =       res.body.dics.records;
-          }else{
+            tempArr = res.body.dics.records;
+          } else {
             this.gridData = res.dics.records;
-            tempArr =       res.dics.records;
+            tempArr = res.dics.records;
           }
 
           let resultArr = [];
-          tempArr.forEach((item) => {
+          tempArr.forEach(item => {
             let tempJson = {
               value: "",
-              label: "",
+              label: ""
             };
             tempJson.label = item.itemValue;
             tempJson.value = item.itemCode;
@@ -359,8 +333,8 @@ export default {
           console.log(tempArr, resultArr);
           this.data.options.options = resultArr;
         })
-        .catch((error) => console.log(error));
-    },
-  },
+        .catch(error => console.log(error));
+    }
+  }
 };
 </script>

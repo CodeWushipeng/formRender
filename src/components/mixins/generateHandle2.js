@@ -1,5 +1,5 @@
 import { RES_OK } from "@/api/config";
-import { getTrade,getTableList } from "@/api/forms";
+import { getTrade, getTableList } from "@/api/forms";
 let handlers = {
   props: {},
   data() {
@@ -43,13 +43,13 @@ let handlers = {
     mouseValidate(params) {
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
-          console.log(i,this.outMark,this.preIndex)
+          console.log(i, this.outMark, this.preIndex);
           if (i == this.outMark) {
             return;
-          }else{
+          } else {
             this.preIndex = i;
           }
-          break
+          break;
         }
       }
       this.allValidate(this.preIndex - 1);
@@ -63,8 +63,8 @@ let handlers = {
       }
     },
     // 初始化时复制一份models数据
-    copyMOdels(){
-      Object.assign(this.widgetPreValue,this.models)
+    copyMOdels() {
+      Object.assign(this.widgetPreValue, this.models);
     },
     // 组件失去焦点
     blurValidate(params) {
@@ -100,7 +100,7 @@ let handlers = {
     // 获取全部item节点
     getAllItems() {
       this.allItems = document.querySelectorAll(".generateForm >.el-form-item");
-      console.log(this.allItems)
+      console.log(this.allItems);
     },
     // 流程控制
     handelFlow() {
@@ -134,7 +134,7 @@ let handlers = {
       });
     },
     // eval封装
-    evalWrap(targetEval,i) {
+    evalWrap(targetEval, i) {
       if (!targetEval) {
         return;
       }
@@ -243,7 +243,7 @@ let handlers = {
       }
       let lists = this.comArr;
       if (lists[i].condition && lists[i].condition != "") {
-        let condition = this.evalWrap(lists[i].condition,i);
+        let condition = this.evalWrap(lists[i].condition, i);
         if (condition) {
           this.handelValidate("success", "", i);
           this.conditionError = false;
@@ -292,21 +292,12 @@ let handlers = {
           },
         })
           .then((res) => {
-            console.log(res,this);
+            console.log(res, this);
             if (res.rspCode == RES_OK) {
-              let tempFunc = eval("(" + success + ")");
-              console.log(tempFunc,this.models,res.voucherList)
-              tempFunc(this.models, res);
-              console.log(this.$refs.voucherList)
               // this.$refs.voucherList[0].$refs.generateTable.setData(res.voucherList)
               this.handelValidate("success", "", i);
-              // this.searchTable(res.body);
-              // this.trade = true;
+              this.checkOutModel(success, res);
               this.remoteError = false;
-              // if(this.outMark == i){
-              //   this.handelAssignment()
-              //   this.handelFlow()
-              // }
             } else {
               this.setFocus(this.allItems[i]);
               this.handelValidate("error", "验证失败，请重新验证", i);
@@ -324,44 +315,62 @@ let handlers = {
       } else {
         this.handelValidate("success", "", i);
         this.remoteError = false;
-        if(this.outMark == i){
-          this.handelAssignment(i)
-          this.handelFlow()
+        if (this.outMark == i) {
+          this.handelAssignment(i);
+          this.handelFlow();
         }
-        
+      }
+    },
+    // 提取字段交易出口数据model值，判断当前表单是否存在，存在赋值，否则请求表格并弹出展示
+    checkOutModel(target, data) {
+      let reg = /(?<=models\.)[^]*(?==)/;
+      let model = target.match(reg)[0];
+      console.log(model);
+      let result = model.trim();
+      let tempFunc = eval("(" + target + ")");
+      if (Object.keys(this.models).indexOf(result) == "-1") {
+        this.searchTable(result, data);
+      } else {
+        tempFunc(this.models, data);
       }
     },
     // 表格查询
-    searchTable(data) {
-      getTableList( {
-          body: {
-            listCode: data.tabCode,
-          },
-          header: {
-            gloSeqNo: 1594800028104,
-            pageIndex: 0,
-            pageSize: 999,
-            projectId: "quis consectetur",
-            reqSeqNo: "1",
-            reqTime: "1",
-            serviceGroupid: "mollit sed",
-            serviceId: "officia non",
-            serviceName: "1",
-            subProjectId: "occaecat tempor dolor enim ex",
-          },
-        })
-        .then((res) => {
-          console.log(JSON.parse(res.body.define.records[0].listContent));
-          let temp = JSON.parse(res.body.define.records[0].listContent);
-          temp.list[0].options.tableData.forEach((element, index) => {
-            element.tradata = data.data[index];
-          });
-          this.gridData = temp;
-          console.log(this.gridData);
+    searchTable(code, cb) {
+      let self = this
+      getTableList({
+        body: {
+          listCode: code,
+        },
+        header: {
+          gloSeqNo: 1594800028104,
+          pageIndex: 0,
+          pageSize: 999,
+          projectId: "quis consectetur",
+          reqSeqNo: "1",
+          reqTime: "1",
+          serviceGroupid: "mollit sed",
+          serviceId: "officia non",
+          serviceName: "1",
+          subProjectId: "occaecat tempor dolor enim ex",
+        },
+      })
+        .then((res) => {debugger
+          self.trade = true;
+          let temp = JSON.parse(res.define.records[0].listContent);
+          // temp.list[0].options.tableData = cb.voucherList;
+          self.gridData.list = temp.list; 
+          self.gridData.config = temp.config
+          // this.$refs.grid.setData(cb.voucherList)
+          console.log(res.define.records[0].listContent);
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+    // 表格弹出框关闭后执行光标定位
+    goFlow() {
+      this.handelAssignment(this.outMark);
+      this.handelFlow();
     },
     // 离开赋值
     handelAssignment(j) {
@@ -482,7 +491,7 @@ let handlers = {
         ? ele.querySelector("textarea")
         : ele.querySelector(".el-form-item__content>button");
       let type = focusEle.getAttribute("type");
-      console.log("当前聚焦元素",focusEle);
+      console.log("当前聚焦元素", focusEle);
       this.$nextTick(() => {
         if (type == "radio") {
           focusEle.parentNode.parentNode.focus();
@@ -493,8 +502,8 @@ let handlers = {
     },
     // 回车事件
     onElChange(params) {
-      if(this.preIndex && this.widgetPreValue[params] == this.models[params]){
-        return
+      if (this.preIndex && this.widgetPreValue[params] == this.models[params]) {
+        return;
       }
       if (this.outMark < this.canFocusLength) {
         this.allValidate(this.outMark);
@@ -581,23 +590,22 @@ let handlers = {
     },
     // F键复位函数
     resetCursor() {
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         document.addEventListener("keyup", (e) => {
           if (!this.hasFocusItem()) {
-            console.log(e.keyCode)
+            console.log(e.keyCode);
             if (e.keyCode === 70) {
               let preEle = this.allItems[this.outMark];
               this.setFocus(preEle);
             }
           }
         });
-      })
-      
+      });
     },
     // arrow回调事件
-    arrowListener(){
+    arrowListener() {
       if (window.event.ctrlKey && window.event.keyCode === 37) {
-        for (let i = this.outMark-1; i >=0; i--) {
+        for (let i = this.outMark - 1; i >= 0; i--) {
           if (
             this.comArr[i].options.disabled ||
             this.comArr[i].options.hidden ||
@@ -613,8 +621,8 @@ let handlers = {
             }
           }
         }
-      }else if (window.event.ctrlKey && window.event.keyCode === 39) {
-        for (let i = this.outMark+1; i < this.comArr.length; i++) {
+      } else if (window.event.ctrlKey && window.event.keyCode === 39) {
+        for (let i = this.outMark + 1; i < this.comArr.length; i++) {
           if (
             this.comArr[i].options.disabled ||
             this.comArr[i].options.hidden ||
@@ -633,21 +641,27 @@ let handlers = {
       }
     },
     // 上下键操作光标
-    handelCursorByArrow(){
+    handelCursorByArrow() {
       window.addEventListener("keyup", this.arrowListener);
     },
     // 监听item组件发射的remove事件
-    removeKeyup(params){
-      console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
-      if(params){
+    removeKeyup(params) {
+      console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+      if (params) {
         window.removeEventListener("keyup", this.arrowListener);
-      }else{
+      } else {
         window.addEventListener("keyup", this.arrowListener);
       }
-    }
+    },
   },
-  created(){
-    this.removeKeyup()
+  watch: {
+    // gridData:{
+    //   deep:true,
+    //   immediate: true,
+    //   handler(val){
+    //     // console.log(val)
+    //   }
+    // }
   },
   mounted() {
     let inter = setInterval(() => {
@@ -661,9 +675,8 @@ let handlers = {
         this.getShowLength();
         this.iteratorAllEle();
         this.resetCursor();
-        this.copyMOdels()
-        this.handelCursorByArrow()
-        
+        this.copyMOdels();
+        this.handelCursorByArrow();
       }
     }, 300);
   },

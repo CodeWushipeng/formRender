@@ -50,6 +50,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "againpassword",
@@ -102,6 +104,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "amount",
@@ -156,6 +160,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "input",
@@ -208,6 +214,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "singletext",
@@ -259,6 +267,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "textarea",
@@ -308,6 +318,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "radio",
@@ -378,6 +390,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "checkbox",
@@ -445,6 +459,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "time",
@@ -501,6 +517,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "date",
@@ -557,6 +575,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "select",
@@ -633,6 +653,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "idencard",
@@ -685,6 +707,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "readcard",
@@ -738,6 +762,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "taglable",
@@ -785,6 +811,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "imageshow",
@@ -821,6 +849,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "imageupload",
@@ -857,6 +887,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "fileupload",
@@ -893,6 +925,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "videoupload",
@@ -929,6 +963,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "camera",
@@ -955,6 +991,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "buttonCom",
@@ -980,6 +1018,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
   {
     type: "alink",
@@ -1005,5 +1045,7 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    isAlert: false,
+    code: ''
   },
 ];

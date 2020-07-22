@@ -5,7 +5,8 @@
     <!--value:{{value}} <br>
 
     rules:{{rules}} <br>-->
-    models:{{ models }} <br />
+    models:{{ models }}
+    <br />
     <el-form
       class="generateForm"
       v-if="keysLength"
@@ -26,11 +27,7 @@
             :justify="item.options.justify"
             :align="item.options.align"
           >
-            <el-col
-              v-for="(col, colIndex) in item.columns"
-              :key="colIndex"
-              :span="col.span"
-            >
+            <el-col v-for="(col, colIndex) in item.columns" :key="colIndex" :span="col.span">
               <template v-for="citem in col.list">
                 <el-form-item
                   v-if="citem.type == 'blank'"
@@ -87,22 +84,13 @@
       </template>
     </el-form>
     <!-- 字段交易弹出框 -->
-    <el-dialog :visible.sync="trade">
-      <!-- <el-table :data="gridData">
-        <el-table-column
-          property="date"
-          label="日期"
-          width="150"
-        ></el-table-column>
-        <el-table-column
-          property="name"
-          label="姓名"
-          width="200"
-        ></el-table-column>
-        <el-table-column property="address" label="地址"></el-table-column>
-      </el-table>-->
-      <fm-generate-table :data="gridData" ref="grid"> </fm-generate-table>
-    </el-dialog>
+    <!-- <el-dialog :visible.sync="trade" @close="goFlow"> -->
+    <div style="width:100%;height:700px;background:red">
+      <fm-generate-table :data="gridData" ref="grid"></fm-generate-table>
+    </div>
+    <!-- </el-dialog> -->
+    
+
   </div>
 </template>
 
@@ -133,7 +121,10 @@ export default {
   },
   data() {
     return {
-      gridData: [],
+      gridData: {
+        list: [],
+        config: {}
+      },
       result: {},
       models: {}, // form表单对象所有组件key value组成的json
       rules: {} // form表单对象所有组件对应校验规则
@@ -215,7 +206,7 @@ export default {
                 } else {
                   return { ...item };
                 }
-              }),
+              })
             ];
           }
           //  console.log(this.rules)
@@ -318,7 +309,7 @@ export default {
       return new Promise((resolve, reject) => {
         // 执行form表单验证函数
         this.$nextTick(() => {
-          this.$refs.generateForm.validate((valid) => {
+          this.$refs.generateForm.validate(valid => {
             if (valid) {
               // 逐条验证当前表单的校验规则
               this.trimModels(this.models);
@@ -332,11 +323,9 @@ export default {
     },
     // models值去除收尾空格
     trimModels(temp) {
-      console.log(this.models)
+      console.log(this.models);
       for (let i = 0; i < this.data.list.length; i++) {
-        if( typeof this.models[
-            this.data.list[i].model
-          ]==='string') {
+        if (typeof this.models[this.data.list[i].model] === "string") {
           this.result[this.data.list[i].model] = this.models[
             this.data.list[i].model
           ].trim();
@@ -344,7 +333,7 @@ export default {
           this.result[this.data.list[i].model] = this.models[
             this.data.list[i].model
           ];
-        } 
+        }
       }
     },
     // 检查model是否有重复
