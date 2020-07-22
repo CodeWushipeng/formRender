@@ -2,7 +2,7 @@
   <div class="form-wrap" ref="renderForm">
     <!--jsonData: {{jsonData}}-->
     <!--<hr>-->
-    list: {{ configdata.list }}
+    <!--list: {{ configdata.list }}-->
     <!--formdata: {{formdata}}-->
     <!--tempValue: {{tempValue}}-->
     <!--<hr>-->

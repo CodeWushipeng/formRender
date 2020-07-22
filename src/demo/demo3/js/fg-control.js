@@ -11,11 +11,13 @@ class FG {
     this.START = "01"; // 开始
     this.END = "02"; // 结束
     this.DOING = "03"; // 业务类型
-    // 提交方式
+    // 提交类型，01-通用通信提交，02-订单提交，03-自定义函数提交
     this.COMMIT_DEFAULT = "01"; // 默认提交
-    this.COMMIT_DEFINE = "02"; // 自定义提交
-    this.COMMIT_ORDER = "03"; // 订单提交
-    this.COMMIT_LOCAL = "04"; // 本地提交
+    this.COMMIT_ORDER   = "02"; // 订单提交
+    this.COMMIT_DEFINE  = "03"; // 自定义提交
+    this.COMMIT_LOCAL   = "04"; // 本地提交
+
+
     // 返回设置
     this.CAN_ROLLBACK = "01"; // 可以回退
     this.CANNOT_ROLLBACK = "02"; // 不可回退

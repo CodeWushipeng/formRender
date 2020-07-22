@@ -1,288 +1,336 @@
 <template>
-    <div>
+  <div>
+    <!--activeName: {{activeName}}-->
+    <el-tabs type="border-card" :activeName="activeName" @tab-click="handleClick">
+      <el-tab-pane name="flow" label="流程数据">
         <!--流程数据-->
-        <el-dialog title="流程数据" :visible.sync="flowDialogTableVisible" width="1200px">
-            <!--{{ listData }}-->
-            <el-table v-if="listData.length>0" :data="listData" border>
-                <el-table-column label="序号" type="index" width="50"></el-table-column>
-                <el-table-column property="nodeCode" label="节点ID" width="150">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.nodeCode}}</span>
-                        <i v-if="data.nodeCode == scope.row.nodeCode" class="el-icon-check" title="当前节点"></i>
-                    </template>
-                </el-table-column>
-                <el-table-column property="nodeName" label="节点名称" width="200"></el-table-column>
-                <el-table-column property="type" label="节点类型">
-                    <template slot-scope="scope">
-                        <span>
-                          <el-tag :type="filterType(scope.row.type)">{{ filterStatus(scope.row.type)}}</el-tag>
-                        </span>
-                    </template>
-                </el-table-column>
-                <el-table-column property="nextNode" label="下一节点" min-width="100">
-                    <template slot-scope="scope">
-                        <div :key="index" style="white-space: nowrap"
-                             v-for="(tNOde,index) in scope.row.nextNode.split(',')"> {{tNOde}}
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column property="returnNode" label="返回节点"></el-table-column>
-                <el-table-column property="rollbackData" label="回退数据">
-                    <template slot-scope="scope">
-                        <el-tag v-if="scope.row.rollbackData=='01'" :title="scope.row.rollbackData" type="danger">清除
-                        </el-tag>
-                        <el-tag v-if="scope.row.rollbackData=='02'" :title="scope.row.rollbackData">保留</el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column property="inputConfig" label="提取配置">
-                    <template slot-scope="scope">
-                        <el-tag v-if="scope.row.inputConfig" :title="scope.row.inputConfig">有</el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column property="outputConfig" label="响应配置">
-                    <template slot-scope="scope">
-                        <el-tag v-if="scope.row.outputConfig" :title="scope.row.outputConfig">有</el-tag>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-dialog>
+        <!--<el-dialog title="流程数据" :visible.sync="flowDialogTableVisible" width="1200px">-->
+        <!--{{ listData }}-->
+        <el-table v-if="listData.length>0" :data="listData" border>
+          <el-table-column label="序号" type="index" width="50"></el-table-column>
+          <el-table-column property="nodeCode" label="节点ID" width="100">
+            <template slot-scope="scope">
+              <span>{{scope.row.nodeCode}}</span>
+              <i v-if="data.nodeCode == scope.row.nodeCode" class="el-icon-check" title="当前节点"></i>
+            </template>
+          </el-table-column>
+          <el-table-column property="nodeName" label="节点名称" width="120"></el-table-column>
+          <el-table-column property="type" label="节点类型">
+            <template slot-scope="scope">
+                <span>
+                  <el-tag :type="filterType(scope.row.type)">{{ filterStatus(scope.row.type)}}</el-tag>
+                </span>
+            </template>
+          </el-table-column>
+          <el-table-column property="nextNode" label="下一节点" min-width="100">
+            <template slot-scope="scope">
+              <div :key="index" style="white-space: nowrap"
+                   v-for="(tNOde,index) in scope.row.nextNode.split(',')"> {{tNOde}}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column property="returnNode" label="返回节点"></el-table-column>
+          <el-table-column property="rollbackData" label="回退数据">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.rollbackData=='01'" :title="scope.row.rollbackData" type="danger">清除
+              </el-tag>
+              <el-tag v-if="scope.row.rollbackData=='02'" :title="scope.row.rollbackData">保留</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column property="inputConfig" label="提取配置">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.inputConfig" :title="scope.row.inputConfig">有</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column property="outputConfig" label="响应配置">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.outputConfig" :title="scope.row.outputConfig">有</el-tag>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!--</el-dialog>-->
+
+      </el-tab-pane>
+      <el-tab-pane name="user" label="user数据">
 
         <!--user数据-->
-        <el-dialog title="user数据" :visible.sync="userDialogTableVisible" width="1000px">
-            <!--{{usreData}}-->
-            <el-table :data="usreDataSolve" border>
-                <el-table-column label="序号" type="index" width="50"></el-table-column>
-                <el-table-column property="key" label="KEY" width="150"></el-table-column>
-                <el-table-column property="value" label="VALUE" width></el-table-column>
-            </el-table>
-        </el-dialog>
+        <!--<el-dialog title="user数据" :visible.sync="userDialogTableVisible" width="1000px">-->
+        <!--{{usreData}}-->
+        <el-table :data="usreDataSolve" border>
+          <el-table-column label="序号" type="index" width="50"></el-table-column>
+          <el-table-column property="key" label="KEY" width="150"></el-table-column>
+          <el-table-column property="value" label="VALUE" width></el-table-column>
+        </el-table>
+        <!--</el-dialog>-->
+
+      </el-tab-pane>
+      <el-tab-pane name="platform" label="platform数据">
 
         <!--platform数据-->
-        <el-dialog title="platform数据" :visible.sync="platformDialogTableVisible" width="1000px">
-            <!--{{platformData}}-->
-            <!--{{platformDataSolve}}-->
-            <el-table :data="platformDataSolve" border>
-                <el-table-column label="序号" type="index" width="50"></el-table-column>
-                <el-table-column property="key" label="KEY" width="150"></el-table-column>
-                <el-table-column property="value" label="VALUE" width></el-table-column>
-            </el-table>
-        </el-dialog>
-
+        <!--<el-dialog title="platform数据" :visible.sync="platformDialogTableVisible" width="1000px">-->
+        <!--{{platformData}}-->
+        <!--{{platformDataSolve}}-->
+        <el-table :data="platformDataSolve" border>
+          <el-table-column label="序号" type="index" width="50"></el-table-column>
+          <el-table-column property="key" label="KEY" width="150"></el-table-column>
+          <el-table-column property="value" label="VALUE" width></el-table-column>
+        </el-table>
+        <!--</el-dialog>-->
+      </el-tab-pane>
+      <el-tab-pane name="nodes" label="节点数据">
         <!--节点数据-->
-        <el-dialog title="节点数据" :visible.sync="nodesDialogTableVisible" width="1000px">
-            <!--{{nodesData}}-->
-            <el-table :data="nodesDataSolve" border>
-                <el-table-column label="序号" type="index" width="50"></el-table-column>
-                <el-table-column property="key" label="节点名称" width="150"></el-table-column>
-                <el-table-column property="value_up" label="节点数据(up)" width></el-table-column>
-                <el-table-column property="value_down" label="节点数据(down)" width></el-table-column>
-            </el-table>
-        </el-dialog>
-
+        <!--<el-dialog title="节点数据" :visible.sync="nodesDialogTableVisible" width="1000px">-->
+        <!--{{nodesData}}-->
+        <el-table :data="nodesDataSolve" border>
+          <el-table-column label="序号" type="index" width="50"></el-table-column>
+          <el-table-column property="key" label="节点名称" width="150"></el-table-column>
+          <el-table-column property="value_up" label="节点数据(up)" width></el-table-column>
+          <el-table-column property="value_down" label="节点数据(down)" width></el-table-column>
+        </el-table>
+        <!--</el-dialog>-->
+      </el-tab-pane>
+      <el-tab-pane name="form" label="获取表单数据">
         <!--表单数据-->
-        <el-dialog title="表单数据" :visible.sync="formDialogTableVisible" width="1000px">
-            <!--formData: <br>-->
-            <!--{{formData}}-->
-            <!--{{curFormData}}-->
-            <el-table :data="curFromDataSolve" border>
-                <el-table-column label="序号" type="index" width="50"></el-table-column>
-                <el-table-column property="key" label="KEY" width="150"></el-table-column>
-                <el-table-column property="value" label="VALUE"></el-table-column>
-            </el-table>
-        </el-dialog>
+        <!--<el-dialog title="表单数据" :visible.sync="formDialogTableVisible" width="1000px">-->
+        <!--formData: <br>-->
+        <!--{{formData}}-->
+        <!--{{curFormData}}-->
+        <el-table :data="curFromDataSolve" border>
+          <el-table-column label="序号" type="index" width="50"></el-table-column>
+          <el-table-column property="key" label="KEY" width="150"></el-table-column>
+          <el-table-column property="value" label="VALUE"></el-table-column>
+        </el-table>
+        <!--</el-dialog>-->
+      </el-tab-pane>
+      <el-tab-pane name="process" label="获取执行过程">
 
         <!--执行过程-->
-        <el-dialog title="执行过程" :visible.sync="processDialogTableVisible" width="1000px">
-            <!--{{curFormData}}-->
-            <!--{{processDataList}} <br>-->
-            <!--{{processDataListSolve}} <br>-->
-            <el-steps :active="processDataListSolve.length" align-center>
-                <el-step :key="index" v-for="(item,index) in processDataListSolve" :title="item.title"
-                         :description="item.description"></el-step>
-            </el-steps>
-        </el-dialog>
+        <!--<el-dialog title="执行过程" :visible.sync="processDialogTableVisible" width="1000px">-->
+        <!--{{curFormData}}-->
+        <!--{{processDataList}} <br>-->
+        <!--{{processDataListSolve}} <br>-->
+        <el-steps :active="processDataListSolve.length" align-center>
+          <el-step :key="index" v-for="(item,index) in processDataListSolve" :title="item.title"
+                   :description="item.description"></el-step>
+        </el-steps>
+        <!--</el-dialog>-->
 
-        <!--操作button-->
-        <el-row>
-            <el-button type="primary" @click="flowHandler">流程数据</el-button>
-            <el-button type="success" @click="userHandler">user数据</el-button>
-            <el-button type="info"    @click="platformHandler">platform数据</el-button>
-            <el-button type="warning" @click="nodesHandler">节点数据</el-button>
-            <el-button type="danger"  @click="getFormHandler">获取表单数据</el-button>
-            <el-button type="warning" @click="getProcessHandler">获取执行过程</el-button>
-        </el-row>
-    </div>
+      </el-tab-pane>
+    </el-tabs>
+
+    <!--操作button-->
+    <!--<el-row>-->
+    <!--<el-button type="primary" @click="flowHandler">流程数据</el-button>-->
+    <!--<el-button type="success" @click="userHandler">user数据</el-button>-->
+    <!--<el-button type="info"    @click="platformHandler">platform数据</el-button>-->
+    <!--<el-button type="warning" @click="nodesHandler">节点数据</el-button>-->
+    <!--<el-button type="danger"  @click="getFormHandler">获取表单数据</el-button>-->
+    <!--<el-button type="warning" @click="getProcessHandler">获取执行过程</el-button>-->
+    <!--</el-row>-->
+  </div>
 </template>
 
 <script>
-import getFG from "./js/fg-control";
-const FG = new getFG();
-import flowMixin from './js/mixins'
-export default {
+  import getFG from "./js/fg-control";
+
+  const FG = new getFG();
+  import flowMixin from './js/mixins'
+
+  export default {
     name: "operation-btns",
     mixins: [flowMixin],
     props: {
-        data: {
-            type: Object,
-            required: true,
-        },
-        records: {
-            type: Array,
-            required: true,
-        },
-        formData: {
-            type: Object,
-            required: false,
-        },
+      data: {
+        type: Object,
+        required: true,
+      },
+      records: {
+        type: Array,
+        required: true,
+      },
+      formData: {
+        type: Object,
+        required: false,
+      },
     },
     data() {
-        return {
-            flowDialogTableVisible: false,
-            userDialogTableVisible: false,
-            platformDialogTableVisible: false,
-            nodesDialogTableVisible: false,
-            formDialogTableVisible: false,
-            processDialogTableVisible: false,
-            listData: [],
-            usreData: [],
-            usreDataSolve: [],
-            platformData: [],
-            platformDataSolve: [],
-            nodesData: [],
-            nodesDataSolve: [],
-            curFormData: [],
-            curFromDataSolve: [],
-            processDataList: []
-        }
+      return {
+        activeName: "flow",
+        flowDialogTableVisible: false,
+        userDialogTableVisible: false,
+        platformDialogTableVisible: false,
+        nodesDialogTableVisible: false,
+        formDialogTableVisible: false,
+        processDialogTableVisible: false,
+        listData: [],
+        usreData: [],
+        usreDataSolve: [],
+        platformData: [],
+        platformDataSolve: [],
+        nodesData: [],
+        nodesDataSolve: [],
+        curFormData: [],
+        curFromDataSolve: [],
+        processDataList: []
+      }
     },
     computed: {
-        // 当前流程执行过程
-        processDataListSolve() {
-            let ret = [];
-            this.processDataList.forEach(item => {
-                let rds = this.records.filter(reds => {
-                    return reds.nodeCode == item
-                });
-                console.log('rds...', rds)
-                if (rds.length > 0) {
-                    ret.push({
-                        title: item,
-                        description: rds[0]['nodeName'] || "没有文字提示"
-                    })
-                }
+      // 当前流程执行过程
+      processDataListSolve() {
+        let ret = [];
+        this.processDataList.forEach(item => {
+          let rds = this.records.filter(reds => {
+            return reds.nodeCode == item
+          });
+          console.log('rds...', rds)
+          if (rds.length > 0) {
+            ret.push({
+              title: item,
+              description: rds[0]['nodeName'] || "没有文字提示"
             })
-            return ret;
-        }
+          }
+        })
+        return ret;
+      }
     },
     created() {
-        console.log("created....")
+      console.log("created....")
+      this.flowHandler();
+      this._solveData(this.formData);
     },
     methods: {
-        flowHandler() {
-            this.listData = FG.list;
-            this.flowDialogTableVisible = true;
-        },
-        userHandler() {
-            let res = [];
-            for (let key in FG.user) {
-                // console.log('key',key,FG.user[key])
-                const value = FG.user[key];
-                res.push({
-                    key: key,
-                    value: typeof  value == "object" ? JSON.stringify(value) : value
-                })
-            }
-            this.usreData = FG.user;
-            this.usreDataSolve = res;
-            this.userDialogTableVisible = true;
-        },
-        platformHandler() {
-            let res = [];
-            for (let key in FG.platform) {
-                const value = FG.platform[key]
-                res.push({
-                    key: key,
-                    value: typeof  value == "object" ? JSON.stringify(value) : value
-                })
-            }
-            this.platformData = FG.platform;
-            this.platformDataSolve = res;
-            this.platformDialogTableVisible = true;
-        },
-        nodesHandler() {
-            console.log('FG.nodes', JSON.stringify(FG.nodes))
-            const keys = Object.keys(FG.nodes);
-            if (keys.length) {
-                let res = [];
-                for (let key in FG.nodes) {
-                    const value_up = FG.nodes[key]['up'];
-                    const value_down = FG.nodes[key]['down'];
-                    res.push({
-                        key: key,
-                        // value_up,
-                        // value_down,
-                        value_up: typeof value_up == "object" ? JSON.stringify(value_up) : value_up,
-                        value_down: typeof value_down == "object" ? JSON.stringify(value_down) : value_down
-                    })
-                }
-
-                this.nodesData = FG.nodes;
-                this.nodesDataSolve = res;
-                this.nodesDialogTableVisible = true;
-            } else {
-                this.$notify.info({
-                    title: '消息',
-                    message: '暂无节点数据'
-                });
-            }
-        },
-        getFormHandler() {
-            // alert(JSON.stringify(data));
-            this.$emit("getFormHandler")
-        },
-        getProcessHandler() {
-            this.processDialogTableVisible = true;
-            this.processDataList = FG.getProcess()
-        },
-        _solveData(data) {
-            let res = [];
-            for (let key in data) {
-                const value = data[key]
-                res.push({
-                    key: key,
-                    value: typeof  value == "object" ? JSON.stringify(value) : value
-                })
-            }
-
-            this.curFormData = data;
-            this.curFromDataSolve = res;
-        },
-        show() {
-            this.formDialogTableVisible = true;
+      handleClick(tab, event) {
+        this.activeName = tab.name;
+        // console.log('tab', tab);
+        // console.log('event', event);
+        const name = tab.name;
+        console.log('name', name);
+        switch (name) {
+          case 'flow':
+            this.flowHandler();
+            break;
+          case 'user':
+            this.userHandler();
+            break;
+          case 'platform':
+            this.platformHandler()
+            break;
+          case 'nodes':
+            this.nodesHandler()
+            break;
+          case 'form':
+            this.getFormHandler()
+            break;
+          case 'process':
+            this.getProcessHandler()
+            break;
+          default:
+            // 默认代码块
+            throw Error("没有name")
         }
-    },
-    created() {
-        this._solveData(this.formData)
+      },
+      flowHandler() {
+        this.listData = FG.list;
+        this.flowDialogTableVisible = true;
+      },
+      userHandler() {
+        let res = [];
+        for (let key in FG.user) {
+          // console.log('key',key,FG.user[key])
+          const value = FG.user[key];
+          res.push({
+            key: key,
+            value: typeof  value == "object" ? JSON.stringify(value) : value
+          })
+        }
+        this.usreData = FG.user;
+        this.usreDataSolve = res;
+        this.userDialogTableVisible = true;
+      },
+      platformHandler() {
+        let res = [];
+        for (let key in FG.platform) {
+          const value = FG.platform[key]
+          res.push({
+            key: key,
+            value: typeof  value == "object" ? JSON.stringify(value) : value
+          })
+        }
+        this.platformData = FG.platform;
+        this.platformDataSolve = res;
+        this.platformDialogTableVisible = true;
+      },
+      nodesHandler() {
+        console.log('FG.nodes', JSON.stringify(FG.nodes))
+        const keys = Object.keys(FG.nodes);
+        if (keys.length) {
+          let res = [];
+          for (let key in FG.nodes) {
+            const value_up = FG.nodes[key]['up'];
+            const value_down = FG.nodes[key]['down'];
+            res.push({
+              key: key,
+              // value_up,
+              // value_down,
+              value_up: typeof value_up == "object" ? JSON.stringify(value_up) : value_up,
+              value_down: typeof value_down == "object" ? JSON.stringify(value_down) : value_down
+            })
+          }
+
+          this.nodesData = FG.nodes;
+          this.nodesDataSolve = res;
+          this.nodesDialogTableVisible = true;
+        } else {
+          // this.$notify.info({
+          //   title: '消息',
+          //   message: '暂无节点数据'
+          // });
+        }
+      },
+      getFormHandler() {
+        // alert(JSON.stringify(data));
+        this.$emit("getFormHandler")
+      },
+      getProcessHandler() {
+        this.processDialogTableVisible = true;
+        this.processDataList = FG.getProcess()
+      },
+      _solveData(data) {
+        let res = [];
+        for (let key in data) {
+          const value = data[key]
+          res.push({
+            key: key,
+            value: typeof  value == "object" ? JSON.stringify(value) : value
+          })
+        }
+
+        this.curFormData = data;
+        this.curFromDataSolve = res;
+      },
+      show() {
+        // this.formDialogTableVisible = true;
+      }
     },
     watch: {
-        formData: {
-            deep: true,
-            handler(val) {
-                console.log('val....', val)
-                this._solveData(val)
-            }
+      formData: {
+        deep: true,
+        handler(val) {
+          console.log('val....', val)
+          this._solveData(val)
         }
+      }
     }
-}
+  }
 </script>
 
 <style scoped lang="scss">
-    .el-table {
-        .el-icon-check {
-            color: red;
-            font-size: 14px;
-            font-weight: bold;
-            display: inline;
-        }
+  .el-table {
+    .el-icon-check {
+      color: red;
+      font-size: 14px;
+      font-weight: bold;
+      display: inline;
     }
+  }
 </style>

@@ -5,7 +5,7 @@
     <!--value:{{value}} <br>
 
     rules:{{rules}} <br>-->
-    models:{{ models }} <br />
+    <!--models:{{ models }} <br />-->
     <el-form
       class="generateForm"
       v-if="keysLength"
@@ -344,7 +344,7 @@ export default {
           this.result[this.data.list[i].model] = this.models[
             this.data.list[i].model
           ];
-        } 
+        }
       }
     },
     // 检查model是否有重复
