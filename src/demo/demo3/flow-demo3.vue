@@ -57,6 +57,7 @@
 </template>
 
 <script>
+  import storage from 'good-storage'
   import request from './js/request'
   import flowBtns from './flow-buttons'
   // import getFG from 'fg-control';
@@ -66,7 +67,7 @@
   import {RES_OK} from "@/api/config";
   import flowMixin from './js/mixins'
   import {platform, user} from "./js/flowData";
-
+  const DEBUG_KEY = '__debug__'
   export default {
     name: "flowDemo",
     mixins: [flowMixin],
@@ -105,6 +106,8 @@
             $debugs.style.width = rightWidth + "px";
           }
           document.onmouseup = function () {
+            // 取消文字的选中状态
+            window.getSelection().empty();
             document.onmousemove = document.onmouseup = null;
           }
         }
@@ -180,6 +183,7 @@
         let code = 0;
         let code2 = 0;
         let timer = null;
+        this.debug = storage.session.get(DEBUG_KEY, false)
         document.onkeydown = function (e) {
           clearTimeout(timer);
           //事件对象兼容
@@ -196,6 +200,7 @@
             // alert('Shift+2');
             if(_self.isDebugMode){
               _self.debug = !_self.debug;
+              storage.session.set(DEBUG_KEY, _self.debug)
             }
             code = 0;
             code2 = 0;
