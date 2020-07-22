@@ -5,8 +5,12 @@
     <!--value:{{value}} <br>
 
     rules:{{rules}} <br>-->
+<<<<<<< HEAD
     models:{{ models }}
     <br />
+=======
+    <!--models:{{ models }} <br />-->
+>>>>>>> 59ef9c901c30815d5263b7ae65bbcec6685f8413
     <el-form
       class="generateForm"
       v-if="keysLength"

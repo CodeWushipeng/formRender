@@ -41,7 +41,7 @@ export default new Router({
                 },
                 {
                     path: 'flow',
-                    name: 'flow1',
+                    name: 'flowDemo',
                     component: flowDemo3,
                 },
                 {

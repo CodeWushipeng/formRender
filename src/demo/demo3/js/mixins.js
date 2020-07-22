@@ -24,6 +24,27 @@ const flowMixin = {
 
       return fsTxt[type];
     },
+    filterSubType(type) {
+      if (!type) return '';
+      const fsTxt = {
+        '01': "通用通信提交",
+        '02': "订单提交",
+        '03': "自定义函数提交",
+        '04': "本地提交",
+      };
+
+      return fsTxt[type];
+    },
+    resetComponent() {
+      // 销毁组件
+      return new Promise((reslove, reject) => {
+        this.hackRest = false;
+        this.$nextTick(() => {
+          this.hackRest = true;
+          reslove();
+        });
+      });
+    },
   }
 }
 export default flowMixin;

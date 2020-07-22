@@ -1,25 +1,29 @@
 <template>
-    <div class="render-wrap" style="padding: 20px;" ref="loadingArea">
-        <!--data :{{data}}-->
-        <!--list :{{configdata.list}}-->
-        <!--<br />-->
-        <!--rollbackData :{{configdata.rollbackData}} <br>-->
-        <!--<hr>-->
-        <!--configdata:{{configdata}}-->
-        <!--<hr>-->
-        <!--data:{{data}}-->
-        <!--<hr>-->
+  <div class="render-wrap" style="padding: 20px; " ref="loadingArea">
+    <div>
+      <!--debug:{{debug}}-->
+    </div>
+    <!--{{leftCol}} <br>-->
+    <!--{{rightCol}} <br>-->
+    <!--data :{{data}}-->
+    <!--list :{{configdata.list}}-->
+    <!--<br />-->
+    <!--rollbackData :{{configdata.rollbackData}} <br>-->
+    <!--<hr>-->
+    <!--configdata:{{configdata}}-->
+    <!--<hr>-->
+    <!--data:{{data}}-->
+    <!--<hr>-->
 
-        <!--操作按钮-->
-        <operation-btns ref="operations" :data="data" :records="records" :formData="formData"
-                        @getFormHandler="getFormHandler"></operation-btns>
-        <!--节点信息-->
-        <current-node :data="data" :records="records"></current-node>
-
-        <!--当前-->
-        <div v-if="type=='01'">可以开始</div>
-        <div v-if="type=='02'">结束</div>
-        <div v-if="type=='03'">
+    <div class="buss-container">
+      <div class="buss" id="buss" :style="bussStyle">
+        <div :class="mainClass">
+          <!--节点信息-->
+          <h3>{{data.nodeName}}</h3>
+          <!--当前-->
+          <div v-if="NodeType=='01'">可以开始</div>
+          <div v-if="NodeType=='02'">结束</div>
+          <div v-if="NodeType=='03'">
             <!--render-form-->
             <render-form
                     v-if="hackRest && configdata.list.length>0"
@@ -27,35 +31,87 @@
                     :configdata="configdata"
                     :remoteFuncs="remoteFuncs"
                     ref="renderForm"
-            ></render-form>
-        </div>
+            />
+          </div>
 
-        <!--操作按钮-->
-        <div style="text-align:center;">
+          <!--操作按钮-->
+          <div style="text-align:center;">
             <el-button type="primary" @click="prev">Back</el-button>
             <el-button type="primary" @click="submit">Submit</el-button>
             <el-button type="primary" @click="cancel">Cancel</el-button>
+          </div>
         </div>
+        <!--拖拽-->
+        <div class="drag" v-drag v-if="debug"></div>
+      </div>
+      <div class="debugs" id="debugs" v-if="debug">
+        <!--操作按钮-->
+        <flowBtns ref="operations"
+                        :data="data"
+                        :records="records"
+                        :formData="formData"
+                        @getFormHandler="getFormHandler" />
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
+  import storage from 'good-storage'
   import request from './js/request'
-  import operationBtns from './operation-buttons'
-  import currentNode from './current-node'
+  import flowBtns from './flow-buttons'
   // import getFG from 'fg-control';
   import getFG from "./js/fg-control";
-
   const FG = new getFG();
-  import {queryFlowDetail, insertNodeData} from "../../api/flows";
+  import {queryFlowDetail} from "@/api/flows";
   import {RES_OK} from "@/api/config";
+  import flowMixin from './js/mixins'
   import {platform, user} from "./js/flowData";
-
+  const DEBUG_KEY = '__debug__'
   export default {
-    name: "flow-demo",
+    name: "flowDemo",
+    mixins: [flowMixin],
     components: {
-      operationBtns,
-      currentNode
+      flowBtns,
+    },
+    directives: {
+      drag(el, bindings) {
+        el.onmousedown = function (e) {
+          let disx = e.pageX - el.offsetLeft;
+          // console.log("disx", disx);
+          // console.log("el", el);
+          // console.log("bindings", bindings);
+          document.onmousemove = function (e) {
+            console.log("onmousemove...");
+            // 取消文字的选中状态
+            window.getSelection().empty();
+
+            let $buss   = document.getElementById('buss');
+            let $debugs = document.getElementById('debugs');
+            let $body   = document.getElementsByTagName('body')[0];
+
+            let winWidth = $body.clientWidth;
+            let leftWidth = e.pageX - disx;
+            let rightWidth = null;
+            let _MIN = 400;
+            let _MAX = winWidth - _MIN;
+            if (leftWidth < _MIN) {
+              leftWidth = _MIN;
+            } else if (leftWidth > _MAX) {
+              leftWidth = _MAX;
+            }
+            rightWidth = winWidth - leftWidth;
+
+            console.log('leftWidth', leftWidth)
+            console.log('rightWidth', rightWidth)
+            $buss.style.width = leftWidth + "px";
+            $debugs.style.width = rightWidth + "px";
+          }
+          document.onmouseup = function () {
+            document.onmousemove = document.onmouseup = null;
+          }
+        }
+      }
     },
     beforeRouteLeave(to, from, next) {
       setTimeout(() => {
@@ -71,14 +127,23 @@
       })
     },
     computed: {
-      type() {
-        return this.data.type
+      NodeType() {
+        return this.data.type;
       },
+      isDebugMode() {
+        return true;
+      },
+      bussStyle() {
+        return this.debug == false ? 'width:100%' : 'width:50%';
+      },
+      mainClass() {
+        return this.debug == false ? 'mains' : 'mains-debug';
+      }
     },
     data() {
       return {
+        debug: false, // debug
         formData: {}, // 当前表单数据
-        loadingInstance: null,
         // 当前节点数据
         data: {},
         // =========数据显示================
@@ -99,6 +164,7 @@
     },
     created() {
       this._inits();
+      this.openDebug(this);
     },
     watch: {
       "configdata.list": {
@@ -106,21 +172,46 @@
         handler(list) {
           this.resetComponent();
         }
-      }
+      },
+      debug: function (val, oldVal) {
+        console.log('new: %s, old: %s', val, oldVal)
+      },
     },
     methods: {
-      // 销毁组件
-      resetComponent() {
-        return new Promise((reslove, reject) => {
-          this.hackRest = false;
-          this.$nextTick(() => {
-            this.hackRest = true;
-            reslove();
-          });
-        });
+      openDebug(_this) {
+        const _self = _this;
+        let code = 0;
+        let code2 = 0;
+        let timer = null;
+        this.debug = storage.session.get(DEBUG_KEY, false)
+        document.onkeydown = function (e) {
+          clearTimeout(timer);
+          //事件对象兼容
+          let e1 = e || event || window.event || arguments.callee.caller.arguments[0];
+          console.log('e1.keyCode', e1.keyCode)
+          const key = e1.keyCode;
+          if (key === 16) { // key:shift
+            code = 1;
+          }
+          if (key === 50) { // key:2
+            code2 = 1;
+          }
+          if (code === 1 && code2 === 1) {
+            // alert('Shift+2');
+            if(_self.isDebugMode){
+              _self.debug = !_self.debug;
+              storage.session.set(DEBUG_KEY, _self.debug)
+            }
+            code = 0;
+            code2 = 0;
+          }
+          timer = setTimeout(() => {
+            code = 0;
+            code2 = 0;
+          }, 1000)
+        }
       },
       _inits() {
-        // this.showLoading();
         const flowCode = this.$route.name;
         const query = this.$route.query;
         console.log("this.$routes.name:", this.$route.name);
@@ -129,46 +220,45 @@
           // flowCode:flowCode.replace('buss','')
           flowCode: query.id
         };
+        // return
         queryFlowDetail(params)
-        .then(res => {
-          console.log('res', res)
-          const {rspCode} = res;
-          // this.hideLoading()
-          if (rspCode == RES_OK) {
-            const list = res.detail.records;
-            let funcCollection = res.define.funcCollection;
-            const funcObject = FG.solveCommonJS(funcCollection);
+            .then(res => {
+              console.log('res', res)
+              const {rspCode} = res;
+              if (rspCode == RES_OK) {
+                const list = res.detail.records;
+                let funcCollection = res.define.funcCollection;
+                const funcObject = FG.solveCommonJS(funcCollection);
 
-            // records数据
-            this.records = list;
+                // records数据
+                this.records = list;
 
-            // 挂载数据
-            FG.setData("user", user);
-            FG.setData("platform", platform);
-            FG.setData("list", list); // 流控数据
-            FG.setData("utils", funcObject); // 公共函数
+                // 挂载数据
+                FG.setData("user", user);
+                FG.setData("platform", platform);
+                FG.setData("list", list); // 流控数据
+                FG.setData("utils", funcObject); // 公共函数
 
-            // 启动开始节点
-            const startNode = FG.getStartNode();
-            const {checkStart, nodeCode} = startNode;
-            if (FG.checkStart(checkStart)) {
-              this.data = startNode;
-              this.configdata.list = [startNode];
-              this.configdata.utils = funcObject;
-              FG.ISOK = true;
-              FG.pushProcess(nodeCode);
-              console.log(`开始节点${nodeCode},检查通过,可以执行`);
-            } else {
-              // this.$handleWarning(`当前节点${node_code}不能执行`);
-              alert(`当前节点${nodeCode}不能执行`);
-            }
-          }
-        })
-        .catch(error => {
-          throw new Error(error);
-        });
+                // 启动开始节点
+                const startNode = FG.getStartNode();
+                const {checkStart, nodeCode} = startNode;
+                if (FG.checkStart(checkStart)) {
+                  this.data = startNode;
+                  this.configdata.list = [startNode];
+                  this.configdata.utils = funcObject;
+                  FG.ISOK = true;
+                  FG.pushProcess(nodeCode);
+                  console.log(`开始节点${nodeCode},检查通过,可以执行`);
+                } else {
+                  // this.$handleWarning(`当前节点${node_code}不能执行`);
+                  alert(`当前节点${nodeCode}不能执行`);
+                }
+              }
+            })
+            .catch(error => {
+              throw new Error(error);
+            });
       },
-
       config(next_node) {
         if (next_node) {
           const temp = FG.getNodeData(next_node);
@@ -443,10 +533,10 @@
               });
             }
           })
-          .catch(error => {
-            // Data verification failed
-            throw new Error(error);
-          });
+              .catch(error => {
+                // Data verification failed
+                throw new Error(error);
+              });
         }
         // console.log("======FG.CURFORM ===========", FG.CURFORM )
       },
@@ -495,7 +585,6 @@
             throw new Error(err)
           }
         })
-
       },
       _findBackNode(returnNode) {
         let ret = null;
@@ -525,12 +614,60 @@
         return ret;
       },
     }
-  };
+  }
 </script>
 
 <style lang="scss" scoped>
-    .render-wrap {
-        margin-top: 20px;
+  .render-wrap {
+    margin-top: 20px;
+  }
+
+  // flex
+  @mixin flexLayout() {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items:stretch;
+  }
+
+  .buss-container {
+    @include flexLayout;
+    height: 100%;
+    /*border:1px solid red;*/
+    div {
+      min-height: 200px;
     }
+    .buss {
+      width: 50%;
+      order: 0;
+      @include flexLayout;
+      flex-grow: 0;
+      .mains {
+        width: 90%;
+        flex-grow: 1;
+        padding-right: 0px;
+      }
+      .mains-debug {
+        flex-grow: 1;
+        width: 100%;
+        padding-right: 10px;
+      }
+      .drag {
+        border-radius: 3px;
+        width: 10px;
+        background: #F5F7FA;
+        cursor: w-resize;
+      }
+    }
+    .debugs {
+      padding-left: 10px;
+      flex-grow: 1;
+      order: 1;
+      overflow: hidden;
+    }
+  }
+
 
 </style>

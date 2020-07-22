@@ -3,16 +3,21 @@
         <!--当前节点信息-->
         <!--{{data}}-->
         <div class="current-node" v-if="Object.keys(data).length>0">
-            <h3>{{data.nodeName}}</h3>
+            <div class="current-title">{{data.nodeName}}</div>
             <el-card class="box-card">
                 <el-row :gutter="20">
                     <el-col :span="6" class="label-color">节点类型：</el-col>
                     <el-col :span="6">
                         <el-tag :type="filterType(type)">{{ filterStatus(type)}}</el-tag>
                     </el-col>
-                    <el-col :span="6" class="label-color">总节点个数：</el-col>
+                    <!--<el-col :span="6" class="label-color">总节点个数：</el-col>-->
+                    <!--<el-col :span="6">-->
+                        <!--<el-tag type="info">{{recordsLength}}</el-tag>-->
+                    <!--</el-col>-->
+                    <el-col :span="6" class="label-color">提交类型：</el-col>
                     <el-col :span="6">
-                        <el-tag type="info">{{recordsLength}}</el-tag>
+                        <el-tag v-if="data.commitType" type="info">{{filterSubType(data.commitType)}}</el-tag>
+                        <el-tag v-else type="info">无</el-tag>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
@@ -63,7 +68,7 @@
 <script>
 import flowMixin from './js/mixins'
 export default {
-    name: "current-node",
+    name: "flowNode",
     mixins: [flowMixin],
     props: {
         data: {
@@ -83,14 +88,15 @@ export default {
             const { type} = this.data;
             return type
         },
-    },
-    methods:{
-
     }
 }
 </script>
 
 <style scoped lang="scss">
+    .current-title{
+        font-weight: bold;
+        padding-bottom:15px;
+    }
     .el-row {
         margin-bottom: 10px;
         &:last-child {
