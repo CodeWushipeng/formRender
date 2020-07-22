@@ -319,7 +319,6 @@ let handlers = {
           this.handelAssignment(i);
           this.handelFlow();
         }
-<<<<<<< HEAD
       }
     },
     // 提取字段交易出口数据model值，判断当前表单是否存在，存在赋值，否则请求表格并弹出展示
@@ -333,9 +332,6 @@ let handlers = {
         this.searchTable(result, data);
       } else {
         tempFunc(this.models, data);
-=======
-
->>>>>>> 59ef9c901c30815d5263b7ae65bbcec6685f8413
       }
     },
     // 表格查询
@@ -605,12 +601,7 @@ let handlers = {
             }
           }
         });
-<<<<<<< HEAD
       });
-=======
-      })
-
->>>>>>> 59ef9c901c30815d5263b7ae65bbcec6685f8413
     },
     // arrow回调事件
     arrowListener() {
@@ -685,14 +676,8 @@ let handlers = {
         this.getShowLength();
         this.iteratorAllEle();
         this.resetCursor();
-<<<<<<< HEAD
         this.copyMOdels();
         this.handelCursorByArrow();
-=======
-        this.copyMOdels()
-        this.handelCursorByArrow()
-
->>>>>>> 59ef9c901c30815d5263b7ae65bbcec6685f8413
       }
     }, 300);
   },
