@@ -35,6 +35,16 @@ const flowMixin = {
 
       return fsTxt[type];
     },
+    resetComponent() {
+      // 销毁组件
+      return new Promise((reslove, reject) => {
+        this.hackRest = false;
+        this.$nextTick(() => {
+          this.hackRest = true;
+          reslove();
+        });
+      });
+    },
   }
 }
 export default flowMixin;

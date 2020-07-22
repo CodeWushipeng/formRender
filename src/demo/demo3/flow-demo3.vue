@@ -64,10 +64,12 @@
   const FG = new getFG();
   import {queryFlowDetail} from "@/api/flows";
   import {RES_OK} from "@/api/config";
+  import flowMixin from './js/mixins'
   import {platform, user} from "./js/flowData";
 
   export default {
     name: "flowDemo",
+    mixins: [flowMixin],
     components: {
       flowBtns,
     },
@@ -204,16 +206,6 @@
           }, 1000)
         }
       },
-      // 销毁组件
-      resetComponent() {
-        return new Promise((reslove, reject) => {
-          this.hackRest = false;
-          this.$nextTick(() => {
-            this.hackRest = true;
-            reslove();
-          });
-        });
-      },
       _inits() {
         const flowCode = this.$route.name;
         const query = this.$route.query;
@@ -262,7 +254,6 @@
               throw new Error(error);
             });
       },
-
       config(next_node) {
         if (next_node) {
           const temp = FG.getNodeData(next_node);
@@ -589,7 +580,6 @@
             throw new Error(err)
           }
         })
-
       },
       _findBackNode(returnNode) {
         let ret = null;

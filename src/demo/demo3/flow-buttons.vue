@@ -114,7 +114,6 @@
 
 <script>
   import getFG from "./js/fg-control";
-
   const FG = new getFG();
   import flowMixin from './js/mixins'
   import flowNode from './flow-node'
