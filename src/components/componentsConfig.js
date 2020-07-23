@@ -44,8 +44,9 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
+    tableCode: ''
   },
   {
     type: 'textarea',
@@ -88,8 +89,9 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
+    tableCode: ''
   },
   {
     type: 'number',
@@ -133,8 +135,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   },
   {
     type: 'radio',
@@ -197,8 +199,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   },
   {
     type: 'checkbox',
@@ -258,8 +260,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   },
   {
     type: 'time',
@@ -308,8 +310,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   },
   {
     type: 'date',
@@ -358,8 +360,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   },
   {
     type: 'rate',
@@ -400,8 +402,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   },
   {
     type: 'color',
@@ -441,8 +443,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   },
   {
     type: 'select',
@@ -483,7 +485,7 @@ export const basicComponents = [
     requestData: "",
     responseData: "",
     hidden:"",
-    remoteCode: '',
+    remotetableCode: '',
     enterCondition: '',
     condition:"",
     valueRange: '',
@@ -501,8 +503,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   },
   {
     type: 'switch',
@@ -541,8 +543,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   },
   {
     type: 'slider',
@@ -587,8 +589,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   },
   {
     type: 'text',
@@ -626,8 +628,8 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   }
 ]
 
@@ -698,8 +700,8 @@ export const advanceComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   },
   {
     type: 'cascader',
@@ -748,8 +750,8 @@ export const advanceComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableCode: ''
   }
 ]
 
@@ -795,24 +797,24 @@ export const tableComponents = [
       isDetailCustom: false,
       displayColumns:[],
       remoteFunc: function (currentObj, request, callBack){
-        let tableData = [];
-        return tableData;
+        let tableKey = [];
+        return tableKey;
       },
       addFn: function (currentObj, request, callBack) {
-        let tableData = null;
-        return tableData;
+        let tableKey = null;
+        return tableKey;
       },
       editFn: function (currentObj, request, callBack) {
-        let tableData = null;
-        return tableData;
+        let tableKey = null;
+        return tableKey;
       },
       detailFn: function (currentObj, request, callBack) {
-        let tableData = [];
-        return tableData;
+        let tableKey = [];
+        return tableKey;
       },
       deleteFn: function (currentObj, request, callBack) {
-        let tableData = [];
-        return tableData;
+        let tableKey = [];
+        return tableKey;
       },
       pagination:{
         pageSize:1,

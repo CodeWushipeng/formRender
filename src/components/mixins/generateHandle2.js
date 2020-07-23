@@ -269,17 +269,11 @@ let handlers = {
         if (!flag) {
           return;
         }
-        // let url = lists[i].url;
         let url = lists[i].url;
-        let primitiveData = this.evalWrap(lists[i].data);
-        let nowModel = lists[i].model;
-        let nowData = this.models[nowModel];
-        let postData;
-        if (primitiveData != undefined && primitiveData != "") {
-          postData = primitiveData;
-        } else {
-          postData = nowData;
-        }
+        let postData = this.evalWrap(lists[i].data);
+        let tableKey = lists[i].tableKey;
+        let tableModel = lists[i].tableModel;
+        let tableCode = lists[i].tableCode;
         let success = lists[i].success;
         getTrade(url, {
           body: postData,
@@ -292,15 +286,24 @@ let handlers = {
           },
         })
           .then((res) => {
-            console.log(res, this);
+            console.log(res);
             if (res.rspCode == RES_OK) {
-              // this.$refs.voucherList[0].$refs.generateTable.setData(res.voucherList)
+              let tempFunc = eval("(" + success + ")");
               this.handelValidate("success", "", i);
-              this.checkOutModel(success, res);
+              let tableData = res[tableKey];  //根据配置的数据标识获取表格数据
+              if(this.checkOutModel(tableModel)){  //如果存在目标表格执行出口数据转换
+                tempFunc(this.models,res,utils)
+              }else{
+                this.searchTable(tableCode,tableData)  //不存在目标表格发起查询表格请求
+              }
               this.remoteError = false;
             } else {
               this.setFocus(this.allItems[i]);
-              this.handelValidate("error", "验证失败，请重新验证", i);
+              this.$notify.error({
+                title: '错误',
+                message: res.rspMsg
+              });
+              // this.handelValidate("error", res.rspMsg, i);
               this.remoteError = true;
               this.outMark = i;
             }
@@ -308,7 +311,11 @@ let handlers = {
           .catch((error) => {
             console.log(error);
             this.setFocus(this.allItems[i]);
-            this.handelValidate("error", "验证失败，请重新验证", i);
+            this.$notify.error({
+              title: '错误',
+              message: error.rspMsg
+            });
+            // this.handelValidate("error", res.rspMsg, i);
             this.remoteError = true;
             this.outMark = i;
           });
@@ -321,25 +328,12 @@ let handlers = {
         }
       }
     },
-    // 提取字段交易出口数据model值，判断当前表单是否存在，存在赋值，否则请求表格并弹出展示
-    checkOutModel(target, data) {
-      let reg = /(?<=models\.)[^]*(?==)/;
-      let model = target.match(reg)[0];
-      console.log(model);
-      let result = model.trim();
-      let tempFunc = eval("(" + target + ")");
-      if (Object.keys(this.models).indexOf(result) == "-1") {
-        this.searchTable(result, data);
-      } else {
-        tempFunc(this.models, data);
-      }
-    },
     // 表格查询
-    searchTable(code, cb) {
+    searchTable(code, table) {
       let self = this
       getTableList({
         body: {
-          listCode: code,
+          listCode: code?code:"gcc-table",
         },
         header: {
           gloSeqNo: 1594800028104,
@@ -354,18 +348,45 @@ let handlers = {
           subProjectId: "occaecat tempor dolor enim ex",
         },
       })
-        .then((res) => {debugger
+        .then((res) => {
+          if(res.rspCode === RES_OK){
+            let temp = JSON.parse(res.define.records[0].listContent);
+          // temp.list[0].options.tableData = table;
+          self.gridData = temp
           self.trade = true;
-          let temp = JSON.parse(res.define.records[0].listContent);
-          // temp.list[0].options.tableData = cb.voucherList;
-          self.gridData.list = temp.list; 
-          self.gridData.config = temp.config
-          // this.$refs.grid.setData(cb.voucherList)
           console.log(res.define.records[0].listContent);
+          }else{
+            this.$notify.error({
+              title: '错误',
+              message: res.rspMsg
+            });
+          }
+          
         })
         .catch((error) => {
-          console.log(error);
+          this.$notify.error({
+            title: '错误',
+            message: error.rspMsg
+          });
         });
+    },
+    // 根据model值判断当前表单是否有目标表格组件
+    checkOutModel(model) {
+      // let reg = /(?<=models\.)[^]*(?==)/;
+      // let model = target.match(reg)[0];
+      // console.log(model);
+      // let result = model.trim();
+      // let tempFunc = eval("(" + target + ")");
+      if (Object.keys(this.models).indexOf(model) == "-1") {
+        return false
+      } else {
+        return true
+      }
+    },
+    // 双击表格获取当前行数据
+    GetRowData(assignFunc){
+      let rowData = someevent();
+      assignFunc(this.models,rowData,utils)
     },
     // 表格弹出框关闭后执行光标定位
     goFlow() {

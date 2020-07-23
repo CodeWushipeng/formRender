@@ -99,18 +99,6 @@
       <!-- 字段交易 -->
       <el-form-item :label="$t('fm.config.common.remoteFactor')" v-if="data.type != 'grid'">
         <!-- <el-button @click="handelMirror">点击配置外部条件访问</el-button> -->
-        <!-- <el-switch
-        style="margin:15px 0"
-          v-model="data.isAlert"
-          inactive-text="是否弹出表格">
-        </el-switch>
-        <el-input
-          style="text-overflow: ellipsis;margin-bottom:15px"
-          v-model="data.code"
-          placeholder="表格编码"
-        >
-          <template slot="prepend">表格编码</template>
-        </el-input> -->
         <el-input
           v-model="data.isRemote"
           placeholder="启动条件"
@@ -137,6 +125,27 @@
           placeholder="入口数据"
         >
           <template slot="prepend">入口数据</template>
+        </el-input>
+        <el-input
+          style="text-overflow: ellipsis;margin-bottom:15px"
+          v-model="data.tableKey"
+          placeholder="表格数据标识"
+        >
+          <template slot="prepend">表格数据标识</template>
+        </el-input>
+        <el-input
+          style="text-overflow: ellipsis;margin-bottom:15px"
+          v-model="data.tableModel"
+          placeholder="表格字段标识"
+        >
+          <template slot="prepend">表格字段标识</template>
+        </el-input>
+        <el-input
+          style="text-overflow: ellipsis;margin-bottom:15px"
+          v-model="data.tableCode"
+          placeholder="表格编码"
+        >
+          <template slot="prepend">表格编码</template>
         </el-input>
         <el-input
           style="text-overflow: ellipsis;"
