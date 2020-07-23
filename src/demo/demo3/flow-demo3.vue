@@ -72,6 +72,7 @@
   import {RES_OK} from "@/api/config";
   import flowMixin from './js/mixins'
   import {platform, user} from "./js/flowData";
+  import bus from "@/bus/bus.js"
 
   const DEBUG_KEY = '__debug__';
   const Rank_BTNS = ['prev', 'submit', 'cancel'];
@@ -153,7 +154,7 @@
     },
     data() {
       return {
-        canEnter: true, // 能否键盘操作按钮
+        canEnter: false, // 能否键盘操作按钮
         btnIndex: 1,
         debug: false, // debug
         formData: {}, // 当前表单数据

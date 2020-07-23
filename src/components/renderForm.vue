@@ -10,6 +10,7 @@
       :remote="remoteFuncs"
       :data="jsonData"
       :value="formdata"
+      @isEnd="accept"
       ref="generateForm"
     ></fm-generate-form>
   </div>
@@ -83,6 +84,10 @@ export default {
     },
   },
   methods: {
+    accept(params){
+      console.log(params)
+      this.$emit("has-end",params)
+    },
     showLoading() {
       this.loadingInstance = Loading.service();
     },

@@ -83,11 +83,11 @@
       </template>
     </el-form>
     <!-- 字段交易弹出框 -->
-    <!-- <el-dialog :visible.sync="trade" @close="goFlow"> -->
-    <div style="width:100%;height:700px;background:red">
-      <fm-generate-table v-if="gridData" :data="gridData" ref="grid"></fm-generate-table>
+    <el-dialog :visible.sync="trade" @close="goFlow">
+    <div>
+      <fm-generate-form v-if="gridData" :data="gridData" ref="grid"></fm-generate-form>
     </div>
-    <!-- </el-dialog> -->
+    </el-dialog>
 
 
   </div>
