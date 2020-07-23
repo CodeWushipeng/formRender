@@ -1,7 +1,9 @@
 import { RES_OK } from "@/api/config";
-import { getTrade, getTableList } from "@/api/forms";
+import { getTrade, getFormList } from "@/api/forms";
+import bus from "@/bus/bus.js"
 let handlers = {
-  props: {},
+  props: {
+  },
   data() {
     return {
       trade: false, //字段交易弹出框
@@ -36,6 +38,7 @@ let handlers = {
         "camera",
         "buttonCom",
       ],
+      
     };
   },
   methods: {
@@ -267,6 +270,10 @@ let handlers = {
       if (lists[i].isRemote) {
         let flag = this.evalWrap(lists[i].isRemote);
         if (!flag) {
+          if (this.outMark == i) {
+            this.handelAssignment(i);
+            this.handelFlow();
+          }
           return;
         }
         let url = lists[i].url;
@@ -293,6 +300,7 @@ let handlers = {
               let tableData = res[tableKey];  //根据配置的数据标识获取表格数据
               if(this.checkOutModel(tableModel)){  //如果存在目标表格执行出口数据转换
                 tempFunc(this.models,res,utils)
+                this.$refs[tableModel][0].$refs.generateTable.setData(val[this.widget.model])
               }else{
                 this.searchTable(tableCode,tableData)  //不存在目标表格发起查询表格请求
               }
@@ -330,31 +338,21 @@ let handlers = {
     },
     // 表格查询
     searchTable(code, table) {
+      debugger
       let self = this
-      getTableList({
-        body: {
-          listCode: code?code:"gcc-table",
-        },
-        header: {
-          gloSeqNo: 1594800028104,
-          pageIndex: 0,
-          pageSize: 999,
-          projectId: "quis consectetur",
-          reqSeqNo: "1",
-          reqTime: "1",
-          serviceGroupid: "mollit sed",
-          serviceId: "officia non",
-          serviceName: "1",
-          subProjectId: "occaecat tempor dolor enim ex",
-        },
+      getFormList("",{
+          formCode: "gcc2",
+          pageIndex: "1"
       })
         .then((res) => {
+          console.log(res)
           if(res.rspCode === RES_OK){
-            let temp = JSON.parse(res.define.records[0].listContent);
-          // temp.list[0].options.tableData = table;
-          self.gridData = temp
-          self.trade = true;
-          console.log(res.define.records[0].listContent);
+            let temp = JSON.parse(res.define.records[0].formContent);
+            console.log(this.$refs,temp)
+            temp.list[0].options.tableData = table;
+            self.gridData = temp
+            self.trade = true;
+            console.log(res.define.records[0].formContent);
           }else{
             this.$notify.error({
               title: '错误',
@@ -364,6 +362,7 @@ let handlers = {
           
         })
         .catch((error) => {
+          console.log(error)
           this.$notify.error({
             title: '错误',
             message: error.rspMsg
@@ -543,6 +542,7 @@ let handlers = {
         this.getShowLength();
         this.enterCheck();
         this.iteratorAllEle();
+        this.$emit("isEnd",true)
       }
     },
     // radio change事件
@@ -676,15 +676,6 @@ let handlers = {
       }
     },
   },
-  watch: {
-    // gridData:{
-    //   deep:true,
-    //   immediate: true,
-    //   handler(val){
-    //     // console.log(val)
-    //   }
-    // }
-  },
   mounted() {
     let inter = setInterval(() => {
       if (this.data.list && this.data.list.length > 0) {
@@ -699,6 +690,7 @@ let handlers = {
         this.resetCursor();
         this.copyMOdels();
         this.handelCursorByArrow();
+        console.log(this.$refs)
       }
     }, 300);
   },

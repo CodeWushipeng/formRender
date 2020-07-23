@@ -1398,9 +1398,10 @@ export default {
       handler(val) {
         console.log(val)
         this.dataModel = val[this.widget.model];
-        if(this.$refs.generateTable){
-          this.$refs.generateTable.setData(val[this.widget.model])
-        }
+        console.log(this.$refs)
+        // if(this.$refs.generateTable){
+        //   this.$refs.generateTable.setData(val[this.widget.model])
+        // }
       }
     }
   }
