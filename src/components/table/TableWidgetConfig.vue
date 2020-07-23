@@ -20,7 +20,7 @@
         <div v-if="tableName != ''">
           <el-form-item :label="$t('fm.tableWidget.widget.dataIidentification')">
             <el-input
-              v-model="data.options.remoteFunc"
+              v-model="data.options.remoteFunc.toString()"
               size="mini"
               @focus="openCode('tableRemotFun')"
             ></el-input>
