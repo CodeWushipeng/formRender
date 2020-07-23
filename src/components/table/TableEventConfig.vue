@@ -15,7 +15,7 @@
           readonly
           :disabled="!data.options.isAddBtnCustom"
           @focus="handelMirror('add')"
-          v-model="data.options.addFn"
+          v-model="data.options.addFn.toString()"
           placeholder="新增方法"
         ></el-input>
       </el-form-item>
@@ -170,19 +170,19 @@ export default {
   },
   methods: {
     // codeMirror弹出函数
-    handelMirror(type) {
+    handelMirror(type) {debugger
       this.mirrorVisible = true
       this.tableEventCodeCf.codeType = type;
       if (type == "add") {
-        this.tableEventCodeCf.tableCodeFn = this.data.options.addFn
+        this.tableEventCodeCf.tableCodeFn = (this.data.options.addFn).toString()
          
       } else if (type == "detail") {
-        this.tableEventCodeCf.tableCodeFn = this.data.options.detailFn
+        this.tableEventCodeCf.tableCodeFn = this.data.options.detailFn.toString()
           
       } else if (type == "edit") {
-        this.tableEventCodeCf.tableCodeFn = this.data.options.editFn
+        this.tableEventCodeCf.tableCodeFn = this.data.options.editFn.toString()
       }else if (type == "delete") {
-        this.tableEventCodeCf.tableCodeFn = this.data.options.deleteFn
+        this.tableEventCodeCf.tableCodeFn = this.data.options.deleteFn.toString()
       }
     },
 

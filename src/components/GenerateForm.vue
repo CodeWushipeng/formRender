@@ -88,7 +88,7 @@
       <fm-generate-table v-if="gridData" :data="gridData" ref="grid"></fm-generate-table>
     </div>
     <!-- </el-dialog> -->
-    
+
 
   </div>
 </template>

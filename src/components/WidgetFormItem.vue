@@ -296,7 +296,7 @@
                 <el-button type="primary">删除数据</el-button>
               </div>
             </el-col>
-            <el-col v-if="element.options.isDisplayColumnBtn" :span="8">
+            <el-col v-if="element.options.isDisplayColumnBtn" :span="10">
               <div style="display: inline-flex;">
                 <span>显示列:</span>
                 <el-select @change="displayColumnsChange()"

@@ -660,8 +660,8 @@
                 <el-button @click="handleTableEvent('delete')" type="primary">删除数据</el-button>
               </div>
             </el-col>
-            <el-col v-if="widget.options.isDisplayColumnBtn" :span="8">
-              <div style="display: inline-flex;">
+            <el-col v-if="widget.options.isDisplayColumnBtn" :span="10">
+              <div>
                 <span>显示列:</span>
                 <el-select @change="displayColumnsChange()"
                   v-model="widget.options.displayColumns"
@@ -1171,18 +1171,18 @@ export default {
       }
     },
     dblhandleCurrentRow(row, column, event) {
-      if (this.widget.options.isDetail) {
-        if (this.widget.options.isDetailCustom) {
-          if (this.widget.options.detailFn) {
-            this.widget.options.detailFn(this, request, function(data) {
-              console.log(data);
-            });
-          }
-        } else {
+      // if (this.widget.options.isDetail) {
+      //   if (this.widget.options.isDetailCustom) {
+      //     if (this.widget.options.detailFn) {
+      //       this.widget.options.detailFn(this, request, function(data) {
+      //         console.log(data);
+      //       });
+      //     }
+      //   } else {
           // this.$message(JSON.stringify(row));
           this.handleTableEvent("detail", row);
-        }
-      }
+      //   }
+      // }
     },
     handleTableEvent(action, currentRow) {
       ;
