@@ -856,7 +856,10 @@ export default {
     }
     //table
     if (this.widget.type === "elTable" && this.widget.options.remoteFunc) {
-      this.handleRemoteFn(this.widget.options.remoteFunc);
+      let temFun = this.getExeCustomFn(this.widget.options.remoteFunc)
+      if(temFun){
+        this.handleRemoteFn(temFun);
+      }
     }
   },
   methods: {
@@ -1185,15 +1188,17 @@ export default {
       // }
     },
     handleTableEvent(action, currentRow) {
-      ;
       let _self = this;
       switch (action) {
         case "add":
           if (this.widget.options.isAddBtnCustom) {
             if (this.widget.options.addFn) {
-              this.widget.options.addFn(this, request, function(data) {
-                console.log(data);
-              });
+              let temFun = this.getExeCustomFn(this.widget.options.addFn)
+              if(temFun){
+                temFun(this, request, function(data) {
+                  console.log(data);
+                });
+              }
             }
           } else {
             let addFormId = this.widget.options.addFormId;
@@ -1222,9 +1227,12 @@ export default {
           }
           if (this.widget.options.isEditBtnCustom) {
             if (this.widget.options.editFn) {
-              this.widget.options.editFn(this, request, function(data) {
-                console.log(data);
-              });
+              let temFun = this.getExeCustomFn(this.widget.options.editFn)
+              if(temFun){
+                temFun(this, request, function(data) {
+                  console.log(data);
+                });
+              }
             }
           } else {
             if (editFormId == "") {
@@ -1251,9 +1259,12 @@ export default {
           }
           if (this.widget.options.isDetailCustom) {
             if (this.widget.options.detailFn) {
-              this.widget.options.detailFn(this, request, function(data) {
-                console.log(data);
-              });
+              let temFun = this.getExeCustomFn(this.widget.options.detailFn)
+              if(temFun){
+                temFun(this, request, function(data) {
+                  console.log(data);
+                });
+              }
             }
           } else {
             if (detailFormId == "") {
@@ -1278,9 +1289,12 @@ export default {
           } else {
             if (this.widget.options.isDeleteBtnCustom) {
               if (this.widget.options.deleteFn) {
-                this.widget.options.deleteFn(this, request, function(data) {
-                  console.log(data);
-                });
+                let temFun = this.getExeCustomFn(this.widget.options.deleteFn)
+                if(temFun){
+                  temFun(this, request, function(data) {
+                    console.log(data);
+                  });
+                }
               }
             } else {
               let tragtTableData = this.widget.configdata.list[0].options
@@ -1301,6 +1315,21 @@ export default {
         default:
           console.log(action);
       }
+    },
+    getExeCustomFn(fun){
+    let temFen = null;
+      try {
+        temFen = eval("(" + fun + ")");
+      } catch (e) {
+        console.log(e);
+        this.$notify({
+          title: "fail",
+          message: "语法错误",
+          type: "success",
+          duration: 2000
+        });
+      }
+      return temFen;
     },
     displayColumnsChange(){
       let columns = [];

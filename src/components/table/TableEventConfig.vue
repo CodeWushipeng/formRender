@@ -15,7 +15,7 @@
           readonly
           :disabled="!data.options.isAddBtnCustom"
           @focus="handelMirror('add')"
-          v-model="data.options.addFn.toString()"
+          v-model="data.options.addFn"
           placeholder="新增方法"
         ></el-input>
       </el-form-item>
@@ -174,15 +174,15 @@ export default {
       this.mirrorVisible = true
       this.tableEventCodeCf.codeType = type;
       if (type == "add") {
-        this.tableEventCodeCf.tableCodeFn = (this.data.options.addFn).toString()
+        this.tableEventCodeCf.tableCodeFn = this.data.options.addFn
          
       } else if (type == "detail") {
-        this.tableEventCodeCf.tableCodeFn = this.data.options.detailFn.toString()
+        this.tableEventCodeCf.tableCodeFn = this.data.options.detailFn
           
       } else if (type == "edit") {
-        this.tableEventCodeCf.tableCodeFn = this.data.options.editFn.toString()
+        this.tableEventCodeCf.tableCodeFn = this.data.options.editFn
       }else if (type == "delete") {
-        this.tableEventCodeCf.tableCodeFn = this.data.options.deleteFn.toString()
+        this.tableEventCodeCf.tableCodeFn = this.data.options.deleteFn
       }
     },
 
@@ -204,19 +204,19 @@ export default {
       }
       if (type == "add") {
         if (this.data.options && this.data.options.addFn) {
-          this.data.options.addFn = temFen;
+          this.data.options.addFn = this.tableEventCodeCf.tableCodeFn;
         }
       } else if (type == "edit") {
          if (this.data.options && this.data.options.editFn) {
-          this.data.options.editFn = temFen;
+          this.data.options.editFn = this.tableEventCodeCf.tableCodeFn;
         }
       } else if (type == "detail") {
          if (this.data.options && this.data.options.detailFn) {
-          this.data.options.detailFn = temFen;
+          this.data.options.detailFn = this.tableEventCodeCf.tableCodeFn;
         }
       }else if (type == "delete") {
          if (this.data.options && this.data.options.deleteFn) {
-          this.data.options.deleteFn = temFen;
+          this.data.options.deleteFn = this.tableEventCodeCf.tableCodeFn;
         }    
       }
       this.mirrorVisible = false;

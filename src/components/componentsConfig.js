@@ -796,26 +796,26 @@ export const tableComponents = [
       isDeleteBtnCustom: false,
       isDetailCustom: false,
       displayColumns:[],
-      remoteFunc: function (currentObj, request, callBack){
-        let tableKey = [];
-        return tableKey;
-      },
-      addFn: function (currentObj, request, callBack) {
-        let tableKey = null;
-        return tableKey;
-      },
-      editFn: function (currentObj, request, callBack) {
-        let tableKey = null;
-        return tableKey;
-      },
-      detailFn: function (currentObj, request, callBack) {
-        let tableKey = [];
-        return tableKey;
-      },
-      deleteFn: function (currentObj, request, callBack) {
-        let tableKey = [];
-        return tableKey;
-      },
+      remoteFunc: "function main (currentObj,request,callBack)" + "{\n"
+        + "\t//currentObj为当前表格组件对象 request为请求方法,callBack回调方法\n"
+        + "\treturn {}\n"
+        + "}",
+      addFn: "function main (currentObj,request,callBack)" + "{\n"
+        + "\t//currentObj为当前表格组件对象 request为请求方法,callBack回调方法\n"
+        + "\treturn {}\n"
+        + "}",
+      editFn: "function main (currentObj,request,callBack)" + "{\n"
+        + "\t//currentObj为当前表格组件对象 request为请求方法,callBack回调方法\n"
+        + "\treturn {}\n"
+        + "}",
+      detailFn: "function main (currentObj,request,callBack)" + "{\n"
+        + "\t//currentObj为当前表格组件对象 request为请求方法,callBack回调方法\n"
+        + "\treturn {}\n"
+        + "}",
+      deleteFn: "function main (currentObj,request,callBack)" + "{\n"
+        + "\t//currentObj为当前表格组件对象 request为请求方法,callBack回调方法\n"
+        + "\treturn {}\n"
+        + "}",
       pagination:{
         pageSize:1,
         currentPage:1,

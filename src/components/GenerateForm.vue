@@ -317,6 +317,22 @@ export default {
         });
       });
     },
+    setTableData(key,data){debugger
+      if(listCode){
+        this.data.list.map(t=>{
+          if(t.key == key){
+            if(this.data.list){
+              t.configdata.list[0].options.tableData = []
+            }
+          }
+        })
+      }
+      if(data instanceof Array){
+        if(this.data && this.data.list[0] && this.data.list[0].options.tableData){
+          this.data.list[0].options.tableData = data;
+        }
+      }
+    },
     // models值去除收尾空格
     trimModels(temp) {
       console.log(this.models);
