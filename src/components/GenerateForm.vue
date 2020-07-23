@@ -322,7 +322,7 @@ export default {
         this.data.list.map(t=>{
           if(t.key == key){
             if(this.data.list){
-              t.configdata.list[0].options.tableData = []
+              t.configdata.list[0].options.tableData = data
             }
           }
         })
