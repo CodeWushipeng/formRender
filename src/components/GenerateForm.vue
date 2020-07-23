@@ -318,7 +318,7 @@ export default {
       });
     },
     setTableData(key,data){debugger
-      if(listCode){
+      if(key){
         this.data.list.map(t=>{
           if(t.key == key){
             if(this.data.list){

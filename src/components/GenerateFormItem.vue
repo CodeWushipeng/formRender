@@ -1322,12 +1322,6 @@ export default {
         temFen = eval("(" + fun + ")");
       } catch (e) {
         console.log(e);
-        this.$notify({
-          title: "fail",
-          message: "语法错误",
-          type: "success",
-          duration: 2000
-        });
       }
       return temFen;
     },
