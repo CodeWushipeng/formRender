@@ -1171,18 +1171,18 @@ export default {
       }
     },
     dblhandleCurrentRow(row, column, event) {
-      if (this.widget.options.isDetail) {
-        if (this.widget.options.isDetailCustom) {
-          if (this.widget.options.detailFn) {
-            this.widget.options.detailFn(this, request, function(data) {
-              console.log(data);
-            });
-          }
-        } else {
+      // if (this.widget.options.isDetail) {
+      //   if (this.widget.options.isDetailCustom) {
+      //     if (this.widget.options.detailFn) {
+      //       this.widget.options.detailFn(this, request, function(data) {
+      //         console.log(data);
+      //       });
+      //     }
+      //   } else {
           // this.$message(JSON.stringify(row));
           this.handleTableEvent("detail", row);
-        }
-      }
+      //   }
+      // }
     },
     handleTableEvent(action, currentRow) {
       ;
