@@ -1,5 +1,6 @@
 {
   "name": "hr-form-render",
+
   "description": "A designer and generator of form base on Vue.js, make form development simple and efficient.",
   "version": "2.1.20",
   "author": "GavinZhulei",
