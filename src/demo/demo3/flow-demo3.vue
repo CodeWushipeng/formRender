@@ -2,6 +2,9 @@
   <div class="render-wrap" style="padding: 20px; " ref="loadingArea">
     <div>
       <!--debug:{{debug}}-->
+      <!--btnIndex:{{btnIndex}} <br>-->
+      <!--Rank_BTNS:{{displayBtn()}} <br>-->
+      <!--<el-input v-model="btnIndex" disabled></el-input>-->
     </div>
     <!--{{leftCol}} <br>-->
     <!--{{rightCol}} <br>-->
@@ -35,10 +38,11 @@
           </div>
 
           <!--操作按钮-->
+
           <div style="text-align:center;">
-            <el-button type="primary" @click="prev">Back</el-button>
-            <el-button type="primary" @click="submit">Submit</el-button>
-            <el-button type="primary" @click="cancel">Cancel</el-button>
+            <el-button ref="back" :type="getBtnType(0)" @click="prev">Back</el-button>
+            <el-button ref="submit" :type="getBtnType(1)" @click="submit">Submit</el-button>
+            <el-button ref="cancel" :type="getBtnType(2)" @click="cancel">Cancel</el-button>
           </div>
         </div>
         <!--拖拽-->
@@ -47,27 +51,34 @@
       <div class="debugs" id="debugs" v-if="debug">
         <!--操作按钮-->
         <flowBtns ref="operations"
-                        :data="data"
-                        :records="records"
-                        :formData="formData"
-                        @getFormHandler="getFormHandler" />
+                  :data="data"
+                  :records="records"
+                  :formData="formData"
+                  @getFormHandler="getFormHandler"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import storage from 'good-storage'
-  import request from './js/request'
-  import flowBtns from './flow-buttons'
+  import storage from 'good-storage';
+  import request from './js/request';
+  import flowBtns from './flow-buttons';
   // import getFG from 'fg-control';
   import getFG from "./js/fg-control";
+
   const FG = new getFG();
   import {queryFlowDetail} from "@/api/flows";
   import {RES_OK} from "@/api/config";
   import flowMixin from './js/mixins'
   import {platform, user} from "./js/flowData";
-  const DEBUG_KEY = '__debug__'
+
+  const DEBUG_KEY = '__debug__';
+  const Rank_BTNS = ['prev', 'submit', 'cancel'];
+  const KEY_ENTER = 13;
+  const KEY_LEFT  = 37;
+  const KEY_RIGHT = 39;
+
   export default {
     name: "flowDemo",
     mixins: [flowMixin],
@@ -86,9 +97,9 @@
             // 取消文字的选中状态
             window.getSelection().empty();
 
-            let $buss   = document.getElementById('buss');
+            let $buss = document.getElementById('buss');
             let $debugs = document.getElementById('debugs');
-            let $body   = document.getElementsByTagName('body')[0];
+            let $body = document.getElementsByTagName('body')[0];
 
             let winWidth = $body.clientWidth;
             let leftWidth = e.pageX - disx;
@@ -142,6 +153,8 @@
     },
     data() {
       return {
+        canEnter: true, // 能否键盘操作按钮
+        btnIndex: 1,
         debug: false, // debug
         formData: {}, // 当前表单数据
         // 当前节点数据
@@ -178,6 +191,50 @@
       },
     },
     methods: {
+      getBtnType(num) {
+        if (num == this.btnIndex) {
+          return 'primary';
+        } else {
+          return 'default';
+        }
+      },
+      displayBtn() {
+        return Rank_BTNS[this.btnIndex];
+      },
+      solveBtnIndex(keyCode) {
+        if (keyCode == KEY_LEFT || keyCode == KEY_RIGHT) {
+          let btnsLength = Rank_BTNS.length - 1;
+          if (keyCode == KEY_LEFT) {
+            --this.btnIndex
+            if (this.btnIndex < 0) this.btnIndex = 0
+          } else {
+            ++this.btnIndex
+            if (this.btnIndex > btnsLength) this.btnIndex = btnsLength
+          }
+        }
+      },
+      solveEnter(keyCode) {
+        if (keyCode == KEY_ENTER && this.canEnter) {
+          // alert(Rank_BTNS[this.btnIndex])
+          const funcName = this.displayBtn();
+          // return
+          debugger
+          switch (funcName) {
+            case 'prev':
+              this.prev();
+              break;
+            case 'submit':
+              this.submit();
+              break;
+            case 'cancel':
+              this.cancel();
+              break;
+            default:
+              // 默认代码块
+              throw Error("没有funcName")
+          }
+        }
+      },
       openDebug(_this) {
         const _self = _this;
         let code = 0;
@@ -198,7 +255,7 @@
           }
           if (code === 1 && code2 === 1) {
             // alert('Shift+2');
-            if(_self.isDebugMode){
+            if (_self.isDebugMode) {
               _self.debug = !_self.debug;
               storage.session.set(DEBUG_KEY, _self.debug)
             }
@@ -209,6 +266,9 @@
             code = 0;
             code2 = 0;
           }, 1000)
+
+          _self.solveBtnIndex(key)
+          _self.solveEnter(key)
         }
       },
       _inits() {
@@ -441,20 +501,30 @@
                 method: 'post',
                 data
               }).then(response => {
-                const Obj = {
-                  up: data,
-                  down: null
-                };
-                Obj["down"] = {
-                  ...response,
-                  rspCode: "SP000000"
-                };
-                alert("通信提交响应数据：" + JSON.stringify(Obj));
-                const copyObj = JSON.parse(JSON.stringify(Obj));
-                FG.saveNode(nodeCode, copyObj);
-                this.configdata.nodes = FG.getNodes(); // 节点数据
-                // return Promise.resolve();
-              }).then(() => {
+
+                const {statusCode} = response
+                if(statusCode == 200){
+                  const Obj = {
+                    up: data,
+                    down: null
+                  };
+                  Obj["down"] = {
+                    ...response,
+                    rspCode: "SP000000"
+                  };
+                  alert("通信提交响应数据：" + JSON.stringify(Obj));
+                  const copyObj = JSON.parse(JSON.stringify(Obj));
+                  FG.saveNode(nodeCode, copyObj);
+                  this.configdata.nodes = FG.getNodes(); // 节点数据
+                  return true
+                }else{
+                  return false
+                }
+              }).then((resFlag) => {
+                if(resFlag== false){
+                  alert("通信提交响应数据失败");
+                  return
+                }
                 if (outputFromCode) {
                   // 有响应页面
                   this.$refs.renderForm.changeJsonData(
@@ -629,7 +699,7 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    align-items:stretch;
+    align-items: stretch;
   }
 
   .buss-container {
@@ -637,7 +707,7 @@
     height: 100%;
     /*border:1px solid red;*/
     div {
-      min-height: 200px;
+      /*min-height: 200px;*/
     }
     .buss {
       width: 50%;
