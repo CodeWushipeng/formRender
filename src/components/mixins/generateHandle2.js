@@ -535,6 +535,18 @@ let handlers = {
         }
       });
     },
+    // 失去焦点
+    setBlur(ele) {
+      let blurEle = ele.querySelector("input")
+        ? ele.querySelector("input")
+        : ele.querySelector("textarea")
+        ? ele.querySelector("textarea")
+        : ele.querySelector(".el-form-item__content>button");
+      console.log("当前失焦元素", blurEle);
+      this.$nextTick(() => {
+        blurEle.blur();
+      });
+    },
     // 回车事件
     onElChange(params, out) {
       console.log(params, out);
@@ -557,6 +569,7 @@ let handlers = {
         this.getShowLength();
         this.enterCheck();
         this.iteratorAllEle();
+        this.setBlur(this.allItems[this.outMark])
         this.$emit("isEnd", true);
       }
     },
