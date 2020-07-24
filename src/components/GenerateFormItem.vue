@@ -1418,6 +1418,7 @@ export default {
     models: {
       // 深度监听models，models修改时读取修改后的值赋值给dataModel
       deep: true,
+      immediate: true,
       handler(val) {
         console.log(val)
         this.dataModel = val[this.widget.model];

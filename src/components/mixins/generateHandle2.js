@@ -292,18 +292,24 @@ let handlers = {
               this.handelValidate("success", "", i);
               // let tableData = res[tableKey];  //根据配置的数据标识获取表格数据
               let tableData = res.voucherList; //根据配置的数据标识获取表格数据
-              console.log(tableData);
-              this.$nextTick(() => {
+              let Key
+              for(let i=0;i<lists.length;i++){
+                if(lists[i].model==tableModel){
+                  Key = lists[i].key
+                }
+              }
+              console.log(tableData,tableModel,Key);
                 if (this.checkOutModel(tableModel)) {
                   //如果存在目标表格执行出口数据转换
-                  tempFunc(this.models, res, this.utils);
-                  this.$refs[tableModel][0].$refs.generateTable.setData(
-                    val[this.widget.model]
-                  );
+                  this.$nextTick(()=>{
+                    this.models[tableModel]=tableData
+                    this.setTableData(Key,tableData);
+                    console.log(this.models)
+                    tempFunc(this.models, tableData[0], this.utils);
+                  })
                 } else {
                   this.searchTable(tableKey, tableData); //不存在目标表格发起查询表格请求
                 }
-              });
               this.remoteError = false;
             } else {
               this.setFocus(this.allItems[i]);
@@ -647,7 +653,6 @@ let handlers = {
     },
     // arrow回调事件
     arrowListener() {
-      debugger
       console.log(this.comArr[this.outMark]);
         if (window.event.ctrlKey && window.event.keyCode === 37) {
           for (let i = this.outMark - 1; i >= 0; i--) {
