@@ -100,7 +100,7 @@ let handlers = {
     },
     // 获取全部item节点
     getAllItems() {
-      this.allItems = document.querySelectorAll(".generateForm >.el-form-item");
+      this.allItems = document.querySelectorAll(".generateForm .el-form-item");
       console.log(this.allItems);
     },
     // 流程控制

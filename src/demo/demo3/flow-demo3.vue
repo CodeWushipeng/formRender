@@ -71,8 +71,8 @@
   import {queryFlowDetail} from "@/api/flows";
   import {RES_OK} from "@/api/config";
   import flowMixin from './js/mixins'
+  import directives from './js/directives'
   import {platform, user} from "./js/flowData";
-  import bus from "@/bus/bus.js"
 
   const DEBUG_KEY = '__debug__';
   const Rank_BTNS = ['prev', 'submit', 'cancel'];
@@ -87,43 +87,7 @@
       flowBtns,
     },
     directives: {
-      drag(el, bindings) {
-        el.onmousedown = function (e) {
-          let disx = e.pageX - el.offsetLeft;
-          // console.log("disx", disx);
-          // console.log("el", el);
-          // console.log("bindings", bindings);
-          document.onmousemove = function (e) {
-            console.log("onmousemove...");
-            // 取消文字的选中状态
-            window.getSelection().empty();
-
-            let $buss = document.getElementById('buss');
-            let $debugs = document.getElementById('debugs');
-            let $body = document.getElementsByTagName('body')[0];
-
-            let winWidth = $body.clientWidth;
-            let leftWidth = e.pageX - disx;
-            let rightWidth = null;
-            let _MIN = 400;
-            let _MAX = winWidth - _MIN;
-            if (leftWidth < _MIN) {
-              leftWidth = _MIN;
-            } else if (leftWidth > _MAX) {
-              leftWidth = _MAX;
-            }
-            rightWidth = winWidth - leftWidth;
-
-            console.log('leftWidth', leftWidth)
-            console.log('rightWidth', rightWidth)
-            $buss.style.width = leftWidth + "px";
-            $debugs.style.width = rightWidth + "px";
-          }
-          document.onmouseup = function () {
-            document.onmousemove = document.onmouseup = null;
-          }
-        }
-      }
+        ...directives
     },
     beforeRouteLeave(to, from, next) {
       setTimeout(() => {
