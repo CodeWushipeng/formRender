@@ -29,7 +29,6 @@ export const basicComponents = [
     valueRange: '',
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -75,7 +74,9 @@ export const basicComponents = [
     +"\treturn true\n"
     +"}",
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -121,7 +122,9 @@ export const basicComponents = [
     +"\treturn true\n"
     +"}",
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -185,7 +188,9 @@ export const basicComponents = [
     +"\treturn true\n"
     +"}",   
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -246,7 +251,9 @@ export const basicComponents = [
     +"\treturn true\n"
     +"}",    
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -296,7 +303,9 @@ export const basicComponents = [
     +"\treturn true\n"
     +"}",
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -346,7 +355,9 @@ export const basicComponents = [
     +"\treturn true\n"
     +"}",
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -388,7 +399,9 @@ export const basicComponents = [
     +"\treturn true\n"
     +"}",
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -429,7 +442,9 @@ export const basicComponents = [
     +"\treturn true\n"
     +"}",
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -489,7 +504,9 @@ export const basicComponents = [
     enterCondition: '',
     condition:"",
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -529,7 +546,9 @@ export const basicComponents = [
     +"\treturn true\n"
     +"}",
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -575,7 +594,9 @@ export const basicComponents = [
     +"\treturn true\n"
     +"}",
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -614,7 +635,9 @@ export const basicComponents = [
     +"\treturn true\n"
     +"}",
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -686,7 +709,9 @@ export const advanceComponents = [
     +"\treturn true\n"
     +"}",
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
@@ -736,7 +761,9 @@ export const advanceComponents = [
     +"\treturn true\n"
     +"}",
     valueRange: '',
-    assignment:"",
+    assignment:"function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"

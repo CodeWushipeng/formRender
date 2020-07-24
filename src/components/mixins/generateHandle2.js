@@ -261,20 +261,13 @@ let handlers = {
     },
     // 字段交易
     remoteValidate(i) {
-      console.log(this.models);
       if (this.singleError || this.rangeError || this.conditionError) {
         return;
       }
       let lists = this.comArr;
-      if (lists[i].isRemote) {
-        let flag = this.evalWrap(lists[i].isRemote);
-        if (!flag) {
-          if (this.outMark == i) {
-            this.handelAssignment(i);
-            this.handelFlow();
-          }
-          return;
-        }
+      let start = eval("(" + lists[i].isRemote + ")");
+      let startFlag = start(this.models, this.utils);
+      if (startFlag) {
         let url = lists[i].url;
         let postData = this.evalWrap(lists[i].data);
         let tableKey = lists[i].tableKey; //表格表单标识
@@ -303,7 +296,7 @@ let handlers = {
               this.$nextTick(() => {
                 if (this.checkOutModel(tableModel)) {
                   //如果存在目标表格执行出口数据转换
-                  tempFunc(this.models, res, utils);
+                  tempFunc(this.models, res, this.utils);
                   this.$refs[tableModel][0].$refs.generateTable.setData(
                     val[this.widget.model]
                   );
@@ -576,7 +569,7 @@ let handlers = {
     // radio change事件
     radioChange(params) {
       this.mouseValidate(params);
-      this.allValidate(this.outMark);
+      // this.allValidate(this.outMark);
       this.handelAssignment(this.outMark);
       this.handelHidden();
       this.getShowLength();
@@ -654,14 +647,8 @@ let handlers = {
     },
     // arrow回调事件
     arrowListener() {
+      debugger
       console.log(this.comArr[this.outMark]);
-      if (
-        this.comArr[this.outMark].type == "radio" ||
-        this.comArr[this.outMark].type == "checkbox"
-      ) {
-        window.removeEventListener("keyup", this.arrowListener);
-        return;
-      } else {
         if (window.event.ctrlKey && window.event.keyCode === 37) {
           for (let i = this.outMark - 1; i >= 0; i--) {
             if (
@@ -697,7 +684,6 @@ let handlers = {
             }
           }
         }
-      }
     },
     // 上下键操作光标
     handelCursorByArrow() {

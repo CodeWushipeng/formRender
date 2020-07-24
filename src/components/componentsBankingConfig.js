@@ -35,7 +35,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -89,7 +88,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -145,7 +143,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -199,7 +196,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -252,7 +248,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -303,7 +298,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -375,7 +369,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -444,7 +437,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -502,7 +494,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -560,7 +551,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -638,7 +628,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -692,7 +681,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -747,7 +735,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -796,7 +783,6 @@ export const bankingComponents = [
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
     +"}",
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
