@@ -20,7 +20,7 @@
         <div v-if="tableName != ''">
           <el-form-item :label="$t('fm.tableWidget.widget.dataIidentification')">
             <el-input
-              v-model="data.options.remoteFunc.toString()"
+              v-model="data.options.remoteFunc"
               size="mini"
               @focus="openCode('tableRemotFun')"
             ></el-input>
@@ -190,7 +190,7 @@ export default {
         this.tableCodeCf.tableCodeFn =
           "function mian(page){debugger; console.log(page);}";
       } else if (type == "tableRemotFun") {
-        if(this.data.options.remoteFunc && this.data.options.remoteFunc.indexOf("func_")<0){
+        if(this.data.options.remoteFunc){
           this.tableCodeCf.tableCodeFn = this.data.options.remoteFunc;
         }else{
           this.tableCodeCf.tableCodeFn ="function mian(currentObj, request, callBack) {debugger;}";
@@ -221,7 +221,7 @@ export default {
       } else if (type == "handleSizeChange") {
       } else if (type == "tableRemotFun") {
         if (this.data.options && this.data.options.remoteFunc) {
-          this.data.options.remoteFunc = temFen;
+          this.data.options.remoteFunc = data.options.remoteFunc;
           // temFen(this.data.options);
         }
       }
