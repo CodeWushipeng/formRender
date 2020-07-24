@@ -91,7 +91,7 @@ service.interceptors.response.use(
         loading.close()
       }, 300)
       const res = response.data
-      if (process.env.NODE_ENV === 'development') {
+      // if (process.env.NODE_ENV === 'development') {
         if (typeof res == 'object') {
           if (res && res.header && res.body) {
             const {header, body} = res;
@@ -111,7 +111,7 @@ service.interceptors.response.use(
           })
           return Promise.reject(new Error(res.message || 'Error'))
         }
-      }
+      // }
 
       if (res.statusCode !== 200) {
         Message({

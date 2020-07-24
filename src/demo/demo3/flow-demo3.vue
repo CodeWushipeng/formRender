@@ -1,6 +1,7 @@
 <template>
   <div class="render-wrap" style="padding: 20px; " ref="loadingArea">
     <div>
+      canEnter:{{canEnter}}
       <!--debug:{{debug}}-->
       <!--btnIndex:{{btnIndex}} <br>-->
       <!--Rank_BTNS:{{displayBtn()}} <br>-->
@@ -28,7 +29,7 @@
           <div v-if="NodeType=='02'">结束</div>
           <div v-if="NodeType=='03'">
             <!--render-form-->
-            <render-form
+            <render-form  @has-end="hasEnd"
                     v-if="hackRest && configdata.list.length>0"
                     :url="url"
                     :configdata="configdata"
@@ -70,15 +71,12 @@
   const FG = new getFG();
   import {queryFlowDetail} from "@/api/flows";
   import {RES_OK} from "@/api/config";
-  import flowMixin from './js/mixins'
+  import flowMixin, {subControls} from './js/mixins'
   import directives from './js/directives'
+  import {handleBackNode,handleRemoteFn,beforeRoute} from './js/util'
   import {platform, user} from "./js/flowData";
 
   const DEBUG_KEY = '__debug__';
-  const Rank_BTNS = ['prev', 'submit', 'cancel'];
-  const KEY_ENTER = 13;
-  const KEY_LEFT  = 37;
-  const KEY_RIGHT = 39;
 
   export default {
     name: "flowDemo",
@@ -87,40 +85,11 @@
       flowBtns,
     },
     directives: {
-        ...directives
+      ...directives
     },
-    beforeRouteLeave(to, from, next) {
-      setTimeout(() => {
-        this.$confirm('您要离开当前流程吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          next()
-        }).catch(() => {
-          next(false)
-        });
-      })
-    },
-    computed: {
-      NodeType() {
-        return this.data.type;
-      },
-      isDebugMode() {
-        return true;
-      },
-      bussStyle() {
-        return this.debug == false ? 'width:100%' : 'width:50%';
-      },
-      mainClass() {
-        return this.debug == false ? 'mains' : 'mains-debug';
-      }
-    },
+    ...beforeRoute,
     data() {
       return {
-        canEnter: false, // 能否键盘操作按钮
-        btnIndex: 1,
-        debug: false, // debug
         formData: {}, // 当前表单数据
         // 当前节点数据
         data: {},
@@ -141,7 +110,8 @@
       };
     },
     created() {
-      this._inits();
+      console.log('flowMixin',flowMixin)
+      this.inits();
       this.openDebug(this);
     },
     watch: {
@@ -151,55 +121,15 @@
           this.resetComponent();
         }
       },
+      data:function(){
+        this.canEnter =false;
+      },
       debug: function (val, oldVal) {
         console.log('new: %s, old: %s', val, oldVal)
       },
     },
     methods: {
-      getBtnType(num) {
-        if (num == this.btnIndex) {
-          return 'primary';
-        } else {
-          return 'default';
-        }
-      },
-      displayBtn() {
-        return Rank_BTNS[this.btnIndex];
-      },
-      solveBtnIndex(keyCode) {
-        if (keyCode == KEY_LEFT || keyCode == KEY_RIGHT) {
-          let btnsLength = Rank_BTNS.length - 1;
-          if (keyCode == KEY_LEFT) {
-            --this.btnIndex
-            if (this.btnIndex < 0) this.btnIndex = 0
-          } else {
-            ++this.btnIndex
-            if (this.btnIndex > btnsLength) this.btnIndex = btnsLength
-          }
-        }
-      },
-      solveEnter(keyCode) {
-        if (keyCode == KEY_ENTER && this.canEnter) {
-          // alert(Rank_BTNS[this.btnIndex])
-          const funcName = this.displayBtn();
-          // return
-          debugger
-          switch (funcName) {
-            case 'prev':
-              this.prev();
-              break;
-            case 'submit':
-              this.submit();
-              break;
-            case 'cancel':
-              this.cancel();
-              break;
-            default:
-              // 默认代码块
-              throw Error("没有funcName")
-          }
-        }
-      },
+      ...subControls,
       openDebug(_this) {
         const _self = _this;
         let code = 0;
@@ -232,15 +162,15 @@
             code2 = 0;
           }, 1000)
 
-          _self.solveBtnIndex(key)
-          _self.solveEnter(key)
+          _self.solveBtnIndex(key);
+          _self.solveEnter(key);
         }
       },
-      _inits() {
-        const flowCode = this.$route.name;
+      inits() {
+        // const flowCode = this.$route.name;
         const query = this.$route.query;
-        console.log("this.$routes.name:", this.$route.name);
-        console.log("this.$routes.query:", this.$route.query);
+        // console.log("this.$routes.name:", this.$route.name);
+        // console.log("this.$routes.query:", this.$route.query);
         let params = {
           // flowCode:flowCode.replace('buss','')
           flowCode: query.id
@@ -317,7 +247,8 @@
         }
         if (returnNode) {
           // 判断上一节点是否在当前的返回列表中
-          const ret = this._findBackNode(returnNode);
+          let processData = FG.getProcess().slice();
+          const ret = handleBackNode(returnNode,processData);
           if (!ret) {
             res = {error: -1, text: "上一节点不在设置的回退数组中，不能回退"};
           }
@@ -338,6 +269,7 @@
 
       // 上一节点
       prev() {
+        debugger
         this.configdata.rollbackData = {};
         // rollbackData 回退数据处理：01-清除，02-保留不处理
         const {rollback, rollbackData, returnNode} = this.data;
@@ -347,9 +279,14 @@
           alert(message.text);
           return;
         }
+        if(!returnNode){
+          alert("没有设置返回的节点")
+          return
+        }
 
         // 清除当前节点后面的执行过点的节点
-        const prevNodeCode = this._findBackNode(returnNode); // 要回退到的节点
+        let processData = FG.getProcess().slice();
+        const prevNodeCode = handleBackNode(returnNode,processData); // 要回退到的节点
         const processArr = FG.getProcess();
         const index = processArr.findIndex(node => {
           return node == prevNodeCode;
@@ -512,7 +449,7 @@
                 down: null
               };
               // console.log('commit....',commit)
-              commit && this.handleRemoteFn(commit).then(response => {
+              commit && handleRemoteFn(commit).then(response => {
                 console.log('response...', response)
                 Obj["down"] = {
                   ...response,
@@ -599,54 +536,6 @@
             message: '当前节点没有表单,不能获取数据'
           });
         }
-      },
-      // 提交处理
-      handleRemoteFn(fn) {
-        return new Promise((resolve, reject) => {
-          try {
-            let fns = eval("(" + fn + ")");
-            // console.log('fns',typeof fns)
-            fns(request, function (tableCf) {
-              debugger
-              console.log('tableCf', tableCf)
-              if (tableCf) {
-                resolve(tableCf)
-              } else {
-                reject("没有返回数据")
-              }
-            });
-          } catch (err) {
-            console.log(err);
-            throw new Error(err)
-          }
-        })
-      },
-      _findBackNode(returnNode) {
-        let ret = null;
-        let processData = FG.getProcess().slice();
-        // 判断上一节点是否在当前的返回列表中
-        let backNodes = [];
-        if (returnNode && returnNode.includes(",")) {
-          // 多节点
-          backNodes = returnNode.split(",");
-        } else {
-          // 单节点
-          backNodes.push(returnNode);
-        }
-
-        function findBack() {
-          if (processData.length > 0) {
-            let lastNode = processData.pop();
-            if (backNodes.includes(lastNode) == false) {
-              findBack(processData, backNodes)
-            } else {
-              ret = lastNode
-            }
-          }
-        }
-
-        findBack();
-        return ret;
       },
     }
   }
