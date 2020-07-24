@@ -81,17 +81,17 @@ export const subControls = {
     console.log('has end..', val)
     this.canEnter = val;
   },
-  getBtnType(num) {
+  calBtnType(num) {
     if (num == this.btnIndex && this.canEnter) {
       return 'primary';
     } else {
       return 'default';
     }
   },
-  displayBtn() {
+  calBtnName() {
     return Rank_BTNS[this.btnIndex];
   },
-  solveBtnIndex(keyCode) {
+  calBtnIndex(keyCode) {
     if (keyCode == KEY_LEFT || keyCode == KEY_RIGHT) {
       let btnsLength = Rank_BTNS.length - 1;
       if (keyCode == KEY_LEFT) {
@@ -103,10 +103,10 @@ export const subControls = {
       }
     }
   },
-  solveEnter(keyCode) {
+  calBtnSubmit(keyCode) {
     if (keyCode == KEY_ENTER && this.canEnter) {
       // alert(Rank_BTNS[this.btnIndex])
-      const funcName = this.displayBtn();
+      const funcName = this.calBtnName();
       // return
       // debugger
       switch (funcName) {
@@ -125,6 +125,5 @@ export const subControls = {
       }
     }
   },
-
 }
 

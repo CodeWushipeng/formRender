@@ -41,9 +41,9 @@
           <!--操作按钮-->
 
           <div style="text-align:center;">
-            <el-button ref="back" :type="getBtnType(0)" @click="prev">Back</el-button>
-            <el-button ref="submit" :type="getBtnType(1)" @click="submit">Submit</el-button>
-            <el-button ref="cancel" :type="getBtnType(2)" @click="cancel">Cancel</el-button>
+            <el-button ref="back" :type="calBtnType(0)" @click="prev">Back</el-button>
+            <el-button ref="submit" :type="calBtnType(1)" @click="submit">Submit</el-button>
+            <el-button ref="cancel" :type="calBtnType(2)" @click="cancel">Cancel</el-button>
           </div>
         </div>
         <!--拖拽-->
@@ -162,8 +162,8 @@
             code2 = 0;
           }, 1000)
 
-          _self.solveBtnIndex(key);
-          _self.solveEnter(key);
+          _self.calBtnIndex(key);
+          _self.calBtnSubmit(key);
         }
       },
       inits() {
