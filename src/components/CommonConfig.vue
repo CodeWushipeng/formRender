@@ -128,13 +128,6 @@
         </el-input>
         <el-input
           style="text-overflow: ellipsis;margin-bottom:15px"
-          v-model="data.tableKey"
-          placeholder="表格数据标识"
-        >
-          <template slot="prepend">表格数据标识</template>
-        </el-input>
-        <el-input
-          style="text-overflow: ellipsis;margin-bottom:15px"
           v-model="data.tableModel"
           placeholder="表格字段标识"
         >
@@ -142,11 +135,18 @@
         </el-input>
         <el-input
           style="text-overflow: ellipsis;margin-bottom:15px"
-          v-model="data.tableCode"
-          placeholder="表格编码"
+          v-model="data.tableKey"
+          placeholder="表格表单标识"
         >
-          <template slot="prepend">表格编码</template>
+          <template slot="prepend">表格表单标识</template>
         </el-input>
+        <!-- <el-input
+          style="text-overflow: ellipsis;margin-bottom:15px"
+          v-model="data.tableCode"
+          placeholder="表格数据标识"
+        >
+          <template slot="prepend">表格数据标识</template>
+        </el-input> -->
         <el-input
           style="text-overflow: ellipsis;"
           readonly

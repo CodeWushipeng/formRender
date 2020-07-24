@@ -50,8 +50,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "againpassword",
@@ -104,8 +104,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "amount",
@@ -160,8 +160,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "input",
@@ -214,8 +214,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "singletext",
@@ -267,8 +267,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "textarea",
@@ -318,8 +318,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "radio",
@@ -390,8 +390,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "checkbox",
@@ -459,8 +459,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "time",
@@ -517,8 +517,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "date",
@@ -575,8 +575,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "select",
@@ -653,8 +653,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "idencard",
@@ -707,8 +707,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "readcard",
@@ -762,8 +762,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "taglable",
@@ -811,8 +811,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "imageshow",
@@ -849,8 +849,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "imageupload",
@@ -887,8 +887,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "fileupload",
@@ -925,8 +925,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "videoupload",
@@ -963,8 +963,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "camera",
@@ -991,8 +991,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "buttonCom",
@@ -1018,8 +1018,8 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: "alink",
@@ -1045,7 +1045,7 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    isAlert: false,
-    code: ''
+    tableKey: '',
+    tableModel: '',
   },
 ];

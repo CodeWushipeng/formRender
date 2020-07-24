@@ -83,13 +83,11 @@
       </template>
     </el-form>
     <!-- 字段交易弹出框 -->
-    <el-dialog :visible.sync="trade" @close="goFlow">
+    <el-dialog :visible.sync="trade" @close="goFlow" :close-on-click-modal="false">
     <div>
       <fm-generate-form v-if="gridData" :data="gridData" ref="grid"></fm-generate-form>
     </div>
     </el-dialog>
-
-
   </div>
 </template>
 
@@ -121,6 +119,7 @@ export default {
   data() {
     return {
       gridData: null,
+      rowData:"",
       result: {},
       models: {}, // form表单对象所有组件key value组成的json
       rules: {} // form表单对象所有组件对应校验规则
