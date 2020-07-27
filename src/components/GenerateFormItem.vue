@@ -2,6 +2,7 @@
   <el-form-item
     :label="(widget.type != 'buttonCom' && widget.type != 'alink') ? widget.name : ''"
     :prop="widget.model"
+    :class="'targetEle'"
   >
     <!--widget: {{widget}}-->
     <!-- {{rules}} -->

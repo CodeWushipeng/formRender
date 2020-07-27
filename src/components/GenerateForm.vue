@@ -48,7 +48,8 @@
                   @radio-change="radioChange"
                   @el-focus="mouseValidate"
                   @el-blur="blurValidate"
-                  @date-blur="dateFlow"
+                  @date-blur="dateValidata"
+                  @date-enter="dateNext"
                   v-show="!citem.options.hidden"
                 ></genetate-form-item>
               </template>
@@ -73,7 +74,8 @@
             @radio-change="radioChange"
             @el-focus="mouseValidate"
             @el-blur="blurValidate"
-            @date-blur="dateFlow"
+            @date-blur="dateValidata"
+            @date-enter="dateNext"
             @remove="removeKeyup"
             :remote="remote"
             :ref="item.model"

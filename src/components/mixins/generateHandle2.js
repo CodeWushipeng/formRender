@@ -11,8 +11,8 @@ let handlers = {
       outMark: 0, //外层循环标记
       allItems: [],
       unfocus: [],
+      cancelNext: false,
       canFocusLength: 0,
-      preIndex: 0, //上次聚焦元素序号
       singleError: false,
       rangeError: false,
       conditionError: false,
@@ -41,27 +41,24 @@ let handlers = {
   },
   methods: {
     // 组件获取焦点
-    mouseValidate(params) {
+    mouseValidate(params,type) {
+      let formEle = document.querySelector(".generateForm")
+      if(type === "date" || type === "time"){
+        // debugger
+        formEle.removeEventListener("keyup",this.arrowListener)
+      }
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
-          console.log(i, this.outMark, this.preIndex);
+          console.log(i, this.outMark);
           if (i == this.outMark) {
             return;
           } else {
-            this.preIndex = i;
+            this.outMark = i;
           }
           break;
         }
       }
-      this.allValidate(this.preIndex - 1);
-      if (
-        !this.singleError &&
-        !this.rangeError &&
-        !this.conditionError &&
-        !this.remoteError
-      ) {
-        this.outMark = this.preIndex;
-      }
+      this.allValidate(this.outMark);
     },
     // 初始化时复制一份models数据
     copyMOdels() {
@@ -72,17 +69,15 @@ let handlers = {
       this.widgetPreValue[params] = this.models[params];
     },
     // 日期组件失去焦点
-    dateFlow() {
-      if (this.preIndex != this.outMark) {
-        this.allValidate(this.preIndex);
-        this.outMark = this.preIndex;
-        return;
-      }
-      if (this.outMark <= this.canFocusLength) {
-        this.allValidate(this.outMark);
-        this.handelAssignment(this.outMark);
-        this.handelFlow();
-      }
+    dateValidata() {
+      this.allValidate(this.outMark);
+      this.handelAssignment(this.outMark);
+      this.cancelNext = true
+    },
+    // 时间日期组件回车抬起事件
+    dateNext(){
+      debugger
+      this.handelFlow();
     },
     // 隐藏
     handelHidden() {
@@ -100,7 +95,7 @@ let handlers = {
     },
     // 获取全部item节点
     getAllItems() {
-      this.allItems = document.querySelectorAll(".generateForm .el-form-item");
+      this.allItems = document.querySelectorAll(".targetEle");
       console.log(this.allItems);
     },
     // 流程控制
@@ -336,10 +331,8 @@ let handlers = {
       } else {
         this.handelValidate("success", "", i);
         this.remoteError = false;
-        if (this.outMark == i) {
-          this.handelAssignment(i);
-          this.handelFlow();
-        }
+        this.handelAssignment(i);
+        this.handelFlow();
       }
     },
     // 表格查询
@@ -398,6 +391,7 @@ let handlers = {
       let tempFunc = eval("(" + removeFunc + ")");
       console.log(tempFunc, rowData);
       tempFunc(this.$parent.$parent.models, rowData);
+      this.$parent.$parent.trade = false
     },
     // 表格弹出框关闭后执行光标定位
     goFlow() {
@@ -486,7 +480,7 @@ let handlers = {
         this.singleValidate(i);
         this.handelRange(i);
         this.handelCondition(i);
-        this.remoteValidate(i);
+        // this.remoteValidate(i);
         if (
           this.singleError ||
           this.rangeError ||
@@ -496,6 +490,7 @@ let handlers = {
           break;
         }
       }
+      // this.remoteValidate(this.outMark);
       console.log("执行一次校验后outmark值", this.outMark);
     },
     // 循环过去的节点
@@ -547,27 +542,21 @@ let handlers = {
       });
     },
     // 回车事件
-    onElChange(params, out) {
-      console.log(params, out);
-      if (this.preIndex && this.widgetPreValue[params] == this.models[params]) {
-        return;
+    onElChange(params) {
+      if(this.cancelNext){
+        this.cancelNext = false
+        return
+      }
+      if (this.widgetPreValue[params] && this.models[params] && this.widgetPreValue[params] == this.models[params]) {
+        this.handelFlow();
+        return
       }
       if (this.outMark < this.canFocusLength) {
         this.allValidate(this.outMark);
+        this.remoteValidate(this.outMark);
       } else if (this.outMark == this.canFocusLength) {
         this.allValidate(this.outMark);
-        if (
-          this.singleError ||
-          this.rangeError ||
-          this.conditionError ||
-          this.remoteError
-        ) {
-          return;
-        }
-        this.handelHidden();
-        this.getShowLength();
-        this.enterCheck();
-        this.iteratorAllEle();
+        this.remoteValidate(this.outMark);
         this.setBlur(this.allItems[this.outMark])
         this.$emit("isEnd", true);
       }
@@ -654,7 +643,7 @@ let handlers = {
     // arrow回调事件
     arrowListener() {
       console.log(this.comArr[this.outMark]);
-        if (window.event.ctrlKey && window.event.keyCode === 37) {
+        if (window.event.keyCode === 37) {
           for (let i = this.outMark - 1; i >= 0; i--) {
             if (
               this.comArr[i].options.disabled ||
@@ -671,7 +660,7 @@ let handlers = {
               }
             }
           }
-        } else if (window.event.ctrlKey && window.event.keyCode === 39) {
+        } else if (window.event.keyCode === 39) {
           for (let i = this.outMark + 1; i < this.comArr.length; i++) {
             if (
               this.comArr[i].options.disabled ||
@@ -692,14 +681,16 @@ let handlers = {
     },
     // 上下键操作光标
     handelCursorByArrow() {
-      window.addEventListener("keyup", this.arrowListener);
+      let formEle = document.querySelector(".generateForm")
+      formEle.addEventListener("keyup", this.arrowListener,true);
     },
     // 监听item组件发射的remove事件
     removeKeyup(params) {
+      let formEle = document.querySelector(".generateForm")
       if (params) {
-        window.removeEventListener("keyup", this.arrowListener);
+        formEle.removeEventListener("keyup", this.arrowListener);
       } else {
-        window.addEventListener("keyup", this.arrowListener);
+        formEle.addEventListener("keyup", this.arrowListener,true);
       }
     },
   },

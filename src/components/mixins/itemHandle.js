@@ -21,15 +21,14 @@ let itemHandle = {
           this.peripheral();
         }
       }
-      this.$emit("el-focus", this.widget.model);
+      this.$emit("el-focus", this.widget.model,this.widget.type);
     },
     // 组件失去焦点事件
     comBlur(e) {
-      this.$emit("el-blur", this.widget.model);
+      this.$emit("el-blur", this.widget.model,this.widget.type);
     },
-    // element change事件，回车和失去焦点时触发
+    // 回车事件
     change(e) {
-      // 出发change事件时发射 el-change事件，generateform组件监听该事件
       this.$emit("el-change", this.widget.model,this.widget);
     },
     // radio组件change事件
@@ -38,25 +37,39 @@ let itemHandle = {
     },
     // select组件回车抬起事件
     selectChange() {
-      if (!this.models[this.widget.model]) {
+      //如果是非必填项回车时直接离开
+      // if (!this.widget.options.required) {
+      //   this.$refs[this.widget.model].blur();
+      //   this.$emit("el-change", this.widget.type);
+      // } else {
+      //   if (this.widget.options.filterable) {
+      //     this.$refs[this.widget.model].blur();
+      //     this.$emit("el-change", this.widget.type);
+      //   } else {
+      //     debugger
+      //     if (this.selectStatu) {
+      //       this.$refs[this.widget.model].blur();
+      //     } else {
+      //       this.$emit("el-change", this.widget.type);
+      //     }
+      //   }
+      // }
+      if (this.widget.options.filterable){
         this.$refs[this.widget.model].blur();
-        this.$emit("el-change", this.widget.type);
-      } else {
-        if (this.widget.options.filterable) {
-          this.$refs[this.widget.model].blur();
-          this.$emit("el-change", this.widget.type);
+        this.$emit("el-change", this.widget.model,this.widget.type);
+      }else{
+        if (this.selectStatu) {
+          // this.$refs[this.widget.model].blur();
         } else {
-          if (this.selectStatu) {
-            this.$refs[this.widget.model].blur();
-          } else {
-            this.$emit("el-change", this.widget.type);
-          }
+          this.$emit("el-change", this.widget.model,this.widget.type);
         }
       }
     },
     // select组件空格事件
     showOptions() {
-      this.$refs[this.widget.model].toggleMenu();
+      if (!this.widget.options.filterable){
+        this.$refs[this.widget.model].toggleMenu();
+      }
     },
     // 下拉选择选项显示状态
     optionStatu(params) {
@@ -129,8 +142,7 @@ let itemHandle = {
     },
     // date选择器失去焦点事件
     dateBlur() {
-      console.log("date选择器失去焦点事件");
-      this.$emit("date-blur");
+      this.$emit("date-blur", this.widget.model,this.widget);
     },
     // 多选框键盘上下键事件
     checkUp() {
