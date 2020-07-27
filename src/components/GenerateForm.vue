@@ -337,16 +337,10 @@ export default {
     // models值去除收尾空格
     trimModels(temp) {
       console.log(this.models);
-      for (let i = 0; i < this.data.list.length; i++) {
-        if (typeof this.models[this.data.list[i].model] === "string") {
-          this.result[this.data.list[i].model] = this.models[
-            this.data.list[i].model
-          ].trim();
-        } else {
-          this.result[this.data.list[i].model] = this.models[
-            this.data.list[i].model
-          ];
-        }
+      for(let item in this.models){
+          if(typeof this.models[item] == "string"){
+              this.models[item]=this.models[item].trim();
+          }
       }
     },
     // 检查model是否有重复
