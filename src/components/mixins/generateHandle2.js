@@ -306,7 +306,7 @@ let handlers = {
               console.log(res);
               if (res.rspCode == RES_OK) {
                 this.handelValidate("success", "", i);
-                let tableData = res[tableCode]; //根据配置的数据标识获取表格数据
+                let tableData = res[tableModel]; //根据配置的数据标识获取表格数据
                 // let tableData = res.voucherList; //根据配置的数据标识获取表格数据
                 let Key;
                 for (let i = 0; i < lists.length; i++) {
@@ -326,6 +326,8 @@ let handlers = {
                     this.handelFlow();
                   });
                 } else {
+                  localStorage.setItem("response",JSON.stringify(res))
+                  localStorage.setItem("model",tableModel)
                   this.searchTable(tableKey, tableData); //不存在目标表格发起查询表格请求
                 }
                 this.remoteError = false;
@@ -414,7 +416,11 @@ let handlers = {
       let removeFunc = localStorage.getItem("removeFunc");
       let tempFunc = eval("(" + removeFunc + ")");
       console.log(tempFunc, rowData);
-      tempFunc(this.$parent.$parent.models, rowData);
+      let model = localStorage.getItem("model");
+      let res = JSON.parse(localStorage.getItem("response"))
+      res[model] = row;
+      console.log(res)
+      tempFunc(this.$parent.$parent.models, res);
       this.$parent.$parent.trade = false;
     },
     // 表格弹出框关闭后执行光标定位
@@ -422,6 +428,8 @@ let handlers = {
       this.handelAssignment(this.outMark);
       this.handelFlow();
       localStorage.removeItem("removeFunc");
+      localStorage.removeItem("model");
+      localStorage.removeItem("response");
     },
     // 离开赋值
     handelAssignment(j) {
@@ -740,5 +748,16 @@ let handlers = {
       }
     }, 300);
   },
+  destroyed(){
+    if(localStorage.getItem("oldMark")){
+      localStorage.removeItem("oldMark");
+    } else if (localStorage.getItem("removeFunc")){
+      localStorage.removeItem("removeFunc");
+    } else if (localStorage.getItem("model")){
+      localStorage.removeItem("model");
+    } else if (localStorage.getItem("response")){
+      localStorage.removeItem("response");
+    }
+  }
 };
 export default handlers;
