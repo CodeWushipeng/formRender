@@ -43,6 +43,19 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
+    +"}",
     tableKey: '',
     tableModel: '',
     tableCode: ''
@@ -89,6 +102,19 @@ export const basicComponents = [
     success: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
+    +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
     +"}",
     tableKey: '',
     tableModel: '',
@@ -137,6 +163,19 @@ export const basicComponents = [
     success: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
+    +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
     +"}",
     tableKey: '',
     tableCode: ''
@@ -204,6 +243,19 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
+    +"}",
     tableKey: '',
     tableCode: ''
   },
@@ -267,6 +319,19 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
+    +"}",
     tableKey: '',
     tableCode: ''
   },
@@ -318,6 +383,19 @@ export const basicComponents = [
     success: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
+    +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
     +"}",
     tableKey: '',
     tableCode: ''
@@ -371,6 +449,19 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
+    +"}",
     tableKey: '',
     tableCode: ''
   },
@@ -415,6 +506,19 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
+    +"}",
     tableKey: '',
     tableCode: ''
   },
@@ -457,6 +561,19 @@ export const basicComponents = [
     success: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
+    +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
     +"}",
     tableKey: '',
     tableCode: ''
@@ -520,6 +637,19 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
+    +"}",
     tableKey: '',
     tableCode: ''
   },
@@ -561,6 +691,19 @@ export const basicComponents = [
     success: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
+    +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
     +"}",
     tableKey: '',
     tableCode: ''
@@ -610,6 +753,19 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
+    +"}",
     tableKey: '',
     tableCode: ''
   },
@@ -650,6 +806,19 @@ export const basicComponents = [
     success: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
+    +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
     +"}",
     tableKey: '',
     tableCode: ''
@@ -725,6 +894,19 @@ export const advanceComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
+    +"}",
     tableKey: '',
     tableCode: ''
   },
@@ -776,6 +958,19 @@ export const advanceComponents = [
     success: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
+    +"}",
+    multiToggle: false,
+    multiCondition: "function main (models,utils,request)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
+    +"\t//post请求示例\n"
+    +"\trequest.post(url,{data:123})\n"
+    +"\t.then(res=>{\n"
+    +"\t\tconsole.log(res)\n"
+    +"\t\trequest.post(url,{data:res.test})\n"
+    +"\t\t.then(response =>{console.log(response)})\n"
+    +"\t\t.catch(error=>{console.log(error)})\n"
+    +"\t})\n"
+    +"\t.catch(error=>{console.log(error)})\n"
     +"}",
     tableKey: '',
     tableCode: ''

@@ -96,66 +96,84 @@
           placeholder="离开赋值"
         ></el-input>
       </el-form-item>
-      <!-- 字段交易 -->
+      <!-- 外部条件访问 -->
+
       <el-form-item :label="$t('fm.config.common.remoteFactor')" v-if="data.type != 'grid'">
         <!-- <el-button @click="handelMirror">点击配置外部条件访问</el-button> -->
-        <el-input
-          v-model="data.isRemote"
-          placeholder="启动条件"
-          style="margin-bottom:15px;text-overflow: ellipsis;"
-          @focus="handelMirror"
-          readonly
-        >
-          <template slot="prepend">启动条件</template>
-        </el-input>
-        <el-input
-          v-model="data.url"
-          placeholder="校验地址"
-          style="margin-bottom:15px;text-overflow: ellipsis;"
-          @focus="handelMirror"
-          readonly
-        >
-          <template slot="prepend">URL</template>
-        </el-input>
-        <el-input
-          style="text-overflow: ellipsis;margin-bottom:15px"
-          readonly
-          @focus="handelMirror"
-          v-model="data.data"
-          placeholder="入口数据"
-        >
-          <template slot="prepend">入口数据</template>
-        </el-input>
-        <el-input
-          style="text-overflow: ellipsis;margin-bottom:15px"
-          v-model="data.tableModel"
-          placeholder="表格字段标识"
-        >
-          <template slot="prepend">表格字段标识</template>
-        </el-input>
-        <el-input
-          style="text-overflow: ellipsis;margin-bottom:15px"
-          v-model="data.tableKey"
-          placeholder="表格表单标识"
-        >
-          <template slot="prepend">表格表单标识</template>
-        </el-input>
-        <!-- <el-input
+        <el-tabs v-model="activeName">
+          <el-tab-pane label="单条件访问" name="first">
+            <el-input
+              v-model="data.isRemote"
+              placeholder="启动条件"
+              style="margin-bottom:15px;text-overflow: ellipsis;"
+              @focus="handelMirror"
+              readonly
+            >
+              <template slot="prepend">启动条件</template>
+            </el-input>
+            <el-input
+              v-model="data.url"
+              placeholder="校验地址"
+              style="margin-bottom:15px;text-overflow: ellipsis;"
+              @focus="handelMirror"
+              readonly
+            >
+              <template slot="prepend">URL</template>
+            </el-input>
+            <el-input
+              style="text-overflow: ellipsis;margin-bottom:15px"
+              readonly
+              @focus="handelMirror"
+              v-model="data.data"
+              placeholder="入口数据"
+            >
+              <template slot="prepend">入口数据</template>
+            </el-input>
+            <el-input
+              style="text-overflow: ellipsis;margin-bottom:15px"
+              v-model="data.tableModel"
+              placeholder="表格字段标识"
+            >
+              <template slot="prepend">表格字段标识</template>
+            </el-input>
+            <el-input
+              style="text-overflow: ellipsis;margin-bottom:15px"
+              v-model="data.tableKey"
+              placeholder="表格表单标识"
+            >
+              <template slot="prepend">表格表单标识</template>
+            </el-input>
+            <!-- <el-input
           style="text-overflow: ellipsis;margin-bottom:15px"
           v-model="data.tableCode"
           placeholder="表格数据标识"
         >
           <template slot="prepend">表格数据标识</template>
-        </el-input> -->
-        <el-input
-          style="text-overflow: ellipsis;"
-          readonly
-          @focus="handelMirror"
-          v-model="data.success"
-          placeholder="出口数据"
-        >
-          <template slot="prepend">出口数据</template>
-        </el-input>
+            </el-input>-->
+            <el-input
+              style="text-overflow: ellipsis;"
+              readonly
+              @focus="handelMirror"
+              v-model="data.success"
+              placeholder="出口数据"
+            >
+              <template slot="prepend">出口数据</template>
+            </el-input>
+          </el-tab-pane>
+          <el-tab-pane label="多条件访问" name="second">
+            <el-form-item>
+              <span style="margin-right:10px">开启多外部条件</span>
+              <el-switch v-model="data.multiToggle"></el-switch>
+            </el-form-item>
+            <el-input
+              style="text-overflow: ellipsis;"
+              readonly
+              @focus="handelMirror"
+              v-model="data.multiCondition"
+              placeholder="多个外部条件访问"
+            ></el-input>
+          </el-tab-pane>
+        </el-tabs>
       </el-form-item>
     </el-form>
   </div>
@@ -168,17 +186,18 @@ import { RES_OK, FAIL_CODE } from "@/api/config";
 import { getDicTwo } from "@/api/forms";
 export default {
   components: {
-    Draggable
+    Draggable,
   },
   props: ["data"],
   data() {
     return {
       dialogTableVisible: false,
+      activeName: "first",
       startPage: 1,
       pageSize: 10,
       total: 0,
       value: "",
-      gridData: []
+      gridData: [],
     };
   },
   mounted() {
@@ -190,7 +209,7 @@ export default {
         return true;
       }
       return false;
-    }
+    },
   },
   methods: {
     // codeMirror弹出函数
@@ -210,17 +229,17 @@ export default {
       getDicTwo({
         body: {
           dicName: this.data.remoteCode,
-          selType: 2
+          selType: 2,
         },
         header: {
           pageIndex: this.startPage,
           pageSize: 10,
           gloSeqNo: new Date(),
           reqSeqNo: "sit anim",
-          reqTime: "officia ad anim"
-        }
+          reqTime: "officia ad anim",
+        },
       })
-        .then(res => {
+        .then((res) => {
           console.log(res);
           if (
             res.rspCode == RES_OK ||
@@ -230,7 +249,7 @@ export default {
               title: "Success",
               message: "查询成功",
               type: "success",
-              duration: 2000
+              duration: 2000,
             });
           } else if (
             res.rspCode == FAIL_CODE ||
@@ -240,7 +259,7 @@ export default {
               title: "fail",
               message: "查询失败",
               type: "info",
-              duration: 2000
+              duration: 2000,
             });
             return;
           }
@@ -259,10 +278,10 @@ export default {
           }
 
           let resultArr = [];
-          tempArr.forEach(item => {
+          tempArr.forEach((item) => {
             let tempJson = {
               value: "",
-              label: ""
+              label: "",
             };
             tempJson.label = item.itemValue;
             tempJson.value = item.itemCode;
@@ -272,7 +291,7 @@ export default {
           this.data.options.options = resultArr;
           console.log(this.data.options.options);
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     },
     setData(params) {
       console.log("11111", params);
@@ -283,7 +302,7 @@ export default {
       getDicTwo({
         body: {
           dicName: this.value,
-          selType: 2
+          selType: 2,
           // itemCode: this.value,
           // itemValue: this.value,
         },
@@ -292,10 +311,10 @@ export default {
           pageSize: 999,
           gloSeqNo: new Date(),
           reqSeqNo: "sit anim",
-          reqTime: "officia ad anim"
-        }
+          reqTime: "officia ad anim",
+        },
       })
-        .then(res => {
+        .then((res) => {
           console.log(res);
           if (
             res.rspCode == RES_OK ||
@@ -305,7 +324,7 @@ export default {
               title: "Success",
               message: "查询成功",
               type: "success",
-              duration: 2000
+              duration: 2000,
             });
           } else if (
             res.rspCode == FAIL_CODE ||
@@ -315,7 +334,7 @@ export default {
               title: "fail",
               message: "查询失败",
               type: "info",
-              duration: 2000
+              duration: 2000,
             });
             return;
           }
@@ -330,10 +349,10 @@ export default {
           }
 
           let resultArr = [];
-          tempArr.forEach(item => {
+          tempArr.forEach((item) => {
             let tempJson = {
               value: "",
-              label: ""
+              label: "",
             };
             tempJson.label = item.itemValue;
             tempJson.value = item.itemCode;
@@ -342,8 +361,8 @@ export default {
           console.log(tempArr, resultArr);
           this.data.options.options = resultArr;
         })
-        .catch(error => console.log(error));
-    }
-  }
+        .catch((error) => console.log(error));
+    },
+  },
 };
 </script>

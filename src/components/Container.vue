@@ -704,6 +704,10 @@ export default {
         if (this.nowEle.options.buttonfun != "") {
           this.code = this.nowEle.options.buttonfun;
         }
+      } else if (this.modify == "多个外部条件访问") {
+        if (this.nowEle.multiCondition != "") {
+          this.code = this.nowEle.multiCondition;
+        }
       }
       this.mirrorVisible = true;
     },
@@ -735,6 +739,8 @@ export default {
         this.nowEle.url = this.code;
       } else if (this.modify == "出口数据") {
         this.nowEle.success = this.code;
+      } else if (this.modify == "多个外部条件访问") {
+        this.nowEle.multiCondition = this.code;
       } else if (this.modify == "入口数据") {
         // let tmp;
         // try {

@@ -91,14 +91,14 @@ let handlers = {
     },
     // 获取全部item节点
     getAllItems() {
-      let generate
-      if(localStorage.getItem("oldMark")){
+      let generate;
+      if (localStorage.getItem("oldMark")) {
         generate = document.querySelector(".el-dialog__wrapper .generateForm");
-      }else{
+      } else {
         generate = document.querySelector(".form-wrap .generateForm");
       }
       this.allItems = generate.getElementsByClassName("targetEle");
-      console.log(generate,this.allItems);
+      console.log(generate, this.allItems);
     },
     // 表格配置项弹出后接管流程控制
     toggleGenerate(rowData) {
@@ -107,9 +107,9 @@ let handlers = {
       // localStorage.setItem("oldModel", this.models);
     },
     // 表格配置项弹窗关闭
-    closeDialog(){
+    closeDialog() {
       let oldMark = localStorage.getItem("oldMark");
-      this.setFocus(this.allItems[oldMark])
+      this.setFocus(this.allItems[oldMark]);
 
       localStorage.removeItem("oldMark");
     },
@@ -275,81 +275,88 @@ let handlers = {
         return;
       }
       let lists = this.comArr;
-      let start = eval("(" + lists[i].isRemote + ")");
-      let startFlag = start(this.models, this.utils);
-      if (startFlag) {
-        let url = lists[i].url;
-        let postData = this.evalWrap(lists[i].data);
-        let tableKey = lists[i].tableKey; //表格表单标识
-        let tableModel = lists[i].tableModel;
-        let tableCode = lists[i].tableCode;
-        let success = lists[i].success;
-        localStorage.setItem("removeFunc", success);
-        let tempFunc = eval("(" + success + ")");
-        getTrade(url, {
-          body: postData,
-          header: {
-            pageIndex: 1,
-            pageSize: 1,
-            gloSeqNo: new Date(),
-            reqSeqNo: "sit anim",
-            reqTime: "officia ad anim",
-          },
-        })
-          .then((res) => {
-            console.log(res);
-            if (res.rspCode == RES_OK) {
-              this.handelValidate("success", "", i);
-              // let tableData = res[tableKey];  //根据配置的数据标识获取表格数据
-              let tableData = res.voucherList; //根据配置的数据标识获取表格数据
-              let Key;
-              for (let i = 0; i < lists.length; i++) {
-                if (lists[i].model == tableModel) {
-                  Key = lists[i].key;
+      if (lists[i].multiToggle) {
+        let multiCondition = eval("(" + lists[i].multiCondition + ")");
+        multiCondition(this.models, this.utils, getTrade);
+        this.handelAssignment(i);
+        this.handelFlow();
+      } else {
+        let start = eval("(" + lists[i].isRemote + ")");
+        let startFlag = start(this.models, this.utils);
+        if (startFlag) {
+          let url = lists[i].url;
+          let postData = this.evalWrap(lists[i].data);
+          let tableKey = lists[i].tableKey; //表格表单标识
+          let tableModel = lists[i].tableModel;
+          let tableCode = lists[i].tableCode; //表格数据标识
+          let success = lists[i].success;
+          localStorage.setItem("removeFunc", success);
+          let tempFunc = eval("(" + success + ")");
+          getTrade(url, {
+            body: postData,
+            header: {
+              pageIndex: 1,
+              pageSize: 1,
+              gloSeqNo: new Date(),
+              reqSeqNo: "sit anim",
+              reqTime: "officia ad anim",
+            },
+          })
+            .then((res) => {
+              console.log(res);
+              if (res.rspCode == RES_OK) {
+                this.handelValidate("success", "", i);
+                let tableData = res[tableCode]; //根据配置的数据标识获取表格数据
+                // let tableData = res.voucherList; //根据配置的数据标识获取表格数据
+                let Key;
+                for (let i = 0; i < lists.length; i++) {
+                  if (lists[i].model == tableModel) {
+                    Key = lists[i].key;
+                  }
                 }
-              }
-              console.log(tableData, tableModel, Key);
-              if (this.checkOutModel(tableModel)) {
-                //如果存在目标表格执行出口数据转换
-                this.$nextTick(() => {
-                  this.models[tableModel] = tableData;
-                  this.setTableData(Key, tableData);
-                  console.log(this.models);
-                  tempFunc(this.models, tableData[0], this.utils);
-                  this.handelAssignment(i);
-                  this.handelFlow();
-                });
+                console.log(tableData, tableModel, Key);
+                if (this.checkOutModel(tableModel)) {
+                  //如果存在目标表格执行出口数据转换
+                  this.$nextTick(() => {
+                    this.models[tableModel] = tableData;
+                    this.setTableData(Key, tableData);
+                    console.log(this.models);
+                    tempFunc(this.models, res, this.utils);
+                    this.handelAssignment(i);
+                    this.handelFlow();
+                  });
+                } else {
+                  this.searchTable(tableKey, tableData); //不存在目标表格发起查询表格请求
+                }
+                this.remoteError = false;
               } else {
-                this.searchTable(tableKey, tableData); //不存在目标表格发起查询表格请求
+                this.setFocus(this.allItems[i]);
+                this.$notify.error({
+                  title: "错误",
+                  message: res.rspMsg,
+                });
+                // this.handelValidate("error", res.rspMsg, i);
+                this.remoteError = true;
+                this.outMark = i;
               }
-              this.remoteError = false;
-            } else {
+            })
+            .catch((error) => {
+              console.log(error);
               this.setFocus(this.allItems[i]);
               this.$notify.error({
                 title: "错误",
-                message: res.rspMsg,
+                message: error.rspMsg,
               });
               // this.handelValidate("error", res.rspMsg, i);
               this.remoteError = true;
               this.outMark = i;
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            this.setFocus(this.allItems[i]);
-            this.$notify.error({
-              title: "错误",
-              message: error.rspMsg,
             });
-            // this.handelValidate("error", res.rspMsg, i);
-            this.remoteError = true;
-            this.outMark = i;
-          });
-      } else {
-        this.handelValidate("success", "", i);
-        this.remoteError = false;
-        this.handelAssignment(i);
-        this.handelFlow();
+        } else {
+          this.handelValidate("success", "", i);
+          this.remoteError = false;
+          this.handelAssignment(i);
+          this.handelFlow();
+        }
       }
     },
     // 表格查询
