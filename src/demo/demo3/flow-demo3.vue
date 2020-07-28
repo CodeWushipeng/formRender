@@ -1,8 +1,8 @@
 <template>
   <div class="render-wrap" style="padding: 20px; " ref="loadingArea">
     <div>
-      canEnter:{{canEnter}}
-      <!--debug:{{debug}}-->
+      canEnter:{{canEnter}} <br>
+      debug:{{debug}}
       <!--btnIndex:{{btnIndex}} <br>-->
       <!--Rank_BTNS:{{displayBtn()}} <br>-->
       <!--<el-input v-model="btnIndex" disabled></el-input>-->
@@ -35,16 +35,16 @@
                     :configdata="configdata"
                     :remoteFuncs="remoteFuncs"
                     ref="renderForm"
-            />
+            >
+              <!--操作按钮-->
+              <div style="text-align:center;">
+                <el-button ref="back" :type="calBtnType(0)" @click="prev">Back</el-button>
+                <el-button ref="submit" :type="calBtnType(1)" @click="submit">Submit</el-button>
+                <el-button ref="cancel" :type="calBtnType(2)" @click="cancel">Cancel</el-button>
+              </div>
+            </render-form>
           </div>
 
-          <!--操作按钮-->
-
-          <div style="text-align:center;">
-            <el-button ref="back" :type="calBtnType(0)" @click="prev">Back</el-button>
-            <el-button ref="submit" :type="calBtnType(1)" @click="submit">Submit</el-button>
-            <el-button ref="cancel" :type="calBtnType(2)" @click="cancel">Cancel</el-button>
-          </div>
         </div>
         <!--拖拽-->
         <div class="drag" v-drag v-if="debug"></div>
@@ -65,8 +65,8 @@
   import storage from 'good-storage';
   import request from './js/request';
   import flowBtns from './flow-buttons';
-  // import getFG from 'fg-control';
-  import getFG from "./js/fg-control";
+  import getFG from 'fg-control';
+  // import getFG from "./js/fg-control";
 
   const FG = new getFG();
   import {queryFlowDetail} from "@/api/flows";
@@ -110,9 +110,10 @@
       };
     },
     created() {
-      console.log('flowMixin',flowMixin)
+      this.debug = storage.session.get(DEBUG_KEY, false);
+      // console.log('flowMixin',flowMixin)
       this.inits();
-      this.openDebug(this);
+      // this.openDebug(this);
     },
     watch: {
       "configdata.list": {
@@ -135,8 +136,8 @@
         let code = 0;
         let code2 = 0;
         let timer = null;
-        this.debug = storage.session.get(DEBUG_KEY, false)
-        document.onkeydown = function (e) {
+        const $doc = document;
+        $doc.onkeydown = function (e) {
           clearTimeout(timer);
           //事件对象兼容
           let e1 = e || event || window.event || arguments.callee.caller.arguments[0];
@@ -161,9 +162,10 @@
             code = 0;
             code2 = 0;
           }, 1000)
-
-          _self.calBtnIndex(key);
-          _self.calBtnSubmit(key);
+          if(_self.canEnter){
+            _self.calBtnIndex(key);
+            _self.calBtnSubmit(key);
+          }
         }
       },
       inits() {
@@ -204,6 +206,7 @@
                   FG.ISOK = true;
                   FG.pushProcess(nodeCode);
                   console.log(`开始节点${nodeCode},检查通过,可以执行`);
+                  this.submit();
                 } else {
                   // this.$handleWarning(`当前节点${node_code}不能执行`);
                   alert(`当前节点${nodeCode}不能执行`);
