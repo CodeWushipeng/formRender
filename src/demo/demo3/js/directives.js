@@ -1,14 +1,17 @@
 
 
-export let _MAX_WIDTH = null; // 最大宽度
-export const _MIN_WIDTH = 400; // 最小宽度
+export let   _MAX_WIDTH = null; // 最大宽度
+export const _MIN_WIDTH = 400;  // 最小宽度
 
 export function getId(id) {
-  return document.getElementById(id)
+  return document.getElementById(id);
 }
 
-export function getTag(tag) {
+function _getTags(tag) {
   return document.getElementsByTagName(tag)
+}
+export function getTag(tag) {
+  return _getTags(tag)[0];
 }
 
 export function clearSelectEmpty() {
@@ -27,7 +30,7 @@ export default {
 
         let $buss   = getId('buss');
         let $debugs = getId('debugs');
-        let $body   = getTag('body')[0];
+        let $body   = getTag('body');
 
         let WIN_WIDTH  = $body.clientWidth;
         let leftWidth = e.pageX - disx;

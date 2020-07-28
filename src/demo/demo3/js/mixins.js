@@ -78,8 +78,8 @@ const KEY_RIGHT = 39;
 
 export const subControls = {
   hasEnd(val){
-    console.log('has end..', val)
-    this.canEnter = val;
+    // console.log('has end..', val)
+    // this.canEnter = val;
   },
   calBtnType(num) {
     if (num == this.btnIndex && this.canEnter) {
