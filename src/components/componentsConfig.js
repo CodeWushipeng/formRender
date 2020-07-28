@@ -19,7 +19,7 @@ export const basicComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -66,7 +66,7 @@ export const basicComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -114,7 +114,7 @@ export const basicComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -180,7 +180,7 @@ export const basicComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -243,7 +243,7 @@ export const basicComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -295,7 +295,7 @@ export const basicComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -347,7 +347,7 @@ export const basicComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -391,7 +391,7 @@ export const basicComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -434,7 +434,7 @@ export const basicComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -538,7 +538,7 @@ export const basicComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -586,7 +586,7 @@ export const basicComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -627,7 +627,7 @@ export const basicComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -701,7 +701,7 @@ export const advanceComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"
@@ -753,7 +753,7 @@ export const advanceComponents = [
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn true\n"
+    +"\treturn null\n"
     +"}",
     condition:"function main (models,utils,cb,i)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n"

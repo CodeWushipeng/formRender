@@ -1207,12 +1207,13 @@ export default {
               this.$message("请配置表单编码");
               return;
             }
-            this.tableCf.tableDataEAVisible = true;
             this.tableCf.dialogType = "add";
             getFormConfigDataById(addFormId, function(data) {
               if (data && data.formContent) {
                 _self.tableCf.configdata = JSON.parse(data.formContent);
               }
+              _self.$emit("toggleGenerate", _self.tableCf.configdata)
+              _self.tableCf.tableDataEAVisible = true;
             });
           }
           break;
@@ -1225,6 +1226,7 @@ export default {
             return;
           } else {
             this.tableCf.editData = selecteRow[0];
+            this.$emit("toggleGenerate",selecteRow[0])
           }
           if (this.widget.options.isEditBtnCustom) {
             if (this.widget.options.editFn) {
@@ -1345,6 +1347,7 @@ export default {
     },
     closeTableDataEA() {
       this.tableCf.tableDataEAVisible = false;
+      this.$emit("close-dialog")
     },
     handelTableDataEA() {
       let type = this.tableCf.dialogType;
@@ -1366,7 +1369,6 @@ export default {
           });
         }
       }
-
       this.closeTableDataEA();
     }
   },
@@ -1423,10 +1425,6 @@ export default {
       handler(val) {
         console.log(val)
         this.dataModel = val[this.widget.model];
-        console.log(this.$refs)
-        // if(this.$refs.generateTable){
-        //   this.$refs.generateTable.setData(val[this.widget.model])
-        // }
       }
     }
   }

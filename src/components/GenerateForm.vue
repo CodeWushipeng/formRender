@@ -49,7 +49,8 @@
                   @el-focus="mouseValidate"
                   @el-blur="blurValidate"
                   @date-blur="dateValidata"
-                  @date-enter="dateNext"
+                  @toggleGenerate="toggleGenerate"
+                  @close-dialog="closeDialog"
                   v-show="!citem.options.hidden"
                 ></genetate-form-item>
               </template>
@@ -75,10 +76,10 @@
             @el-focus="mouseValidate"
             @el-blur="blurValidate"
             @date-blur="dateValidata"
-            @date-enter="dateNext"
             @remove="removeKeyup"
+            @toggleGenerate="toggleGenerate"
+            @close-dialog="closeDialog"
             :remote="remote"
-            :ref="item.model"
             v-show="!item.options.hidden"
           ></genetate-form-item>
         </template>

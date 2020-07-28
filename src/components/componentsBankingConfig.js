@@ -19,12 +19,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -72,12 +70,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -127,12 +123,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -180,12 +174,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -232,12 +224,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -282,12 +272,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -353,12 +341,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -421,12 +407,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -478,12 +462,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -535,12 +517,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -612,12 +592,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -665,12 +643,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -719,12 +695,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
@@ -767,12 +741,10 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn false\n"
     +"}",
-    enterCondition:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn true\n" +
-      "}",
+    enterCondition: "function main (models,utils)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数\n"
+    +"\treturn null\n"
+    +"}",
     condition:
       "function main (models,utils,cb,i)" +
       "{\n" +
