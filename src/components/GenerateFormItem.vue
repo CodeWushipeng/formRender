@@ -1243,10 +1243,11 @@ export default {
               return;
             }
             this.tableCf.dialogType = "edit";
-            this.tableCf.tableDataEAVisible = true;
             getFormConfigDataById(editFormId, function(data) {
               if (data && data.formContent) {
                 _self.tableCf.configdata = JSON.parse(data.formContent);
+                _self.$emit("toggleGenerate", _self.tableCf.configdata)
+                _self.tableCf.tableDataEAVisible = true;
               }
             });
           }
