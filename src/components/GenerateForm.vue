@@ -429,4 +429,8 @@ export default {
   outline: none;
   border-color: #409eff;
 }
+.el-table .tr-bg,.el-table--striped .el-table__body tr.tr-bg td{
+  background: #409eff;
+  color: #fff;
+}
 </style>

@@ -409,7 +409,7 @@
 
     <template v-if="widget.type == 'select'">
       <!--remoteOptions:{{widget.options.remoteOptions}} :automatic-dropdown="true"-->
-      <el-select
+      <hr-select
         v-model="dataModel"
         :disabled="widget.options.disabled"
         :multiple="widget.options.multiple"
@@ -450,12 +450,12 @@
             }}
           </span>
         </el-option>
-      </el-select>
+      </hr-select>
       <span>{{ dataModel }}</span>
     </template>
 
     <template v-if="widget.type == 'camera'">
-      <el-select
+      <hr-select
         ref="camera"
         v-model="dataModel"
         :disabled="widget.options.disabled"
@@ -478,7 +478,7 @@
           :value="item.value"
           :label="item.label"
         ></el-option>
-      </el-select>
+      </hr-select>
       <el-button type="primary" class="json-btn" @click="cameraFun">拍照</el-button>
       <el-image :src="cameraimage" v-if="cameraimage != ''"></el-image>
     </template>
@@ -666,7 +666,7 @@
             <el-col v-if="widget.options.isDisplayColumnBtn" :span="10">
               <div>
                 <span>显示列:</span>
-                <el-select @change="displayColumnsChange()"
+                <hr-select @change="displayColumnsChange()"
                   v-model="widget.options.displayColumns"
                   multiple
                   filterable
@@ -678,7 +678,7 @@
                     :label="item.label"
                     :value="item.prop">
                   </el-option>
-              </el-select>
+              </hr-select>
               </div>
             </el-col>
           </el-row>
@@ -735,6 +735,7 @@ import ElImage from "element-ui/packages/image/src/main";
 import { RES_OK, FAIL_CODE } from "@/api/config";
 import { getFormConfigDataById } from "../components/table/tableAction";
 import itemHandle from './mixins/itemHandle.js'
+import hrSelect from './base-components/my-select/select'
 export default {
   props: ["widget", "models", "rules", "remote"], // widget为当前组件json数据
   components: {
@@ -743,7 +744,8 @@ export default {
     FmUploadExtend,
     CusDialog,
     cameraFormItem,
-    radioFormItem
+    radioFormItem,
+    hrSelect
   },
   mixins:[itemHandle],
   data() {

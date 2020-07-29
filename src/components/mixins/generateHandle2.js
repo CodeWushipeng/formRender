@@ -10,6 +10,7 @@ let handlers = {
       comArr: [], //组件list数组
       outMark: 0, //外层循环标记
       allItems: [],
+      allTrs: [], //弹出表格全部tr节点
       unfocus: [],
       cancelNext: false,
       canFocusLength: 0,
@@ -43,10 +44,14 @@ let handlers = {
     // 组件获取焦点
     mouseValidate(params, type) {
       // debugger
-      let formEle = document.querySelector(".generateForm")
-      if(type === "date" || type === "time"){
+      let formEle = document.querySelector(".generateForm");
+      if (type === "date" || type === "time") {
         // debugger
-        formEle.removeEventListener("keyup",this.arrowListener)
+        formEle.removeEventListener("keyup", this.arrowListener);
+      } else {
+        this.$nextTick(() => {
+          formEle.addEventListener("keyup", this.arrowListener);
+        });
       }
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
@@ -96,15 +101,47 @@ let handlers = {
       if (localStorage.getItem("oldMark")) {
         generate = document.querySelector(".el-dialog .generateForm");
       } else {
-        generate = document.querySelector(".form-wrap .generateForm") ?
-        document.querySelector(".form-wrap .generateForm"):
-        document.querySelector(".el-dialog .generateForm");
+        generate = document.querySelector(".form-wrap .generateForm")
+          ? document.querySelector(".form-wrap .generateForm")
+          : document.querySelector(".el-dialog .generateForm");
       }
       this.allItems = generate.getElementsByClassName("targetEle");
       console.log(generate, this.allItems);
     },
+    // 获取表格全部tr
+    getAllPoupTr() {
+      let generate = document.querySelector(".el-dialog .generateForm");
+      if (generate) {
+        this.allTrs = generate.getElementsByClassName("el-table__row");
+        let mark = 0;
+        let trLength = this.allTrs.length-1;
+        this.allTrs[mark].classList.add("tr-bg");
+        this.$nextTick(() => {
+          document.addEventListener("keyup", () => {
+            if (window.event.keyCode === 40) {
+              if (mark >= trLength) {
+                return;
+              } else {
+                this.allTrs[mark].classList.remove("tr-bg");
+                mark++;
+                this.allTrs[mark].classList.add("tr-bg");
+              }
+            } else if (window.event.keyCode === 38) {
+              if (mark <= 0) {
+                return;
+              }
+              this.allTrs[mark].classList.remove("tr-bg");
+              mark--;
+              this.allTrs[mark].classList.add("tr-bg");
+            }
+          });
+        });
+      }
+      console.log(this.allTrs);
+    },
     // 表格配置项弹出后接管流程控制
     toggleGenerate(rowData) {
+      debugger;
       localStorage.setItem("oldMark", this.outMark);
       // localStorage.setItem("oldData", this.data);
       // localStorage.setItem("oldModel", this.models);
@@ -329,8 +366,8 @@ let handlers = {
                     this.handelFlow();
                   });
                 } else {
-                  localStorage.setItem("response",JSON.stringify(res))
-                  localStorage.setItem("model",tableModel)
+                  localStorage.setItem("response", JSON.stringify(res));
+                  localStorage.setItem("model", tableModel);
                   this.searchTable(tableKey, tableData); //不存在目标表格发起查询表格请求
                 }
                 this.remoteError = false;
@@ -419,9 +456,9 @@ let handlers = {
       let tempFunc = eval("(" + removeFunc + ")");
       console.log(tempFunc, rowData);
       let model = localStorage.getItem("model");
-      let res = JSON.parse(localStorage.getItem("response"))
+      let res = JSON.parse(localStorage.getItem("response"));
       res[model] = row;
-      console.log(res)
+      console.log(res);
       tempFunc(this.$parent.$parent.models, res);
       this.$parent.$parent.trade = false;
     },
@@ -681,11 +718,7 @@ let handlers = {
     },
     // arrow回调事件
     arrowListener() {
-      if (window.event.keyCode === 37) {
-        if(this.comArr[this.outMark].type === "time" || this.comArr[this.outMark].type === "date"){
-          let target = this.$refs.generateForm.$children[this.outMark].$refs[this.comArr[this.outMark].model];
-          target.handleClose()
-        }
+      if (window.event.ctrlKey && window.event.keyCode === 37) {
         for (let i = this.outMark - 1; i >= 0; i--) {
           if (
             this.comArr[i].options.disabled ||
@@ -695,18 +728,34 @@ let handlers = {
             continue;
           } else {
             if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
-              this.setFocus(this.allItems[i]);
+              if (
+                this.comArr[i].type === "time" ||
+                this.comArr[i].type === "date"
+              ) {
+                let target = this.$refs.generateForm.$children[i].$refs[
+                  this.comArr[i].model
+                ];
+                target.handleClose();
+              } else {
+                this.setFocus(this.allItems[i]);
+              }
+
               console.log("获取节点", this.outMark, i, this.allItems[i]);
               this.outMark = i;
               break;
             }
           }
         }
-      } else if (window.event.keyCode === 39) {
-        if(this.comArr[this.outMark].type === "time" || this.comArr[this.outMark].type === "date"){
-          let target = this.$refs.generateForm.$children[this.outMark].$refs[this.comArr[this.outMark].model];
-          target.handleClose()
-          return
+      } else if (window.event.ctrlKey && window.event.keyCode === 39) {
+        if (
+          this.comArr[this.outMark].type === "time" ||
+          this.comArr[this.outMark].type === "date"
+        ) {
+          let target = this.$refs.generateForm.$children[this.outMark].$refs[
+            this.comArr[this.outMark].model
+          ];
+          target.handleClose();
+          return;
         }
         for (let i = this.outMark + 1; i < this.comArr.length; i++) {
           if (
@@ -731,8 +780,7 @@ let handlers = {
       let formEle = document.querySelector(".generateForm");
       this.$nextTick(() => {
         formEle.addEventListener("keyup", this.arrowListener);
-      })
-      
+      });
     },
     // 监听item组件发射的remove事件
     removeKeyup(params) {
@@ -753,6 +801,7 @@ let handlers = {
         this.handelHidden();
         this.enterCheck();
         this.getAllItems();
+        this.getAllPoupTr();
         this.getShowLength();
         this.iteratorAllEle();
         this.resetCursor();
@@ -761,16 +810,16 @@ let handlers = {
       }
     }, 300);
   },
-  destroyed(){
-    if(localStorage.getItem("oldMark")){
+  destroyed() {
+    if (localStorage.getItem("oldMark")) {
       localStorage.removeItem("oldMark");
-    } else if (localStorage.getItem("removeFunc")){
+    } else if (localStorage.getItem("removeFunc")) {
       localStorage.removeItem("removeFunc");
-    } else if (localStorage.getItem("model")){
+    } else if (localStorage.getItem("model")) {
       localStorage.removeItem("model");
-    } else if (localStorage.getItem("response")){
+    } else if (localStorage.getItem("response")) {
       localStorage.removeItem("response");
     }
-  }
+  },
 };
 export default handlers;
