@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import GenetateFormItem from "./GenerateFormItem";
+import GenetateFormItem from "./GenerateFormItem.vue";
 // import { loadJs } from "../util/index.js";
 // import request from "../util/request.js";
 import { IdentityCodeValid } from "../util/idencardUtil";
@@ -425,4 +425,8 @@ export default {
 
 <style lang="scss">
 // @import '../styles/cover.scss';
+.fake-focus{
+  outline: none;
+  border-color: #409eff;
+}
 </style>

@@ -43,23 +43,23 @@ let handlers = {
     // 组件获取焦点
     mouseValidate(params, type) {
       // debugger
-      // let formEle = document.querySelector(".generateForm")
-      // if(type === "date" || type === "time"){
-      //   // debugger
-      //   formEle.removeEventListener("keyup",this.arrowListener)
-      // }
-      // for (let i = 0; i < this.comArr.length; i++) {
-      //   if (this.comArr[i].model == params) {
-      //     console.log(i, this.outMark);
-      //     if (i == this.outMark) {
-      //       return;
-      //     } else {
-      //       this.outMark = i;
-      //     }
-      //     break;
-      //   }
-      // }
-      // this.allValidate(this.outMark);
+      let formEle = document.querySelector(".generateForm")
+      if(type === "date" || type === "time"){
+        // debugger
+        formEle.removeEventListener("keyup",this.arrowListener)
+      }
+      for (let i = 0; i < this.comArr.length; i++) {
+        if (this.comArr[i].model == params) {
+          console.log(i, this.outMark);
+          if (i == this.outMark) {
+            return;
+          } else {
+            this.outMark = i;
+          }
+          break;
+        }
+      }
+      this.allValidate(this.outMark);
     },
     // 初始化时复制一份models数据
     copyMOdels() {
@@ -74,6 +74,7 @@ let handlers = {
       this.allValidate(this.outMark);
       this.handelAssignment(this.outMark);
       this.cancelNext = true;
+      this.handelFlow();
     },
     // 隐藏
     handelHidden() {
@@ -93,9 +94,11 @@ let handlers = {
     getAllItems() {
       let generate;
       if (localStorage.getItem("oldMark")) {
-        generate = document.querySelector(".el-dialog__wrapper .generateForm");
+        generate = document.querySelector(".el-dialog .generateForm");
       } else {
-        generate = document.querySelector(".form-wrap .generateForm");
+        generate = document.querySelector(".form-wrap .generateForm") ?
+        document.querySelector(".form-wrap .generateForm"):
+        document.querySelector(".el-dialog .generateForm");
       }
       this.allItems = generate.getElementsByClassName("targetEle");
       console.log(generate, this.allItems);
@@ -363,7 +366,6 @@ let handlers = {
     },
     // 表格查询
     searchTable(code, table) {
-      debugger;
       let tableData = table;
       let self = this;
       getFormList("", {
@@ -679,8 +681,11 @@ let handlers = {
     },
     // arrow回调事件
     arrowListener() {
-      console.log(this.comArr[this.outMark]);
       if (window.event.keyCode === 37) {
+        if(this.comArr[this.outMark].type === "time" || this.comArr[this.outMark].type === "date"){
+          let target = this.$refs.generateForm.$children[this.outMark].$refs[this.comArr[this.outMark].model];
+          target.handleClose()
+        }
         for (let i = this.outMark - 1; i >= 0; i--) {
           if (
             this.comArr[i].options.disabled ||
@@ -698,6 +703,11 @@ let handlers = {
           }
         }
       } else if (window.event.keyCode === 39) {
+        if(this.comArr[this.outMark].type === "time" || this.comArr[this.outMark].type === "date"){
+          let target = this.$refs.generateForm.$children[this.outMark].$refs[this.comArr[this.outMark].model];
+          target.handleClose()
+          return
+        }
         for (let i = this.outMark + 1; i < this.comArr.length; i++) {
           if (
             this.comArr[i].options.disabled ||
@@ -719,7 +729,10 @@ let handlers = {
     // 上下键操作光标
     handelCursorByArrow() {
       let formEle = document.querySelector(".generateForm");
-      formEle.addEventListener("keyup", this.arrowListener, true);
+      this.$nextTick(() => {
+        formEle.addEventListener("keyup", this.arrowListener);
+      })
+      
     },
     // 监听item组件发射的remove事件
     removeKeyup(params) {

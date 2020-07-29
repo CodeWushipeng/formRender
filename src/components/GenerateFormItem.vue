@@ -355,6 +355,7 @@
         :arrowControl="widget.options.arrowControl"
         :value-format="widget.options.format"
         :style="{ width: widget.options.width }"
+        :ref='widget.model'
         @focus="comFocus($event)"
         @blur="dateBlur($event)"
       ></el-time-picker>
@@ -383,6 +384,7 @@
             ? pickerOptionsRange
             : ''
         "
+        :ref='widget.model'
         @focus="comFocus($event)"
         @blur="dateBlur($event)"
       ></el-date-picker>
@@ -912,7 +914,6 @@ export default {
     },
     /*摄像头*/
     cameraFun() {
-      //debugger
       this.cameraVisible = true;
     },
     focus() {
@@ -1154,7 +1155,7 @@ export default {
     handleRemoteFn(fn) {
       var _this = this;
       try {
-        fn(this, request, function(tableCf) {debugger
+        fn(this, request, function(tableCf) {
           if (_this.widget.configdata.list) {
             let tempTableCf = _this.widget.configdata.list[0];
             if(tableCf instanceof  Array){
