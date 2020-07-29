@@ -4,6 +4,8 @@ import 'normalize.css/normalize.css'
 import MakingForm from './components/Container.vue'
 import GenerateForm from './components/GenerateForm.vue'
 import renderForm from './components/renderForm.vue'
+import ElMySelect from "./components/base-components/my-select/select";
+
 
 import enUS from './lang/en-US'
 import zhCN from './lang/zh-CN'
@@ -59,7 +61,8 @@ renderForm.install = function (Vue, opts = {
 const components = [
   MakingForm,
   GenerateForm,
-  renderForm
+  renderForm,
+  ElMySelect
 ]
 
 const install = function (Vue, opts = {
@@ -69,7 +72,11 @@ const install = function (Vue, opts = {
 }) {
   loadLang(Vue, opts.lang, opts.locale, opts.i18n)
   components.forEach(component => {
-    Vue.component(component.name, component)
+    if(component.name=='ElSelect'){
+      Vue.component('ElMySelect', component)
+    }else{
+      Vue.component(component.name, component)
+    }
   })
 }
 

@@ -7,7 +7,7 @@ import LanguageView from "./LanguageView.vue";
 import preview from "../demo/preView.vue";
 import flowDemo3 from "../demo/demo3/flow-demo3";
 import testJs from "../demo/testjs/index";
-
+import testSelect from "../demo/testSelect/test-select";
 import testUntil from "../demo/testUntil/index";
 import nofound from "../demo/testUntil/404";
 //import image from "../demo/image";
@@ -45,9 +45,14 @@ export default new Router({
                     component: flowDemo3,
                 },
                 {
+                  path: 'testSelect',
+                  name: 'testSelect',
+                  component: testSelect
+                },
+                {
                     path: 'testjs',
                     name: 'testjs',
-                    component: testJs
+                    component: testSelect
                 },
                 {
                     path: 'until',
