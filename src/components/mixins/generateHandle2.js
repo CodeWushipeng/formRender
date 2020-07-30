@@ -313,6 +313,7 @@ let handlers = {
     },
     // 字段交易
     remoteValidate(i) {
+      debugger
       if (this.singleError || this.rangeError || this.conditionError) {
         return;
       }
@@ -345,16 +346,12 @@ let handlers = {
             },
           })
             .then((res) => {
-              debugger
+
               console.log(res);
-              if (res.rspCode == RES_OK || (res.header && res.header.rspCode == RES_OK)) {
+              if (res.header.rspCode == RES_OK) {
                 this.handelValidate("success", "", i);
                 let tableData
-                if (res.header && res.header.rspCode == RES_OK && res.body) {
-                  tableData = res.body[tableModel]; //根据配置的数据标识获取表格数据
-                }else{
-                  tableData = res[tableModel]; //根据配置的数据标识获取表格数据
-                }
+                tableData = res.body[tableModel]; //根据配置的数据标识获取表格数据
                 // let tableData = res[tableModel]; //根据配置的数据标识获取表格数据
                 // let tableData = res.voucherList; //根据配置的数据标识获取表格数据
                 let Key;
@@ -420,13 +417,13 @@ let handlers = {
       })
         .then((res) => {
           console.log(res);
-          if (res.rspCode === RES_OK) {
+          if (res.header.rspCode === RES_OK) {
             this.$notify({
               message: "查询成功",
               type: "success",
             });
             self.trade = true;
-            let temp = JSON.parse(res.define.records[0].formContent);
+            let temp = JSON.parse(res.body.define.records[0].formContent);
             this.gridData = temp;
             this.$nextTick(() => {
               this.$refs.grid.setTableData(temp.list[0].key, tableData);

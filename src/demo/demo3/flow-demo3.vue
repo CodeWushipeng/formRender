@@ -180,12 +180,13 @@
         // return
         queryFlowDetail(params)
             .then(res => {
+              debugger
               console.log('res', res)
-              const {rspCode} = res;
+              const {rspCode} = res.header;
               if (rspCode == RES_OK) {
-                const list = res.detail.records;
-                let funcCollection = res.define.funcCollection;
-                const funcObject = FG.solveCommonJS(funcCollection);
+                const list = res.body.detail.records;
+                let funcCollection = res.body.define.funcCollection;
+                const funcObject = funcCollection ? FG.solveCommonJS(funcCollection) : {};
 
                 // records数据
                 this.records = list;
