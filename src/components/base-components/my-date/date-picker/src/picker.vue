@@ -11,7 +11,6 @@
     v-if="!ranged"
     v-clickoutside="handleClose"
     :placeholder="placeholder"
-    @focus="handleFocus"
     @keydown.native="handleKeydown"
     :value="displayValue"
     @input="value => userInput = value"
@@ -22,8 +21,7 @@
     ref="reference">
     <i slot="prefix"
       class="el-input__icon"
-      :class="triggerClass"
-      @click="handleFocus">
+      :class="triggerClass">
     </i>
     <i slot="suffix"
       class="el-input__icon"
@@ -58,7 +56,6 @@
       :name="name && name[0]"
       @input="handleStartInput"
       @change="handleStartChange"
-      @focus="handleFocus"
       class="el-range-input">
     <slot name="range-separator">
       <span class="el-range-separator">{{ rangeSeparator }}</span>
@@ -73,7 +70,6 @@
       :name="name && name[1]"
       @input="handleEndInput"
       @change="handleEndChange"
-      @focus="handleFocus"
       class="el-range-input">
     <i
       @click="handleClickIcon"

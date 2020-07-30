@@ -84,7 +84,7 @@ let handlers = {
     // 隐藏
     handelHidden() {
       this.comArr.forEach((item) => {
-        if (item.hidden && item.hidden != "") {
+        if (item.hidden) {
           let flag = this.evalWrap(item.hidden);
           console.log(flag);
           if (flag) {
@@ -105,7 +105,7 @@ let handlers = {
           ? document.querySelector(".form-wrap .generateForm")
           : document.querySelector(".el-dialog .generateForm");
       }
-      this.allItems = generate.getElementsByClassName("targetEle");
+      this.allItems = generate && generate.getElementsByClassName("targetEle");
       console.log(generate, this.allItems);
     },
     // 获取表格全部tr
@@ -125,11 +125,10 @@ let handlers = {
             if (window.event.keyCode === 40) {
               if (mark >= trLength) {
                 return;
-              } else {
-                this.allTrs[mark].classList.remove("tr-bg");
-                mark++;
-                this.allTrs[mark].classList.add("tr-bg");
               }
+              this.allTrs[mark].classList.remove("tr-bg");
+              mark++;
+              this.allTrs[mark].classList.add("tr-bg");
             } else if (window.event.keyCode === 38) {
               if (mark <= 0) {
                 return;
@@ -152,10 +151,9 @@ let handlers = {
     },
     // 表格配置项弹窗关闭
     closeDialog() {
-      let oldMark = localStorage.getItem("oldMark");
+      let oldMark = localStorage.getItem("oldMark") ? localStorage.getItem("oldMark") : 0;
       this.setFocus(this.allItems[oldMark]);
-
-      localStorage.removeItem("oldMark");
+      localStorage.getItem("oldMark") && localStorage.removeItem("oldMark");
     },
     // 流程控制
     handelFlow() {
