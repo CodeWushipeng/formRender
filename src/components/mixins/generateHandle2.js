@@ -112,7 +112,11 @@ let handlers = {
     getAllPoupTr() {
       let generate = document.querySelector(".el-dialog .generateForm");
       if (generate) {
+        // debugger
         this.allTrs = generate.getElementsByClassName("el-table__row");
+        if(this.allTrs.length === 0){
+          return
+        }
         let mark = 0;
         let trLength = this.allTrs.length-1;
         this.allTrs[mark].classList.add("tr-bg");

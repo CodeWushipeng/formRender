@@ -297,9 +297,6 @@ export default {
           }
         }
       }
-      if (!this.checkModels(this.data.list)) {
-        return;
-      }
     },
     // 验证并获取输入框当前的值
     getData() {
@@ -342,24 +339,6 @@ export default {
           if(typeof this.models[item] == "string"){
               this.models[item]=this.models[item].trim();
           }
-      }
-    },
-    // 检查model是否有重复
-    checkModels(item) {
-      for (let i = 0; i < item.length; i++) {
-        for (let j = i + 1; j < item.length; j++) {
-          if (item[i].model === item[j].model) {
-            this.$message({
-              showClose: true,
-              duration: 5000,
-              message: "model不能重复",
-              type: "error"
-            });
-            return false;
-          } else {
-            return true;
-          }
-        }
       }
     },
     clearValidate() {

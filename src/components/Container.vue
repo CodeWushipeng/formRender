@@ -390,13 +390,6 @@
         </cus-dialog>
       </el-container>
     </el-main>
-    <el-footer height="30px" style="font-weight: 600;">
-      Powered by
-      <a
-        target="_blank"
-        href="https://github.com/GavinZhuLei/vue-form-making"
-      >vue-form-making</a>
-    </el-footer>
   </el-container>
 </template>
 
@@ -785,7 +778,28 @@ export default {
     handleMove() {
       return true;
     },
+    // 检查model是否有重复
+    checkModels(item) {
+      for (let i = 0; i < item.length; i++) {
+        for (let j = i + 1; j < item.length; j++) {
+          if (item[i].model === item[j].model) {
+            this.$message({
+              showClose: true,
+              duration: 5000,
+              message: `${item[i].name} 和 ${item[j].name} 字段标识重复`,
+              type: "error"
+            });
+            return false;
+          } else {
+            return true;
+          }
+        }
+      }
+    },
     handlePreview() {
+      if(!this.checkModels(this.widgetForm.list)){
+        return
+      }
       console.log(this.widgetForm);
       this.previewVisible = true;
     },
