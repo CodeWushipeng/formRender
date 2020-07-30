@@ -467,7 +467,6 @@ let handlers = {
       let model = localStorage.getItem("model");
       let res = JSON.parse(localStorage.getItem("response"));
       res[model] = row;
-      console.log(res);
       tempFunc(this.$parent.$parent.models, res);
       this.$parent.$parent.trade = false;
     },

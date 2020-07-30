@@ -39,7 +39,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -99,7 +99,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -160,7 +160,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -239,7 +239,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -315,7 +315,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -380,7 +380,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -445,7 +445,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -502,7 +502,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -558,7 +558,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -633,7 +633,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -688,7 +688,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -749,7 +749,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -803,7 +803,7 @@ export const basicComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -890,7 +890,7 @@ export const advanceComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
@@ -955,7 +955,7 @@ export const advanceComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
-    success: "function main (models,utils)"+"{\n"
+    success: "function main (models,res,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn {}\n"
     +"}",
