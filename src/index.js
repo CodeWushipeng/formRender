@@ -1,10 +1,12 @@
 import VueI18n from 'vue-i18n'
 import 'normalize.css/normalize.css'
 
-import MakingForm from './components/Container.vue'
-import GenerateForm from './components/GenerateForm.vue'
-import renderForm from './components/renderForm.vue'
-import ElMySelect from "./components/base-components/my-select/select";
+import MakingForm from '@/components/Container.vue'
+import GenerateForm from '@/components/GenerateForm.vue'
+import renderForm from '@/components/renderForm.vue'
+import hrElSelect from   "@/components/base-components/my-select/select";
+import hrDatePicker from '@/components/base-components/my-date/date-picker/src/picker/date-picker'
+import hrTimeSelect from '@/components/base-components/my-date/date-picker/src/picker/time-select'
 
 
 import enUS from './lang/en-US'
@@ -62,7 +64,9 @@ const components = [
   MakingForm,
   GenerateForm,
   renderForm,
-  ElMySelect
+  hrElSelect,
+  hrDatePicker,
+  hrTimeSelect,
 ]
 
 const install = function (Vue, opts = {
@@ -72,9 +76,17 @@ const install = function (Vue, opts = {
 }) {
   loadLang(Vue, opts.lang, opts.locale, opts.i18n)
   components.forEach(component => {
+    // console.log('component.name=',component.name)
     if(component.name=='ElSelect'){
-      Vue.component('ElMySelect', component)
-    }else{
+      Vue.component('hrSelect', component)
+    }
+    else if(component.name=='ElDatePicker'){
+      Vue.component('hrDatePicker', component)
+    }
+    else if(component.name=='ElTimeSelect'){
+      Vue.component('hrTimeSelect', component)
+    }
+    else{
       Vue.component(component.name, component)
     }
   })
