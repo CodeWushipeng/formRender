@@ -65,8 +65,8 @@
   import storage from 'good-storage';
   import request from './js/request';
   import flowBtns from './flow-buttons';
-  import getFG from 'fg-control';
-  // import getFG from "./js/fg-control";
+  // import getFG from 'fg-control';
+  import getFG from "./js/fg-control";
 
   const FG = new getFG();
   import {queryFlowDetail} from "@/api/flows";

@@ -13,6 +13,7 @@
       @isEnd="accept"
       ref="generateForm"
     ></fm-generate-form>
+      <slot></slot>
   </div>
 </template>
 
