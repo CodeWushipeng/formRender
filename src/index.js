@@ -1,12 +1,12 @@
 import VueI18n from 'vue-i18n'
 import 'normalize.css/normalize.css'
 
-import MakingForm from '@/components/Container.vue'
-import GenerateForm from '@/components/GenerateForm.vue'
-import renderForm from '@/components/renderForm.vue'
-import hrElSelect from   "@/components/base-components/my-select/select";
-import hrDatePicker from '@/components/base-components/my-date/date-picker/src/picker/date-picker'
-import hrTimeSelect from '@/components/base-components/my-date/date-picker/src/picker/time-select'
+import MakingForm from './components/Container.vue'
+import GenerateForm from './components/GenerateForm.vue'
+import renderForm from './components/renderForm.vue'
+import hrElSelect from   "./components/base-components/my-select/select";
+import hrDatePicker from './components/base-components/my-date/date-picker/src/picker/date-picker'
+import hrTimeSelect from './components/base-components/my-date/date-picker/src/picker/time-select'
 
 
 import enUS from './lang/en-US'

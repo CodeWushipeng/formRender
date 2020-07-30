@@ -1,9 +1,6 @@
 const TerserPlugin = require("terser-webpack-plugin");
 
 const port = process.env.port || process.env.npm_config_port || 9528; // dev port
-function resolve(dir) {
-  return path.join(__dirname, dir)
-}
 
 module.exports = {
   productionSourceMap: false,
@@ -24,11 +21,6 @@ module.exports = {
     ];
     if (process.env.NODE_ENV !== "development") {
       config.plugins = [...config.plugins, ...plugins];
-      config.resolve={
-        alias: {
-          '@': resolve('src')
-        }
-      }
     }
   },
   devServer: {
