@@ -28,10 +28,10 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
     config => {
-      if (!config.hideLoging) {
-        loading.open();
-      }
-      let { pageIndex, pageSize, header, ...data } = config.data;
+      // if (!config.hideLoging) {
+      //   loading.open();
+      // }
+      let {pageIndex, pageSize, header, ...data} = config.data;
       config.data = {
         body: data.body ? data.body : data,
         "header": {
@@ -64,7 +64,7 @@ service.interceptors.request.use(
     },
     error => {
       // do something with request error
-      loading.close();
+      // loading.close();
       Message({
         message: error,
         type: 'error',
@@ -87,31 +87,30 @@ service.interceptors.response.use(
      * You can also judge the status by HTTP Status Code
      */
     response => {
-      setTimeout(() => {
-        loading.close()
-      }, 300)
+      // setTimeout(() => {
+      //   loading.close()
+      // }, 300)
       const res = response.data
-      // if (process.env.NODE_ENV === 'development') {
-        if (typeof res == 'object') {
-          if (res && res.header && res.body) {
-            const {header, body} = res;
-            if (typeof body !== "object") {
-              return Promise.resolve(Object.assign({}, {"statusCode": 200, ...header, body: body}));
-            } else {
-              return Promise.resolve(Object.assign({}, {"statusCode": 200, ...header, ...body}))
-            }
+      return res
+      /*if (typeof res == 'object') {
+        if (res && res.header && res.body) {
+          const {header, body} = res;
+          if (typeof body !== "object") {
+            return Promise.resolve(Object.assign({}, {"statusCode": 200, ...header, body: body}));
           } else {
-            return Promise.resolve(Object.assign({}, res))
+            return Promise.resolve(Object.assign({}, {"statusCode": 200, ...header, ...body}))
           }
         } else {
-          Message({
-            message: res.message || 'Error',
-            type: 'error',
-            duration: 5 * 1000
-          })
-          return Promise.reject(new Error(res.message || 'Error'))
+          return Promise.resolve(Object.assign({}, res))
         }
-      // }
+      } else {
+        Message({
+          message: res.message || 'Error',
+          type: 'error',
+          duration: 5 * 1000
+        })
+        return Promise.reject(new Error(res.message || 'Error'))
+      }
 
       if (res.statusCode !== 200) {
         Message({
@@ -136,7 +135,7 @@ service.interceptors.response.use(
         return Promise.reject(new Error(res.message || 'Error'))
       } else {
         return res
-      }
+      }*/
     },
     error => {
       loading.close();

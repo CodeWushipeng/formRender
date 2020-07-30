@@ -303,9 +303,9 @@ let handlers = {
         })
           .then((res) => {
             console.log(res);
-            if (res.rspCode == RES_OK) {
+            if (res.header.rspCode == RES_OK) {
               let tempFunc = eval("(" + success + ")");
-              tempFunc(this.models, res);
+              tempFunc(this.models, res.body);
               this.handelValidate("success", "", i);
               // this.searchTable(res.body);
               // this.trade = true;
@@ -614,7 +614,7 @@ let handlers = {
           }
         });
       })
-      
+
     },
   },
   mounted() {

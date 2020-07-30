@@ -123,9 +123,9 @@ export default {
         getFormList(this.url, { formCode: inputFormCode })
           .then((res) => {
             console.log("=====form-making-secondary===res============", res);
-            const { rspCode } = res;
+            const { rspCode } = res.header;
             if (rspCode == RES_OK) {
-              const rest = res.define;
+              const rest = res.body.define;
               if (rest && rest.records.length > 0) {
                 const formContent = rest.records[0]["formContent"];
                 // 设置数据
@@ -240,10 +240,10 @@ export default {
       }
       getFormList(this.url, { formCode: outputFromCode })
         .then((res) => {
-          const { rspCode } = res;
+          const { rspCode } = res.header;
           this.hideLoading();
           if (rspCode == RES_OK) {
-            const rest = res.define;
+            const rest = res.body.define;
             if (rest && rest.records.length > 0) {
               const formContent = rest.records[0]["formContent"];
               const temp =
