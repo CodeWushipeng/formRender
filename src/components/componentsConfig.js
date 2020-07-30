@@ -408,7 +408,7 @@ export const basicComponents = [
       defaultValue: '',
       readonly: false,
       disabled: false,
-      editable: true,
+      editable: false,
       clearable: true,
       placeholder: '',
       startPlaceholder: '',

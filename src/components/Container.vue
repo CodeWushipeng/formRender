@@ -406,7 +406,7 @@ import {
   basicComponents,
   layoutComponents,
   advanceComponents,
-  tableComponents
+  tableComponents,
 } from "./componentsConfig.js";
 import { bankingComponents } from "./componentsBankingConfig.js";
 import { loadJs, loadCss } from "../util/index.js";
@@ -427,36 +427,36 @@ export default {
     CusDialog,
     GenerateForm,
     TableWidgetConfig,
-    TableEventConfig
+    TableEventConfig,
   },
   props: {
     preview: {
       type: Boolean,
-      default: false
+      default: false,
     },
     extend: {
       type: Boolean,
-      default: true
+      default: true,
     },
     formConfig: {
       type: Boolean,
-      default: false
+      default: false,
     },
     generateCode: {
       type: Boolean,
-      default: false
+      default: false,
     },
     generateJson: {
       type: Boolean,
-      default: false
+      default: false,
     },
     upload: {
       type: Boolean,
-      default: false
+      default: false,
     },
     clearable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     bankingFields: {
       type: Array,
@@ -481,8 +481,8 @@ export default {
         "videoupload",
         "camera",
         "buttonCom",
-        "alink"
-      ]
+        "alink",
+      ],
     },
     basicFields: {
       type: Array,
@@ -499,21 +499,21 @@ export default {
         "select",
         "switch",
         "slider",
-        "text"
-      ]
+        "text",
+      ],
     },
     advanceFields: {
       type: Array,
-      default: () => ["blank", "imgupload", "editor", "cascader"]
+      default: () => ["blank", "imgupload", "editor", "cascader"],
     },
     layoutFields: {
       type: Array,
-      default: () => ["grid"]
+      default: () => ["grid"],
     },
     tableFields: {
       type: Array,
-      default: () => ["elTable"]
-    }
+      default: () => ["elTable"],
+    },
   },
   data() {
     return {
@@ -532,7 +532,7 @@ export default {
         spellcheck: true,
         autocorrect: true,
         indentUnit: 2,
-        line: true
+        line: true,
       },
       mirrorVisible: false,
       nowEle: {}, //当前编辑的组件对象
@@ -548,9 +548,9 @@ export default {
         config: {
           labelWidth: 100,
           labelPosition: "right",
-          size: "small"
+          size: "small",
         },
-        extendDetail: "function main ()" + "{\n" + "}"
+        extendDetail: "function main ()" + "{\n" + "}",
       },
       configTab: "widget",
       widgetFormSelect: null,
@@ -565,7 +565,7 @@ export default {
             const options = [
               { id: "1", name: "1111" },
               { id: "2", name: "2222" },
-              { id: "3", name: "3333" }
+              { id: "3", name: "3333" },
             ];
 
             resolve(options);
@@ -574,13 +574,13 @@ export default {
         funcGetToken(resolve) {
           request
             .get("http://tools-server.xiaoyaoji.cn/api/uptoken")
-            .then(res => {
+            .then((res) => {
               resolve(res.uptoken);
             });
         },
         upload_callback(response, file, fileList) {
           console.log("callback", response, file, fileList);
-        }
+        },
       },
       widgetModels: {},
       blank: "",
@@ -598,13 +598,13 @@ export default {
     "size": "small"
   }
 }`,
-      codeActiveName: "vue"
+      codeActiveName: "vue",
     };
   },
   computed: {
     codemirror() {
       return this.$refs.myCm.codemirror;
-    }
+    },
   },
   mounted() {
     this._loadComponents();
@@ -613,34 +613,34 @@ export default {
     // 为每个组件添加name属性
     _loadComponents() {
       // 金融控件
-      this.bankingComponents = this.bankingComponents.map(item => {
+      this.bankingComponents = this.bankingComponents.map((item) => {
         return {
           ...item,
-          name: this.$t(`fm.components.nFields.${item.type}`)
+          name: this.$t(`fm.components.nFields.${item.type}`),
         };
       });
-      this.basicComponents = this.basicComponents.map(item => {
+      this.basicComponents = this.basicComponents.map((item) => {
         return {
           ...item,
-          name: this.$t(`fm.components.fields.${item.type}`)
+          name: this.$t(`fm.components.fields.${item.type}`),
         };
       });
-      this.advanceComponents = this.advanceComponents.map(item => {
+      this.advanceComponents = this.advanceComponents.map((item) => {
         return {
           ...item,
-          name: this.$t(`fm.components.fields.${item.type}`)
+          name: this.$t(`fm.components.fields.${item.type}`),
         };
       });
-      this.layoutComponents = this.layoutComponents.map(item => {
+      this.layoutComponents = this.layoutComponents.map((item) => {
         return {
           ...item,
-          name: this.$t(`fm.components.fields.${item.type}`)
+          name: this.$t(`fm.components.fields.${item.type}`),
         };
       });
-      this.tableComponents = this.tableComponents.map(item => {
+      this.tableComponents = this.tableComponents.map((item) => {
         return {
           ...item,
-          name: this.$t(`fm.components.fields.${item.type}`)
+          name: this.$t(`fm.components.fields.${item.type}`),
         };
       });
     },
@@ -780,25 +780,29 @@ export default {
     },
     // 检查model是否有重复
     checkModels(item) {
-      for (let i = 0; i < item.length; i++) {
-        for (let j = i + 1; j < item.length; j++) {
-          if (item[i].model === item[j].model) {
-            this.$message({
-              showClose: true,
-              duration: 5000,
-              message: `${item[i].name} 和 ${item[j].name} 字段标识重复`,
-              type: "error"
-            });
-            return false;
-          } else {
-            return true;
+      if (item.length <= 1) {
+        return true;
+      } else {
+        for (let i = 0; i < item.length; i++) {
+          for (let j = i + 1; j < item.length; j++) {
+            if (item[i].model === item[j].model) {
+              this.$message({
+                showClose: true,
+                duration: 5000,
+                message: `${item[i].name} 和 ${item[j].name} 字段标识重复`,
+                type: "error",
+              });
+              return false;
+            } else {
+              return true;
+            }
           }
         }
       }
     },
     handlePreview() {
-      if(!this.checkModels(this.widgetForm.list)){
-        return
+      if (!this.checkModels(this.widgetForm.list)) {
+        return;
       }
       console.log(this.widgetForm);
       this.previewVisible = true;
@@ -806,11 +810,11 @@ export default {
     handleTest() {
       this.$refs.generateForm
         .getData()
-        .then(data => {
-          this.$alert(data, "").catch(e => {});
+        .then((data) => {
+          this.$alert(data, "").catch((e) => {});
           this.$refs.widgetPreview.end();
         })
-        .catch(e => {
+        .catch((e) => {
           this.$refs.widgetPreview.end();
         });
     },
@@ -828,7 +832,7 @@ export default {
 
         if (!this.jsonClipboard) {
           this.jsonClipboard = new Clipboard(".json-btn");
-          this.jsonClipboard.on("success", e => {
+          this.jsonClipboard.on("success", (e) => {
             this.$message.success(this.$t("fm.message.copySuccess"));
           });
         }
@@ -870,8 +874,8 @@ export default {
           labelWidth: 100,
           labelPosition: "right",
           size: "small",
-          customClass: ""
-        }
+          customClass: "",
+        },
       };
       this.widgetFormSelect = {};
     },
@@ -899,19 +903,19 @@ export default {
     // 监听input组件通过form组件发射出来的事件
     inputChange() {
       console.log("input");
-    }
+    },
   },
   watch: {
     widgetForm: {
       deep: true,
-      handler: function(val) {
+      handler: function (val) {
         console.log(this.$refs.widgetForm);
-      }
+      },
     },
-    $lang: function(val) {
+    $lang: function (val) {
       this._loadComponents();
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -919,20 +923,20 @@ export default {
 .widget-empty {
   background-position: 50%;
 }
-.wrap{
+.wrap {
   display: flex;
   justify-content: space-between;
 }
-.vue-codemirror{
+.vue-codemirror {
   width: 550px;
 }
-.data-list{
+.data-list {
   width: 200px;
   height: 300px;
   overflow-y: scroll;
   border-left: 1px solid #eee;
 }
-.data-list> .data{
+.data-list > .data {
   height: 30px;
   line-height: 30px;
   padding: 0 5px;

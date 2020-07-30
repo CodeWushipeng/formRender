@@ -362,7 +362,7 @@
     </template>
 
     <template v-if="widget.type == 'date'">
-      <el-date-picker
+      <hr-date-picker
         v-model="dataModel"
         :type="widget.options.type"
         :placeholder="widget.options.placeholder"
@@ -387,7 +387,8 @@
         :ref='widget.model'
         @focus="comFocus($event)"
         @blur="dateBlur($event)"
-      ></el-date-picker>
+        @keyup.native.space="dateShow"
+      ></hr-date-picker>
     </template>
 
     <template v-if="widget.type == 'rate'">
