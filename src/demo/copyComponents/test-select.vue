@@ -1,23 +1,23 @@
 <template>
   <div class="test-select-container">
     <el-input v-model="input" placeholder="请输入内容"></el-input>
-    <el-my-select v-model="value" placeholder="请选择" @change="change" @visible-change="visibleChange">
+    <hr-select v-model="value" placeholder="请选择" @change="change" @visible-change="visibleChange">
       <el-option
               v-for="item in options"
               :key="item.value"
               :label="item.label"
               :value="item.value">
       </el-option>
-    </el-my-select>
+    </hr-select>
   </div>
 </template>
 
 <script>
-  // import ElMySelect from "../../components/base-components/my-select/select";
+  // import hrSelect from "../../components/base-components/my-select/select";
   export default {
     name: "jr-select",
     components:{
-      // ElMySelect,
+      // hrSelect,
     },
     data() {
       return {
