@@ -114,11 +114,11 @@ let handlers = {
       if (generate) {
         // debugger
         this.allTrs = generate.getElementsByClassName("el-table__row");
-        if(this.allTrs.length === 0){
-          return
+        if (this.allTrs.length === 0) {
+          return;
         }
         let mark = 0;
-        let trLength = this.allTrs.length-1;
+        let trLength = this.allTrs.length - 1;
         this.allTrs[mark].classList.add("tr-bg");
         this.$nextTick(() => {
           document.addEventListener("keyup", () => {
@@ -151,7 +151,9 @@ let handlers = {
     },
     // 表格配置项弹窗关闭
     closeDialog() {
-      let oldMark = localStorage.getItem("oldMark") ? localStorage.getItem("oldMark") : 0;
+      let oldMark = localStorage.getItem("oldMark")
+        ? localStorage.getItem("oldMark")
+        : 0;
       this.setFocus(this.allItems[oldMark]);
       localStorage.getItem("oldMark") && localStorage.removeItem("oldMark");
     },
@@ -313,7 +315,7 @@ let handlers = {
     },
     // 字段交易
     remoteValidate(i) {
-      debugger
+      debugger;
       if (this.singleError || this.rangeError || this.conditionError) {
         return;
       }
@@ -346,35 +348,39 @@ let handlers = {
             },
           })
             .then((res) => {
-
               console.log(res);
               if (res.header.rspCode == RES_OK) {
                 this.handelValidate("success", "", i);
-                let tableData
-                tableData = res.body[tableModel]; //根据配置的数据标识获取表格数据
-                // let tableData = res[tableModel]; //根据配置的数据标识获取表格数据
-                // let tableData = res.voucherList; //根据配置的数据标识获取表格数据
-                let Key;
-                for (let i = 0; i < lists.length; i++) {
-                  if (lists[i].model == tableModel) {
-                    Key = lists[i].key;
-                  }
-                }
-                console.log(tableData, tableModel, Key);
-                if (this.checkOutModel(tableModel)) {
-                  //如果存在目标表格执行出口数据转换
-                  this.$nextTick(() => {
-                    this.models[tableModel] = tableData;
-                    this.setTableData(Key, tableData);
-                    console.log(this.models);
-                    tempFunc(this.models, res, this.utils);
-                    this.handelAssignment(i);
-                    this.handelFlow();
-                  });
+                // 判断是否有表格数据，没有执行赋值
+                if (!tableModel) {
+                  tempFunc(this.models, res, this.utils);
+                  this.handelAssignment(i);
+                  this.handelFlow();
                 } else {
-                  localStorage.setItem("response", JSON.stringify(res));
-                  localStorage.setItem("model", tableModel);
-                  this.searchTable(tableKey, tableData); //不存在目标表格发起查询表格请求
+                  let tableData;
+                  tableData = res.body[tableModel]; //根据配置的数据标识获取表格数据
+                  let Key;
+                  for (let i = 0; i < lists.length; i++) {
+                    if (lists[i].model == tableModel) {
+                      Key = lists[i].key;
+                    }
+                  }
+                  console.log(tableData, tableModel, Key);
+                  if (this.checkOutModel(tableModel)) {
+                    //如果存在目标表格执行出口数据转换
+                    this.$nextTick(() => {
+                      this.models[tableModel] = tableData;
+                      this.setTableData(Key, tableData);
+                      console.log(this.models);
+                      tempFunc(this.models, res, this.utils);
+                      this.handelAssignment(i);
+                      this.handelFlow();
+                    });
+                  } else {
+                    localStorage.setItem("response", JSON.stringify(res));
+                    localStorage.setItem("model", tableModel);
+                    this.searchTable(tableKey, tableData); //不存在目标表格发起查询表格请求
+                  }
                 }
                 this.remoteError = false;
               } else {
