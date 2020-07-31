@@ -301,23 +301,19 @@ export default {
     // 验证并获取输入框当前的值
     getData() {
       this.clearValidate();
+      this.trimModels(this.models);
       return new Promise((resolve, reject) => {
         // 执行form表单验证函数
-        this.$nextTick(() => {
-          this.$refs.generateForm.validate((valid) => {
-            if (valid) {
-              // 逐条验证当前表单的校验规则
-              this.trimModels(this.models);
-              resolve(this.models);
-            } else {
-              reject(new Error(this.$t("fm.message.validError")).message);
-            }
-          });
+        this.$refs.generateForm.validate((valid) => {
+          if (valid) {
+            resolve(this.models);
+          } else {
+            reject(new Error(this.$t("fm.message.validError")).message);
+          }
         });
       });
     },
     setTableData(key, data) {
-      debugger;
       if (key) {
         this.data.list.map((t) => {
           if (t.key == key) {
@@ -354,7 +350,13 @@ export default {
           lists[i].options.hidden ||
           lists[i].options.readonly == "readonly"
         ) {
-          lists[i].model = "";
+          console.log(this.rules);
+          this.rules[lists[i].model];
+          for (let j = 0; j < this.rules[lists[i].model].length; j++) {
+            if (this.rules[lists[i].model][j].required) {
+              this.rules[lists[i].model][j].required = false;
+            }
+          }
         }
       }
       console.log(this.data);
