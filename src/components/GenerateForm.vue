@@ -121,7 +121,7 @@ export default {
   },
   data() {
     return {
-      gridData: {},
+      gridData: null,
       rowData: "",
       result: {},
       models: {}, // form表单对象所有组件key value组成的json
