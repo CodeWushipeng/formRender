@@ -542,7 +542,6 @@
     <template v-if="widget.type == 'alink'">
       <a
         ref="alinkref"
-        v-model="dataModel"
         @click="buttonfun(widget.options.buttonfun)"
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
@@ -1166,7 +1165,7 @@ export default {
               tempTableCf.options.tableData = tableCf;
             }else{
               tempTableCf.options.tableData = tableCf.records;
-            }        
+            }
             //带有分页
             if (_this.widget.options.isPagination === true) {
               _this.widget.options.pagination.pageSize = tableCf.size;
@@ -1347,9 +1346,9 @@ export default {
             }else{
               c.isDisplay = false;
             }
-          }   
+          }
         })
-      } 
+      }
     },
     closeTableDataEA() {
       this.tableCf.tableDataEAVisible = false;
