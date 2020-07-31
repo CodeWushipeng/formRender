@@ -107,7 +107,7 @@ export default {
         customClass: '自定义Class'
       },
       common:{
-        title: '通用字段',
+        title: '高级属性',
         enterCondition: '进入条件',
         remoteCode: '字典值',
         condition: '离开条件',  //新增离开条件
@@ -118,7 +118,7 @@ export default {
       },
       widget: {
         showTips: '提示信息',       //新增是否显示提示信息
-        title: '字段属性',
+        title: '基础属性',
         model: '字段标识',
         name: '标题',
         width: '宽度',
@@ -261,7 +261,7 @@ export default {
       title: '表格属性',
       widget: {
         selectTableConfig:'选择已配置的表格',
-        dataIidentification: '自定义数据来源',
+        dataIdentification: '自定义数据来源',
         paginationConfig: '表格分页字段配置',
         pageSize: "每页显示条目个数",
         isPagination:'是否带有分页',

@@ -18,7 +18,7 @@
           <el-input v-model="data.name"></el-input>
         </el-form-item>
         <div v-if="tableName != ''">
-          <el-form-item :label="$t('fm.tableWidget.widget.dataIidentification')">
+          <el-form-item :label="$t('fm.tableWidget.widget.dataIdentification')">
             <el-input
               v-model="data.options.remoteFunc"
               size="mini"
@@ -196,7 +196,7 @@ export default {
           this.tableCodeCf.tableCodeFn ="function mian(currentObj, request, callBack) {debugger;}";
         }
       }
-        
+
     },
     closeMirror() {
       this.mirrorVisible = false;

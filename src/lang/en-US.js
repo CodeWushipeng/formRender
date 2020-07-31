@@ -79,7 +79,7 @@ export default {
         customClass: 'Custom Class'
       },
       widget: {
-        title: 'Component Attribute',
+        title: 'Component Base Attribute',
         model: 'ID',
         name: 'Name',
         width: 'Width',
@@ -196,7 +196,7 @@ export default {
       title: 'Table properties',
       widget: {
         selectTableConfig: 'select the configured table',
-        dataIdentification: 'Data identification',
+        dataIdentification: 'customize data source',
         paginationConfig: 'Table pagination',
         pageSize: "Page size",
         isPagination: 'Pagination',
