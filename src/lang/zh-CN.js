@@ -261,7 +261,7 @@ export default {
       title: '表格属性',
       widget: {
         selectTableConfig:'选择已配置的表格',
-        dataIidentification: '数据标识',
+        dataIidentification: '自定义数据来源',
         paginationConfig: '表格分页字段配置',
         pageSize: "每页显示条目个数",
         isPagination:'是否带有分页',
