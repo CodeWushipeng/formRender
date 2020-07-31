@@ -56,7 +56,7 @@ let handlers = {
           break;
         }
       }
-      this.allValidate(this.outMark);
+      this.allValidate(this.outMark-1);
     },
     // 初始化时复制一份models数据
     copyMOdels() {

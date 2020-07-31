@@ -23,13 +23,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -87,13 +85,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -153,13 +149,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -217,13 +211,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -280,13 +272,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -341,13 +331,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -423,13 +411,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -502,13 +488,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -570,13 +554,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -638,13 +620,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -726,13 +706,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -790,13 +768,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -855,13 +831,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -914,13 +888,11 @@ export const bankingComponents = [
     +"\t//models为当前表单所有model utils为扩展函数\n"
     +"\treturn null\n"
     +"}",
-    condition:
-      "function main (models,utils,cb,i)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数 cb为验证错误的提示函数,i为传入cb的当前组件下标\n" +
-      "\tif(false){cb('error','错误提示信息',i)}\n" +
-      "\treturn true\n" +
-      "}",
+    condition:"function main (models,utils,message,i)"+"{\n"
+    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
+    +"\tif(false){message('error','错误提示信息',i)}\n"
+    +"\treturn true\n"
+    +"}",
     valueRange: "",
     assignment:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
