@@ -1,5 +1,6 @@
 <template>
-  <!--style="border:1px solid red;"-->
+  <!--style="border:1px solid red;"    -->
+  <!--     @focus="handleFocus"      -->
   <el-input
     class="el-date-editor"
     :class="'el-date-editor--' + type"

@@ -142,7 +142,7 @@ let itemHandle = {
     },
     // date选择器失去焦点事件
     dateBlur() {
-      // this.widget.options.editable = false
+      this.widget.options.editable = false
       this.$emit("date-blur", this.widget.model,this.widget);
     },
     dateShow(){

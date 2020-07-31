@@ -342,7 +342,7 @@
     </template>
 
     <template v-if="widget.type == 'time'">
-      <el-time-picker
+      <hr-time-select
         v-model="dataModel"
         :is-range="widget.options.isRange"
         :placeholder="widget.options.placeholder"
@@ -358,7 +358,8 @@
         :ref='widget.model'
         @focus="comFocus($event)"
         @blur="dateBlur($event)"
-      ></el-time-picker>
+        @keyup.native.space="dateShow"
+      ></hr-time-select>
     </template>
 
     <template v-if="widget.type == 'date'">

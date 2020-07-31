@@ -343,7 +343,7 @@ export const basicComponents = [
       defaultValue: '21:19:56',
       readonly: false,
       disabled: false,
-      editable: true,
+      editable: false,
       clearable: true,
       placeholder: '',
       startPlaceholder: '',

@@ -45,14 +45,6 @@ let handlers = {
     mouseValidate(params, type) {
       // debugger
       let formEle = document.querySelector(".generateForm");
-      if (type === "date" || type === "time") {
-        // debugger
-        formEle.removeEventListener("keyup", this.arrowListener);
-      } else {
-        this.$nextTick(() => {
-          formEle.addEventListener("keyup", this.arrowListener);
-        });
-      }
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
           console.log(i, this.outMark);
@@ -602,7 +594,10 @@ let handlers = {
         : ele.querySelector("textarea")
         ? ele.querySelector("textarea")
         : ele.querySelector(".el-form-item__content>button");
-      let type = focusEle.getAttribute("type");
+      let type;
+      if (focusEle.tagName === "INPUT" && focusEle.hasAttribute("type")) {
+        type = focusEle.getAttribute("type");
+      }
       console.log("当前聚焦元素", focusEle);
       this.$nextTick(() => {
         if (type == "radio") {
@@ -739,18 +734,7 @@ let handlers = {
             continue;
           } else {
             if (this.canFocusType.indexOf(this.comArr[i].type) != -1) {
-              if (
-                this.comArr[i].type === "time" ||
-                this.comArr[i].type === "date"
-              ) {
-                let target = this.$refs.generateForm.$children[i].$refs[
-                  this.comArr[i].model
-                ];
-                target.handleClose();
-              } else {
-                this.setFocus(this.allItems[i]);
-              }
-
+              this.setFocus(this.allItems[i]);
               console.log("获取节点", this.outMark, i, this.allItems[i]);
               this.outMark = i;
               break;
@@ -758,16 +742,6 @@ let handlers = {
           }
         }
       } else if (window.event.ctrlKey && window.event.keyCode === 39) {
-        if (
-          this.comArr[this.outMark].type === "time" ||
-          this.comArr[this.outMark].type === "date"
-        ) {
-          let target = this.$refs.generateForm.$children[this.outMark].$refs[
-            this.comArr[this.outMark].model
-          ];
-          target.handleClose();
-          return;
-        }
         for (let i = this.outMark + 1; i < this.comArr.length; i++) {
           if (
             this.comArr[i].options.disabled ||
