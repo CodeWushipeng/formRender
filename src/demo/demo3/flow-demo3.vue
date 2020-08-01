@@ -526,6 +526,7 @@
         // this.$handleSuccess("已清理这个流程");
         alert("已清理这个流程");
         console.log("FG", FG);
+        this.$router.push("/")
       },
       getFormHandler() {
         if (this.$refs.renderForm) {
