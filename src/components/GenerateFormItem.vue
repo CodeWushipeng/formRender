@@ -9,15 +9,6 @@
     <!--金额控件-->
     <template v-if="widget.type == 'amount'">
       <!--放大镜-->
-      <transition name="fade">
-        <div v-if="widget.options.amountmoney && amountvisible" class="mglass">
-          <div class="mglass-data">
-            {{ dataModel }}
-            <br />
-          </div>
-          <div class="mglass-big">{{ bigPastAdjustFee }}</div>
-        </div>
-      </transition>
       <div class="el-input el-input--small">
         <input
           class="el-input__inner"
@@ -31,6 +22,16 @@
           v-model="dataModel"
           type="text"
         />
+        <transition name="fade">
+          <!--<div class="mglass">-->
+          <div v-if="widget.options.amountmoney && amountvisible" class="mglass">
+            <div class="mglass-data">
+              {{ dataModel }}
+              <br />
+            </div>
+            <div class="mglass-big">{{ bigPastAdjustFee }}</div>
+          </div>
+        </transition>
       </div>
     </template>
     <!--密码-->
@@ -1436,9 +1437,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+/*金额放大镜*/
 .mglass {
+  width: 100%;
+  position: absolute;
+  left:0;
+  top:34px;
+  z-index: 1111;
   color: #fff;
-  padding: 10px;
+  padding: 5px 10px;
   font-size: 13px;
   border: 1px solid #55a532;
   background: #55a532;
