@@ -314,6 +314,7 @@ export default {
       });
     },
     setTableData(key, data) {
+      debugger
       if (key) {
         this.data.list.map((t) => {
           if (t.key == key) {
@@ -327,9 +328,9 @@ export default {
         if (
           this.data &&
           this.data.list[0] &&
-          this.data.list[0].options.tableData
+          this.data.list[0].configdata.list[0].options.tableData
         ) {
-          this.data.list[0].options.tableData = data;
+          this.data.list[0].configdata.list[0].options.tableData = data;
         }
       }
     },

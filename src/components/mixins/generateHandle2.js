@@ -407,6 +407,7 @@ let handlers = {
     },
     // 表格查询
     searchTable(code, table) {
+      debugger
       let tableData = table;
       let self = this;
       getFormList("", {
