@@ -16,6 +16,7 @@
       :rules="rules"
       :label-position="data.config.labelPosition"
       :label-width="data.config.labelWidth + 'px'"
+      :key="formKey"
     >
       <template v-for="item in data.list">
         <template v-if="item.type == 'grid'">
@@ -64,6 +65,22 @@
           </el-form-item>
         </template>
 
+        <!-- <generate-tab-item
+          v-else-if="item.type == 'tabs'"
+          :key="item.key"
+          :model.sync="models"
+          :rules="rules"
+          :element="item"
+          :remote="remote"
+          :blanks="blanks"
+          @input-change="onInputChange"
+          :edit="edit"
+        >
+          <template v-slot:[blank.name]="scope" v-for="blank in blanks">
+            <slot :name="blank.name" :model="scope.model"></slot>
+          </template>
+        </generate-tab-item> -->
+
         <template v-else>
           <genetate-form-item
             :key="item.key"
@@ -96,8 +113,10 @@
 
 <script>
 import GenetateFormItem from "./GenerateFormItem.vue";
-// import { loadJs } from "../util/index.js";
+import { loadJs } from "../util/index.js";
 // import request from "../util/request.js";
+import GenerateTabItem from './GenerateTabItem'
+import { EventBus } from '../util/event-bus.js'
 import { IdentityCodeValid } from "../util/idencardUtil";
 import handler from "./mixins/generateHandle2.js";
 
@@ -105,6 +124,7 @@ export default {
   name: "fm-generate-form",
   components: {
     GenetateFormItem,
+    GenerateTabItem,
   },
   /**
    * data为表单渲染原始数据
@@ -126,15 +146,35 @@ export default {
       result: {},
       models: {}, // form表单对象所有组件key value组成的json
       rules: {}, // form表单对象所有组件对应校验规则
+      blanks: [],
+      formKey: new Date().getTime(),
     };
   },
   created() {
-    this.generateModle(this.data.list);
+    this._initForm();
   },
-  mounted() {},
+  mounted() {
+    EventBus.$on('on-field-change', (field, value) => {
+      this.$nextTick(() => {
+        this.form.setFieldsValue({
+          [`${field}`]: value
+        })
+      })
+    })
+  },
+  beforeDestroy () {
+    EventBus.$off('on-field-change')
+  },
   methods: {
+    _initForm () {
+      if (Object.keys(this.data).length) {
+        this.generateModel(this.data.list)
+      } else {
+        this.generateModel([])
+      }
+    },
     // 生成models、rules对象
-    generateModle(genList) {
+    generateModel(genList) {
       // console.log(
       //   "xxxxxxxxxxxxxxxx2333333333333333333xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
       // );
@@ -144,11 +184,15 @@ export default {
       for (let i = 0; i < genList.length; i++) {
         if (genList[i].type === "grid") {
           genList[i].columns.forEach((item) => {
-            this.generateModle(item.list);
+            this.generateModel(item.list);
           });
         } else if (genList[i].type === "elTable") {
           this.models[genList[i].model] =
             genList[i].configdata.list[0].options.tableData;
+        } else if (genList[i].type === 'tabs') {
+          genList[i].tabs.forEach(item => {
+            this.generateModel(item.list)
+          })
         } else {
           // 处理非表格类型的组件
           if (
@@ -366,6 +410,7 @@ export default {
     // 重置表单
     reset() {
       this.$refs.generateForm.resetFields();
+      this.formKey = new Date().getTime()
     },
     // 监听表单数据改变
     onInputChange(value, field) {
@@ -396,7 +441,7 @@ export default {
       // deep: true,
       handler(val) {
         this.resetModelsFields();
-        this.generateModle(val.list);
+        this.generateModel(val.list);
       },
     },
     value: {

@@ -11,6 +11,9 @@ export const basicComponents = [
       pattern: '',
       placeholder: '',
       disabled: false,
+      labelWidth: 100,
+      isLabelWidth: false,
+      showPassword: false,
       tips:""
     },
     hidden:"function main (models,utils)"+"{\n"
@@ -996,7 +999,32 @@ export const layoutComponents = [
       justify: 'start',
       align: 'top'
     }
-  }
+  },
+  {
+    type: 'divider',
+    icon: 'icon-fengexian',
+    options: {
+      hidden: false,
+      contentPosition: 'left'
+    }
+  },
+  {
+    type: 'tabs',
+    icon: 'icon-tabs',
+    tabs: [
+      {
+        label: 'Tab 1',
+        name: 'tab_1',
+        list: []
+      }
+    ],
+    options: {
+      type: '',
+      tabPosition: 'top',
+      customClass: '',
+      hidden: false,
+    }
+  },
 ]
 
 export const tableComponents = [

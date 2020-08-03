@@ -91,7 +91,9 @@ export default {
       addColumn: '添加列',
       addTab: '添加标签',
       upload: '点击上传',
-      add: '添加'
+      add: '添加',
+      undo: '撤销',
+      redo: '重做'
     },
     config: {
       form: {
@@ -125,6 +127,7 @@ export default {
         height: '高度',
         size: '大小',
         labelWidth: '标签宽度',
+        hideLabel: '隐藏标签',
         custom: '自定义',
         placeholder: '占位内容',
         ifperipheral: '支持外设',

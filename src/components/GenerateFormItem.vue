@@ -1,8 +1,17 @@
 <template>
+<div>
+
+
   <el-form-item
-    :label="(widget.type != 'buttonCom' && widget.type != 'alink') ? widget.name : ''"
+    v-if="widget.type != 'divider'"
+    :label="(widget.type != 'buttonCom' && widget.type != 'alink' && !widget.options.hideLabel) ? widget.name : ''"
     :prop="widget.model"
-    :class="'targetEle'"
+    class="targetEle"
+    :class="{
+        [widget.options.customClass]: widget.options.customClass?true: false,
+        'no-label-form-item': widget.options.isLabelWidth && widget.options.labelWidth == 0
+      }"
+      :label-width="widget.options.hideLabel ? '0px' : (widget.options.isLabelWidth ? widget.options.labelWidth + 'px' : '')"
   >
     <!--widget: {{widget}}-->
     <!-- {{rules}} -->
@@ -22,6 +31,7 @@
           v-model="dataModel"
           type="text"
         />
+        
         <transition name="fade">
           <!--<div class="mglass">-->
           <div v-if="widget.options.amountmoney && amountvisible" class="mglass">
@@ -96,6 +106,7 @@
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
         :disabled="widget.options.disabled"
+        :show-password="widget.options.showPassword"
         @focus="comFocus($event)"
         @blur="comBlur($event)"
         @keyup.native.enter="change($event)"
@@ -118,6 +129,7 @@
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width }"
+        :show-password="widget.options.showPassword"
         @focus="comFocus($event)"
         @blur="comBlur($event)"
         @keyup.native.enter="change($event)"
@@ -169,7 +181,16 @@
         @focus="comFocus($event)"
         @blur="comBlur($event)"
         @keyup.native.enter="change"
-      ></el-input>
+      >
+      <template slot="prepend">
+          <el-button
+            v-if="widget.options.tips != ''"
+            @click="showTips(widget.options.tips)"
+            slot="prepend"
+            icon="el-icon-question"
+          ></el-button>
+        </template>
+      </el-input>
     </template>
     <template v-if="widget.type == 'textarea'">
       <el-input
@@ -213,7 +234,16 @@
         @focus="comFocus($event)"
         @blur="comBlur($event)"
         @keyup.native.enter="change"
-      ></el-input-number>
+      >
+      <template slot="prepend">
+          <el-button
+            v-if="widget.options.tips != ''"
+            @click="showTips(widget.options.tips)"
+            slot="prepend"
+            icon="el-icon-question"
+          ></el-button>
+        </template>
+      </el-input-number>
     </template>
 
     <!--标签组件-->
@@ -722,6 +752,12 @@
       </cus-dialog>
     </template>
   </el-form-item>
+  <el-divider v-if="widget.type == 'divider'"
+      :content-position="widget.options.contentPosition"
+    >
+      {{widget.name}}
+    </el-divider>
+  </div>
 </template>
 
 <script>

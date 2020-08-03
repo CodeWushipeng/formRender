@@ -1,10 +1,36 @@
 <template>
+<div>
+  <div class="widget-view no-put"
+      v-if="element && element.key && element.type == 'divider'" 
+      :class="{active: selectWidget.key == element.key, 'is_hidden': element.options.hidden}"
+      @click.stop="handleSelectWidget(index)"
+      style="padding-bottom: 0;"
+    >
+      <el-divider :content-position="element.options.contentPosition">
+        {{element.name}}
+      </el-divider>
+
+      <div class="widget-view-action" v-if="selectWidget.key == element.key">
+        <i class="iconfont icon-icon_clone" @click.stop="handleWidgetClone(index)"></i>
+        <i class="iconfont icon-trash" @click.stop="handleWidgetDelete(index)"></i>
+      </div>
+
+      <div class="widget-view-drag" v-if="selectWidget.key == element.key">
+        <i class="iconfont icon-drag drag-widget"></i>
+      </div>
+
+      <div class="widget-view-model" v-if="element.options.dataBind">
+        <span>{{element.model}}</span>
+      </div>
+    </div>
+
   <el-form-item
     class="widget-view"
     v-if="element && element.key"
-    :class="{active: selectWidget.key == element.key, 'is_req': element.options.required}"
-    :label="(element.type != 'buttonCom' && element.type != 'alink') ? element.name : ''"
+    :label="(element.type != 'buttonCom' && element.type != 'alink' && !element.options.hideLabel) ? element.name : ''"
     @click.native.stop="handleSelectWidget(index)"
+    :class="{active: selectWidget.key == element.key, 'is_req': element.options.required, 'is_hidden': element.options.hidden}"
+    :label-width="element.options.hideLabel ? '0px' : (element.options.isLabelWidth ? element.options.labelWidth + 'px' : '')"
   >
     <!--{{element.type}}-->
     <!--金额-->
@@ -50,6 +76,7 @@
         :style="{width: element.options.width}"
         :placeholder="element.options.placeholder"
         :disabled="element.options.disabled"
+        :show-password="element.options.showPassword"
       ></el-input>
     </template>
     <template v-if="element.type == 'singletext'">
@@ -342,10 +369,12 @@
       <i class="iconfont icon-drag drag-widget"></i>
     </div>
   </el-form-item>
+</div>
 </template>
 
 <script>
 import FmUpload from "./Upload";
+import { EventBus } from '../util/event-bus.js'
 export default {
   props: ["element", "select", "index", "data"],
   components: {
@@ -374,6 +403,9 @@ export default {
 
       this.$nextTick(() => {
         this.data.list.splice(index, 1);
+        setTimeout(() => {
+          EventBus.$emit('on-history-add')
+        }, 20)
       });
     },
     handleWidgetClone(index) {
@@ -401,6 +433,7 @@ export default {
 
       this.$nextTick(() => {
         this.selectWidget = this.data.list[index + 1];
+        this.$nextTick(() => {         EventBus.$emit('on-history-add')       })
       });
     },
     dblhandleCurrentRow(row, column, event) {

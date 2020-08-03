@@ -8,6 +8,7 @@
         v-bind="{group:'people', ghostClass: 'ghost',animation: 200, handle: '.drag-widget'}"
         @end="handleMoveEnd"
         @add="handleWidgetAdd"
+        @update="handleWidgetUpdate"
       >
 
         <transition-group name="fade" tag="div" class="widget-form-list">
@@ -53,6 +54,15 @@
                   </div>
                 </el-row>
             </template>
+            <!-- <widget-tab-item
+              v-else-if="element.type === 'tabs'"
+              :key="element.key"
+              :element="element"
+              :select.sync="selectWidget" 
+              :index="index" :data="data"
+              @select-change="handleSelectChange"  
+            >
+            </widget-tab-item> -->
             <template v-else>
               <widget-form-item v-if="element && element.key"  :key="element.key" :element="element" :select.sync="selectWidget" :index="index" :data="data"></widget-form-item>
             </template>
@@ -66,11 +76,14 @@
 <script>
 import Draggable from 'vuedraggable'
 import WidgetFormItem from './WidgetFormItem'
+// import WidgetTabItem from './WidgetTabItem'
+import { EventBus } from '../util/event-bus.js'
 
 export default {
   components: {
     Draggable,
-    WidgetFormItem
+    WidgetFormItem,
+    // WidgetTabItem
   },
   props: ['data', 'select'],
   data () {
@@ -85,9 +98,81 @@ export default {
         event.preventDefault()
         event.stopPropagation()
       }
-    }
+    },
+    EventBus.$on('on-field-add', item => {
+      console.log('.....')
+      console.log(item, this.data, this.select)
+
+      const key = new Date().getTime() + ''
+      let widgetItem = _.cloneDeep({
+        ...item,
+        options: {
+          ...item.options,
+          remoteFunc: 'func_' + key,
+          remoteOption: 'option_' + key
+        },
+        key,
+        model: item.type + '_' + key,
+        rules: []
+      })
+
+      if (widgetItem.type == 'report') {
+        widgetItem.rows = generateKeyToTD(widgetItem.rows)
+      }
+
+      this._addWidget(this.data.list, widgetItem)
+
+      this.$nextTick(() => {         EventBus.$emit('on-history-add')       })
+    })
   },
   methods: {
+    _addWidget (list, widget, isTable = false) {
+      if (isTable 
+        && (widget.type == 'grid' || widget.type == 'table' || widget.type == 'tabs' || widget.type == 'divider' || widget.type == 'report')) {
+        this.$message.warning(this.$t('fm.message.noPut'))
+        return false
+      }
+
+      if (this.selectWidget && this.selectWidget.key) {
+        const index = list.findIndex(item => item.key == this.selectWidget.key)
+
+        if (index >= 0) {
+          list.splice(index + 1, 0, widget)
+
+          this.selectWidget = list[index + 1]
+        } else {
+          list.forEach(item => {
+            if (item.type === 'grid') {
+              item.columns.forEach(column => {
+                this._addWidget(column.list, widget)
+              })
+            }
+            if (item.type === 'table') {
+              this._addWidget(item.tableColumns, widget, true)
+            }
+            if (item.type === 'tabs') {
+              item.tabs.forEach(tab => {
+                this._addWidget(tab.list, widget)
+              })
+            }
+            if (item.type === 'report') {
+
+              for (let i = 0; i < item.rows.length; i++) {
+                for (let j = 0; j < item.rows[i].columns.length; j++) {
+                  if (!this._addWidget(item.rows[i].columns[j].list, widget, true)){
+                    return false
+                  }
+                }
+              }
+            }
+          })
+        }
+      } else {
+        list.push(widget)
+
+        this.selectWidget = list[list.length - 1]
+      }
+    },
     handleMoveEnd ({newIndex, oldIndex}) {
       console.log('index', newIndex, oldIndex)
     },
@@ -136,6 +221,10 @@ export default {
       }
 
       this.selectWidget = this.data.list[newIndex]
+      this.$nextTick(() => {         EventBus.$emit('on-history-add')       })
+    },
+    handleWidgetUpdate (evt) {
+      this.$nextTick(() => {         EventBus.$emit('on-history-add')       })
     },
     handleWidgetColAdd ($event, row, colIndex) {
       console.log('coladd', $event, row, colIndex)
@@ -197,8 +286,15 @@ export default {
 
       this.$nextTick(() => {
         this.data.list.splice(index, 1)
+        this.$nextTick(() => {         EventBus.$emit('on-history-add')       })
       })
     },
+    handleSelectChange (index) {
+      console.log('select-change', index)
+      setTimeout(() => {
+        index >=0 ? (this.selectWidget = this.data.list[index]) : (this.selectWidget = {})
+      })
+    }
   },
   watch: {
     select (val) {

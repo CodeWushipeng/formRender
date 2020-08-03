@@ -19,7 +19,13 @@
         {{$t('fm.config.widget.width')}} <el-input style="width: 90px;" type="number" v-model.number="data.options.size.width"></el-input>
         {{$t('fm.config.widget.height')}} <el-input style="width: 90px;" type="number" v-model.number="data.options.size.height"></el-input>
       </el-form-item>
-
+       <el-form-item :label="$t('fm.config.widget.labelWidth')" v-if="Object.keys(data.options).indexOf('labelWidth')>=0 && !data.options.tableColumn">
+        <el-checkbox v-model="data.options.isLabelWidth" style="margin-right: 5px;">{{$t('fm.config.widget.custom')}}</el-checkbox>
+        <el-input-number v-model="data.options.labelWidth" :disabled="!data.options.isLabelWidth" :min="0" :max="99999" :step="10"></el-input-number>
+      </el-form-item>
+      <el-form-item :label="$t('fm.config.widget.hideLabel')" v-if="data.type !='grid' && data.type != 'tabs' && data.type != 'report' && data.type != 'divider' && data.type != 'td'">
+        <el-switch v-model="data.options.hideLabel"></el-switch>
+      </el-form-item>
       <el-form-item :label="$t('fm.config.widget.placeholder')" v-if="Object.keys(data.options).indexOf('placeholder')>=0 && (data.type!='time' || data.type!='date')">
         <el-input v-model="data.options.placeholder"></el-input>
       </el-form-item>
@@ -27,6 +33,13 @@
         <el-radio-group v-model="data.options.inline">
           <el-radio-button :label="false">{{$t('fm.config.widget.block')}}</el-radio-button>
           <el-radio-button :label="true">{{$t('fm.config.widget.inline')}}</el-radio-button>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item :label="$t('fm.config.widget.contentPosition')" v-if="Object.keys(data.options).indexOf('contentPosition') >= 0">
+        <el-radio-group v-model="data.options.contentPosition">
+          <el-radio-button label="left">{{$t('fm.config.widget.left')}}</el-radio-button>
+          <el-radio-button label="center">{{$t('fm.config.widget.center')}}</el-radio-button>
+          <el-radio-button label="right">{{$t('fm.config.widget.right')}}</el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item :label="$t('fm.config.widget.showInput')" v-if="Object.keys(data.options).indexOf('showInput')>=0">
@@ -260,9 +273,8 @@
         </template>
       </el-form-item>
 
-      <el-form-item :label="$t('fm.config.widget.defaultValue')" v-if="Object.keys(data.options).indexOf('defaultValue')>=0 && (data.type == 'textarea' || data.type == 'input' || data.type=='rate' || data.type=='color' || data.type=='switch')">
+      <el-form-item :label="$t('fm.config.widget.defaultValue')" v-if="Object.keys(data.options).indexOf('defaultValue')>=0">
         <el-input v-if="data.type=='textarea'" type="textarea" :rows="data.options.textarearows" v-model="data.options.defaultValue"></el-input>
-        <el-input v-if="data.type=='input'" v-model="data.options.defaultValue"></el-input>
         <el-rate v-if="data.type == 'rate'" style="display:inline-block;vertical-align: middle;" :max="data.options.max" :allow-half="data.options.allowHalf" v-model="data.options.defaultValue"></el-rate>
         <el-button type="text" v-if="data.type == 'rate'" style="display:inline-block;vertical-align: middle;margin-left: 10px;" @click="data.options.defaultValue=0">{{$t('fm.actions.clear')}}</el-button>
         <el-color-picker
@@ -271,6 +283,7 @@
           :show-alpha="data.options.showAlpha"
         ></el-color-picker>
         <el-switch v-if="data.type=='switch'" v-model="data.options.defaultValue"></el-switch>
+        <el-input v-else v-model="data.options.defaultValue"></el-input>
       </el-form-item>
 
       <template v-if="data.type == 'time' || data.type == 'date'">
@@ -404,6 +417,40 @@
           </el-select>
         </el-form-item>
       </template>
+      <template v-if="data.type == 'tabs'">
+        <el-form-item :label="$t('fm.config.widget.type')">
+          <el-radio-group v-model="data.options.type">
+            <el-radio-button label="">{{$t('fm.config.widget.default')}}</el-radio-button>
+            <el-radio-button label="card">{{$t('fm.config.widget.card')}}</el-radio-button>
+            <el-radio-button label="border-card">{{$t('fm.config.widget.borderCard')}}</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item :label="$t('fm.config.widget.tabPosition')">
+          <el-radio-group v-model="data.options.tabPosition">
+            <el-radio-button label="top">{{$t('fm.config.widget.top')}}</el-radio-button>
+            <el-radio-button label="left">{{$t('fm.config.widget.left')}}</el-radio-button>
+            <el-radio-button label="right">{{$t('fm.config.widget.right')}}</el-radio-button>
+            <el-radio-button label="bottom">{{$t('fm.config.widget.bottom')}}</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item :label="$t('fm.config.widget.tabOption')">
+          <draggable tag="ul" :list="data.tabs" 
+            v-bind="{group:{ name:'options'}, ghostClass: 'ghost',handle: '.drag-item'}"
+            handle=".drag-item"
+          >
+            <li v-for="(item, index) in data.tabs" :key="index" >
+              <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;"><i class="iconfont icon-icon_bars"></i></i>
+              <el-input :placeholder="$t('fm.config.widget.tabName')" size="mini" style="width: 200px;" v-model="item.label"></el-input>
+              
+              <el-button @click="handleOptionsRemove(index)" circle plain type="danger" size="mini" icon="el-icon-minus" style="padding: 4px;margin-left: 5px;"></el-button>
+              
+            </li>
+          </draggable>
+          <div style="margin-left: 22px;">
+            <el-button type="text" @click="handleAddTab">{{$t('fm.actions.addTab')}}</el-button>
+          </div>
+        </el-form-item>
+      </template>
       <template v-if="data.type != 'grid'">
         <el-form-item :label="$t('fm.config.widget.attribute')">
           <el-checkbox v-model="data.options.readonly" v-if="Object.keys(data.options).indexOf('readonly')>=0">{{$t('fm.config.widget.readonly')}}</el-checkbox>
@@ -414,7 +461,7 @@
           <el-checkbox v-model="data.options.arrowControl" v-if="Object.keys(data.options).indexOf('arrowControl')>=0">{{$t('fm.config.widget.arrowControl')}}</el-checkbox>
           <el-checkbox v-model="data.options.isDelete" v-if="Object.keys(data.options).indexOf('isDelete')>=0">{{$t('fm.config.widget.isDelete')}}</el-checkbox>
           <el-checkbox v-model="data.options.isEdit" v-if="Object.keys(data.options).indexOf('isEdit')>=0">{{$t('fm.config.widget.isEdit')}}</el-checkbox>
-
+          <el-checkbox v-model="data.options.showPassword" v-if="Object.keys(data.options).indexOf('showPassword')>=0">{{$t('fm.config.widget.showPassword')}} </el-checkbox>
         </el-form-item>
         <!-- 提示信息 -->
       <!-- <el-form-item v-if="data.type !='grid'" :label="$t('fm.config.widget.showTips')"> -->
@@ -523,6 +570,8 @@ export default {
     handleOptionsRemove (index) {
       if (this.data.type === 'grid') {
         this.data.columns.splice(index, 1)
+      } else if (this.data.type === 'tabs') {
+        this.data.tabs.splice(index, 1)
       } else {
         this.data.options.options.splice(index, 1)
       }
@@ -546,6 +595,27 @@ export default {
         span: '',
         list: []
       })
+    },
+    handleAddTab () {
+      let length = this.data.tabs.length
+
+      this.data.tabs.push({
+        label: this.$t('fm.config.widget.tab') + (length + 1),
+        name: 'tab_' + new Date().getTime(),
+        list: []
+      })
+    },
+    handleAddHeader () {
+      if ('headers' in this.data.options) {
+        this.data.options.headers.push({
+          key: '',
+          value: ''
+        })
+      } else {
+
+        this.$set(this.data.options, 'headers', [{key: '', value: ''}])
+      }
+      
     },
     generateRule () {
       this.data.rules = []
@@ -641,6 +711,22 @@ export default {
         this.validateRequired(this.data.options.required)
         this.validateDataType(this.data.options.dataType)
         this.valiatePattern(this.data.options.pattern)
+      }
+    },
+    'data.options.options': {
+      deep: true,
+      handler (val) {
+        console.log(val)
+        console.log(typeof this.data.options.defaultValue)
+        if (typeof this.data.options.defaultValue == 'array') {
+          this.data.options.defaultValue = this.data.options.defaultValue.filter(item => val.map(item => item.value).includes(item))
+        }
+        if (typeof this.data.options.defaultValue == 'string') {
+
+          if (typeof val == 'array' && !val.map(item => item.value).includes(this.data.options.defaultValue)) {
+            this.data.options.defaultValue = ''
+          }
+        }
       }
     }
   }
