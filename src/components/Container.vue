@@ -802,7 +802,17 @@ export default {
       }
     },
     handlePreview() {
-      if (!this.checkModels(this.widgetForm.list)) {
+      let tempList =[];
+      this.widgetForm.list.forEach((item) => {
+        if (item.type === "grid") {
+          item.columns.forEach((cloItem) => {
+            tempList = [...tempList, ...cloItem.list];
+          });
+        } else {
+          tempList = [...tempList, item];
+        }
+      });
+      if (!this.checkModels(tempList)) {
         return;
       }
       console.log(this.widgetForm);

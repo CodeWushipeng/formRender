@@ -83,8 +83,6 @@ let handlers = {
             item.options.hidden = false;
           } else if (flag) {
             item.options.hidden = true;
-          } else {
-            item.options.hidden = false;
           }
         }
       });

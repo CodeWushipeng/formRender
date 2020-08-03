@@ -255,7 +255,7 @@ export default {
         },
         key,
         // 绑定键值
-        model: row.columns[colIndex].list[newIndex].type + '_' + key,
+        model: 'object',
         rules: []
       })
 
