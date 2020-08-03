@@ -13,6 +13,9 @@ export const bankingComponents = [
       pattern: "",
       placeholder: "",
       disabled: false,
+      labelWidth: 100,
+      isLabelWidth: false,
+      showPassword: false,
       tips: "",
     },
     hidden:"function main (models,utils)"+"{\n"
@@ -75,6 +78,9 @@ export const bankingComponents = [
       pattern: "",
       placeholder: "",
       disabled: false,
+      labelWidth: 100,
+      isLabelWidth: false,
+      showPassword: false,
       tips: "",
     },
     hidden:"function main (models,utils)"+"{\n"
@@ -139,6 +145,8 @@ export const bankingComponents = [
       pattern: "",
       placeholder: "",
       disabled: false,
+      labelWidth: 100,
+      isLabelWidth: false,
       tips: "",
     },
     hidden:"function main (models,utils)"+"{\n"
@@ -201,6 +209,8 @@ export const bankingComponents = [
       pattern: "",
       placeholder: "",
       disabled: false,
+      labelWidth: 100,
+      isLabelWidth: false,
       tips: "",
     },
     hidden:"function main (models,utils)"+"{\n"
@@ -262,6 +272,8 @@ export const bankingComponents = [
       pattern: "",
       placeholder: "",
       disabled: false,
+      labelWidth: 100,
+      isLabelWidth: false,
       tips: "",
     },
     hidden:"function main (models,utils)"+"{\n"
@@ -321,6 +333,8 @@ export const bankingComponents = [
       disabled: false,
       pattern: "",
       placeholder: "",
+      labelWidth: 100,
+      isLabelWidth: false,
       tips: "",
     },
     hidden:"function main (models,utils)"+"{\n"
@@ -377,6 +391,8 @@ export const bankingComponents = [
       inline: false,
       defaultValue: "",
       showLabel: false,
+      labelWidth: 100,
+      isLabelWidth: false,
       options: [
         {
           value: "Option 1",
@@ -457,6 +473,8 @@ export const bankingComponents = [
       inline: false,
       defaultValue: [],
       showLabel: false,
+      labelWidth: 100,
+      isLabelWidth: false,
       options: [
         {
           value: "Option 1",
@@ -540,6 +558,8 @@ export const bankingComponents = [
       startPlaceholder: "",
       endPlaceholder: "",
       isRange: false,
+      labelWidth: 100,
+      isLabelWidth: false,
       arrowControl: true,
       format: "HH:mm:ss",
       required: false,
@@ -610,6 +630,8 @@ export const bankingComponents = [
       timestamp: false,
       required: false,
       width: "",
+      labelWidth: 100,
+      isLabelWidth: false,
       tips: "",
     },
     hidden:"function main (models,utils)"+"{\n"
@@ -670,6 +692,8 @@ export const bankingComponents = [
       placeholder: "",
       required: false,
       showLabel: false,
+      labelWidth: 100,
+      isLabelWidth: false,
       width: "",
       options: [
         {
@@ -758,6 +782,8 @@ export const bankingComponents = [
       pattern: "",
       placeholder: "",
       disabled: false,
+      labelWidth: 100,
+      isLabelWidth: false,
       tips: "",
     },
     hidden:"function main (models,utils)"+"{\n"
@@ -821,6 +847,8 @@ export const bankingComponents = [
       pattern: "",
       placeholder: "",
       disabled: false,
+      labelWidth: 100,
+      isLabelWidth: false,
       tips: "",
     },
     hidden:"function main (models,utils)"+"{\n"
@@ -879,6 +907,8 @@ export const bankingComponents = [
       required: false,
       placeholder: "",
       disabled: false,
+      labelWidth: 100,
+      isLabelWidth: false,
     },
     hidden:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -945,6 +975,8 @@ export const bankingComponents = [
       length: 8,
       multiple: false,
       isDelete: true,
+      labelWidth: 100,
+      isLabelWidth: false,
       isEdit: true,
       action: "",
     },
@@ -998,6 +1030,8 @@ export const bankingComponents = [
       isDelete: true,
       isEdit: true,
       action: "",
+      labelWidth: 100,
+      isLabelWidth: false,
     },
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -1049,6 +1083,8 @@ export const bankingComponents = [
       isDelete: true,
       isEdit: true,
       action: "",
+      labelWidth: 100,
+      isLabelWidth: false,
     },
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -1085,6 +1121,8 @@ export const bankingComponents = [
     options: {
       hidden: false,
       defaultValue: [],
+      labelWidth: 100,
+      isLabelWidth: false,
       size: {
         width: 100,
         height: 100,
@@ -1140,6 +1178,8 @@ export const bankingComponents = [
       required: false,
       placeholder: "",
       disabled: false,
+      labelWidth: 100,
+      isLabelWidth: false,
       tips: "",
     },
     isRemote: "function main (models,utils)"+"{\n"
@@ -1181,6 +1221,8 @@ export const bankingComponents = [
       required: false,
       placeholder: "",
       disabled: false,
+      labelWidth: 100,
+      isLabelWidth: false,
     },
     isRemote: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -1220,6 +1262,8 @@ export const bankingComponents = [
       defaultValue: "",
       required: false,
       placeholder: "",
+      labelWidth: 100,
+      isLabelWidth: false,
       disabled: false,
     },
     isRemote: "function main (models,utils)"+"{\n"
