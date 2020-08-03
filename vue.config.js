@@ -3,7 +3,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const port = process.env.port || process.env.npm_config_port || 9528; // dev port
 
 module.exports = {
-  productionSourceMap: false,
+  productionSourceMap: true,
   publicPath: "./",
   configureWebpack: (config) => {
     let plugins = [
@@ -15,7 +15,7 @@ module.exports = {
             drop_console: false,
           },
         },
-        sourceMap: false,
+        sourceMap: true,
         parallel: true,
       }),
     ];

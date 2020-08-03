@@ -219,6 +219,7 @@ export default {
         dataBind: '数据绑定',
         readonly: '完全只读',
         disabled: '只读',
+        hidden: '隐藏',
         editable: '文本框可输入',
         clearable: '显示清除按钮',
         arrowControl: '使用箭头进行时间选择',

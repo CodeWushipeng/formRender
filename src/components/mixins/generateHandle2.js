@@ -79,7 +79,9 @@ let handlers = {
         if (item.hidden) {
           let flag = this.evalWrap(item.hidden);
           console.log(flag);
-          if (flag) {
+          if (flag === false) {
+            item.options.hidden = false;
+          } else if (flag) {
             item.options.hidden = true;
           } else {
             item.options.hidden = false;

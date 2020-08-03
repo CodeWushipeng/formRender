@@ -14,8 +14,8 @@ export const basicComponents = [
       tips:""
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -74,8 +74,8 @@ export const basicComponents = [
       tips:""
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -135,8 +135,8 @@ export const basicComponents = [
       controlsPosition: ''
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -214,8 +214,8 @@ export const basicComponents = [
       disabled: false,
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -290,8 +290,8 @@ export const basicComponents = [
       disabled: false,
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -355,8 +355,8 @@ export const basicComponents = [
       width: '',
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -420,8 +420,8 @@ export const basicComponents = [
       width: '',
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -477,8 +477,8 @@ export const basicComponents = [
       required: false
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -533,8 +533,8 @@ export const basicComponents = [
       required: false
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -663,8 +663,8 @@ export const basicComponents = [
       disabled: false,
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -724,8 +724,8 @@ export const basicComponents = [
       width: ''
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -778,8 +778,8 @@ export const basicComponents = [
       customClass: '',
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -865,8 +865,8 @@ export const advanceComponents = [
       width: ''
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
@@ -930,8 +930,8 @@ export const advanceComponents = [
       remoteFunc: ''
     },
     hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
+    +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
+    +"\treturn null\n"
     +"}",
     enterCondition: "function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数\n"
