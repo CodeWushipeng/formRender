@@ -247,11 +247,11 @@
 
       <el-form-item v-if="data.type=='textarea' | data.type=='singletext'">
         <!--高度自适应-->
-        <div v-if="data.type=='textarea' | data.type=='singletext'">
+        <div v-if="data.type=='textarea'">
           <el-checkbox v-model="data.options.textareaautosize">{{$t('fm.config.widget.textareaautosize')}}</el-checkbox>
         </div>
         <!--最大字数-->
-        <template v-if="(data.type=='textarea' | data.type=='singletext') && data.options.textareaautosize==true" >
+        <template v-if="data.type=='textarea' | data.type=='singletext'" >
           <div style="display: inline-block;width: 49%;">
             <el-input type="number" v-model="data.options.textarealength"></el-input>
           </div>
