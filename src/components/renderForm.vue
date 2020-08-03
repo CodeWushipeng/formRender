@@ -234,14 +234,14 @@ export default {
     changeJsonData(outputFromCode, outputCofig = {}) {
       console.log("outputFromCode", outputFromCode);
       if (outputFromCode) {
-        this.showLoading();
+        // this.showLoading();
       } else {
         return false;
       }
       getFormList(this.url, { formCode: outputFromCode })
         .then((res) => {
           const { rspCode } = res.header;
-          this.hideLoading();
+          // this.hideLoading();
           if (rspCode == RES_OK) {
             const rest = res.body.define;
             if (rest && rest.records.length > 0) {
@@ -278,7 +278,7 @@ export default {
         })
         .catch((err) => {
           throw new Error(err);
-          this.hideLoading();
+          // this.hideLoading();
         });
     },
     // 处理配置数据js代码
