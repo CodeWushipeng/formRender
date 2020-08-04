@@ -180,7 +180,7 @@
         // return
         queryFlowDetail(params)
             .then(res => {
-              debugger
+              // debugger
               console.log('res', res)
               const {rspCode} = res.header;
               if (rspCode == RES_OK) {
@@ -418,7 +418,7 @@
                     ...response,
                     rspCode: "SP000000"
                   };
-                  alert("通信提交响应数据：" + JSON.stringify(Obj));
+                  console.log("通信提交响应数据：" + JSON.stringify(Obj));
                   const copyObj = JSON.parse(JSON.stringify(Obj));
                   FG.saveNode(nodeCode, copyObj);
                   this.configdata.nodes = FG.getNodes(); // 节点数据
@@ -459,7 +459,7 @@
                   ...response,
                   rspCode: "SP000000"
                 };
-                alert("响应数据：" + JSON.stringify(Obj));
+                console.log("响应数据：" + JSON.stringify(Obj));
                 // 深拷贝
                 const copyObj = JSON.parse(JSON.stringify(Obj));
                 FG.saveNode(nodeCode, copyObj);
@@ -490,7 +490,7 @@
                   up: data,
                   down: {...data, resCode: "000000"}
                 };
-                alert("本地提交数据：" + JSON.stringify(Obj));
+                console.log("本地提交数据：" + JSON.stringify(Obj));
                 const copyObj = JSON.parse(JSON.stringify(Obj));
                 FG.saveNode(nodeCode, copyObj);
                 this.configdata.nodes = FG.getNodes(); // 节点数据

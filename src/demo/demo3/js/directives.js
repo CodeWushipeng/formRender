@@ -1,7 +1,7 @@
 
 
-export let   _MAX_WIDTH = null; // 最大宽度
-export const _MIN_WIDTH = 400;  // 最小宽度
+let   _MAX_WIDTH = null; // 最大宽度
+const _MIN_WIDTH = 400;  // 最小宽度
 
 export function getId(id) {
   return document.getElementById(id);
@@ -33,19 +33,19 @@ export default {
         let $body   = getTag('body');
 
         let WIN_WIDTH  = $body.clientWidth;
-        let leftWidth = e.pageX - disx;
+        let LEFT_WIDTH = e.pageX - disx;
         _MAX_WIDTH    = WIN_WIDTH - _MIN_WIDTH;
-        if (leftWidth < _MIN_WIDTH) {
-          leftWidth = _MIN_WIDTH;
-        } else if (leftWidth > _MAX_WIDTH) {
-          leftWidth = _MAX_WIDTH;
+        if (LEFT_WIDTH < _MIN_WIDTH) {
+          LEFT_WIDTH = _MIN_WIDTH;
+        } else if (LEFT_WIDTH > _MAX_WIDTH) {
+          LEFT_WIDTH = _MAX_WIDTH;
         }
-        let rightWidth = WIN_WIDTH - leftWidth;
+        let RIGHT_WIDTH = WIN_WIDTH - LEFT_WIDTH;
 
-        console.log('leftWidth', leftWidth)
-        console.log('rightWidth', rightWidth)
-        $buss.style.width = leftWidth + "px";
-        $debugs.style.width = rightWidth + "px";
+        console.log('LEFT_WIDTH', LEFT_WIDTH)
+        console.log('RIGHT_WIDTH', RIGHT_WIDTH)
+        $buss.style.width = LEFT_WIDTH + "px";
+        $debugs.style.width = RIGHT_WIDTH + "px";
       }
       document.onmouseup = function () {
         document.onmousemove = document.onmouseup = null;
