@@ -1,6 +1,6 @@
 import { RES_OK } from "@/api/config";
 import { getTrade, getFormList } from "@/api/forms";
-import bus from "@/bus/bus.js";
+// import bus from "@/bus/bus.js";
 let handlers = {
   props: {},
   data() {

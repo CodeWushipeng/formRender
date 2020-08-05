@@ -37,7 +37,7 @@
                     ref="renderForm"
             >
               <!--操作按钮-->
-              <div style="text-align:center;">
+              <div style="text-align:center;" id="flowButtons">
                 <el-button ref="back" :type="calBtnType(0)" @click="prev">Back</el-button>
                 <el-button ref="submit" :type="calBtnType(1)" @click="submit">Submit</el-button>
                 <el-button ref="cancel" :type="calBtnType(2)" @click="cancel">Cancel</el-button>
@@ -113,7 +113,7 @@
       this.debug = storage.session.get(DEBUG_KEY, false);
       // console.log('flowMixin',flowMixin)
       this.inits();
-      // this.openDebug(this);
+      this.openDebug(this);
     },
     watch: {
       "configdata.list": {
@@ -180,7 +180,7 @@
         // return
         queryFlowDetail(params)
             .then(res => {
-              debugger
+              // debugger
               console.log('res', res)
               const {rspCode} = res.header;
               if (rspCode == RES_OK) {
@@ -418,7 +418,7 @@
                     ...response,
                     rspCode: "SP000000"
                   };
-                  alert("通信提交响应数据：" + JSON.stringify(Obj));
+                  console.log("通信提交响应数据：" + JSON.stringify(Obj));
                   const copyObj = JSON.parse(JSON.stringify(Obj));
                   FG.saveNode(nodeCode, copyObj);
                   this.configdata.nodes = FG.getNodes(); // 节点数据
@@ -459,7 +459,7 @@
                   ...response,
                   rspCode: "SP000000"
                 };
-                alert("响应数据：" + JSON.stringify(Obj));
+                console.log("响应数据：" + JSON.stringify(Obj));
                 // 深拷贝
                 const copyObj = JSON.parse(JSON.stringify(Obj));
                 FG.saveNode(nodeCode, copyObj);
@@ -490,7 +490,7 @@
                   up: data,
                   down: {...data, resCode: "000000"}
                 };
-                alert("本地提交数据：" + JSON.stringify(Obj));
+                console.log("本地提交数据：" + JSON.stringify(Obj));
                 const copyObj = JSON.parse(JSON.stringify(Obj));
                 FG.saveNode(nodeCode, copyObj);
                 this.configdata.nodes = FG.getNodes(); // 节点数据

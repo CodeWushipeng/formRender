@@ -236,7 +236,8 @@ export default {
     getTableListData() {
       this.dialogTableVisible = true;
       request
-        .post("dev-api/tableDevelop/listManage/queryAllDefine", {
+        // .post("/dev-api/tableDevelop/listManage/queryAllDefine", {
+        .post("/dev-api/listDevelop/qryAllListDefine", {
           body: {
             listName: this.tablePageCf.searchValue
           },

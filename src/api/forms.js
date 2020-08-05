@@ -38,7 +38,7 @@ export function getTrade(url,data) {
 export function getTableList(data) {
     // let url = process.env.NODE_ENV === 'development' ? "/dev-api" : ''
     return request({
-      url: '/tableDevelop/listManage/queryAllDefine',
+      url: '/listDevelop/qryAllListDefine',
       method: 'post',
       data
     })
