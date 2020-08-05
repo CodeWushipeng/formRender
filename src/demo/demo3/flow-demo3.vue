@@ -38,9 +38,12 @@
             >
               <!--操作按钮-->
               <div style="text-align:center;" id="flowButtons">
-                <el-button ref="back" :type="calBtnType(0)" @click="prev">Back</el-button>
-                <el-button ref="submit" :type="calBtnType(1)" @click="submit">Submit</el-button>
-                <el-button ref="cancel" :type="calBtnType(2)" @click="cancel">Cancel</el-button>
+                <!--<el-button ref="back" :type="calBtnType(0)" @click="prev">Back</el-button>-->
+                <!--<el-button ref="submit" :type="calBtnType(1)" @click="submit">Submit</el-button>-->
+                <!--<el-button ref="cancel" :type="calBtnType(2)" @click="cancel">Cancel</el-button>-->
+                <el-button  ref="back"  @click="prev">Back</el-button>
+                <el-button  ref="submit"  @click="submit">Submit</el-button>
+                <el-button  ref="cancel"  @click="cancel">Cancel</el-button>
               </div>
             </render-form>
           </div>
@@ -77,6 +80,7 @@
   import {platform, user} from "./js/flowData";
 
   const DEBUG_KEY = '__debug__';
+  const Rank_BTNS = ['prev', 'submit', 'cancel'];
 
   export default {
     name: "flowDemo",
@@ -110,6 +114,7 @@
       };
     },
     created() {
+      storage.session.set('Rank_BTNS',Rank_BTNS.join("-"))
       this.debug = storage.session.get(DEBUG_KEY, false);
       // console.log('flowMixin',flowMixin)
       this.inits();
@@ -162,10 +167,10 @@
             code = 0;
             code2 = 0;
           }, 1000)
-          if(_self.canEnter){
-            _self.calBtnIndex(key);
-            _self.calBtnSubmit(key);
-          }
+          // if(_self.canEnter){
+          //   _self.calBtnIndex(key);
+          //   _self.calBtnSubmit(key);
+          // }
         }
       },
       inits() {

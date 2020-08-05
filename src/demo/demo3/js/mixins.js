@@ -78,10 +78,10 @@ const KEY_RIGHT = 39;
 
 export const subControls = {
   hasEnd(val){
-    // console.log('has end..', val)
-    // this.canEnter = val;
+    console.log('has end..', val)
+    this.canEnter = val;
   },
-  calBtnType(num) {
+  /*calBtnType(num) {
     if (num == this.btnIndex && this.canEnter) {
       return 'primary';
     } else {
@@ -124,6 +124,6 @@ export const subControls = {
           throw Error("没有funcName")
       }
     }
-  },
+  },*/
 }
 
