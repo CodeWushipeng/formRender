@@ -703,14 +703,13 @@ let handlers = {
     btnsAddEvents(){
       const $flowButtons = document.getElementById("flowButtons")
       $flowButtons.addEventListener("keyup", (e)=>{
-        debugger
+        // debugger
         let e1 = e || event || window.event // || arguments.callee.caller.arguments[0];
         console.log('e1.keyCode', e1.keyCode)
         const key = e1.keyCode;
 
         this.calBtnIndex(key);
         this.focusCurrentBtn();
-        // this.calBtnSubmit(key);
       })
     },
 
@@ -730,33 +729,6 @@ let handlers = {
         }
       }
     },
-    calBtnName() {
-      return this.Rank_BTNS[this.btnIndex];
-    },
-    calBtnSubmit(keyCode) {
-      debugger
-      if (keyCode == KEY_ENTER ) {
-        // alert(this.Rank_BTNS[this.btnFocusIndex])
-        const funcName = this.calBtnName();
-        // return
-        // debugger
-        switch (funcName) {
-          case 'prev':
-            this.prev();
-            break;
-          case 'submit':
-            this.submit();
-            break;
-          case 'cancel':
-            this.cancel();
-            break;
-          default:
-            // 默认代码块
-            throw Error("没有funcName")
-        }
-      }
-    },
-
 
     // radio change事件
     radioChange(params) {

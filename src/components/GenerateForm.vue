@@ -6,7 +6,7 @@
 
     rules:{{rules}} <br>-->
     <!--models:{{ models }} <br />-->
-    {{btnFocusIndex}}
+    <!--{{btnFocusIndex}}-->
 
     <el-form
       class="generateForm"
