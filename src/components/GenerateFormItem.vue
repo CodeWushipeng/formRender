@@ -717,7 +717,7 @@
         </div>
       </template>
       <fm-generate-table
-        v-model="widget.configdata"
+        v-model="dataModel"
         :data="widget.configdata"
         @dblhandleCurrentRow="dblhandleCurrentRow"
         ref="generateTable"

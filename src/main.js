@@ -26,6 +26,8 @@ require('vue-video-player/src/custom-theme.css')
 //导入tablemaking组件
 import TableMaking from 'table-making'
 import 'table-making/dist/TableMaking.css'
+//注册table-macking
+Vue.use(TableMaking)
 
 Vue.use(VideoPlayer)
 Vue.use(VueCodemirror)
@@ -61,9 +63,6 @@ Vue.use(ElementUI, { size: 'small' })
 // import FormMaking from 'form-making'
 import FormMaking from './index'
 Vue.use(FormMaking)
-
-//注册table-macking
-Vue.use(TableMaking, { lang: 'zh-CN', locale: Vue.locale })
 
 Vue.config.productionTip = false
 
