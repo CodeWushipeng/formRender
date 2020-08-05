@@ -679,7 +679,7 @@ let handlers = {
         this.remoteValidate(this.outMark);
         this.setBlur(this.allItems[this.outMark]);
         // this.$emit("isEnd", true);
-        this.setFocus(this.btnLists[0])
+        this.btnLists[0].focus()
       }
     },
     // radio change事件
