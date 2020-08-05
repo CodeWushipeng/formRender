@@ -146,7 +146,6 @@ export default {
       result: {},
       models: {}, // form表单对象所有组件key value组成的json
       rules: {}, // form表单对象所有组件对应校验规则
-      blanks: [],
       formKey: new Date().getTime(),
     };
   },

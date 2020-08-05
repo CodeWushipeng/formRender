@@ -83,8 +83,6 @@ let handlers = {
             item.options.hidden = false;
           } else if (flag) {
             item.options.hidden = true;
-          } else {
-            item.options.hidden = false;
           }
         }
       });
@@ -320,6 +318,10 @@ let handlers = {
         this.handelAssignment(i);
         this.handelFlow();
       } else {
+        if(!lists[i].isRemote){  //兼容旧版本
+          this.remoteError = false;
+          return
+        }
         let start = eval("(" + lists[i].isRemote + ")");
         let startFlag = start(this.models, this.utils);
         if (startFlag) {
