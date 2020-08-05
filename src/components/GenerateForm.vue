@@ -113,7 +113,7 @@
 
 <script>
 import GenetateFormItem from "./GenerateFormItem.vue";
-import { loadJs } from "../util/index.js";
+// import { loadJs } from "../util/index.js";
 // import request from "../util/request.js";
 import GenerateTabItem from './GenerateTabItem'
 import { EventBus } from '../util/event-bus.js'

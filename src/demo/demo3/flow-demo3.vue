@@ -37,7 +37,7 @@
                     ref="renderForm"
             >
               <!--操作按钮-->
-              <div style="text-align:center;">
+              <div style="text-align:center;" id="flowButtons">
                 <el-button ref="back" :type="calBtnType(0)" @click="prev">Back</el-button>
                 <el-button ref="submit" :type="calBtnType(1)" @click="submit">Submit</el-button>
                 <el-button ref="cancel" :type="calBtnType(2)" @click="cancel">Cancel</el-button>
@@ -113,7 +113,7 @@
       this.debug = storage.session.get(DEBUG_KEY, false);
       // console.log('flowMixin',flowMixin)
       this.inits();
-      // this.openDebug(this);
+      this.openDebug(this);
     },
     watch: {
       "configdata.list": {
