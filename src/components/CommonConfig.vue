@@ -132,13 +132,13 @@
             >
               <template slot="prepend">入口数据</template>
             </el-input>
-            <el-input
+            <!-- <el-input
               style="text-overflow: ellipsis;margin-bottom:15px"
               v-model="data.tableModel"
               placeholder="表格字段标识"
             >
               <template slot="prepend">表格字段标识</template>
-            </el-input>
+            </el-input>-->
             <el-input
               style="text-overflow: ellipsis;margin-bottom:15px"
               v-model="data.tableKey"

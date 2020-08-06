@@ -3,62 +3,58 @@
  * gcc - v1.0.0 (2020-07-14)
  * dependent on request.js
  */
-import request from "../../util/request"
+import request from "../../util/request";
+import getTableList from "../../api/forms";
 
- /**
-  * 
-  * @param {*} formId 表单编码
-  * @param {*} callback 回调函数
-  */
+/**
+ *
+ * @param {*} formId 表单编码
+ * @param {*} callback 回调函数
+ */
 
-export const getFormConfigDataById = (formId,callback) => {
-  request
-    .post("dev-api/formDevelop/qryFromDefineList2", {
-      body: { formCode: formId},
-      header: {
-        pageIndex: 1,
-        pageSize: 999,
-        "gloSeqNo": new Date().getTime(),
-        "reqSeqNo": "1",
-        "reqTime": "1",
-        "projectId": "quis consectetur",
-        "serviceGroupid": "mollit sed",
-        "serviceId": "officia non",
-        "serviceName": "1",
-        "subProjectId": "occaecat tempor dolor enim ex",
-        "userInfo": {
-          "role": [
-            "ea fugiat incididunt"
-          ],
-          "username": "dolore deserunt do"
-        },
-      }
-    })
-    .then(res => {
+export const getFormConfigDataById = (formId, callback) => {
+  getTableList({
+    body: { formCode: formId },
+    header: {
+      pageIndex: 1,
+      pageSize: 999,
+      gloSeqNo: new Date().getTime(),
+      reqSeqNo: "1",
+      reqTime: "1",
+      projectId: "quis consectetur",
+      serviceGroupid: "mollit sed",
+      serviceId: "officia non",
+      serviceName: "1",
+      subProjectId: "occaecat tempor dolor enim ex",
+      userInfo: {
+        role: ["ea fugiat incididunt"],
+        username: "dolore deserunt do",
+      },
+    },
+  })
+    .then((res) => {
       console.log(res);
       if (res.header.rspCode == "SP000000") {
-        let formConfigData = ""
-        if (res.body.define && res.body.define.records.length>0){
-          formConfigData = res.body.define.records[0]
+        let formConfigData = "";
+        if (res.body.define && res.body.define.records.length > 0) {
+          formConfigData = res.body.define.records[0];
         }
-        callback(formConfigData)
+        callback(formConfigData);
         this.$notify({
           title: "Success",
           message: "查询成功",
           type: "success",
-          duration: 2000
+          duration: 2000,
         });
       } else if (res.header.rspCode == "99999999") {
         this.$notify({
           title: "fail",
           message: "查询失败",
           type: "info",
-          duration: 2000
+          duration: 2000,
         });
         return;
       }
     })
-    .catch(error => console.log(error));
-}
-
-
+    .catch((error) => console.log(error));
+};

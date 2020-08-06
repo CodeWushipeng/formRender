@@ -345,8 +345,8 @@ let handlers = {
           let url = lists[i].url;
           let postData = this.evalWrap(lists[i].data);
           let tableKey = lists[i].tableKey; //表格表单标识
-          let tableModel = lists[i].tableModel;
-          let tableCode = lists[i].tableCode; //表格数据标识
+          // let tableModel = lists[i].tableModel;
+          //let tableCode = lists[i].tableCode; //表格数据标识
           let success = lists[i].success;
           localStorage.setItem("removeFunc", success);
           let tempFunc = eval("(" + success + ")");
@@ -366,43 +366,59 @@ let handlers = {
               if (res.header.rspCode == RES_OK) {
                 self.handelValidate("success", "", i);
                 // 判断是否有表格数据，没有执行赋值
-                if (!tableModel) {
+                if (!tableKey) {
                   try {
                     tempFunc(self.models, res, self.utils);
-                    self.handelAssignment(i);
-                    self.handelFlow();
+                    this.$nextTick(() => {
+                      debugger;
+                      for (let m = 0; m < self.comArr.length; m++) {
+                        if (self.comArr[m].type === "elTable") {
+                          if (
+                            Array.isArray(self.models[self.comArr[m].model])
+                          ) {
+                            self.comArr[
+                              m
+                            ].configdata.list[0].options.tableData =
+                              self.models[self.comArr[m].model];
+                            // self.setTableData(self.comArr[i].model, tableData);
+                          }
+                        }
+                      }
+                      self.handelAssignment(i);
+                      self.handelFlow();
+                    });
                   } catch (error) {
-                    this.handelValidate("error", "出口数据转换出错", i);
+                    self.handelValidate("error", "出口数据转换出错", i);
                   }
                 } else {
-                  let tableData;
-                  tableData = res.body[tableModel]; //根据配置的数据标识获取表格数据
-                  let Key;
-                  for (let i = 0; i < lists.length; i++) {
-                    if (lists[i].model == tableModel) {
-                      Key = lists[i].key;
-                    }
-                  }
-                  console.log(tableData, tableModel, Key);
-                  if (self.checkOutModel(tableModel)) {
-                    //如果存在目标表格执行出口数据转换
-                    self.$nextTick(() => {
-                      self.models[tableModel] = tableData;
-                      self.setTableData(Key, tableData);
-                      console.log(self.models);
-                      try {
-                        tempFunc(self.models, res, self.utils);
-                        self.handelAssignment(i);
-                        self.handelFlow();
-                      } catch (error) {
-                        this.handelValidate("error", "出口数据转换出错", i);
-                      }
-                    });
-                  } else {
-                    localStorage.setItem("response", JSON.stringify(res));
-                    localStorage.setItem("model", tableModel);
-                    self.searchTable(tableKey, tableData); //不存在目标表格发起查询表格请求
-                  }
+                  // let tableData;
+                  // tableData = res.body[tableModel]; //根据配置的数据标识获取表格数据
+                  // let Key;
+                  // for (let i = 0; i < lists.length; i++) {
+                  //   if (lists[i].model == tableModel) {
+                  //     Key = lists[i].key;
+                  //   }
+                  // }
+                  // console.log(tableData, tableModel, Key);
+                  // if (self.checkOutModel(tableModel)) {
+                  //   //如果存在目标表格执行出口数据转换
+                  //   self.$nextTick(() => {
+                  //     self.models[tableModel] = tableData;
+                  //     self.setTableData(Key, tableData);
+                  //     console.log(self.models);
+                  //     try {
+                  //       tempFunc(self.models, res, self.utils);
+                  //       self.handelAssignment(i);
+                  //       self.handelFlow();
+                  //     } catch (error) {
+                  //       this.handelValidate("error", "出口数据转换出错", i);
+                  //     }
+                  //   });
+                  // } else {
+                  // localStorage.setItem("response", JSON.stringify(res));
+                  // localStorage.setItem("model", tableModel);
+                  self.searchTable(tableKey, res); //不存在目标表格发起查询表格请求
+                  // }
                 }
                 self.remoteError = false;
               } else {
@@ -440,7 +456,7 @@ let handlers = {
       // debugger;
       if (key) {
         this.data.list.map((t) => {
-          if (t.key == key) {
+          if (t.model == model) {
             if (this.data.list) {
               t.configdata.list[0].options.tableData = data;
             }
@@ -458,9 +474,9 @@ let handlers = {
       // }
     },
     // 表格查询
-    searchTable(code, table) {
+    searchTable(code, tradData) {
       // debugger;
-      let tableData = table;
+      // let tableData = table;
       let self = this;
       getFormList("", {
         formCode: code,
@@ -474,6 +490,8 @@ let handlers = {
               type: "success",
             });
             let temp = JSON.parse(res.body.define.records[0].formContent);
+            let tableModel = temp.list[0].model;
+            let tableData = tradData[tableModel];
             temp.list[0].configdata.list[0].options.tableData = tableData;
             console.log(temp);
             self.gridData = temp;
