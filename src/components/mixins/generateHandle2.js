@@ -312,7 +312,7 @@ let handlers = {
           this.conditionError = false;
         } else {
           this.setFocus(this.allItems[i]);
-          // this.handelValidate("error", lists[i].conditionError, i);
+          // this.handelValidate("error", "不满足取值条件", i);
           this.conditionError = true;
           this.outMark = i;
         }
@@ -367,9 +367,13 @@ let handlers = {
                 self.handelValidate("success", "", i);
                 // 判断是否有表格数据，没有执行赋值
                 if (!tableModel) {
-                  tempFunc(self.models, res, self.utils);
-                  self.handelAssignment(i);
-                  self.handelFlow();
+                  try {
+                    tempFunc(self.models, res, self.utils);
+                    self.handelAssignment(i);
+                    self.handelFlow();
+                  } catch (error) {
+                    this.handelValidate("error", "出口数据转换出错", i);
+                  }
                 } else {
                   let tableData;
                   tableData = res.body[tableModel]; //根据配置的数据标识获取表格数据
@@ -386,9 +390,13 @@ let handlers = {
                       self.models[tableModel] = tableData;
                       self.setTableData(Key, tableData);
                       console.log(self.models);
-                      tempFunc(self.models, res, self.utils);
-                      self.handelAssignment(i);
-                      self.handelFlow();
+                      try {
+                        tempFunc(self.models, res, self.utils);
+                        self.handelAssignment(i);
+                        self.handelFlow();
+                      } catch (error) {
+                        this.handelValidate("error", "出口数据转换出错", i);
+                      }
                     });
                   } else {
                     localStorage.setItem("response", JSON.stringify(res));
@@ -403,7 +411,7 @@ let handlers = {
                   title: "错误",
                   message: res.rspMsg,
                 });
-                // this.handelValidate("error", res.rspMsg, i);
+                this.handelValidate("error", res.rspMsg, i);
                 self.remoteError = true;
                 self.outMark = i;
               }
@@ -415,7 +423,7 @@ let handlers = {
                 title: "错误",
                 message: error.rspMsg,
               });
-              // this.handelValidate("error", res.rspMsg, i);
+              this.handelValidate("error", res.rspMsg, i);
               self.remoteError = true;
               self.outMark = i;
             });
@@ -509,7 +517,15 @@ let handlers = {
       let model = localStorage.getItem("model");
       let res = JSON.parse(localStorage.getItem("response"));
       res[model] = row;
-      tempFunc(this.$parent.$parent.models, res);
+      try {
+        tempFunc(this.$parent.$parent.models, res);
+      } catch (error) {
+        this.$parent.$parent.handelValidate(
+          "error",
+          "出口数据转换出错",
+          this.$parent.$parent.outMark
+        );
+      }
       this.$parent.$parent.trade = false;
     },
     // 表格弹出框关闭后执行光标定位
@@ -593,7 +609,7 @@ let handlers = {
       for (let i = 0; i <= target; i++) {
         console.log("综合校验综合校验综合校验综合校验", this.comArr);
         if (
-          this.comArr[i].options.disabled ||
+          (this.comArr[i].options && this.comArr[i].options.disabled) ||
           this.comArr[i].options.hidden ||
           this.comArr[i].options.readonly == "readonly"
         ) {
@@ -874,8 +890,8 @@ let handlers = {
     },
   },
   mounted() {
-    let rankBtns = storage.session.get("Rank_BTNS", []);
-    this.Rank_BTNS = rankBtns.split("-");
+    let rankBtns = storage.session.get("Rank_BTNS", "");
+    this.Rank_BTNS = rankBtns && rankBtns.split("-");
 
     let inter = setInterval(() => {
       if (this.data.list && this.data.list.length > 0) {
