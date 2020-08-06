@@ -808,7 +808,7 @@ export default {
         this.mountPicker();
       }
       this.pickerVisible = this.picker.visible = true;
-
+      this.$emit("picker-show",this.pickerVisible)
       this.updatePopper();
 
       this.picker.value = this.parsedValue;

@@ -25,7 +25,6 @@ export default {
   methods: {
     navigateOptions(direction) {
       if (!this.visible) {
-        this.visible = true;
         return;
       }
       if (this.options.length === 0 || this.filteredOptionsCount === 0) return;

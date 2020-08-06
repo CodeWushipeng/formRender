@@ -11,7 +11,7 @@ let handlers = {
       outMark: 0, //外层循环标记
       allItems: [],
       allTrs: [], //弹出表格全部tr节点
-      btnLists:[],//流控引擎按钮节点
+      btnLists: [], //流控引擎按钮节点
       unfocus: [],
       cancelNext: false,
       canFocusLength: 0,
@@ -45,7 +45,6 @@ let handlers = {
     // 组件获取焦点
     mouseValidate(params, type) {
       // debugger
-      let formEle = document.querySelector(".generateForm");
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
           console.log(i, this.outMark);
@@ -57,7 +56,7 @@ let handlers = {
           break;
         }
       }
-      this.allValidate(this.outMark-1);
+      this.allValidate(this.outMark - 1);
     },
     // 初始化时复制一份models数据
     copyMOdels() {
@@ -73,6 +72,7 @@ let handlers = {
       this.handelAssignment(this.outMark);
       this.cancelNext = true;
       this.handelFlow();
+      this.handelCursorByArrow();
     },
     // 隐藏
     handelHidden() {
@@ -102,11 +102,11 @@ let handlers = {
       console.log(generate, this.allItems);
     },
     // 获取流控按钮节点
-    getFlowNotes(){
-      if (!localStorage.getItem("oldMark")){
-        this.btnLists = document.querySelectorAll("#flowButtons button")
-      } 
-      console.log(this.btnLists)
+    getFlowNotes() {
+      if (!localStorage.getItem("oldMark")) {
+        this.btnLists = document.querySelectorAll("#flowButtons button");
+      }
+      console.log(this.btnLists);
     },
     // 获取表格全部tr
     getAllPoupTr() {
@@ -144,7 +144,7 @@ let handlers = {
     },
     // 表格配置项弹出后接管流程控制
     toggleGenerate(rowData) {
-      debugger;
+      // debugger;
       localStorage.setItem("oldMark", this.outMark);
       // localStorage.setItem("oldData", this.data);
       // localStorage.setItem("oldModel", this.models);
@@ -315,7 +315,7 @@ let handlers = {
     },
     // 字段交易
     remoteValidate(i) {
-      debugger;
+      // debugger;
       if (this.singleError || this.rangeError || this.conditionError) {
         return;
       }
@@ -326,9 +326,10 @@ let handlers = {
         this.handelAssignment(i);
         this.handelFlow();
       } else {
-        if(!lists[i].isRemote){  //兼容旧版本
+        if (!lists[i].isRemote) {
+          //兼容旧版本
           this.remoteError = false;
-          return
+          return;
         }
         let start = eval("(" + lists[i].isRemote + ")");
         let startFlag = start(this.models, this.utils);
@@ -420,7 +421,7 @@ let handlers = {
     },
     // 表格设置数据函数
     setTableData(key, data) {
-      debugger;
+      // debugger;
       if (key) {
         this.data.list.map((t) => {
           if (t.key == key) {
@@ -442,7 +443,7 @@ let handlers = {
     },
     // 表格查询
     searchTable(code, table) {
-      debugger;
+      // debugger;
       let tableData = table;
       let self = this;
       getFormList("", {
@@ -457,8 +458,8 @@ let handlers = {
               type: "success",
             });
             let temp = JSON.parse(res.body.define.records[0].formContent);
-            temp.list[0].configdata.list[0].options.tableData = tableData
-            console.log(temp)
+            temp.list[0].configdata.list[0].options.tableData = tableData;
+            console.log(temp);
             self.gridData = temp;
             self.trade = true;
             // self.$nextTick(() => {
@@ -639,7 +640,14 @@ let handlers = {
       console.log("当前聚焦元素", focusEle);
       this.$nextTick(() => {
         if (type == "radio") {
-          focusEle.parentNode.parentNode.focus();
+          if (this.models[this.comArr[this.outMark].model]) {
+            return;
+          } else {
+            this.models[this.comArr[this.outMark].model] = this.comArr[
+              this.outMark
+            ].options.options[0].value;
+            focusEle.parentNode.parentNode.focus();
+          }
         } else {
           focusEle.focus();
         }
@@ -659,6 +667,7 @@ let handlers = {
     },
     // 回车事件
     onElChange(params) {
+      // debugger
       if (this.cancelNext) {
         this.cancelNext = false;
         return;
@@ -679,7 +688,7 @@ let handlers = {
         this.remoteValidate(this.outMark);
         this.setBlur(this.allItems[this.outMark]);
         // this.$emit("isEnd", true);
-        this.btnLists[0].focus()
+        this.btnLists[0].focus();
       }
     },
     // radio change事件
@@ -780,7 +789,7 @@ let handlers = {
             }
           }
         }
-      } else if (window.event.ctrlKey && window.event.keyCode ===40 ) {
+      } else if (window.event.ctrlKey && window.event.keyCode === 40) {
         for (let i = this.outMark + 1; i < this.comArr.length; i++) {
           if (
             this.comArr[i].options.disabled ||
@@ -812,7 +821,7 @@ let handlers = {
       if (params) {
         formEle.removeEventListener("keyup", this.arrowListener);
       } else {
-        formEle.addEventListener("keyup", this.arrowListener, true);
+        formEle.addEventListener("keyup", this.arrowListener);
       }
     },
   },
@@ -825,7 +834,7 @@ let handlers = {
         this.handelHidden();
         this.enterCheck();
         this.getAllItems();
-        this.getFlowNotes()
+        this.getFlowNotes();
         this.getAllPoupTr();
         this.getShowLength();
         this.iteratorAllEle();

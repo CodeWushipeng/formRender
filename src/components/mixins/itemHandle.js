@@ -1,4 +1,4 @@
-import {getDic} from '@/api/forms'
+import { getDic } from "@/api/forms";
 import { RES_OK } from "@/api/config";
 let itemHandle = {
   data() {
@@ -9,7 +9,7 @@ let itemHandle = {
   },
   methods: {
     // 组件聚焦事件获取model
-    comFocus(e) {
+    comFocus() {
       if (
         this.widget.type == "password" ||
         this.widget.type == "againpassword"
@@ -21,15 +21,15 @@ let itemHandle = {
           this.peripheral();
         }
       }
-      this.$emit("el-focus", this.widget.model,this.widget.type);
+      this.$emit("el-focus", this.widget.model, this.widget.type);
     },
     // 组件失去焦点事件
-    comBlur(e) {
-      this.$emit("el-blur", this.widget.model,this.widget.type);
+    comBlur() {
+      this.$emit("el-blur", this.widget.model, this.widget.type);
     },
     // 回车事件
-    change(e) {
-      this.$emit("el-change", this.widget.model,this.widget);
+    change() {
+      this.$emit("el-change", this.widget.model, this.widget);
     },
     // radio组件change事件
     valueChange() {
@@ -54,37 +54,37 @@ let itemHandle = {
       //     }
       //   }
       // }
-      if (this.widget.options.filterable){
+      if (this.widget.options.filterable) {
         this.$refs[this.widget.model].blur();
-        this.$emit("el-change", this.widget.model,this.widget.type);
-      }else{
+        this.$emit("el-change", this.widget.model, this.widget.type);
+      } else {
         if (this.selectStatu) {
           // this.$refs[this.widget.model].blur();
         } else {
-          this.$emit("el-change", this.widget.model,this.widget.type);
+          this.$emit("el-change", this.widget.model, this.widget.type);
         }
       }
     },
     // select组件空格事件
     showOptions() {
-      if (!this.widget.options.filterable){
+      if (!this.widget.options.filterable) {
         this.$refs[this.widget.model].toggleMenu();
       }
     },
     // 下拉选择选项显示状态
     optionStatu(params) {
       this.selectStatu = params;
-      this.$emit("remove",params)
+      this.$emit("remove", params);
       if (params) {
         // 下拉选择框用作级联组件处理
         if (this.widget.isCascader) {
           let father = this.widget.fatherModel && this.widget.fatherModel;
           let fatherData = this.models[father];
-          let reqData
+          let reqData;
           try {
             reqData = eval("(" + this.widget.requestData + ")")();
           } catch (error) {
-            throw new Error(error)
+            throw new Error(error);
           }
 
           let postData = Object.assign(
@@ -95,15 +95,15 @@ let itemHandle = {
           console.log(reqData, postData);
 
           getDic(this.widget.cascaderUrl, {
-              body: postData,
-              header: {
-                pageIndex: 1,
-                pageSize: 999,
-                gloSeqNo: new Date(),
-                reqSeqNo: "sit anim",
-                reqTime: "officia ad anim",
-              },
-            })
+            body: postData,
+            header: {
+              pageIndex: 1,
+              pageSize: 999,
+              gloSeqNo: new Date(),
+              reqSeqNo: "sit anim",
+              reqTime: "officia ad anim",
+            },
+          })
             .then((res) => {
               console.log(res);
               if (res.header.rspCode == RES_OK) {
@@ -142,16 +142,19 @@ let itemHandle = {
     },
     // date选择器失去焦点事件
     dateBlur() {
-      this.widget.options.editable = false
-      this.$emit("date-blur", this.widget.model,this.widget);
+      this.widget.options.editable = false;
+      this.$emit("date-blur", this.widget.model, this.widget);
     },
-    dateShow(){
-      this.$refs[this.widget.model].handleFocus()
-      this.widget.options.editable = true
+    dateShow() {
+      this.$refs[this.widget.model].handleFocus();
+      this.widget.options.editable = true;
+    },
+    pickShow(params) {
+      console.log("pickShowpickShowpickShowpickShowpickShowpickShow", params);
+      this.$emit("remove", params);
     },
     // 多选框键盘上下键事件
     checkUp() {
-      this.$emit("check-handle", this.widget);
       let name = "." + this.widget.model + " input";
       let checks = document.querySelectorAll(name);
       for (let i = this.checkIndex; i >= 0; i--) {
@@ -164,7 +167,6 @@ let itemHandle = {
       }
     },
     checkDown() {
-      this.$emit("check-handle", this.widget);
       let name = "." + this.widget.model + " input";
       let checks = document.querySelectorAll(name);
       for (let i = this.checkIndex; i < checks.length; i++) {
