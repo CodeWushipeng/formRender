@@ -1,7 +1,6 @@
 <template>
   <div class="render-wrap" style="padding: 20px; " ref="loadingArea">
     <div>
-      canEnter:{{canEnter}} <br>
       debug:{{debug}}
       <!--btnIndex:{{btnIndex}} <br>-->
       <!--Rank_BTNS:{{displayBtn()}} <br>-->
@@ -29,8 +28,7 @@
           <div v-if="NodeType=='02'">结束</div>
           <div v-if="NodeType=='03'">
             <!--render-form-->
-            <render-form  @has-end="hasEnd"
-                    v-if="hackRest && configdata.list.length>0"
+            <render-form v-if="hackRest && configdata.list.length>0"
                     :url="url"
                     :configdata="configdata"
                     :remoteFuncs="remoteFuncs"
@@ -38,9 +36,12 @@
             >
               <!--操作按钮-->
               <div style="text-align:center;" id="flowButtons">
-                <el-button ref="back" :type="calBtnType(0)" @click="prev">Back</el-button>
-                <el-button ref="submit" :type="calBtnType(1)" @click="submit">Submit</el-button>
-                <el-button ref="cancel" :type="calBtnType(2)" @click="cancel">Cancel</el-button>
+                <!--<el-button ref="back" :type="calBtnType(0)" @click="prev">Back</el-button>-->
+                <!--<el-button ref="submit" :type="calBtnType(1)" @click="submit">Submit</el-button>-->
+                <!--<el-button ref="cancel" :type="calBtnType(2)" @click="cancel">Cancel</el-button>-->
+                <el-button  ref="back"  @click="prev">Back</el-button>
+                <el-button  ref="submit"  @click="submit">Submit</el-button>
+                <el-button  ref="cancel"  @click="cancel">Cancel</el-button>
               </div>
             </render-form>
           </div>
@@ -71,12 +72,16 @@
   const FG = new getFG();
   import {queryFlowDetail} from "@/api/flows";
   import {RES_OK} from "@/api/config";
-  import flowMixin, {subControls} from './js/mixins'
+  import flowMixin from './js/mixins'
   import directives from './js/directives'
   import {handleBackNode,handleRemoteFn,beforeRoute} from './js/util'
   import {platform, user} from "./js/flowData";
 
   const DEBUG_KEY = '__debug__';
+  const Rank_BTNS = ['prev', 'submit', 'cancel'];
+
+  const KEY_SHIFT = 16;
+  const KEY_NUM2 = 50;
 
   export default {
     name: "flowDemo",
@@ -95,7 +100,6 @@
         data: {},
         // =========数据显示================
         records: [], // 流程数据
-        hackRest: true,
         url: "",
         // 流控数据
         configdata: {
@@ -110,8 +114,8 @@
       };
     },
     created() {
+      storage.session.set('Rank_BTNS',Rank_BTNS.join("-"))
       this.debug = storage.session.get(DEBUG_KEY, false);
-      // console.log('flowMixin',flowMixin)
       this.inits();
       this.openDebug(this);
     },
@@ -123,14 +127,13 @@
         }
       },
       data:function(){
-        this.canEnter =false;
+        // this.canEnter =false;
       },
       debug: function (val, oldVal) {
         console.log('new: %s, old: %s', val, oldVal)
       },
     },
     methods: {
-      ...subControls,
       openDebug(_this) {
         const _self = _this;
         let code = 0;
@@ -143,10 +146,10 @@
           let e1 = e || event || window.event || arguments.callee.caller.arguments[0];
           console.log('e1.keyCode', e1.keyCode)
           const key = e1.keyCode;
-          if (key === 16) { // key:shift
+          if (key === KEY_SHIFT) { // key:shift
             code = 1;
           }
-          if (key === 50) { // key:2
+          if (key === KEY_NUM2) { // key:2
             code2 = 1;
           }
           if (code === 1 && code2 === 1) {
@@ -162,10 +165,6 @@
             code = 0;
             code2 = 0;
           }, 1000)
-          if(_self.canEnter){
-            _self.calBtnIndex(key);
-            _self.calBtnSubmit(key);
-          }
         }
       },
       inits() {
@@ -591,6 +590,7 @@
       }
     }
     .debugs {
+      min-height: 800px;
       padding-left: 10px;
       flex-grow: 1;
       order: 1;

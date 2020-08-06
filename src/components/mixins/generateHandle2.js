@@ -1,10 +1,18 @@
 import { RES_OK } from "@/api/config";
 import { getTrade, getFormList } from "@/api/forms";
-// import bus from "@/bus/bus.js";
+import storage from "good-storage";
+
+const KEY_ENTER = 13;
+const KEY_LEFT = 37;
+const KEY_RIGHT = 39;
+
 let handlers = {
   props: {},
   data() {
     return {
+      Rank_BTNS: [], // 操作按钮列表
+      btnFocusIndex: 0, // 命中操作按钮的索引值
+
       trade: false, //字段交易弹出框
       widgetPreValue: {}, // 组件旧值
       comArr: [], //组件list数组
@@ -688,9 +696,49 @@ let handlers = {
         this.remoteValidate(this.outMark);
         this.setBlur(this.allItems[this.outMark]);
         // this.$emit("isEnd", true);
-        this.btnLists[0].focus();
+
+        this.btnsAddEvents();
+        this.filterFirstBtnIndex();
+        this.focusCurrentBtn();
       }
     },
+    filterFirstBtnIndex() {
+      const index = this.Rank_BTNS.findIndex((item) => {
+        return item == "submit";
+      });
+      this.btnFocusIndex = index;
+    },
+
+    btnsAddEvents() {
+      const $flowButtons = document.getElementById("flowButtons");
+      $flowButtons.addEventListener("keyup", (e) => {
+        // debugger
+        let e1 = e || event || window.event; // || arguments.callee.caller.arguments[0];
+        console.log("e1.keyCode", e1.keyCode);
+        const key = e1.keyCode;
+
+        this.calBtnIndex(key);
+        this.focusCurrentBtn();
+      });
+    },
+
+    focusCurrentBtn() {
+      this.btnLists[this.btnFocusIndex].focus();
+    },
+
+    calBtnIndex(keyCode) {
+      if (keyCode == KEY_LEFT || keyCode == KEY_RIGHT) {
+        let btnsLength = this.Rank_BTNS.length - 1;
+        if (keyCode == KEY_LEFT) {
+          --this.btnFocusIndex;
+          if (this.btnFocusIndex < 0) this.btnFocusIndex = 0;
+        } else {
+          ++this.btnFocusIndex;
+          if (this.btnFocusIndex > btnsLength) this.btnFocusIndex = btnsLength;
+        }
+      }
+    },
+
     // radio change事件
     radioChange(params) {
       this.mouseValidate(params);
@@ -826,6 +874,9 @@ let handlers = {
     },
   },
   mounted() {
+    let rankBtns = storage.session.get("Rank_BTNS", []);
+    this.Rank_BTNS = rankBtns.split("-");
+
     let inter = setInterval(() => {
       if (this.data.list && this.data.list.length > 0) {
         clearInterval(inter);
