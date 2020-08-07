@@ -13,7 +13,9 @@
       @isEnd="accept"
       ref="generateForm"
     ></fm-generate-form>
+    <div id="flowButtons">
       <slot></slot>
+    </div>
   </div>
 </template>
 
