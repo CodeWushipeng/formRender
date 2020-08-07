@@ -1,7 +1,5 @@
 <template>
 <div>
-
-
   <el-form-item
     v-if="widget.type != 'divider'"
     :label="(widget.type != 'buttonCom' && widget.type != 'alink' && !widget.options.hideLabel) ? widget.name : ''"
@@ -11,8 +9,7 @@
         [widget.options.customClass]: widget.options.customClass?true: false,
         'no-label-form-item': widget.options.isLabelWidth && widget.options.labelWidth == 0
       }"
-      :label-width="widget.options.hideLabel ? '0px' : (widget.options.isLabelWidth ? widget.options.labelWidth + 'px' : '')"
-  >
+      :label-width="widget.options.hideLabel ? '0px' : (widget.options.isLabelWidth ? widget.options.labelWidth + 'px' : '')">
     <!--widget: {{widget}}-->
     <!-- {{rules}} -->
     <!--金额控件-->
@@ -321,8 +318,7 @@
       @on-close="radioVisible = false"
       ref="radioPreview"
       width="500px"
-      form
-    >
+      form>
       <radioFormItem
         insite="true"
         v-if="radioVisible"
@@ -522,8 +518,7 @@
       @on-close="cameraVisible = false"
       ref="cameraPreview"
       width="800px"
-      form
-    >
+      form>
       <cameraFormItem
         insite="true"
         v-if="cameraVisible"
@@ -630,8 +625,7 @@
         (widget.type == 'imageupload') |
           (widget.type == 'fileupload') |
           (widget.type == 'videoupload')
-      "
-    >
+      ">
       <fm-upload-extend
         v-model="dataModel"
         :uploadtype="widget.type"
@@ -674,11 +668,10 @@
           style="line-height: 45px;"
           v-if="
             widget.options.isAddBtn ||
-              widget.options.isEditBtn ||
-              widget.options.isDeleteBtn||
-              widget.options.isDisplayColumnBtn
-          "
-        >
+            widget.options.isEditBtn ||
+            widget.options.isDeleteBtn||
+            widget.options.isDisplayColumnBtn
+          ">
           <el-row type="flex" justify="end" :gutter="20">
             <el-col v-if="widget.options.isAddBtn" :span="3">
               <div>
@@ -741,8 +734,7 @@
         @on-submit="handelTableDataEA"
         ref="tableeditCode"
         width="800px"
-        form
-      >
+        form>
         <fm-generate-form
           v-if="tableCf.configdata != null"
           :data="tableCf.configdata"
@@ -1191,23 +1183,23 @@ export default {
       return dataURL;
     },
 
-    //table
+    //自定义数据来源方法解析函数
     handleRemoteFn(fn) {
       var _this = this;
       try {
-        fn(this, request, function(tableCf) {
+        fn.call(this,this, request, function(tableCfData) {
           if (_this.widget.configdata.list) {
             let tempTableCf = _this.widget.configdata.list[0];
-            if(tableCf instanceof  Array){
-              tempTableCf.options.tableData = tableCf;
+            if(tableCfData instanceof  Array){
+              tempTableCf.options.tableData = tableCfData;//??
             }else{
-              tempTableCf.options.tableData = tableCf.records;
+              tempTableCf.options.tableData = JSON.parse(tableCfData.records[0].listContent).list[0].options.tableData;
             }
             //带有分页
             if (_this.widget.options.isPagination === true) {
-              _this.widget.options.pagination.pageSize = tableCf.size;
-              _this.widget.options.pagination.currentPage = tableCf.current;
-              _this.widget.options.pagination.total = tableCf.total;
+              _this.widget.options.pagination.pageSize = tableCfData.size;
+              _this.widget.options.pagination.currentPage = tableCfData.current;
+              _this.widget.options.pagination.total = tableCfData.total;
             }
           }
         });
@@ -1249,12 +1241,12 @@ export default {
               return;
             }
             this.tableCf.dialogType = "add";
-            getFormConfigDataById(addFormId, function(data) {
+            getFormConfigDataById.call(this,addFormId, (data) => {
               if (data && data.formContent) {
-                _self.tableCf.configdata = JSON.parse(data.formContent);
+                this.tableCf.configdata = JSON.parse(data.formContent);
               }
-              _self.$emit("toggleGenerate", _self.tableCf.configdata)
-              _self.tableCf.tableDataEAVisible = true;
+              this.$emit("toggleGenerate", this.tableCf.configdata)
+              this.tableCf.tableDataEAVisible = true;
             });
           }
           break;
@@ -1284,7 +1276,7 @@ export default {
               return;
             }
             this.tableCf.dialogType = "edit";
-            getFormConfigDataById(editFormId, function(data) {
+            getFormConfigDataById.call(this,editFormId, function(data) {
               if (data && data.formContent) {
                 _self.tableCf.configdata = JSON.parse(data.formContent);
                 _self.$emit("toggleGenerate", _self.tableCf.configdata)
@@ -1318,7 +1310,7 @@ export default {
             }
             this.tableCf.dialogType = "detail";
             this.tableCf.tableDataEAVisible = true;
-            getFormConfigDataById(detailFormId, function(data) {
+            getFormConfigDataById.call(this,detailFormId, function(data) {
               if (data && data.formContent) {
                 _self.tableCf.configdata = JSON.parse(data.formContent);
               }
@@ -1328,7 +1320,7 @@ export default {
         case "delete":
           let selecteDeleRow = this.widget.configdata.list[0].options
             .multipleSelection;
-          if (selecteDeleRow && selecteDeleRow.length < 1) {
+          if (selecteDeleRow && selecteDeleRow.length < 1 || typeof selecteDeleRow == "undefined") {
             this.$message("请至少选择一行数据");
             return;
           } else {

@@ -1116,14 +1116,14 @@ export const tableComponents = [
         currentPage:1,
         pagerCount:5,
         total:0,
-        handleSizeChange:function(page){
+        handleSizeChange:`function(page){
           
           console.log(page)
-        },
-        handleCurrentChange: function (pageSize) {
+        }`,
+        handleCurrentChange: `function (pageSize) {
           
           console.log(pageSize)
-        }
+        }`
       },
       eventConfig:{
 

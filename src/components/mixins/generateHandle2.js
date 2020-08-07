@@ -52,7 +52,6 @@ let handlers = {
   methods: {
     // 组件获取焦点
     mouseValidate(params, type) {
-      // debugger
       let formEle = document.querySelector(".generateForm");
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
@@ -152,7 +151,6 @@ let handlers = {
     },
     // 表格配置项弹出后接管流程控制
     toggleGenerate(rowData) {
-      debugger;
       localStorage.setItem("oldMark", this.outMark);
       // localStorage.setItem("oldData", this.data);
       // localStorage.setItem("oldModel", this.models);
@@ -641,6 +639,7 @@ let handlers = {
         ? ele.querySelector("textarea")
         : ele.querySelector(".el-form-item__content>button");
       let type;
+      if(!focusEle) return;
       if (focusEle.tagName === "INPUT" && focusEle.hasAttribute("type")) {
         type = focusEle.getAttribute("type");
       }
@@ -865,10 +864,11 @@ let handlers = {
     },
   },
   mounted() {
-
-    let rankBtns = storage.session.get('Rank_BTNS',[])
-    this.Rank_BTNS =  rankBtns.split("-");
-
+    let rankBtns = storage.session.get('Rank_BTNS',"");
+    if(rankBtns){
+      this.Rank_BTNS =  rankBtns.split("-");
+    }
+  
     let inter = setInterval(() => {
       if (this.data.list && this.data.list.length > 0) {
         clearInterval(inter);

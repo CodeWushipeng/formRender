@@ -221,7 +221,7 @@ export default {
       } else if (type == "handleSizeChange") {
       } else if (type == "tableRemotFun") {
         if (this.data.options && this.data.options.remoteFunc) {
-          this.data.options.remoteFunc = data.options.remoteFunc;
+          this.data.options.remoteFunc = ""+temFen;
           // temFen(this.data.options);
         }
       }
@@ -291,7 +291,7 @@ export default {
         })
         .catch(error => console.log(error));
     },
-    handleSelectionRow(row, column, event) {debugger
+    handleSelectionRow(row, column, event) {
       let temTableCfg = deepClone(row);
       this.data.configdata = JSON.parse(temTableCfg.listContent);
       this.handleDisplayColumns(this.data.configdata);

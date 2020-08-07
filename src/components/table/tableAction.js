@@ -12,6 +12,7 @@ import request from "../../util/request"
   */
 
 export const getFormConfigDataById = (formId,callback) => {
+  let that = this;
   request
     .post("dev-api/formDevelop/qryFromDefineList2", {
       body: { formCode: formId},
@@ -42,14 +43,14 @@ export const getFormConfigDataById = (formId,callback) => {
           formConfigData = res.body.define.records[0]
         }
         callback(formConfigData)
-        this.$notify({
+        that.$notify({
           title: "Success",
           message: "查询成功",
           type: "success",
           duration: 2000
         });
       } else if (res.header.rspCode == "99999999") {
-        this.$notify({
+        that.$notify({
           title: "fail",
           message: "查询失败",
           type: "info",
