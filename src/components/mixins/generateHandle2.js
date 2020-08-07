@@ -684,6 +684,19 @@ let handlers = {
       this.$nextTick(() => {
         if (type == "radio") {
           if (this.models[this.comArr[this.outMark].model]) {
+            let allRadio = ele.querySelectorAll("input");
+            for (
+              let i = 0;
+              i < this.comArr[this.outMark].options.options.length;
+              i++
+            ) {
+              if (
+                this.comArr[this.outMark].options.options[i].value ===
+                this.models[this.comArr[this.outMark].model]
+              ) {
+                allRadio[i].parentNode.parentNode.focus();
+              }
+            }
             return;
           } else {
             this.models[this.comArr[this.outMark].model] = this.comArr[
