@@ -78,6 +78,7 @@ import Draggable from 'vuedraggable'
 import WidgetFormItem from './WidgetFormItem'
 // import WidgetTabItem from './WidgetTabItem'
 import { EventBus } from '../util/event-bus.js'
+import _ from 'lodash'
 
 export default {
   components: {
@@ -112,7 +113,7 @@ export default {
           remoteOption: 'option_' + key
         },
         key,
-        model: item.type + '_' + key,
+        model: 'object',
         rules: []
       })
 

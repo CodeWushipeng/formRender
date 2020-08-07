@@ -5,9 +5,14 @@ export const basicComponents = [
     options: {
       hidden: false,
       width: '100%',
+      maxlength: "",
+      wordLimit: false,
+      clearable: false,
       defaultValue: '',
       required: false,
-      dataType: 'string',
+      dataType: 'text',
+      integerbits: 1,
+      decimalbits: 0,
       pattern: '',
       placeholder: '',
       disabled: false,
@@ -76,7 +81,6 @@ export const basicComponents = [
       placeholder: '',
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
       tips:""
     },
     hidden:"function main (models,utils)"+"{\n"
@@ -141,7 +145,6 @@ export const basicComponents = [
       controlsPosition: '',
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
     },
     hidden:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
@@ -199,7 +202,6 @@ export const basicComponents = [
       showLabel: false,
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
       options: [
         {
           value: 'Option 1',
@@ -281,7 +283,6 @@ export const basicComponents = [
       showLabel: false,
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
       options: [
         {
           value: 'Option 1'
@@ -370,7 +371,6 @@ export const basicComponents = [
       width: '',
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
     },
     hidden:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
@@ -438,7 +438,6 @@ export const basicComponents = [
       width: '',
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
     },
     hidden:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
@@ -498,7 +497,6 @@ export const basicComponents = [
       required: false,
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
     },
     hidden:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
@@ -557,7 +555,6 @@ export const basicComponents = [
       required: false,
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
     },
     hidden:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
@@ -619,7 +616,6 @@ export const basicComponents = [
       showLabel: false,
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
       width: '',
       options: [
         {
@@ -693,7 +689,6 @@ export const basicComponents = [
       disabled: false,
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
     },
     hidden:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
@@ -757,7 +752,6 @@ export const basicComponents = [
       width: '',
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
     },
     hidden:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
@@ -814,7 +808,6 @@ export const basicComponents = [
       customClass: '',
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
     },
     hidden:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
@@ -892,7 +885,6 @@ export const advanceComponents = [
       isDelete: false,
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
       min: 0,
       isEdit: false,
       action: 'https://jsonplaceholder.typicode.com/photos/'
@@ -907,7 +899,6 @@ export const advanceComponents = [
       width: '',
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
     },
     hidden:"function main (models,utils)"+"{\n"
     +"\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n"
@@ -968,7 +959,6 @@ export const advanceComponents = [
       remote: true,
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
       remoteOptions: [],
       props: {
         value: 'value',

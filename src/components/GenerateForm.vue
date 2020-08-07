@@ -62,7 +62,7 @@
         </template>
 
         <template v-else-if="item.type == 'blank'">
-          <el-form-item :label="item.name" :prop="item.model" :key="item.key">
+          <el-form-item :label="item.name" :prop="item.model" :key="item.key" class="targetEle">
             <slot :name="item.model" :model="models"></slot>
           </el-form-item>
         </template>
@@ -81,7 +81,7 @@
           <template v-slot:[blank.name]="scope" v-for="blank in blanks">
             <slot :name="blank.name" :model="scope.model"></slot>
           </template>
-        </generate-tab-item> -->
+        </generate-tab-item>-->
 
         <template v-else>
           <genetate-form-item
@@ -117,8 +117,8 @@
 import GenetateFormItem from "./GenerateFormItem.vue";
 // import { loadJs } from "../util/index.js";
 // import request from "../util/request.js";
-import GenerateTabItem from './GenerateTabItem'
-import { EventBus } from '../util/event-bus.js'
+import GenerateTabItem from "./GenerateTabItem";
+import { EventBus } from "../util/event-bus.js";
 import { IdentityCodeValid } from "../util/idencardUtil";
 import handler from "./mixins/generateHandle2.js";
 
@@ -155,23 +155,23 @@ export default {
     this._initForm();
   },
   mounted() {
-    EventBus.$on('on-field-change', (field, value) => {
+    EventBus.$on("on-field-change", (field, value) => {
       this.$nextTick(() => {
         this.form.setFieldsValue({
-          [`${field}`]: value
-        })
-      })
-    })
+          [`${field}`]: value,
+        });
+      });
+    });
   },
-  beforeDestroy () {
-    EventBus.$off('on-field-change')
+  beforeDestroy() {
+    EventBus.$off("on-field-change");
   },
   methods: {
-    _initForm () {
+    _initForm() {
       if (Object.keys(this.data).length) {
-        this.generateModel(this.data.list)
+        this.generateModel(this.data.list);
       } else {
-        this.generateModel([])
+        this.generateModel([]);
       }
     },
     // 生成models、rules对象
@@ -190,10 +190,10 @@ export default {
         } else if (genList[i].type === "elTable") {
           this.models[genList[i].model] =
             genList[i].configdata.list[0].options.tableData;
-        } else if (genList[i].type === 'tabs') {
-          genList[i].tabs.forEach(item => {
-            this.generateModel(item.list)
-          })
+        } else if (genList[i].type === "tabs") {
+          genList[i].tabs.forEach((item) => {
+            this.generateModel(item.list);
+          });
         } else {
           // 处理非表格类型的组件
           if (
@@ -389,7 +389,7 @@ export default {
     // 重置表单
     reset() {
       this.$refs.generateForm.resetFields();
-      this.formKey = new Date().getTime()
+      this.formKey = new Date().getTime();
     },
     // 监听表单数据改变
     onInputChange(value, field) {

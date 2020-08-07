@@ -15,7 +15,7 @@ module.exports = {
             drop_console: false,
           },
         },
-        sourceMap: true,
+        sourceMap: false,
         parallel: true,
       }),
     ];
@@ -44,13 +44,13 @@ module.exports = {
         target: "http://192.168.1.194:21004",
         pathRewrite: { "^/dev-api": "" },
       },
-      '/dev-api/tableDevelop': {
-        target: 'http://192.168.1.194:11004',
-        pathRewrite: { '^/dev-api/tableDevelop': '' }
+      "/dev-api/listDevelop": {
+        target: "http://192.168.1.194:21004",
+        pathRewrite: { "^/dev-api": "" },
       },
-      '/dev-api/requestForward': {
-        target: 'http://localhost:38081',
-        pathRewrite: { '^/dev-api': '' }
+      "/dev-api/requestForward": {
+        target: "http://localhost:38081",
+        pathRewrite: { "^/dev-api": "" },
       },
     },
     overlay: {

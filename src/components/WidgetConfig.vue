@@ -244,34 +244,52 @@
           </el-input>
         </div>
       </el-form-item>
-
-      <el-form-item v-if="data.type=='textarea' | data.type=='singletext'">
+      <!-- input扩展配置 -->
+      <el-form-item v-if="data.type=='input'">
+        <el-form-item label="最大输入字数">
+          <el-input v-model="data.options.maxlength"></el-input>
+        </el-form-item>
+      </el-form-item>
+      <!-- textarea扩展配置 -->
+      <el-form-item v-if="data.type=='textarea'">
+        <el-form-item label="最大输入字数">
+          <el-input v-model="data.options.textarealength"></el-input>
+        </el-form-item>
+        <el-checkbox v-model="data.options.textareaautosize">{{$t('fm.config.widget.textareaautosize')}}</el-checkbox>
+        <el-form-item v-if="data.options.textareaautosize" label="最大行数">
+          <el-input v-model="data.options.textarearowmax"></el-input>
+        </el-form-item>
+        <el-form-item v-if="data.options.textareaautosize" label="最小行数">
+          <el-input v-model="data.options.textarearowmin"></el-input>
+        </el-form-item>
+      </el-form-item>
+      <!-- <el-form-item v-if="data.type=='textarea' | data.type=='singletext'"> -->
         <!--高度自适应-->
-        <div v-if="data.type=='textarea'">
+        <!-- <div v-if="data.type=='textarea'">
           <el-checkbox v-model="data.options.textareaautosize">{{$t('fm.config.widget.textareaautosize')}}</el-checkbox>
-        </div>
+        </div> -->
         <!--最大字数-->
-        <template v-if="data.type=='textarea' | data.type=='singletext'" >
+        <!-- <template v-if="data.type=='textarea' | data.type=='singletext'" >
           <div style="display: inline-block;width: 49%;">
             <el-input type="number" v-model="data.options.textarealength"></el-input>
           </div>
           <span> {{$t('fm.config.widget.textarealength')}}</span>
-        </template>
+        </template> -->
         <!--最小行数-->
-        <template v-if="data.type=='textarea'">
+        <!-- <template v-if="data.type=='textarea'">
           <div>
             <el-input-number v-model="data.options.textarearowmin" :min="2" size="mini" ></el-input-number>
             <span> {{$t('fm.config.widget.textarearowmin')}}</span>
           </div>
-        </template>
+        </template> -->
         <!--最大行数-->
-        <template v-if="data.type=='textarea'">
+        <!-- <template v-if="data.type=='textarea'">
           <div>
             <el-input-number v-model="data.options.textarearowmax" :min="3" :max="10" size="mini" ></el-input-number>
             <span> {{$t('fm.config.widget.textarearowmax')}}</span>
           </div>
-        </template>
-      </el-form-item>
+        </template> -->
+      <!-- </el-form-item> -->
 
       <el-form-item :label="$t('fm.config.widget.defaultValue')" v-if="Object.keys(data.options).indexOf('defaultValue')>=0">
         <el-input v-if="data.type=='textarea'" type="textarea" :rows="data.options.textarearows" v-model="data.options.defaultValue"></el-input>
@@ -283,7 +301,7 @@
           :show-alpha="data.options.showAlpha"
         ></el-color-picker>
         <el-switch v-if="data.type=='switch'" v-model="data.options.defaultValue"></el-switch>
-        <el-input v-else v-model="data.options.defaultValue"></el-input>
+        <el-input v-if="data.type=='input'" v-model="data.options.defaultValue"></el-input>
       </el-form-item>
 
       <template v-if="data.type == 'time' || data.type == 'date'">
@@ -451,6 +469,7 @@
           </div>
         </el-form-item>
       </template>
+      <!-- 操作属性 -->
       <template v-if="data.type != 'grid'">
         <el-form-item :label="$t('fm.config.widget.attribute')">
           <el-checkbox v-model="data.options.readonly" v-if="Object.keys(data.options).indexOf('readonly')>=0">{{$t('fm.config.widget.readonly')}}</el-checkbox>

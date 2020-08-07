@@ -35,17 +35,13 @@
                     ref="renderForm"
             >
               <!--操作按钮-->
-              <div style="text-align:center;" id="flowButtons">
-                <!--<el-button ref="back" :type="calBtnType(0)" @click="prev">Back</el-button>-->
-                <!--<el-button ref="submit" :type="calBtnType(1)" @click="submit">Submit</el-button>-->
-                <!--<el-button ref="cancel" :type="calBtnType(2)" @click="cancel">Cancel</el-button>-->
+              <div style="text-align:center;">
                 <el-button  ref="back"  @click="prev">Back</el-button>
                 <el-button  ref="submit"  @click="submit">Submit</el-button>
                 <el-button  ref="cancel"  @click="cancel">Cancel</el-button>
               </div>
             </render-form>
           </div>
-
         </div>
         <!--拖拽-->
         <div class="drag" v-drag v-if="debug"></div>
@@ -125,9 +121,6 @@
         handler(list) {
           this.resetComponent();
         }
-      },
-      data:function(){
-        // this.canEnter =false;
       },
       debug: function (val, oldVal) {
         console.log('new: %s, old: %s', val, oldVal)

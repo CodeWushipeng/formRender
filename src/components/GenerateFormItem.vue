@@ -1,198 +1,202 @@
 <template>
-<div>
-  <el-form-item
-    v-if="widget.type != 'divider'"
-    :label="(widget.type != 'buttonCom' && widget.type != 'alink' && !widget.options.hideLabel) ? widget.name : ''"
-    :prop="widget.model"
-    class="targetEle"
-    :class="{
+  <div>
+    <el-form-item
+      v-if="widget.type != 'divider'"
+      :label="(widget.type != 'buttonCom' && widget.type != 'alink' && !widget.options.hideLabel) ? widget.name : ''"
+      :prop="widget.model"
+      class="targetEle"
+      :class="{
         [widget.options.customClass]: widget.options.customClass?true: false,
         'no-label-form-item': widget.options.isLabelWidth && widget.options.labelWidth == 0
       }"
-      :label-width="widget.options.hideLabel ? '0px' : (widget.options.isLabelWidth ? widget.options.labelWidth + 'px' : '')">
-    <!--widget: {{widget}}-->
-    <!-- {{rules}} -->
-    <!--金额控件-->
-    <template v-if="widget.type == 'amount'">
-      <!--放大镜-->
-      <div class="el-input el-input--small">
-        <input
-          class="el-input__inner"
-          :maxlength="widget.options.maxlength"
-          @keydown="inputHandler(widget.key)"
-          @focus="inputHandler(widget.key)"
-          @keyup="keyupHandler(widget.key)"
-          @keyup.enter="enterHandler(widget.key)"
-          @blur="blurHandler()"
-          :ref="widget.key"
-          v-model="dataModel"
-          type="text"
-        />
-        
-        <transition name="fade">
-          <!--<div class="mglass">-->
-          <div v-if="widget.options.amountmoney && amountvisible" class="mglass">
-            <div class="mglass-data">
-              {{ dataModel }}
-              <br />
-            </div>
-            <div class="mglass-big">{{ bigPastAdjustFee }}</div>
-          </div>
-        </transition>
-      </div>
-    </template>
-    <!--密码-->
-    <template v-if="widget.type == 'password'">
-      <el-input
-        type="password"
-        v-model="dataModel"
-        :disabled="widget.options.disabled"
-        :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width }"
-        :maxlength="widget.options.maxlength"
-        @keyup.native.enter="change"
-        @keyup.native="passwordKeyup"
-        @focus="comFocus($event)"
-        @blur="comBlur($event)"
-        :ref="widget.model"
-      >
-        <template slot="prepend">
-          <el-button
-            v-if="widget.options.tips != ''"
-            @click="showTips(widget.options.tips)"
-            slot="prepend"
-            icon="el-icon-question"
-          ></el-button>
-        </template>
-      </el-input>
-    </template>
-    <!--确认密码-->
-    <template v-if="widget.type == 'againpassword'">
-      <el-input
-        type="password"
-        v-model="dataModel"
-        :maxlength="widget.options.maxlength"
-        :disabled="widget.options.disabled"
-        :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width }"
-        @focus="comFocus($event)"
-        @blur="comBlur($event)"
-        @keyup.native.enter="change"
-        :ref="widget.model"
-      >
-        <template slot="prepend">
-          <el-button
-            v-if="widget.options.tips != ''"
-            @click="showTips(widget.options.tips)"
-            slot="prepend"
-            icon="el-icon-question"
-          ></el-button>
-        </template>
-      </el-input>
-    </template>
+      :label-width="widget.options.hideLabel ? '0px' : (widget.options.isLabelWidth ? widget.options.labelWidth + 'px' : '')"
+    >
+      <!--widget: {{widget}}-->
+      <!-- {{rules}} -->
+      <!--金额控件-->
+      <template v-if="widget.type == 'amount'">
+        <!--放大镜-->
+        <div class="el-input el-input--small">
+          <input
+            class="el-input__inner"
+            :maxlength="widget.options.maxlength"
+            @keydown="inputHandler(widget.key)"
+            @focus="inputHandler(widget.key)"
+            @keyup="keyupHandler(widget.key)"
+            @keyup.enter="enterHandler(widget.key)"
+            @blur="blurHandler()"
+            :ref="widget.key"
+            v-model="dataModel"
+            type="text"
+          />
 
-    <template v-if="widget.type == 'input'">
-      <el-input
-        v-if="
+          <transition name="fade">
+            <!--<div class="mglass">-->
+            <div v-if="widget.options.amountmoney && amountvisible" class="mglass">
+              <div class="mglass-data">
+                {{ dataModel }}
+                <br />
+              </div>
+              <div class="mglass-big">{{ bigPastAdjustFee }}</div>
+            </div>
+          </transition>
+        </div>
+      </template>
+      <!--密码-->
+      <template v-if="widget.type == 'password'">
+        <el-input
+          type="password"
+          v-model="dataModel"
+          :disabled="widget.options.disabled"
+          :placeholder="widget.options.placeholder"
+          :style="{ width: widget.options.width }"
+          :maxlength="widget.options.maxlength"
+          @keyup.native.enter="change"
+          @keyup.native="passwordKeyup"
+          @focus="comFocus"
+          @blur="comBlur"
+          :ref="widget.model"
+        >
+          <template slot="prepend">
+            <el-button
+              v-if="widget.options.tips != ''"
+              @click="showTips(widget.options.tips)"
+              slot="prepend"
+              icon="el-icon-question"
+            ></el-button>
+          </template>
+        </el-input>
+      </template>
+      <!--确认密码-->
+      <template v-if="widget.type == 'againpassword'">
+        <el-input
+          type="password"
+          v-model="dataModel"
+          :maxlength="widget.options.maxlength"
+          :disabled="widget.options.disabled"
+          :placeholder="widget.options.placeholder"
+          :style="{ width: widget.options.width }"
+          @focus="comFocus"
+          @blur="comBlur"
+          @keyup.native.enter="change"
+          :ref="widget.model"
+        >
+          <template slot="prepend">
+            <el-button
+              v-if="widget.options.tips != ''"
+              @click="showTips(widget.options.tips)"
+              slot="prepend"
+              icon="el-icon-question"
+            ></el-button>
+          </template>
+        </el-input>
+      </template>
+
+      <template v-if="widget.type == 'input'">
+        <el-input
+          v-if="
           widget.options.dataType == 'number' ||
             widget.options.dataType == 'integer' ||
             widget.options.dataType == 'float'
         "
-        type="number"
-        v-model.number="dataModel"
-        :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width }"
-        :disabled="widget.options.disabled"
-        :show-password="widget.options.showPassword"
-        @focus="comFocus($event)"
-        @blur="comBlur($event)"
-        @keyup.native.enter="change($event)"
-      >
-        <template slot="prepend">
+          type="number"
+          v-model.number="dataModel"
+          :placeholder="widget.options.placeholder"
+          :style="{ width: widget.options.width }"
+          :disabled="widget.options.disabled"
+          :show-password="widget.options.showPassword"
+          @focus="comFocus"
+          @blur="comBlur"
+          @keyup.native.enter="change"
+        >
+          <template slot="prepend">
+            <el-button
+              v-if="widget.options.tips != ''"
+              @click="showTips(widget.options.tips)"
+              slot="prepend"
+              icon="el-icon-question"
+            ></el-button>
+          </template>
+        </el-input>
+
+        <!-- dataType为组件类型 dataModel为双向绑定的数据 -->
+        <el-input
+          v-else
+          :type="widget.options.dataType"
+          v-model="dataModel"
+          :maxlength="widget.options.maxlength"
+          :clearable="widget.options.clearable"
+          :show-word-limit="widget.options.maxlength?true:false"
+          :disabled="widget.options.disabled"
+          :placeholder="widget.options.placeholder"
+          :style="{ width: widget.options.width }"
+          :show-password="widget.options.showPassword"
+          @focus="comFocus"
+          @blur="comBlur"
+          @keyup.native.enter="change"
+          :ref="widget.model"
+        >
+          <template slot="prepend">
+            <el-button
+              v-if="widget.options.tips != ''"
+              @click="showTips(widget.options.tips)"
+              slot="prepend"
+              icon="el-icon-question"
+            ></el-button>
+          </template>
+        </el-input>
+      </template>
+
+      <!--身份证 读卡-->
+      <template v-if="(widget.type == 'idencard') | (widget.type == 'readcard')">
+        <el-input
+          :type="widget.options.dataType"
+          v-model="dataModel"
+          :disabled="widget.options.disabled"
+          :placeholder="widget.options.placeholder"
+          :style="{ width: widget.options.width }"
+          @focus="comFocus"
+          @blur="comBlur"
+          @keyup.native.enter="change"
+        >
           <el-button
-            v-if="widget.options.tips != ''"
-            @click="showTips(widget.options.tips)"
+            v-if="widget.options.ifperipheral"
             slot="prepend"
             icon="el-icon-question"
-          ></el-button>
-        </template>
-      </el-input>
+            @click="peripheral()"
+          >读取</el-button>
+        </el-input>
+      </template>
 
-      <!-- dataType为组件类型 dataModel为双向绑定的数据 -->
-      <el-input
-        v-else
-        :type="widget.options.dataType"
-        v-model="dataModel"
-        :disabled="widget.options.disabled"
-        :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width }"
-        :show-password="widget.options.showPassword"
-        @focus="comFocus($event)"
-        @blur="comBlur($event)"
-        @keyup.native.enter="change($event)"
-        :ref="widget.model"
-      >
-        <template slot="prepend">
-          <el-button
-            v-if="widget.options.tips != ''"
-            @click="showTips(widget.options.tips)"
-            slot="prepend"
-            icon="el-icon-question"
-          ></el-button>
-        </template>
-      </el-input>
-    </template>
-
-    <!--身份证 读卡-->
-    <template v-if="(widget.type == 'idencard') | (widget.type == 'readcard')">
-      <el-input
-        :type="widget.options.dataType"
-        v-model="dataModel"
-        :disabled="widget.options.disabled"
-        :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width }"
-        @focus="comFocus($event)"
-        @blur="comBlur($event)"
-        @keyup.native.enter="change"
-      >
-        <el-button
-          v-if="widget.options.ifperipheral"
-          slot="prepend"
-          icon="el-icon-question"
-          @click="peripheral()"
-        >读取</el-button>
-      </el-input>
-    </template>
-
-    <template v-if="widget.type == 'singletext'">
-      <el-input
-        autosize
-        :type="widget.options.dataType"
-        v-model="dataModel"
-        :disabled="widget.options.disabled"
-        :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width }"
-        :ref="widget.model"
-        :maxlength="widget.options.textarealength"
-        show-word-limit
-        @focus="comFocus($event)"
-        @blur="comBlur($event)"
-        @keyup.native.enter="change"
-      >
-      <template slot="prepend">
-          <el-button
-            v-if="widget.options.tips != ''"
-            @click="showTips(widget.options.tips)"
-            slot="prepend"
-            icon="el-icon-question"
-          ></el-button>
-        </template>
-      </el-input>
-    </template>
-    <template v-if="widget.type == 'textarea'">
-      <el-input
-        type="textarea"
-        :autosize="
+      <template v-if="widget.type == 'singletext'">
+        <el-input
+          autosize
+          :type="widget.options.dataType"
+          v-model="dataModel"
+          :disabled="widget.options.disabled"
+          :placeholder="widget.options.placeholder"
+          :style="{ width: widget.options.width }"
+          :ref="widget.model"
+          :maxlength="widget.options.textarealength"
+          show-word-limit
+          @focus="comFocus"
+          @blur="comBlur"
+          @keyup.native.enter="change"
+        >
+          <template slot="prepend">
+            <el-button
+              v-if="widget.options.tips != ''"
+              @click="showTips(widget.options.tips)"
+              slot="prepend"
+              icon="el-icon-question"
+            ></el-button>
+          </template>
+        </el-input>
+      </template>
+      <template v-if="widget.type == 'textarea'">
+        <el-input
+          type="textarea"
+          :autosize="
           widget.options.textareaautosize
             ? {
                 minRows: widget.options.textarearowmin,
@@ -200,71 +204,71 @@
               }
             : ''
         "
-        :maxlength="widget.options.textarealength"
-        v-model="dataModel"
-        :disabled="widget.options.disabled"
-        :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width }"
-        show-word-limit
-        @focus="comFocus($event)"
-        @blur="comBlur($event)"
-        @keyup.native.ctrl.enter="change"
-      >
-        <template slot="prepend">
-          <el-button
-            v-if="widget.options.tips != ''"
-            @click="showTips(widget.options.tips)"
-            slot="prepend"
-            icon="el-icon-question"
-          ></el-button>
-        </template>
-      </el-input>
-    </template>
+          :maxlength="widget.options.textarealength"
+          v-model="dataModel"
+          :disabled="widget.options.disabled"
+          :placeholder="widget.options.placeholder"
+          :style="{ width: widget.options.width }"
+          show-word-limit
+          @focus="comFocus"
+          @blur="comBlur"
+          @keyup.native.ctrl.enter="change"
+        >
+          <template slot="prepend">
+            <el-button
+              v-if="widget.options.tips != ''"
+              @click="showTips(widget.options.tips)"
+              slot="prepend"
+              icon="el-icon-question"
+            ></el-button>
+          </template>
+        </el-input>
+      </template>
 
-    <template v-if="widget.type == 'number'">
-      <el-input-number
-        v-model="dataModel"
-        :style="{ width: widget.options.width }"
-        :step="widget.options.step"
-        controls-position="right"
-        :disabled="widget.options.disabled"
-        @focus="comFocus($event)"
-        @blur="comBlur($event)"
-        @keyup.native.enter="change"
-      >
-      <template slot="prepend">
-          <el-button
-            v-if="widget.options.tips != ''"
-            @click="showTips(widget.options.tips)"
-            slot="prepend"
-            icon="el-icon-question"
-          ></el-button>
-        </template>
-      </el-input-number>
-    </template>
+      <template v-if="widget.type == 'number'">
+        <el-input-number
+          v-model="dataModel"
+          :style="{ width: widget.options.width }"
+          :step="widget.options.step"
+          controls-position="right"
+          :disabled="widget.options.disabled"
+          @focus="comFocus"
+          @blur="comBlur"
+          @keyup.native.enter="change"
+        >
+          <template slot="prepend">
+            <el-button
+              v-if="widget.options.tips != ''"
+              @click="showTips(widget.options.tips)"
+              slot="prepend"
+              icon="el-icon-question"
+            ></el-button>
+          </template>
+        </el-input-number>
+      </template>
 
-    <!--标签组件-->
-    <template v-if="widget.type == 'taglable'">
-      <el-tag
-        :key="tag"
-        v-for="tag in dynamicTags"
-        closable
-        :disable-transitions="false"
-        @close="handleClose(tag)"
-      >{{ tag }}</el-tag>
-      <el-input
-        class="input-new-tag"
-        v-if="inputVisible"
-        v-model="inputValue"
-        ref="saveTagInput"
-        size="small"
-        @keyup.enter.native="handleInputConfirm"
-        @blur="handleInputConfirm"
-      ></el-input>
-      <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-    </template>
+      <!--标签组件-->
+      <template v-if="widget.type == 'taglable'">
+        <el-tag
+          :key="tag"
+          v-for="tag in dynamicTags"
+          closable
+          :disable-transitions="false"
+          @close="handleClose(tag)"
+        >{{ tag }}</el-tag>
+        <el-input
+          class="input-new-tag"
+          v-if="inputVisible"
+          v-model="inputValue"
+          ref="saveTagInput"
+          size="small"
+          @keyup.enter.native="handleInputConfirm"
+          @blur="handleInputConfirm"
+        ></el-input>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+      </template>
 
-    <!-- <template v-if="widget.type == 'radio'">
+      <!-- <template v-if="widget.type == 'radio'">
       <el-radio-group
         @click.native="radioFun"
         v-model="dataModel"
@@ -286,469 +290,481 @@
           }}</template>
         </el-radio>
       </el-radio-group>
-    </template>-->
-    <template v-if="widget.type == 'radio'">
-      <el-radio-group
-        v-model="dataModel"
-        :style="{ width: widget.options.width }"
-        :disabled="widget.options.disabled"
-        @keyup.native.enter="change"
-        @change="valueChange"
-      >
-        <el-radio
-          :style="{ display: widget.options.inline ? 'inline-block' : 'block' }"
-          :label="item.value"
-          v-for="(item, index) in widget.options.remote
+      </template>-->
+      <template v-if="widget.type == 'radio'">
+        <el-radio-group
+          v-model="dataModel"
+          :style="{ width: widget.options.width }"
+          :disabled="widget.options.disabled"
+          @keyup.native.enter="change"
+          @change="valueChange"
+          :ref="widget.model"
+        >
+          <el-radio
+            :style="{ display: widget.options.inline ? 'inline-block' : 'block' }"
+            :label="item.value"
+            v-for="(item, index) in widget.options.remote
             ? widget.options.remoteOptions
             : widget.options.options"
-          :key="index"
-        >
-          <template v-if="widget.options.remote">{{ item.label }}</template>
-          <template v-else>
-            {{
-            widget.options.showLabel ? item.label : item.value
-            }}
-          </template>
-        </el-radio>
-      </el-radio-group>
-    </template>
-    <!--radio-->
-    <cus-dialog
-      :visible="radioVisible"
-      @on-close="radioVisible = false"
-      ref="radioPreview"
-      width="500px"
-      form>
-      <radioFormItem
-        insite="true"
-        v-if="radioVisible"
-        @on-close1="radioVisibleFun"
-        :models.sync="models"
-        :widget="widget"
-        ref="radioForm"
-      >
-        <template v-slot:blank="scope">
-          Width
-          <el-input v-model="scope.model.blank.width" style="width: 100px"></el-input>Height
-          <el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
-        </template>
-      </radioFormItem>
-
-      <template slot="action">
-        <span></span>
+            :key="index"
+          >
+            <template v-if="widget.options.remote">{{ item.label }}</template>
+            <template v-else>
+              {{
+              widget.options.showLabel ? item.label : item.value
+              }}
+            </template>
+          </el-radio>
+        </el-radio-group>
       </template>
-    </cus-dialog>
-
-    <template v-if="widget.type == 'checkbox'">
-      <el-checkbox-group
-        v-model="dataModel"
-        :style="{ width: widget.options.width }"
-        :disabled="widget.options.disabled"
-        @keyup.native.enter="change"
-        @keyup.native.up="checkUp"
-        @keyup.native.down="checkDown"
-        @change="valueChange"
-        :class="widget.model"
+      <!--radio-->
+      <cus-dialog
+        :visible="radioVisible"
+        @on-close="radioVisible = false"
+        ref="radioPreview"
+        width="500px"
+        form
       >
-        <el-checkbox
-          :style="{ display: widget.options.inline ? 'inline-block' : 'block' }"
-          :label="item.value"
-          v-for="(item, index) in widget.options.remote
+        <radioFormItem
+          insite="true"
+          v-if="radioVisible"
+          @on-close1="radioVisibleFun"
+          :models.sync="models"
+          :widget="widget"
+          ref="radioForm"
+        >
+          <template v-slot:blank="scope">
+            Width
+            <el-input v-model="scope.model.blank.width" style="width: 100px"></el-input>Height
+            <el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
+          </template>
+        </radioFormItem>
+
+        <template slot="action">
+          <span></span>
+        </template>
+      </cus-dialog>
+
+      <template v-if="widget.type == 'checkbox'">
+        <el-checkbox-group
+          v-model="dataModel"
+          :style="{ width: widget.options.width }"
+          :disabled="widget.options.disabled"
+          @keyup.native.enter="change"
+          @keyup.native.up="checkUp"
+          @keyup.native.down="checkDown"
+          @change="valueChange"
+          :class="widget.model"
+        >
+          <el-checkbox
+            :style="{ display: widget.options.inline ? 'inline-block' : 'block' }"
+            :label="item.value"
+            v-for="(item, index) in widget.options.remote
             ? widget.options.remoteOptions
             : widget.options.options"
-          :key="index"
-        >
-          <template v-if="widget.options.remote">{{ item.label }}</template>
-          <template v-else>
-            {{
-            widget.options.showLabel ? item.label : item.value
-            }}
-          </template>
-        </el-checkbox>
-      </el-checkbox-group>
-    </template>
+            :key="index"
+          >
+            <template v-if="widget.options.remote">{{ item.label }}</template>
+            <template v-else>
+              {{
+              widget.options.showLabel ? item.label : item.value
+              }}
+            </template>
+          </el-checkbox>
+        </el-checkbox-group>
+      </template>
 
-    <template v-if="widget.type == 'time'">
-      <hr-time-select
-        v-model="dataModel"
-        :is-range="widget.options.isRange"
-        :placeholder="widget.options.placeholder"
-        :start-placeholder="widget.options.startPlaceholder"
-        :end-placeholder="widget.options.endPlaceholder"
-        :readonly="widget.options.readonly"
-        :disabled="widget.options.disabled"
-        :editable="widget.options.editable"
-        :clearable="widget.options.clearable"
-        :arrowControl="widget.options.arrowControl"
-        :value-format="widget.options.format"
-        :style="{ width: widget.options.width }"
-        :ref='widget.model'
-        @focus="comFocus($event)"
-        @blur="dateBlur($event)"
-        @keyup.native.space="dateShow"
-      ></hr-time-select>
-    </template>
+      <template v-if="widget.type == 'time'">
+        <hr-time-select
+          v-model="dataModel"
+          :is-range="widget.options.isRange"
+          :placeholder="widget.options.placeholder"
+          :start-placeholder="widget.options.startPlaceholder"
+          :end-placeholder="widget.options.endPlaceholder"
+          :readonly="widget.options.readonly"
+          :disabled="widget.options.disabled"
+          :editable="widget.options.editable"
+          :clearable="widget.options.clearable"
+          :arrowControl="widget.options.arrowControl"
+          :value-format="widget.options.format"
+          :style="{ width: widget.options.width }"
+          :ref="widget.model"
+          @focus="comFocus"
+          @blur="dateBlur"
+          @keyup.native.space="dateShow"
+          @picker-show="pickShow"
+          @keyup.native.enter="change"
+        ></hr-time-select>
+      </template>
 
-    <template v-if="widget.type == 'date'">
-      <hr-date-picker
-        v-model="dataModel"
-        :type="widget.options.type"
-        :placeholder="widget.options.placeholder"
-        :start-placeholder="widget.options.startPlaceholder"
-        :end-placeholder="widget.options.endPlaceholder"
-        :readonly="widget.options.readonly"
-        :disabled="widget.options.disabled"
-        :editable="widget.options.editable"
-        :clearable="widget.options.clearable"
-        :value-format="
+      <template v-if="widget.type == 'date'">
+        <hr-date-picker
+          v-model="dataModel"
+          :type="widget.options.type"
+          :placeholder="widget.options.placeholder"
+          :start-placeholder="widget.options.startPlaceholder"
+          :end-placeholder="widget.options.endPlaceholder"
+          :readonly="widget.options.readonly"
+          :disabled="widget.options.disabled"
+          :editable="widget.options.editable"
+          :clearable="widget.options.clearable"
+          :value-format="
           widget.options.timestamp ? 'timestamp' : widget.options.format
         "
-        :format="widget.options.format"
-        :style="{ width: widget.options.width }"
-        v-bind:picker-options="
+          :format="widget.options.format"
+          :style="{ width: widget.options.width }"
+          v-bind:picker-options="
           widget.options.type == 'date'
             ? pickerOptionsDate
             : widget.options.type == 'daterange'
             ? pickerOptionsRange
             : ''
         "
-        :ref='widget.model'
-        @focus="comFocus($event)"
-        @blur="dateBlur($event)"
-        @keyup.native.space="dateShow"
-      ></hr-date-picker>
-    </template>
+          :ref="widget.model"
+          @focus="comFocus"
+          @blur="dateBlur"
+          @keyup.native.space="dateShow"
+          @picker-show="pickShow"
+          @keyup.native.enter="change"
+        ></hr-date-picker>
+      </template>
 
-    <template v-if="widget.type == 'rate'">
-      <el-rate
-        v-model="dataModel"
-        :max="widget.options.max"
-        :disabled="widget.options.disabled"
-        :allow-half="widget.options.allowHalf"
-      ></el-rate>
-    </template>
+      <template v-if="widget.type == 'rate'">
+        <el-rate
+          v-model="dataModel"
+          :max="widget.options.max"
+          :disabled="widget.options.disabled"
+          :allow-half="widget.options.allowHalf"
+        ></el-rate>
+      </template>
 
-    <template v-if="widget.type == 'color'">
-      <el-color-picker
-        v-model="dataModel"
-        :disabled="widget.options.disabled"
-        :show-alpha="widget.options.showAlpha"
-      ></el-color-picker>
-    </template>
+      <template v-if="widget.type == 'color'">
+        <el-color-picker
+          v-model="dataModel"
+          :disabled="widget.options.disabled"
+          :show-alpha="widget.options.showAlpha"
+        ></el-color-picker>
+      </template>
 
-    <template v-if="widget.type == 'select'">
-      <!--remoteOptions:{{widget.options.remoteOptions}} :automatic-dropdown="true"-->
-      <hr-select
-        v-model="dataModel"
-        :disabled="widget.options.disabled"
-        :multiple="widget.options.multiple"
-        :clearable="widget.options.clearable"
-        :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width }"
-        :filterable="widget.options.filterable"
-        :ref="widget.model"
-        @visible-change="optionStatu"
-        @change="(val) => handleWeekChange(val)"
-        @focus="comFocus($event)"
-        @keyup.native.enter="selectChange"
-        @keyup.native.space="showOptions"
-        @blur="comBlur($event)"
-      >
-        <el-option
-          v-for="item in widget.options.remote
+      <template v-if="widget.type == 'select'">
+        <!--remoteOptions:{{widget.options.remoteOptions}} :automatic-dropdown="true"-->
+        <hr-select
+          v-model="dataModel"
+          :disabled="widget.options.disabled"
+          :multiple="widget.options.multiple"
+          :clearable="widget.options.clearable"
+          :placeholder="widget.options.placeholder"
+          :style="{ width: widget.options.width }"
+          :filterable="widget.options.filterable"
+          :ref="widget.model"
+          @visible-change="optionStatu"
+          @change="(val) => handleWeekChange(val)"
+          @focus="comFocus"
+          @keyup.native.enter="selectChange"
+          @keyup.native.space="showOptions"
+          @blur="comBlur"
+        >
+          <el-option
+            v-for="item in widget.options.remote
             ? widget.options.remoteOptions
             : widget.options.options"
-          :key="item.value"
-          :value="item.value"
-          :label="
+            :key="item.value"
+            :value="item.value"
+            :label="
             widget.options.showLabel || widget.options.remote
               ? item.label
               : item.value
           "
-        >
-          <span style="float: left">
-            {{
-            widget.options.showLabel || widget.options.remote
-            ? item.label
-            : item.value
-            }}
-          </span>
-          <span style="margin-left: 8px;color: #8492a6; font-size: 13px">
-            {{
-            item.value
-            }}
-          </span>
-        </el-option>
-      </hr-select>
-      <span>{{ dataModel }}</span>
-    </template>
-
-    <template v-if="widget.type == 'camera'">
-      <hr-select
-        ref="camera"
-        v-model="dataModel"
-        :disabled="widget.options.disabled"
-        :multiple="widget.options.multiple"
-        :clearable="widget.options.clearable"
-        :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width }"
-        :filterable="widget.options.filterable"
-        style="width: 80%"
-        @visible-change="optionStatu"
-        @change="(val) => handleWeekChange(val)"
-        @focus="comFocus($event)"
-        @keyup.native.enter="selectChange"
-        @keyup.native.space="showOptions"
-        @blur="comBlur($event)"
-      >
-        <el-option
-          v-for="item in cameraList"
-          :key="item.value"
-          :value="item.value"
-          :label="item.label"
-        ></el-option>
-      </hr-select>
-      <el-button type="primary" class="json-btn" @click="cameraFun">拍照</el-button>
-      <el-image :src="cameraimage" v-if="cameraimage != ''"></el-image>
-    </template>
-
-    <!--camera-->
-    <cus-dialog
-      :visible="cameraVisible"
-      @on-close="cameraVisible = false"
-      ref="cameraPreview"
-      width="800px"
-      form>
-      <cameraFormItem
-        insite="true"
-        v-if="cameraVisible"
-        @on-close1="cameraVisibleFun"
-        @on-cameraimage="oncameraimage"
-        :models.sync="models"
-        :widget="widget"
-        :cameraimage.sync="cameraimage"
-        ref="cameraForm"
-      >
-        <template v-slot:blank="scope">
-          Width
-          <el-input v-model="scope.model.blank.width" style="width: 100px"></el-input>Height
-          <el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
-        </template>
-      </cameraFormItem>
-
-      <template slot="action">
-        <span></span>
+          >
+            <span style="float: left">
+              {{
+              widget.options.showLabel || widget.options.remote
+              ? item.label
+              : item.value
+              }}
+            </span>
+            <span style="margin-left: 8px;color: #8492a6; font-size: 13px">
+              {{
+              item.value
+              }}
+            </span>
+          </el-option>
+        </hr-select>
+        <span>{{ dataModel }}</span>
       </template>
-    </cus-dialog>
 
-    <!--按钮组件-->
-    <template v-if="widget.type == 'buttonCom'">
-      <el-button
-        ref="buttonref"
-        v-model="dataModel"
-        @click="buttonfun(widget.options.buttonfun)"
-        :placeholder="widget.options.placeholder"
-        :size="widget.options.size"
-        :style="{ width: widget.options.width }"
-        :disabled="widget.options.disabled"
-        @keyup.native.enter="change"
-        @focus="comFocus($event)"
-        @blur="comBlur($event)"
+      <template v-if="widget.type == 'camera'">
+        <hr-select
+          ref="camera"
+          v-model="dataModel"
+          :disabled="widget.options.disabled"
+          :multiple="widget.options.multiple"
+          :clearable="widget.options.clearable"
+          :placeholder="widget.options.placeholder"
+          :style="{ width: widget.options.width }"
+          :filterable="widget.options.filterable"
+          style="width: 80%"
+          @visible-change="optionStatu"
+          @change="(val) => handleWeekChange(val)"
+          @focus="comFocus"
+          @keyup.native.enter="selectChange"
+          @keyup.native.space="showOptions"
+          @blur="comBlur"
+        >
+          <el-option
+            v-for="item in cameraList"
+            :key="item.value"
+            :value="item.value"
+            :label="item.label"
+          ></el-option>
+        </hr-select>
+        <el-button type="primary" class="json-btn" @click="cameraFun">拍照</el-button>
+        <el-image :src="cameraimage" v-if="cameraimage != ''"></el-image>
+      </template>
+
+      <!--camera-->
+      <cus-dialog
+        :visible="cameraVisible"
+        @on-close="cameraVisible = false"
+        ref="cameraPreview"
+        width="800px"
+        form
       >
+        <cameraFormItem
+          insite="true"
+          v-if="cameraVisible"
+          @on-close1="cameraVisibleFun"
+          @on-cameraimage="oncameraimage"
+          :models.sync="models"
+          :widget="widget"
+          :cameraimage.sync="cameraimage"
+          ref="cameraForm"
+        >
+          <template v-slot:blank="scope">
+            Width
+            <el-input v-model="scope.model.blank.width" style="width: 100px"></el-input>Height
+            <el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
+          </template>
+        </cameraFormItem>
+
+        <template slot="action">
+          <span></span>
+        </template>
+      </cus-dialog>
+
+      <!--按钮组件-->
+      <template v-if="widget.type == 'buttonCom'">
         <el-button
-          :icon="widget.options.buttonicon"
-          v-if="widget.options.buttonicon"
-          style="border: 0;padding-left: 0px;"
-        ></el-button>
-        <span ref="buttonSpanRef">按钮3</span>
-      </el-button>
-    </template>
+          ref="buttonref"
+          v-model="dataModel"
+          @click="buttonfun(widget.options.buttonfun)"
+          :placeholder="widget.options.placeholder"
+          :size="widget.options.size"
+          :style="{ width: widget.options.width }"
+          :disabled="widget.options.disabled"
+          @keyup.native.enter="change"
+          @focus="comFocus"
+          @blur="comBlur"
+        >
+          <el-button
+            :icon="widget.options.buttonicon"
+            v-if="widget.options.buttonicon"
+            style="border: 0;padding-left: 0px;"
+          ></el-button>
+          <span ref="buttonSpanRef">按钮3</span>
+        </el-button>
+      </template>
 
-    <!--A 链接-->
-    <template v-if="widget.type == 'alink'">
-      <a
-        ref="alinkref"
-        @click="buttonfun(widget.options.buttonfun)"
-        :disabled="widget.options.disabled"
-        :placeholder="widget.options.placeholder"
-        :style="{width: widget.options.width}"
-        :options="widget.options.remoteOptions"
-      >
-        <span ref="alinkSpanRef">a 链接</span>
-      </a>
-    </template>
+      <!--A 链接-->
+      <template v-if="widget.type == 'alink'">
+        <a
+          ref="alinkref"
+          @click="buttonfun(widget.options.buttonfun)"
+          :disabled="widget.options.disabled"
+          :placeholder="widget.options.placeholder"
+          :style="{width: widget.options.width}"
+          :options="widget.options.remoteOptions"
+        >
+          <span ref="alinkSpanRef">a 链接</span>
+        </a>
+      </template>
 
-    <!--{{widget.options.imagesrc}}&&&
-    {{imagesrc}}-->
-    <template v-if="widget.type == 'imageshow'">
-      <el-image :src="imagesrc"></el-image>
-    </template>
+      <!--{{widget.options.imagesrc}}&&&
+      {{imagesrc}}-->
+      <template v-if="widget.type == 'imageshow'">
+        <el-image :src="imagesrc"></el-image>
+      </template>
 
-    <template v-if="widget.type == 'switch'">
-      <el-switch v-model="dataModel" :disabled="widget.options.disabled"></el-switch>
-    </template>
+      <template v-if="widget.type == 'switch'">
+        <el-switch v-model="dataModel" :disabled="widget.options.disabled"></el-switch>
+      </template>
 
-    <template v-if="widget.type == 'slider'">
-      <el-slider
-        v-model="dataModel"
-        :min="widget.options.min"
-        :max="widget.options.max"
-        :disabled="widget.options.disabled"
-        :step="widget.options.step"
-        :show-input="widget.options.showInput"
-        :range="widget.options.range"
-        :style="{ width: widget.options.width }"
-      ></el-slider>
-    </template>
+      <template v-if="widget.type == 'slider'">
+        <el-slider
+          v-model="dataModel"
+          :min="widget.options.min"
+          :max="widget.options.max"
+          :disabled="widget.options.disabled"
+          :step="widget.options.step"
+          :show-input="widget.options.showInput"
+          :range="widget.options.range"
+          :style="{ width: widget.options.width }"
+        ></el-slider>
+      </template>
 
-    <template v-if="widget.type == 'imgupload'">
-      <fm-upload
-        v-model="dataModel"
-        :disabled="widget.options.disabled"
-        :style="{ width: widget.options.width }"
-        :width="widget.options.size.width"
-        :height="widget.options.size.height"
-        :token="widget.options.token"
-        :domain="widget.options.domain"
-        :multiple="widget.options.multiple"
-        :length="widget.options.length"
-        :is-qiniu="widget.options.isQiniu"
-        :is-delete="widget.options.isDelete"
-        :min="widget.options.min"
-        :is-edit="widget.options.isEdit"
-        :action="widget.options.action"
-      ></fm-upload>
-    </template>
+      <template v-if="widget.type == 'imgupload'">
+        <fm-upload
+          v-model="dataModel"
+          :disabled="widget.options.disabled"
+          :style="{ width: widget.options.width }"
+          :width="widget.options.size.width"
+          :height="widget.options.size.height"
+          :token="widget.options.token"
+          :domain="widget.options.domain"
+          :multiple="widget.options.multiple"
+          :length="widget.options.length"
+          :is-qiniu="widget.options.isQiniu"
+          :is-delete="widget.options.isDelete"
+          :min="widget.options.min"
+          :is-edit="widget.options.isEdit"
+          :action="widget.options.action"
+        ></fm-upload>
+      </template>
 
-    <template
-      v-if="
+      <template
+        v-if="
         (widget.type == 'imageupload') |
           (widget.type == 'fileupload') |
           (widget.type == 'videoupload')
-      ">
-      <fm-upload-extend
-        v-model="dataModel"
-        :uploadtype="widget.type"
-        :disabled="widget.options.disabled"
-        :style="{ width: widget.options.width }"
-        :width="widget.options.size.width"
-        :height="widget.options.size.height"
-        :token="widget.options.token"
-        :domain="widget.options.domain"
-        :multiple="widget.options.multiple"
-        :length="widget.options.length"
-        :is-delete="widget.options.isDelete"
-        :min="widget.options.min"
-        :is-edit="widget.options.isEdit"
-        :action="widget.options.action"
-      ></fm-upload-extend>
-    </template>
+      "
+      >
+        <fm-upload-extend
+          v-model="dataModel"
+          :uploadtype="widget.type"
+          :disabled="widget.options.disabled"
+          :style="{ width: widget.options.width }"
+          :width="widget.options.size.width"
+          :height="widget.options.size.height"
+          :token="widget.options.token"
+          :domain="widget.options.domain"
+          :multiple="widget.options.multiple"
+          :length="widget.options.length"
+          :is-delete="widget.options.isDelete"
+          :min="widget.options.min"
+          :is-edit="widget.options.isEdit"
+          :action="widget.options.action"
+        ></fm-upload-extend>
+      </template>
 
-    <template v-if="widget.type == 'editor'">
-      <vue-editor v-model="dataModel" :style="{ width: widget.options.width }"></vue-editor>
-    </template>
+      <template v-if="widget.type == 'editor'">
+        <vue-editor v-model="dataModel" :style="{ width: widget.options.width }"></vue-editor>
+      </template>
 
-    <template v-if="widget.type == 'cascader'">
-      <el-cascader
-        v-model="dataModel"
-        :disabled="widget.options.disabled"
-        :clearable="widget.options.clearable"
-        :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width }"
-        :options="widget.options.remoteOptions"
-      ></el-cascader>
-    </template>
+      <template v-if="widget.type == 'cascader'">
+        <el-cascader
+          v-model="dataModel"
+          :disabled="widget.options.disabled"
+          :clearable="widget.options.clearable"
+          :placeholder="widget.options.placeholder"
+          :style="{ width: widget.options.width }"
+          :options="widget.options.remoteOptions"
+        ></el-cascader>
+      </template>
 
-    <template v-if="widget.type == 'text'">
-      <span>{{ dataModel }}</span>
-    </template>
-    <template v-if="widget.type == 'elTable'">
-      <template>
-        <div
-          style="line-height: 45px;"
-          v-if="
+      <template v-if="widget.type == 'text'">
+        <span>{{ dataModel }}</span>
+      </template>
+      <template v-if="widget.type == 'elTable'">
+        <template>
+          <div
+            style="line-height: 45px;"
+            v-if="
             widget.options.isAddBtn ||
-            widget.options.isEditBtn ||
-            widget.options.isDeleteBtn||
-            widget.options.isDisplayColumnBtn
-          ">
-          <el-row type="flex" justify="end" :gutter="20">
-            <el-col v-if="widget.options.isAddBtn" :span="3">
-              <div>
-                <el-button @click="handleTableEvent('add')" type="primary">添加数据</el-button>
-              </div>
-            </el-col>
-            <el-col v-if="widget.options.isEditBtn" :span="3">
-              <div>
-                <el-button @click="handleTableEvent('edit')" type="primary">编辑数据</el-button>
-              </div>
-            </el-col>
-            <el-col v-if="widget.options.isDeleteBtn" :span="3">
-              <div>
-                <el-button @click="handleTableEvent('delete')" type="primary">删除数据</el-button>
-              </div>
-            </el-col>
-            <el-col v-if="widget.options.isDisplayColumnBtn" :span="10">
-              <div>
-                <span>显示列:</span>
-                <hr-select @change="displayColumnsChange()"
-                  v-model="widget.options.displayColumns"
-                  multiple
-                  filterable
-                  collapse-tags
-                  placeholder="列显示/隐藏">
-                  <el-option
-                    v-for="item in widget.configdata.list[0].options.columns"
-                    :key="item.prop"
-                    :label="item.label"
-                    :value="item.prop">
-                  </el-option>
-              </hr-select>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
+              widget.options.isEditBtn ||
+              widget.options.isDeleteBtn||
+              widget.options.isDisplayColumnBtn
+          "
+          >
+            <el-row type="flex" justify="end" :gutter="20">
+              <el-col v-if="widget.options.isAddBtn" :span="3">
+                <div>
+                  <el-button @click="handleTableEvent('add')" type="primary">添加数据</el-button>
+                </div>
+              </el-col>
+              <el-col v-if="widget.options.isEditBtn" :span="3">
+                <div>
+                  <el-button @click="handleTableEvent('edit')" type="primary">编辑数据</el-button>
+                </div>
+              </el-col>
+              <el-col v-if="widget.options.isDeleteBtn" :span="3">
+                <div>
+                  <el-button @click="handleTableEvent('delete')" type="primary">删除数据</el-button>
+                </div>
+              </el-col>
+              <el-col v-if="widget.options.isDisplayColumnBtn" :span="10">
+                <div>
+                  <span>显示列:</span>
+                  <hr-select
+                    @change="displayColumnsChange()"
+                    v-model="widget.options.displayColumns"
+                    multiple
+                    filterable
+                    collapse-tags
+                    placeholder="列显示/隐藏"
+                  >
+                    <el-option
+                      v-for="item in widget.configdata.list[0].options.columns"
+                      :key="item.prop"
+                      :label="item.label"
+                      :value="item.prop"
+                    ></el-option>
+                  </hr-select>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+        </template>
+        <fm-generate-table
+          v-model="dataModel"
+          :data="widget.configdata"
+          @dblhandleCurrentRow="dblhandleCurrentRow"
+          ref="generateTable"
+        ></fm-generate-table>
+        <template v-if="widget.options.isPagination">
+          <div style="text-align: end;">
+            <el-pagination
+              @size-change="widget.options.pagination.handleSizeChange"
+              @current-change="widget.options.pagination.handleCurrentChange"
+              :current-page.sync="widget.options.pagination.currentPage"
+              :page-size="widget.options.pagination.pageSize"
+              layout="prev, pager, next"
+              :pager-count="widget.options.pagination.pagerCount"
+              :total="widget.options.pagination.total"
+            ></el-pagination>
+          </div>
+        </template>
+        <cus-dialog
+          :visible="tableCf.tableDataEAVisible"
+          @on-close="closeTableDataEA"
+          @on-submit="handelTableDataEA"
+          ref="tableeditCode"
+          width="800px"
+          form
+        >
+          <fm-generate-form
+            v-if="tableCf.configdata != null"
+            :data="tableCf.configdata"
+            :value="tableCf.editData"
+            ref="addEditForm"
+          ></fm-generate-form>
+        </cus-dialog>
       </template>
-      <fm-generate-table
-        v-model="dataModel"
-        :data="widget.configdata"
-        @dblhandleCurrentRow="dblhandleCurrentRow"
-        ref="generateTable"
-      ></fm-generate-table>
-      <template v-if="widget.options.isPagination">
-        <div style="text-align: end;">
-          <el-pagination
-            @size-change="widget.options.pagination.handleSizeChange"
-            @current-change="widget.options.pagination.handleCurrentChange"
-            :current-page.sync="widget.options.pagination.currentPage"
-            :page-size="widget.options.pagination.pageSize"
-            layout="prev, pager, next"
-            :pager-count="widget.options.pagination.pagerCount"
-            :total="widget.options.pagination.total"
-          ></el-pagination>
-        </div>
-      </template>
-      <cus-dialog
-        :visible="tableCf.tableDataEAVisible"
-        @on-close="closeTableDataEA"
-        @on-submit="handelTableDataEA"
-        ref="tableeditCode"
-        width="800px"
-        form>
-        <fm-generate-form
-          v-if="tableCf.configdata != null"
-          :data="tableCf.configdata"
-          :value="tableCf.editData"
-          ref="addEditForm"
-        ></fm-generate-form>
-      </cus-dialog>
-    </template>
-  </el-form-item>
-  <el-divider v-if="widget.type == 'divider'"
+    </el-form-item>
+    <el-divider
+      v-if="widget.type == 'divider'"
       :content-position="widget.options.contentPosition"
-    >
-      {{widget.name}}
-    </el-divider>
+      class="targetEle"
+    >{{widget.name}}</el-divider>
   </div>
 </template>
 
@@ -764,8 +780,8 @@ import request from "../util/request.js";
 import ElImage from "element-ui/packages/image/src/main";
 import { RES_OK, FAIL_CODE } from "@/api/config";
 import { getFormConfigDataById } from "../components/table/tableAction";
-import itemHandle from './mixins/itemHandle.js'
-import hrSelect from './base-components/my-select/select'
+import itemHandle from "./mixins/itemHandle.js";
+import hrSelect from "./base-components/my-select/select";
 export default {
   props: ["widget", "models", "rules", "remote"], // widget为当前组件json数据
   components: {
@@ -775,9 +791,9 @@ export default {
     CusDialog,
     cameraFormItem,
     radioFormItem,
-    hrSelect
+    hrSelect,
   },
-  mixins:[itemHandle],
+  mixins: [itemHandle],
   data() {
     return {
       imagesrc: require("../assets/wenjian.png"),
@@ -797,7 +813,7 @@ export default {
             text: "今天",
             onClick(picker) {
               picker.$emit("pick", new Date());
-            }
+            },
           },
           {
             text: "昨天",
@@ -805,7 +821,7 @@ export default {
               const date = new Date();
               date.setTime(date.getTime() - 3600 * 1000 * 24);
               picker.$emit("pick", date);
-            }
+            },
           },
           {
             text: "一周前",
@@ -813,9 +829,9 @@ export default {
               const date = new Date();
               date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
               picker.$emit("pick", date);
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       pickerOptionsRange: {
         shortcuts: [
@@ -826,7 +842,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
               picker.$emit("pick", [start, end]);
-            }
+            },
           },
           {
             text: "最近一个月",
@@ -835,7 +851,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
               picker.$emit("pick", [start, end]);
-            }
+            },
           },
           {
             text: "最近三个月",
@@ -844,9 +860,9 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
               picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       dynamicTags: ["标签一", "标签二", "标签三"],
       inputVisible: false,
@@ -855,13 +871,13 @@ export default {
         tableDataEAVisible: false,
         configdata: null,
         editData: null,
-        dialogType: ""
-      }
+        dialogType: "",
+      },
     };
   },
   created() {
     if (this.widget.type == "taglable") {
-      this.$nextTick(_ => {
+      this.$nextTick((_) => {
         this.dataModel = this.dynamicTags;
       });
     }
@@ -871,28 +887,28 @@ export default {
       this.remote[this.widget.options.remoteFunc]
     ) {
       // 执行对应的回调函数
-      this.remote[this.widget.options.remoteFunc](data => {
+      this.remote[this.widget.options.remoteFunc]((data) => {
         //this.remote为所有回调函数组成的json对象
-        this.widget.options.remoteOptions = data.map(item => {
+        this.widget.options.remoteOptions = data.map((item) => {
           //remoteOptions 表单动态选项配置
           return {
             value: item[this.widget.options.props.value],
             label: item[this.widget.options.props.label],
-            children: item[this.widget.options.props.children]
+            children: item[this.widget.options.props.children],
           };
         });
       });
     }
     // 七牛图片上传
     if (this.widget.type === "imgupload" && this.widget.options.isQiniu) {
-      this.remote[this.widget.options.tokenFunc](data => {
+      this.remote[this.widget.options.tokenFunc]((data) => {
         this.widget.options.token = data;
       });
     }
     //table
     if (this.widget.type === "elTable" && this.widget.options.remoteFunc) {
-      let temFun = this.getExeCustomFn(this.widget.options.remoteFunc)
-      if(temFun){
+      let temFun = this.getExeCustomFn(this.widget.options.remoteFunc);
+      if (temFun) {
         this.handleRemoteFn(temFun);
       }
     }
@@ -905,7 +921,7 @@ export default {
     },
     showInput() {
       this.inputVisible = true;
-      this.$nextTick(_ => {
+      this.$nextTick((_) => {
         this.$refs.saveTagInput.$refs.input.focus();
       });
     },
@@ -957,7 +973,7 @@ export default {
       this.$message({
         showClose: true,
         duration: 5000,
-        message: msg
+        message: msg,
       });
     },
     /*密码相关方法*/
@@ -974,7 +990,7 @@ export default {
           title: "fail",
           message: "请用外设键盘输入",
           type: "info",
-          duration: 2000
+          duration: 2000,
         });
       }
     },
@@ -1009,7 +1025,7 @@ export default {
           paraObj.para2 = "11234567890123"; //字符串第一位为标志位 0-请输入密码 1-请再次输入密码，标志位后面是待加密数据，一般为银行账号
         }
 
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
           try {
             const idenTemp = smartClient.allDevice(
               paraObj.para1,
@@ -1023,12 +1039,12 @@ export default {
               title: "fail",
               message: "请连接设备",
               type: "info",
-              duration: 2000
+              duration: 2000,
             });
           }
         });
       }
-      peripheralreq().then(idenTemp => {
+      peripheralreq().then((idenTemp) => {
         if (idenTemp) {
           const idenTempObj = JSON.parse(idenTemp);
           //alert(idenTempObj)
@@ -1110,11 +1126,11 @@ export default {
         var weekList = this.widget.options.remote
           ? this.widget.options.remoteOptions
           : this.widget.options.options;
-        weekList.forEach(v => {
+        weekList.forEach((v) => {
           v.isCheck = false;
         });
-        val.forEach(el => {
-          weekList.forEach(v => {
+        val.forEach((el) => {
+          weekList.forEach((v) => {
             if (el === v.value) {
               v.isCheck = true;
             }
@@ -1133,14 +1149,14 @@ export default {
     /*摄像头*/
     camera() {
       var _this = this;
-      navigator.mediaDevices.enumerateDevices().then(function(devices) {
+      navigator.mediaDevices.enumerateDevices().then(function (devices) {
         console.log(devices);
         _this.cameraList = [];
-        devices.forEach(function(device) {
+        devices.forEach(function (device) {
           if (device.kind == "videoinput") {
             _this.cameraList.push({
               label: device.label,
-              value: device.deviceId
+              value: device.deviceId,
             });
           }
         });
@@ -1216,8 +1232,8 @@ export default {
       //       });
       //     }
       //   } else {
-          // this.$message(JSON.stringify(row));
-          this.handleTableEvent("detail", row);
+      // this.$message(JSON.stringify(row));
+      this.handleTableEvent("detail", row);
       //   }
       // }
     },
@@ -1227,9 +1243,9 @@ export default {
         case "add":
           if (this.widget.options.isAddBtnCustom) {
             if (this.widget.options.addFn) {
-              let temFun = this.getExeCustomFn(this.widget.options.addFn)
-              if(temFun){
-                temFun(this, request, function(data) {
+              let temFun = this.getExeCustomFn(this.widget.options.addFn);
+              if (temFun) {
+                temFun(this, request, function (data) {
                   console.log(data);
                 });
               }
@@ -1254,18 +1270,21 @@ export default {
           let editFormId = this.widget.options.editFormId;
           let selecteRow = this.widget.configdata.list[0].options
             .multipleSelection;
-          if (selecteRow && selecteRow.length != 1 || typeof selecteRow == "undefined") {
+          if (
+            (selecteRow && selecteRow.length != 1) ||
+            typeof selecteRow == "undefined"
+          ) {
             this.$message("请选择一行数据");
             return;
           } else {
             this.tableCf.editData = selecteRow[0];
-            this.$emit("toggleGenerate",selecteRow[0])
+            this.$emit("toggleGenerate", selecteRow[0]);
           }
           if (this.widget.options.isEditBtnCustom) {
             if (this.widget.options.editFn) {
-              let temFun = this.getExeCustomFn(this.widget.options.editFn)
-              if(temFun){
-                temFun(this, request, function(data) {
+              let temFun = this.getExeCustomFn(this.widget.options.editFn);
+              if (temFun) {
+                temFun(this, request, function (data) {
                   console.log(data);
                 });
               }
@@ -1279,7 +1298,7 @@ export default {
             getFormConfigDataById.call(this,editFormId, function(data) {
               if (data && data.formContent) {
                 _self.tableCf.configdata = JSON.parse(data.formContent);
-                _self.$emit("toggleGenerate", _self.tableCf.configdata)
+                _self.$emit("toggleGenerate", _self.tableCf.configdata);
                 _self.tableCf.tableDataEAVisible = true;
               }
             });
@@ -1296,9 +1315,9 @@ export default {
           }
           if (this.widget.options.isDetailCustom) {
             if (this.widget.options.detailFn) {
-              let temFun = this.getExeCustomFn(this.widget.options.detailFn)
-              if(temFun){
-                temFun(this, request, function(data) {
+              let temFun = this.getExeCustomFn(this.widget.options.detailFn);
+              if (temFun) {
+                temFun(this, request, function (data) {
                   console.log(data);
                 });
               }
@@ -1326,9 +1345,9 @@ export default {
           } else {
             if (this.widget.options.isDeleteBtnCustom) {
               if (this.widget.options.deleteFn) {
-                let temFun = this.getExeCustomFn(this.widget.options.deleteFn)
-                if(temFun){
-                  temFun(this, request, function(data) {
+                let temFun = this.getExeCustomFn(this.widget.options.deleteFn);
+                if (temFun) {
+                  temFun(this, request, function (data) {
                     console.log(data);
                   });
                 }
@@ -1338,7 +1357,7 @@ export default {
                 .tableData;
               if (tragtTableData && tragtTableData.length > 0) {
                 tragtTableData.map((item, index) => {
-                  selecteDeleRow.map(j => {
+                  selecteDeleRow.map((j) => {
                     if (item.id === j.id) {
                       tragtTableData.splice(index, 1);
                     }
@@ -1353,8 +1372,8 @@ export default {
           console.log(action);
       }
     },
-    getExeCustomFn(fun){
-    let temFen = null;
+    getExeCustomFn(fun) {
+      let temFen = null;
       try {
         temFen = eval("(" + fun + ")");
       } catch (e) {
@@ -1362,26 +1381,26 @@ export default {
       }
       return temFen;
     },
-    displayColumnsChange(){
+    displayColumnsChange() {
       let columns = [];
       let flag = false;
-      if(this.widget.configdata){
-        columns = this.widget.configdata.list[0].options.columns
-        columns.map(c=>{
-          if(this.widget.options.displayColumns){
-            flag = this.widget.options.displayColumns.includes(c.prop)
-            if(flag){
+      if (this.widget.configdata) {
+        columns = this.widget.configdata.list[0].options.columns;
+        columns.map((c) => {
+          if (this.widget.options.displayColumns) {
+            flag = this.widget.options.displayColumns.includes(c.prop);
+            if (flag) {
               c.isDisplay = true;
-            }else{
+            } else {
               c.isDisplay = false;
             }
           }
-        })
+        });
       }
     },
     closeTableDataEA() {
       this.tableCf.tableDataEAVisible = false;
-      this.$emit("close-dialog")
+      this.$emit("close-dialog");
     },
     handelTableDataEA() {
       let type = this.tableCf.dialogType;
@@ -1393,7 +1412,7 @@ export default {
         }
       } else if (type == "edit") {
         if (tragtTableData && tragtTableData.length > 0) {
-          tragtTableData.map(item => {
+          tragtTableData.map((item) => {
             if (
               item.id === tempTableData.id ||
               item.listCode == tempTableData.listCode
@@ -1404,7 +1423,7 @@ export default {
         }
       }
       this.closeTableDataEA();
-    }
+    },
   },
   mounted() {
     if (this.widget.type == "camera") {
@@ -1447,21 +1466,21 @@ export default {
         this.models[this.widget.model] = val;
         this.$emit("update:models", {
           ...this.models,
-          [this.widget.model]: val
+          [this.widget.model]: val,
         });
         this.$emit("input-change", val, this.widget.model);
-      }
+      },
     },
     models: {
       // 深度监听models，models修改时读取修改后的值赋值给dataModel
       deep: true,
       immediate: true,
       handler(val) {
-        console.log(val)
+        console.log(val);
         this.dataModel = val[this.widget.model];
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -1469,8 +1488,8 @@ export default {
 .mglass {
   width: 100%;
   position: absolute;
-  left:0;
-  top:34px;
+  left: 0;
+  top: 34px;
   z-index: 1111;
   color: #fff;
   padding: 5px 10px;

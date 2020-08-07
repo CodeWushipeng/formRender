@@ -19,6 +19,7 @@
                 :move="handleMove"
               >
                 <li
+                  @click="handleField(item)"
                   v-if="bankingFields.indexOf(item.type) >= 0"
                   class="form-edit-widget-label"
                   :class="{ 'no-put': item.type == 'divider' }"
@@ -370,7 +371,7 @@
             <codemirror ref="myCm" v-model="code" :options="cmOptions"></codemirror>
             <div class="data-list">
               <div class="data">models</div>
-              <div class="data" v-for="item in widgetForm.list" :key="item.model">{{item.model}}</div>
+              <div class="data" v-for="item in modelLists" :key="item.model">{{item.model}}</div>
             </div>
           </div>
         </cus-dialog>
@@ -521,6 +522,7 @@ export default {
         indentUnit: 2,
         line: true,
       },
+      modelLists:[],
       mirrorVisible: false,
       nowEle: {}, //当前编辑的组件对象
       modify: "", //当前编辑的是哪个属性
@@ -644,10 +646,21 @@ export default {
         };
       });
     },
-    // 字典查询值传给组件
-    // setRemoteData(com,params){
-
-    // },
+    // 获取models
+    getModels(){
+      this.modelLists = []
+      this.widgetForm.list.forEach((item) => {
+        if (item.type === "grid") {
+          item.columns.forEach((cloItem) => {
+            // this.tranData(cloItem)
+            this.modelLists = [...this.modelLists, ...cloItem.list];
+          });
+        } else {
+          this.modelLists = [...this.modelLists, item];
+        }
+      });
+      console.log(this.modelLists)
+    },
     // mirror控制函数
     showMirror(parms, modify) {
       console.log(modify);
@@ -702,6 +715,7 @@ export default {
           this.code = this.nowEle.multiCondition;
         }
       }
+      this.getModels()
       this.mirrorVisible = true;
     },
     // 扩展函数编辑器

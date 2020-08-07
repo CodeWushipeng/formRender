@@ -1,6 +1,6 @@
 import { RES_OK } from "@/api/config";
 import { getTrade, getFormList } from "@/api/forms";
-import storage from 'good-storage';
+import storage from "good-storage";
 
 const KEY_ENTER = 13;
 const KEY_LEFT = 37;
@@ -10,8 +10,8 @@ let handlers = {
   props: {},
   data() {
     return {
-      Rank_BTNS:[],    // 操作按钮列表
-      btnFocusIndex:0, // 命中操作按钮的索引值
+      Rank_BTNS: [], // 操作按钮列表
+      btnFocusIndex: 0, // 命中操作按钮的索引值
 
       trade: false, //字段交易弹出框
       widgetPreValue: {}, // 组件旧值
@@ -19,7 +19,7 @@ let handlers = {
       outMark: 0, //外层循环标记
       allItems: [],
       allTrs: [], //弹出表格全部tr节点
-      btnLists:[],//流控引擎按钮节点
+      btnLists: [], //流控引擎按钮节点
       unfocus: [],
       cancelNext: false,
       canFocusLength: 0,
@@ -52,7 +52,7 @@ let handlers = {
   methods: {
     // 组件获取焦点
     mouseValidate(params, type) {
-      let formEle = document.querySelector(".generateForm");
+      // debugger
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
           console.log(i, this.outMark);
@@ -64,7 +64,7 @@ let handlers = {
           break;
         }
       }
-      this.allValidate(this.outMark-1);
+      this.allValidate(this.outMark - 1);
     },
     // 初始化时复制一份models数据
     copyMOdels() {
@@ -80,6 +80,7 @@ let handlers = {
       this.handelAssignment(this.outMark);
       this.cancelNext = true;
       this.handelFlow();
+      this.handelCursorByArrow();
     },
     // 隐藏
     handelHidden() {
@@ -109,11 +110,11 @@ let handlers = {
       console.log(generate, this.allItems);
     },
     // 获取流控按钮节点
-    getFlowNotes(){
-      if (!localStorage.getItem("oldMark")){
-        this.btnLists = document.querySelectorAll("#flowButtons button")
+    getFlowNotes() {
+      if (!localStorage.getItem("oldMark")) {
+        this.btnLists = document.querySelectorAll("#flowButtons button");
       }
-      console.log(this.btnLists)
+      console.log(this.btnLists);
     },
     // 获取表格全部tr
     getAllPoupTr() {
@@ -151,6 +152,7 @@ let handlers = {
     },
     // 表格配置项弹出后接管流程控制
     toggleGenerate(rowData) {
+      // debugger;
       localStorage.setItem("oldMark", this.outMark);
       // localStorage.setItem("oldData", this.data);
       // localStorage.setItem("oldModel", this.models);
@@ -310,7 +312,7 @@ let handlers = {
           this.conditionError = false;
         } else {
           this.setFocus(this.allItems[i]);
-          // this.handelValidate("error", lists[i].conditionError, i);
+          // this.handelValidate("error", "不满足取值条件", i);
           this.conditionError = true;
           this.outMark = i;
         }
@@ -332,9 +334,10 @@ let handlers = {
         this.handelAssignment(i);
         this.handelFlow();
       } else {
-        if(!lists[i].isRemote){  //兼容旧版本
+        if (!lists[i].isRemote) {
+          //兼容旧版本
           this.remoteError = false;
-          return
+          return;
         }
         let start = eval("(" + lists[i].isRemote + ")");
         let startFlag = start(this.models, this.utils);
@@ -342,8 +345,8 @@ let handlers = {
           let url = lists[i].url;
           let postData = this.evalWrap(lists[i].data);
           let tableKey = lists[i].tableKey; //表格表单标识
-          let tableModel = lists[i].tableModel;
-          let tableCode = lists[i].tableCode; //表格数据标识
+          // let tableModel = lists[i].tableModel;
+          //let tableCode = lists[i].tableCode; //表格数据标识
           let success = lists[i].success;
           localStorage.setItem("removeFunc", success);
           let tempFunc = eval("(" + success + ")");
@@ -363,35 +366,59 @@ let handlers = {
               if (res.header.rspCode == RES_OK) {
                 self.handelValidate("success", "", i);
                 // 判断是否有表格数据，没有执行赋值
-                if (!tableModel) {
-                  tempFunc(self.models, res, self.utils);
-                  self.handelAssignment(i);
-                  self.handelFlow();
-                } else {
-                  let tableData;
-                  tableData = res.body[tableModel]; //根据配置的数据标识获取表格数据
-                  let Key;
-                  for (let i = 0; i < lists.length; i++) {
-                    if (lists[i].model == tableModel) {
-                      Key = lists[i].key;
-                    }
-                  }
-                  console.log(tableData, tableModel, Key);
-                  if (self.checkOutModel(tableModel)) {
-                    //如果存在目标表格执行出口数据转换
-                    self.$nextTick(() => {
-                      self.models[tableModel] = tableData;
-                      self.setTableData(Key, tableData);
-                      console.log(self.models);
-                      tempFunc(self.models, res, self.utils);
+                if (!tableKey) {
+                  try {
+                    tempFunc(self.models, res, self.utils);
+                    this.$nextTick(() => {
+                      debugger;
+                      for (let m = 0; m < self.comArr.length; m++) {
+                        if (self.comArr[m].type === "elTable") {
+                          if (
+                            Array.isArray(self.models[self.comArr[m].model])
+                          ) {
+                            self.comArr[
+                              m
+                            ].configdata.list[0].options.tableData =
+                              self.models[self.comArr[m].model];
+                            // self.setTableData(self.comArr[i].model, tableData);
+                          }
+                        }
+                      }
                       self.handelAssignment(i);
                       self.handelFlow();
                     });
-                  } else {
-                    localStorage.setItem("response", JSON.stringify(res));
-                    localStorage.setItem("model", tableModel);
-                    self.searchTable(tableKey, tableData); //不存在目标表格发起查询表格请求
+                  } catch (error) {
+                    self.handelValidate("error", "出口数据转换出错", i);
                   }
+                } else {
+                  // let tableData;
+                  // tableData = res.body[tableModel]; //根据配置的数据标识获取表格数据
+                  // let Key;
+                  // for (let i = 0; i < lists.length; i++) {
+                  //   if (lists[i].model == tableModel) {
+                  //     Key = lists[i].key;
+                  //   }
+                  // }
+                  // console.log(tableData, tableModel, Key);
+                  // if (self.checkOutModel(tableModel)) {
+                  //   //如果存在目标表格执行出口数据转换
+                  //   self.$nextTick(() => {
+                  //     self.models[tableModel] = tableData;
+                  //     self.setTableData(Key, tableData);
+                  //     console.log(self.models);
+                  //     try {
+                  //       tempFunc(self.models, res, self.utils);
+                  //       self.handelAssignment(i);
+                  //       self.handelFlow();
+                  //     } catch (error) {
+                  //       this.handelValidate("error", "出口数据转换出错", i);
+                  //     }
+                  //   });
+                  // } else {
+                  // localStorage.setItem("response", JSON.stringify(res));
+                  // localStorage.setItem("model", tableModel);
+                  self.searchTable(tableKey, res); //不存在目标表格发起查询表格请求
+                  // }
                 }
                 self.remoteError = false;
               } else {
@@ -400,7 +427,7 @@ let handlers = {
                   title: "错误",
                   message: res.rspMsg,
                 });
-                // this.handelValidate("error", res.rspMsg, i);
+                this.handelValidate("error", res.rspMsg, i);
                 self.remoteError = true;
                 self.outMark = i;
               }
@@ -412,7 +439,7 @@ let handlers = {
                 title: "错误",
                 message: error.rspMsg,
               });
-              // this.handelValidate("error", res.rspMsg, i);
+              this.handelValidate("error", res.rspMsg, i);
               self.remoteError = true;
               self.outMark = i;
             });
@@ -426,10 +453,10 @@ let handlers = {
     },
     // 表格设置数据函数
     setTableData(key, data) {
-      debugger;
+      // debugger;
       if (key) {
         this.data.list.map((t) => {
-          if (t.key == key) {
+          if (t.model == model) {
             if (this.data.list) {
               t.configdata.list[0].options.tableData = data;
             }
@@ -447,9 +474,9 @@ let handlers = {
       // }
     },
     // 表格查询
-    searchTable(code, table) {
-      debugger;
-      let tableData = table;
+    searchTable(code, tradData) {
+      // debugger;
+      // let tableData = table;
       let self = this;
       getFormList("", {
         formCode: code,
@@ -463,8 +490,10 @@ let handlers = {
               type: "success",
             });
             let temp = JSON.parse(res.body.define.records[0].formContent);
-            temp.list[0].configdata.list[0].options.tableData = tableData
-            console.log(temp)
+            let tableModel = temp.list[0].model;
+            let tableData = tradData[tableModel];
+            temp.list[0].configdata.list[0].options.tableData = tableData;
+            console.log(temp);
             self.gridData = temp;
             self.trade = true;
             // self.$nextTick(() => {
@@ -506,7 +535,15 @@ let handlers = {
       let model = localStorage.getItem("model");
       let res = JSON.parse(localStorage.getItem("response"));
       res[model] = row;
-      tempFunc(this.$parent.$parent.models, res);
+      try {
+        tempFunc(this.$parent.$parent.models, res);
+      } catch (error) {
+        this.$parent.$parent.handelValidate(
+          "error",
+          "出口数据转换出错",
+          this.$parent.$parent.outMark
+        );
+      }
       this.$parent.$parent.trade = false;
     },
     // 表格弹出框关闭后执行光标定位
@@ -549,6 +586,7 @@ let handlers = {
     },
     // 全部节点循环事件
     iteratorAllEle() {
+      debugger;
       for (let i = this.outMark; i < this.comArr.length; i++) {
         if (
           this.comArr[i].options.disabled ||
@@ -590,7 +628,7 @@ let handlers = {
       for (let i = 0; i <= target; i++) {
         console.log("综合校验综合校验综合校验综合校验", this.comArr);
         if (
-          this.comArr[i].options.disabled ||
+          (this.comArr[i].options && this.comArr[i].options.disabled) ||
           this.comArr[i].options.hidden ||
           this.comArr[i].options.readonly == "readonly"
         ) {
@@ -646,7 +684,27 @@ let handlers = {
       console.log("当前聚焦元素", focusEle);
       this.$nextTick(() => {
         if (type == "radio") {
-          focusEle.parentNode.parentNode.focus();
+          if (this.models[this.comArr[this.outMark].model]) {
+            let allRadio = ele.querySelectorAll("input");
+            for (
+              let i = 0;
+              i < this.comArr[this.outMark].options.options.length;
+              i++
+            ) {
+              if (
+                this.comArr[this.outMark].options.options[i].value ===
+                this.models[this.comArr[this.outMark].model]
+              ) {
+                allRadio[i].parentNode.parentNode.focus();
+              }
+            }
+            return;
+          } else {
+            this.models[this.comArr[this.outMark].model] = this.comArr[
+              this.outMark
+            ].options.options[0].value;
+            focusEle.parentNode.parentNode.focus();
+          }
         } else {
           focusEle.focus();
         }
@@ -666,6 +724,7 @@ let handlers = {
     },
     // 回车事件
     onElChange(params) {
+      // debugger
       if (this.cancelNext) {
         this.cancelNext = false;
         return;
@@ -687,44 +746,44 @@ let handlers = {
         this.setBlur(this.allItems[this.outMark]);
         // this.$emit("isEnd", true);
 
-        this.btnsAddEvents()
+        this.btnsAddEvents();
         this.filterFirstBtnIndex();
         this.focusCurrentBtn();
       }
     },
-    filterFirstBtnIndex(){
-      const index = this.Rank_BTNS.findIndex(item=>{
-        return item == 'submit'
-      })
+    filterFirstBtnIndex() {
+      const index = this.Rank_BTNS.findIndex((item) => {
+        return item == "submit";
+      });
       this.btnFocusIndex = index;
     },
 
-    btnsAddEvents(){
-      const $flowButtons = document.getElementById("flowButtons")
-      $flowButtons.addEventListener("keyup", (e)=>{
+    btnsAddEvents() {
+      const $flowButtons = document.getElementById("flowButtons");
+      $flowButtons.addEventListener("keyup", (e) => {
         // debugger
-        let e1 = e || event || window.event // || arguments.callee.caller.arguments[0];
-        console.log('e1.keyCode', e1.keyCode)
+        let e1 = e || event || window.event; // || arguments.callee.caller.arguments[0];
+        console.log("e1.keyCode", e1.keyCode);
         const key = e1.keyCode;
 
         this.calBtnIndex(key);
         this.focusCurrentBtn();
-      })
+      });
     },
 
-    focusCurrentBtn(){
-      this.btnLists[this.btnFocusIndex].focus()
+    focusCurrentBtn() {
+      this.btnLists[this.btnFocusIndex].focus();
     },
 
     calBtnIndex(keyCode) {
       if (keyCode == KEY_LEFT || keyCode == KEY_RIGHT) {
         let btnsLength = this.Rank_BTNS.length - 1;
         if (keyCode == KEY_LEFT) {
-          --this.btnFocusIndex
-          if (this.btnFocusIndex < 0) this.btnFocusIndex = 0
+          --this.btnFocusIndex;
+          if (this.btnFocusIndex < 0) this.btnFocusIndex = 0;
         } else {
-          ++this.btnFocusIndex
-          if (this.btnFocusIndex > btnsLength) this.btnFocusIndex = btnsLength
+          ++this.btnFocusIndex;
+          if (this.btnFocusIndex > btnsLength) this.btnFocusIndex = btnsLength;
         }
       }
     },
@@ -827,7 +886,7 @@ let handlers = {
             }
           }
         }
-      } else if (window.event.ctrlKey && window.event.keyCode ===40 ) {
+      } else if (window.event.ctrlKey && window.event.keyCode === 40) {
         for (let i = this.outMark + 1; i < this.comArr.length; i++) {
           if (
             this.comArr[i].options.disabled ||
@@ -859,7 +918,7 @@ let handlers = {
       if (params) {
         formEle.removeEventListener("keyup", this.arrowListener);
       } else {
-        formEle.addEventListener("keyup", this.arrowListener, true);
+        formEle.addEventListener("keyup", this.arrowListener);
       }
     },
   },
@@ -877,7 +936,7 @@ let handlers = {
         this.handelHidden();
         this.enterCheck();
         this.getAllItems();
-        this.getFlowNotes()
+        this.getFlowNotes();
         this.getAllPoupTr();
         this.getShowLength();
         this.iteratorAllEle();

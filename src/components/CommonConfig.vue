@@ -1,12 +1,20 @@
 <template>
   <div v-if="show">
-    <el-form label-position="top" v-show="data.type !='grid'">
+    <el-form
+      label-position="top"
+      v-show="data.type !='grid' && data.type !=='imageshow' && data.type !=='imageupload' && data.type !=='fileupload' && data.type !=='videoupload' && data.type !=='divider'"
+    >
       <!-- 字典服务 -->
       <el-form-item :label="$t('fm.config.common.remoteCode')" v-if="data.type == 'select'">
-        <el-input size="mini" v-model="data.remoteCode">
-          <el-button slot="append" @click="getData(data.remoteCode)">查询</el-button>
+        <el-input
+          size="mini"
+          v-model="data.remoteCode"
+          readonly="readonly"
+          @focus="getData(data.remoteCode)"
+        >
+          <!-- <el-button slot="append" @click="getData(data.remoteCode)">查询</el-button> -->
         </el-input>
-        <el-dialog :visible.sync="dialogTableVisible">
+        <el-dialog :visible.sync="dialogTableVisible" :close-on-click-modal="false">
           <div style="display:flex;marginBottom:20px;">
             <el-input style="width:200px" placeholder="请输入内容" v-model="value" clearable></el-input>
             <el-button
@@ -16,12 +24,12 @@
               icon="el-icon-search"
             >搜索</el-button>
           </div>
-          <el-table :data="gridData" border>
-            <el-table-column label="操作" width="80">
+          <el-table :data="gridData" border @row-dblclick="setData">
+            <!-- <el-table-column label="操作" width="80">
               <template slot-scope="scope">
                 <el-button @click="setData(scope.row)" type="text">赋值</el-button>
               </template>
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column property="dicName" label="选项代码"></el-table-column>
             <el-table-column property="itemValue" label="选项名称"></el-table-column>
             <el-table-column property="itemCode" label="选项值"></el-table-column>
@@ -129,13 +137,13 @@
             >
               <template slot="prepend">入口数据</template>
             </el-input>
-            <el-input
+            <!-- <el-input
               style="text-overflow: ellipsis;margin-bottom:15px"
               v-model="data.tableModel"
               placeholder="表格字段标识"
             >
               <template slot="prepend">表格字段标识</template>
-            </el-input>
+            </el-input>-->
             <el-input
               style="text-overflow: ellipsis;margin-bottom:15px"
               v-model="data.tableKey"
@@ -220,76 +228,81 @@ export default {
     // 分页查询
     handleCurrentChange(val) {
       this.startPage = val;
-      this.getData();
+      this.search();
     },
     // 获取字典服务数据
     getData(data) {
-      this.dialogTableVisible = true;
-      console.log(data);
-      getDicTwo({
-        body: {
-          dicName: this.data.remoteCode,
-          selType: 2,
-        },
-        header: {
-          pageIndex: this.startPage,
-          pageSize: 10,
-          gloSeqNo: new Date(),
-          reqSeqNo: "sit anim",
-          reqTime: "officia ad anim",
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.header && res.header.rspCode == RES_OK) {
-            this.$notify({
-              title: "Success",
-              message: "查询成功",
-              type: "success",
-              duration: 2000,
-            });
-          } else if (res.header && res.header.rspCode == FAIL_CODE) {
-            this.$notify({
-              title: "fail",
-              message: "查询失败",
-              type: "info",
-              duration: 2000,
-            });
-            return;
-          }
-
-          let tempArr = null;
-          if (res.header && res.header.rspCode == RES_OK && res.body) {
-            this.gridData = res.body.dics.records;
-            tempArr = res.body.dics.records;
-            this.total = res.body.dics.total;
-            this.pageSize = res.body.dics.size;
-          } else {
-            // this.gridData = res.dics.records;
-            // tempArr = res.dics.records;
-            // this.total = res.dics.total;
-            // this.pageSize = res.dics.size;
-          }
-
-          let resultArr = [];
-          tempArr.forEach((item) => {
-            let tempJson = {
-              value: "",
-              label: "",
-            };
-            tempJson.label = item.itemValue;
-            tempJson.value = item.itemCode;
-            resultArr.push(tempJson);
-          });
-          console.log(tempArr, resultArr);
-          this.data.options.options = resultArr;
-          console.log(this.data.options.options);
+      if (this.dialogTableVisible) {
+        return;
+      }
+      if (this.data.remoteCode) {
+        getDicTwo({
+          body: {
+            dicName: this.data.remoteCode,
+            selType: 2,
+          },
+          header: {
+            pageIndex: this.startPage,
+            pageSize: 10,
+            gloSeqNo: new Date(),
+            reqSeqNo: "sit anim",
+            reqTime: "officia ad anim",
+          },
         })
-        .catch((error) => console.log(error));
+          .then((res) => {
+            console.log(res);
+            if (res.header && res.header.rspCode == RES_OK) {
+              this.$notify({
+                title: "Success",
+                message: "查询成功",
+                type: "success",
+                duration: 2000,
+              });
+            } else if (res.header && res.header.rspCode == FAIL_CODE) {
+              this.$notify({
+                title: "fail",
+                message: "查询失败",
+                type: "info",
+                duration: 2000,
+              });
+              return;
+            }
+
+            let tempArr = null;
+            if (res.header && res.header.rspCode == RES_OK && res.body) {
+              this.gridData = res.body.dics.records;
+              tempArr = res.body.dics.records;
+              this.total = res.body.dics.total;
+              this.pageSize = res.body.dics.size;
+            } else {
+              // this.gridData = res.dics.records;
+              // tempArr = res.dics.records;
+              // this.total = res.dics.total;
+              // this.pageSize = res.dics.size;
+            }
+
+            let resultArr = [];
+            tempArr.forEach((item) => {
+              let tempJson = {
+                value: "",
+                label: "",
+              };
+              tempJson.label = item.itemValue;
+              tempJson.value = item.itemCode;
+              resultArr.push(tempJson);
+            });
+            console.log(tempArr, resultArr);
+            this.data.options.options = resultArr;
+            console.log(this.data.options.options);
+          })
+          .catch((error) => console.log(error));
+      }
+      this.dialogTableVisible = true;
     },
     setData(params) {
       console.log("11111", params);
       this.data.remoteCode = params.dicName;
+      // this.dialogTableVisible = false;
     },
     // 查询信息
     search() {
