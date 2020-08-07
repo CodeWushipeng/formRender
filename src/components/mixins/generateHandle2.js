@@ -586,7 +586,6 @@ let handlers = {
     },
     // 全部节点循环事件
     iteratorAllEle() {
-      debugger;
       for (let i = this.outMark; i < this.comArr.length; i++) {
         if (
           this.comArr[i].options.disabled ||

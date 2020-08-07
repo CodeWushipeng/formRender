@@ -74,6 +74,6 @@
 </script>
 <style scoped>
 .cus-z-index{
-  z-index: 2047!important;
+  z-index: 5000!important;
 }
 </style>

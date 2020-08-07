@@ -3,8 +3,7 @@
  * gcc - v1.0.0 (2020-07-14)
  * dependent on request.js
  */
-import request from "../../util/request";
-import getTableList from "../../api/forms";
+import { previewGetFormList } from "../../api/forms";
 
 /**
  *
@@ -12,25 +11,9 @@ import getTableList from "../../api/forms";
  * @param {*} callback 回调函数
  */
 
-export const getFormConfigDataById = (formId, callback) => {
-  getTableList({
-    body: { formCode: formId },
-    header: {
-      pageIndex: 1,
-      pageSize: 999,
-      gloSeqNo: new Date().getTime(),
-      reqSeqNo: "1",
-      reqTime: "1",
-      projectId: "quis consectetur",
-      serviceGroupid: "mollit sed",
-      serviceId: "officia non",
-      serviceName: "1",
-      subProjectId: "occaecat tempor dolor enim ex",
-      userInfo: {
-        role: ["ea fugiat incididunt"],
-        username: "dolore deserunt do",
-      },
-    },
+export const getFormConfigDataById = function(formId,callback) {
+  previewGetFormList({ 
+    formCode: formId 
   })
     .then((res) => {
       console.log(res);
@@ -47,7 +30,7 @@ export const getFormConfigDataById = (formId, callback) => {
           duration: 2000,
         });
       } else if (res.header.rspCode == "99999999") {
-        that.$notify({
+        this.$notify({
           title: "fail",
           message: "查询失败",
           type: "info",
