@@ -47,7 +47,14 @@
                 @start="handleMoveStart"
                 :move="handleMove"
               >
-                <li @click="handleField(item)" v-if="basicFields.indexOf(item.type)>=0" class="form-edit-widget-label" :class="{'no-put': item.type == 'divider'}" v-for="(item, index) in basicComponents" :key="index">
+                <li
+                  @click="handleField(item)"
+                  v-if="basicFields.indexOf(item.type)>=0"
+                  class="form-edit-widget-label"
+                  :class="{'no-put': item.type == 'divider'}"
+                  v-for="(item, index) in basicComponents"
+                  :key="index"
+                >
                   <a>
                     <i class="icon iconfont" :class="item.icon"></i>
                     <span>{{item.name}}</span>
@@ -70,7 +77,14 @@
                 @start="handleMoveStart"
                 :move="handleMove"
               >
-                <li @click="handleField(item)" v-if="advanceFields.indexOf(item.type) >= 0" class="form-edit-widget-label" :class="{'no-put': item.type == 'table'}" v-for="(item, index) in advanceComponents" :key="index">
+                <li
+                  @click="handleField(item)"
+                  v-if="advanceFields.indexOf(item.type) >= 0"
+                  class="form-edit-widget-label"
+                  :class="{'no-put': item.type == 'table'}"
+                  v-for="(item, index) in advanceComponents"
+                  :key="index"
+                >
                   <a>
                     <i class="icon iconfont" :class="item.icon"></i>
                     <span>{{item.name}}</span>
@@ -93,7 +107,13 @@
                 @start="handleMoveStart"
                 :move="handleMove"
               >
-                <li @click="handleField(item)" v-if="layoutFields.indexOf(item.type) >=0" class="form-edit-widget-label no-put" v-for="(item, index) in layoutComponents" :key="index">
+                <li
+                  @click="handleField(item)"
+                  v-if="layoutFields.indexOf(item.type) >=0"
+                  class="form-edit-widget-label no-put"
+                  v-for="(item, index) in layoutComponents"
+                  :key="index"
+                >
                   <a>
                     <i class="icon iconfont" :class="item.icon"></i>
                     <span>{{item.name}}</span>
@@ -148,8 +168,20 @@
               icon="el-icon-tickets"
               @click="handleFormConfig"
             >{{ $t("fm.actions.formConfig") }}</el-button>
-            <el-button type="text" :disabled="!undo" size="medium" icon="el-icon-back" @click="handleUndo">{{$t('fm.actions.undo')}}</el-button>
-            <el-button type="text" :disabled="!redo" size="medium" icon="el-icon-right" @click="handleRedo">{{$t('fm.actions.redo')}}</el-button>
+            <el-button
+              type="text"
+              :disabled="!undo"
+              size="medium"
+              icon="el-icon-back"
+              @click="handleUndo"
+            >{{$t('fm.actions.undo')}}</el-button>
+            <el-button
+              type="text"
+              :disabled="!redo"
+              size="medium"
+              icon="el-icon-right"
+              @click="handleRedo"
+            >{{$t('fm.actions.redo')}}</el-button>
             <el-button
               v-if="upload"
               type="text"
@@ -400,8 +432,8 @@ import { bankingComponents } from "./componentsBankingConfig.js";
 import { loadJs, loadCss } from "../util/index.js";
 import request from "../util/request.js";
 import generateCode from "./generateCode.js";
-import { EventBus } from '../util/event-bus.js'
-import historyManager from '../util/history-manager.js'
+import { EventBus } from "../util/event-bus.js";
+import historyManager from "../util/history-manager.js";
 import TableWidgetConfig from "./table/TableWidgetConfig";
 import TableEventConfig from "./table/TableEventConfig";
 
@@ -497,7 +529,7 @@ export default {
     },
     layoutFields: {
       type: Array,
-      default: () => ["grid",'divider'],
+      default: () => ["grid", "divider"],
     },
     tableFields: {
       type: Array,
@@ -513,17 +545,20 @@ export default {
         mode: "javascript",
         theme: "monokai",
         lineNumbers: true,
-        smartIndent: true,
+        lineWrapping: true,
+        extraKeys: { Ctrl: "autocomplete" },
         autofocus: true,
+        matchBrackets: true,
+        smartIndent: true,
+        matchBrackets: true,
         styleActiveLine: true,
         scrollbarStyle: "overlay",
-        lineWrapping: true,
         spellcheck: true,
         autocorrect: true,
         indentUnit: 2,
         line: true,
       },
-      modelLists:[],
+      modelLists: [],
       mirrorVisible: false,
       nowEle: {}, //当前编辑的组件对象
       modify: "", //当前编辑的是哪个属性
@@ -590,7 +625,7 @@ export default {
 }`,
       codeActiveName: "vue",
       undo: false,
-      redo: false
+      redo: false,
     };
   },
   computed: {
@@ -600,17 +635,24 @@ export default {
   },
   mounted() {
     this._loadComponents();
-    const _this = this
+    const _this = this;
 
     historyManager.clear().then(() => {
-      EventBus.$on('on-history-add', () => {
-        console.log('xxx', this.widgetFormSelect)
-        historyManager.add(this.widgetForm, (this.widgetFormSelect && this.widgetFormSelect.key) ? this.widgetFormSelect.key : '').then(() => {
-          _this.undo = true
-          _this.redo = false
-        })
-      })
-    })
+      EventBus.$on("on-history-add", () => {
+        console.log("xxx", this.widgetFormSelect);
+        historyManager
+          .add(
+            this.widgetForm,
+            this.widgetFormSelect && this.widgetFormSelect.key
+              ? this.widgetFormSelect.key
+              : ""
+          )
+          .then(() => {
+            _this.undo = true;
+            _this.redo = false;
+          });
+      });
+    });
   },
   methods: {
     // 为每个组件添加name属性
@@ -648,8 +690,8 @@ export default {
       });
     },
     // 获取models
-    getModels(){
-      this.modelLists = []
+    getModels() {
+      this.modelLists = [];
       this.widgetForm.list.forEach((item) => {
         if (item.type === "grid") {
           item.columns.forEach((cloItem) => {
@@ -660,7 +702,7 @@ export default {
           this.modelLists = [...this.modelLists, item];
         }
       });
-      console.log(this.modelLists)
+      console.log(this.modelLists);
     },
     // mirror控制函数
     showMirror(parms, modify) {
@@ -716,7 +758,7 @@ export default {
           this.code = this.nowEle.multiCondition;
         }
       }
-      this.getModels()
+      this.getModels();
       this.mirrorVisible = true;
     },
     // 扩展函数编辑器
@@ -816,7 +858,7 @@ export default {
       }
     },
     handlePreview() {
-      let tempList =[];
+      let tempList = [];
       this.widgetForm.list.forEach((item) => {
         if (item.type === "grid") {
           item.columns.forEach((cloItem) => {
@@ -846,56 +888,67 @@ export default {
     handleReset() {
       this.$refs.generateForm.reset();
     },
-    handleField (item) {
-      console.log(item)
-      EventBus.$emit('on-field-add', item)
+    handleField(item) {
+      console.log(item);
+      EventBus.$emit("on-field-add", item);
     },
-    handleUndo () {
-      historyManager.updateLatest(this.widgetForm, (this.widgetFormSelect && this.widgetFormSelect.key) ? this.widgetFormSelect.key : '').then(() => {
-        historyManager.undo().then((data) => {
-          this.widgetForm = {...data.data}
-          this.widgetFormSelect = this._findWidgetItem(this.widgetForm.list, data.key)
-          this.undo = data.undo
-          this.redo = data.redo
-        })
-      })
+    handleUndo() {
+      historyManager
+        .updateLatest(
+          this.widgetForm,
+          this.widgetFormSelect && this.widgetFormSelect.key
+            ? this.widgetFormSelect.key
+            : ""
+        )
+        .then(() => {
+          historyManager.undo().then((data) => {
+            this.widgetForm = { ...data.data };
+            this.widgetFormSelect = this._findWidgetItem(
+              this.widgetForm.list,
+              data.key
+            );
+            this.undo = data.undo;
+            this.redo = data.redo;
+          });
+        });
     },
-    handleRedo () {
+    handleRedo() {
       historyManager.redo().then((data) => {
-        this.widgetForm = {...data.data}
-        this.widgetFormSelect = this._findWidgetItem(this.widgetForm.list, data.key)
+        this.widgetForm = { ...data.data };
+        this.widgetFormSelect = this._findWidgetItem(
+          this.widgetForm.list,
+          data.key
+        );
 
-        this.undo = data.undo
-        this.redo = data.redo
-      })
+        this.undo = data.undo;
+        this.redo = data.redo;
+      });
     },
-    _findWidgetItem (list, key) {
-      const index = list.findIndex(item => item.key == key)
-      
+    _findWidgetItem(list, key) {
+      const index = list.findIndex((item) => item.key == key);
+
       if (index >= 0) {
-        return list[index]
+        return list[index];
       } else {
         for (let m = 0; m < list.length; m++) {
-          const item = list[m]
+          const item = list[m];
 
-          if (item.type === 'grid') {
-
+          if (item.type === "grid") {
             for (let i = 0; i < item.columns.length; i++) {
-              return this._findWidgetItem(item.columns[i].list, key)
+              return this._findWidgetItem(item.columns[i].list, key);
             }
           }
-          if (item.type === 'table') {
-            return this._findWidgetItem(item.tableColumns, key)
+          if (item.type === "table") {
+            return this._findWidgetItem(item.tableColumns, key);
           }
-          if (item.type === 'tabs') {
-
+          if (item.type === "tabs") {
             for (let i = 0; i < item.tabs.length; i++) {
-              return this._findWidgetItem(item.tabs[i].list, key)
+              return this._findWidgetItem(item.tabs[i].list, key);
             }
           }
         }
 
-        return {}
+        return {};
       }
     },
     handleGenerateJson() {
@@ -955,8 +1008,8 @@ export default {
       };
       this.widgetFormSelect = {};
       this.$nextTick(() => {
-        EventBus.$emit('on-history-add')
-      })
+        EventBus.$emit("on-history-add");
+      });
     },
     getJSON() {
       return this.widgetForm;
@@ -965,17 +1018,19 @@ export default {
       return generateCode(JSON.stringify(this.widgetForm));
     },
     setJSON(json) {
-      if (typeof json === 'string') {
-        json = JSON.parse(json)
+      if (typeof json === "string") {
+        json = JSON.parse(json);
       }
       this.widgetForm = json;
 
       if (json.list.length > 0) {
         this.widgetFormSelect = json.list[0];
-      }else {
-        this.widgetFormSelect = {}
+      } else {
+        this.widgetFormSelect = {};
       }
-      this.$nextTick(() => {         EventBus.$emit('on-history-add')       })
+      this.$nextTick(() => {
+        EventBus.$emit("on-history-add");
+      });
     },
     handleInput(val) {
       console.log(val);

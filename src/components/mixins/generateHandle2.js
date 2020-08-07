@@ -369,24 +369,9 @@ let handlers = {
                 if (!tableKey) {
                   try {
                     tempFunc(self.models, res, self.utils);
-                    this.$nextTick(() => {
-                      debugger;
-                      for (let m = 0; m < self.comArr.length; m++) {
-                        if (self.comArr[m].type === "elTable") {
-                          if (
-                            Array.isArray(self.models[self.comArr[m].model])
-                          ) {
-                            self.comArr[
-                              m
-                            ].configdata.list[0].options.tableData =
-                              self.models[self.comArr[m].model];
-                            // self.setTableData(self.comArr[i].model, tableData);
-                          }
-                        }
-                      }
-                      self.handelAssignment(i);
-                      self.handelFlow();
-                    });
+                    self.setDataToTable();
+                    self.handelAssignment(i);
+                    self.handelFlow();
                   } catch (error) {
                     self.handelValidate("error", "出口数据转换出错", i);
                   }
@@ -415,8 +400,9 @@ let handlers = {
                   //     }
                   //   });
                   // } else {
-                  // localStorage.setItem("response", JSON.stringify(res));
-                  // localStorage.setItem("model", tableModel);
+                  tempFunc(self.models, res.body);
+                  localStorage.setItem("response", JSON.stringify(res));
+                  self.setDataToTable();
                   self.searchTable(tableKey, res); //不存在目标表格发起查询表格请求
                   // }
                 }
@@ -439,7 +425,7 @@ let handlers = {
                 title: "错误",
                 message: error.rspMsg,
               });
-              this.handelValidate("error", res.rspMsg, i);
+              this.handelValidate("error", error.rspMsg, i);
               self.remoteError = true;
               self.outMark = i;
             });
@@ -450,6 +436,20 @@ let handlers = {
           this.handelFlow();
         }
       }
+    },
+    // 表格赋值
+    setDataToTable() {
+      this.$nextTick(() => {
+        for (let m = 0; m < this.comArr.length; m++) {
+          if (this.comArr[m].type === "elTable") {
+            if (Array.isArray(this.models[this.comArr[m].model])) {
+              this.comArr[m].configdata.list[0].options.tableData = this.models[
+                this.comArr[m].model
+              ];
+            }
+          }
+        }
+      });
     },
     // 表格设置数据函数
     setTableData(key, data) {
@@ -491,14 +491,12 @@ let handlers = {
             });
             let temp = JSON.parse(res.body.define.records[0].formContent);
             let tableModel = temp.list[0].model;
-            let tableData = tradData[tableModel];
+            localStorage.setItem("model", tableModel);
+            let tableData = tradData.body[tableModel];
             temp.list[0].configdata.list[0].options.tableData = tableData;
             console.log(temp);
             self.gridData = temp;
             self.trade = true;
-            // self.$nextTick(() => {
-            //   self.$refs.grid.setTableData(temp.list[0].key, tableData);
-            // });
           } else {
             self.$notify.error({
               title: "错误",
@@ -534,20 +532,25 @@ let handlers = {
       console.log(tempFunc, rowData);
       let model = localStorage.getItem("model");
       let res = JSON.parse(localStorage.getItem("response"));
-      res[model] = row;
+      res.body[model] = row;
       try {
-        tempFunc(this.$parent.$parent.models, res);
+        tempFunc(this.$parent.$parent.models, res.body);
+        this.$parent.$parent.trade = false;
       } catch (error) {
         this.$parent.$parent.handelValidate(
           "error",
           "出口数据转换出错",
           this.$parent.$parent.outMark
         );
+        this.setFocus(this.allItems[this.outMark]);
+        this.remoteError = true;
       }
-      this.$parent.$parent.trade = false;
     },
     // 表格弹出框关闭后执行光标定位
     goFlow() {
+      if (this.remoteError) {
+        return;
+      }
       this.handelAssignment(this.outMark);
       this.handelFlow();
       localStorage.removeItem("removeFunc");
@@ -586,7 +589,6 @@ let handlers = {
     },
     // 全部节点循环事件
     iteratorAllEle() {
-      debugger;
       for (let i = this.outMark; i < this.comArr.length; i++) {
         if (
           this.comArr[i].options.disabled ||
