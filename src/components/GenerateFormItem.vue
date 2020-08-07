@@ -1199,23 +1199,23 @@ export default {
       return dataURL;
     },
 
-    //table
+    //自定义数据来源方法解析函数
     handleRemoteFn(fn) {
       var _this = this;
       try {
-        fn(this, request, function (tableCf) {
+        fn.call(this,this, request, function(tableCfData) {
           if (_this.widget.configdata.list) {
             let tempTableCf = _this.widget.configdata.list[0];
-            if (tableCf instanceof Array) {
-              tempTableCf.options.tableData = tableCf;
-            } else {
-              tempTableCf.options.tableData = tableCf.records;
+            if(tableCfData instanceof  Array){
+              tempTableCf.options.tableData = tableCfData;//??
+            }else{
+              tempTableCf.options.tableData = JSON.parse(tableCfData.records[0].listContent).list[0].options.tableData;
             }
             //带有分页
             if (_this.widget.options.isPagination === true) {
-              _this.widget.options.pagination.pageSize = tableCf.size;
-              _this.widget.options.pagination.currentPage = tableCf.current;
-              _this.widget.options.pagination.total = tableCf.total;
+              _this.widget.options.pagination.pageSize = tableCfData.size;
+              _this.widget.options.pagination.currentPage = tableCfData.current;
+              _this.widget.options.pagination.total = tableCfData.total;
             }
           }
         });
@@ -1257,12 +1257,12 @@ export default {
               return;
             }
             this.tableCf.dialogType = "add";
-            getFormConfigDataById(addFormId, function (data) {
+            getFormConfigDataById.call(this,addFormId, (data) => {
               if (data && data.formContent) {
-                _self.tableCf.configdata = JSON.parse(data.formContent);
+                this.tableCf.configdata = JSON.parse(data.formContent);
               }
-              _self.$emit("toggleGenerate", _self.tableCf.configdata);
-              _self.tableCf.tableDataEAVisible = true;
+              this.$emit("toggleGenerate", this.tableCf.configdata)
+              this.tableCf.tableDataEAVisible = true;
             });
           }
           break;
@@ -1295,7 +1295,7 @@ export default {
               return;
             }
             this.tableCf.dialogType = "edit";
-            getFormConfigDataById(editFormId, function (data) {
+            getFormConfigDataById.call(this,editFormId, function(data) {
               if (data && data.formContent) {
                 _self.tableCf.configdata = JSON.parse(data.formContent);
                 _self.$emit("toggleGenerate", _self.tableCf.configdata);
@@ -1329,7 +1329,7 @@ export default {
             }
             this.tableCf.dialogType = "detail";
             this.tableCf.tableDataEAVisible = true;
-            getFormConfigDataById(detailFormId, function (data) {
+            getFormConfigDataById.call(this,detailFormId, function(data) {
               if (data && data.formContent) {
                 _self.tableCf.configdata = JSON.parse(data.formContent);
               }
@@ -1339,7 +1339,7 @@ export default {
         case "delete":
           let selecteDeleRow = this.widget.configdata.list[0].options
             .multipleSelection;
-          if (selecteDeleRow && selecteDeleRow.length < 1) {
+          if (selecteDeleRow && selecteDeleRow.length < 1 || typeof selecteDeleRow == "undefined") {
             this.$message("请至少选择一行数据");
             return;
           } else {

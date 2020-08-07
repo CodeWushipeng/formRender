@@ -230,8 +230,7 @@
 
         <el-aside
           v-if="widgetFormSelect && widgetFormSelect.type == 'elTable'"
-          class="widget-config-container"
-        >
+          class="widget-config-container">
           <el-container>
             <el-header height="45px">
               <div
@@ -871,7 +870,6 @@ export default {
       if (!this.checkModels(tempList)) {
         return;
       }
-      console.log(this.widgetForm);
       this.previewVisible = true;
     },
     handleTest() {

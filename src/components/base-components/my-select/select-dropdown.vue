@@ -1,6 +1,6 @@
 <template>
   <div
-    class="el-select-dropdown el-popper"
+    class="cus-z-index el-select-dropdown el-popper"
     :class="[{ 'is-multiple': $parent.multiple }, popperClass]"
     :style="{ minWidth: minWidth }">
     <slot></slot>
@@ -72,3 +72,8 @@
     }
   };
 </script>
+<style scoped>
+.cus-z-index{
+  z-index: 5000!important;
+}
+</style>

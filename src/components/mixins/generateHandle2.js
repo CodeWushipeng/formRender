@@ -679,6 +679,7 @@ let handlers = {
         ? ele.querySelector("textarea")
         : ele.querySelector(".el-form-item__content>button");
       let type;
+      if(!focusEle) return;
       if (focusEle.tagName === "INPUT" && focusEle.hasAttribute("type")) {
         type = focusEle.getAttribute("type");
       }
@@ -924,9 +925,11 @@ let handlers = {
     },
   },
   mounted() {
-    let rankBtns = storage.session.get("Rank_BTNS", "");
-    this.Rank_BTNS = rankBtns && rankBtns.split("-");
-
+    let rankBtns = storage.session.get('Rank_BTNS',"");
+    if(rankBtns){
+      this.Rank_BTNS =  rankBtns.split("-");
+    }
+  
     let inter = setInterval(() => {
       if (this.data.list && this.data.list.length > 0) {
         clearInterval(inter);
