@@ -763,6 +763,7 @@
     <el-divider
       v-if="widget.type == 'divider'"
       :content-position="widget.options.contentPosition"
+      class="targetEle"
     >{{widget.name}}</el-divider>
   </div>
 </template>
