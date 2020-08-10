@@ -131,8 +131,6 @@ export default {
           ...item,
           options: {
             ...item.options,
-            remoteFunc: "func_" + key,
-            remoteOption: "option_" + key,
           },
           key,
           model: "object",
@@ -228,7 +226,6 @@ export default {
         ...this.data.list[newIndex],
         options: {
           ...this.data.list[newIndex].options,
-          remoteFunc: "func_" + key,
         },
         key,
         // 绑定键值
@@ -301,7 +298,6 @@ export default {
         ...row.columns[colIndex].list[newIndex],
         options: {
           ...row.columns[colIndex].list[newIndex].options,
-          remoteFunc: "func_" + key,
         },
         key,
         // 绑定键值

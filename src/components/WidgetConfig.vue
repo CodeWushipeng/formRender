@@ -225,7 +225,14 @@
         </el-radio-group>
         <template v-if="data.options.remote">
           <div>
-            <el-input size="mini" style v-model="data.options.remoteFunc">
+            <el-input
+              size="mini"
+              style
+              v-model="data.options.remoteFunc"
+              readonly
+              @focus="handelMirror"
+              placeholder="请输入远程方法"
+            >
               <template slot="prepend">{{$t('fm.config.widget.remoteFunc')}}</template>
             </el-input>
             <el-input size="mini" style v-model="data.options.props.value">

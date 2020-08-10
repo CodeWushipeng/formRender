@@ -884,19 +884,20 @@ export default {
     if (
       // 如果获取远程数据属性为真且指定了获取数据的回调函数
       this.widget.options.remote &&
-      this.remote[this.widget.options.remoteFunc]
+      this.widget.options.remoteFunc
     ) {
       // 执行对应的回调函数
-      this.remote[this.widget.options.remoteFunc]((data) => {
-        //this.remote为所有回调函数组成的json对象
-        this.widget.options.remoteOptions = data.map((item) => {
-          //remoteOptions 表单动态选项配置
-          return {
-            value: item[this.widget.options.props.value],
-            label: item[this.widget.options.props.label],
-            children: item[this.widget.options.props.children],
-          };
-        });
+      let remoteData = eval("(" + this.widget.options.remoteFunc + ")")(
+        request
+      );
+      console.log(this.widget.options.remoteFunc);
+      this.widget.options.remoteOptions = remoteData.map((item) => {
+        //remoteOptions 表单动态选项配置
+        return {
+          value: item[this.widget.options.props.value],
+          label: item[this.widget.options.props.label],
+          children: item[this.widget.options.props.children],
+        };
       });
     }
     // 七牛图片上传
@@ -1203,13 +1204,15 @@ export default {
     handleRemoteFn(fn) {
       var _this = this;
       try {
-        fn.call(this,this, request, function(tableCfData) {
+        fn.call(this, this, request, function (tableCfData) {
           if (_this.widget.configdata.list) {
             let tempTableCf = _this.widget.configdata.list[0];
-            if(tableCfData instanceof  Array){
-              tempTableCf.options.tableData = tableCfData;//??
-            }else{
-              tempTableCf.options.tableData = JSON.parse(tableCfData.records[0].listContent).list[0].options.tableData;
+            if (tableCfData instanceof Array) {
+              tempTableCf.options.tableData = tableCfData; //??
+            } else {
+              tempTableCf.options.tableData = JSON.parse(
+                tableCfData.records[0].listContent
+              ).list[0].options.tableData;
             }
             //带有分页
             if (_this.widget.options.isPagination === true) {
@@ -1257,11 +1260,11 @@ export default {
               return;
             }
             this.tableCf.dialogType = "add";
-            getFormConfigDataById.call(this,addFormId, (data) => {
+            getFormConfigDataById.call(this, addFormId, (data) => {
               if (data && data.formContent) {
                 this.tableCf.configdata = JSON.parse(data.formContent);
               }
-              this.$emit("toggleGenerate", this.tableCf.configdata)
+              this.$emit("toggleGenerate", this.tableCf.configdata);
               this.tableCf.tableDataEAVisible = true;
             });
           }
@@ -1295,7 +1298,7 @@ export default {
               return;
             }
             this.tableCf.dialogType = "edit";
-            getFormConfigDataById.call(this,editFormId, function(data) {
+            getFormConfigDataById.call(this, editFormId, function (data) {
               if (data && data.formContent) {
                 _self.tableCf.configdata = JSON.parse(data.formContent);
                 _self.$emit("toggleGenerate", _self.tableCf.configdata);
@@ -1329,7 +1332,7 @@ export default {
             }
             this.tableCf.dialogType = "detail";
             this.tableCf.tableDataEAVisible = true;
-            getFormConfigDataById.call(this,detailFormId, function(data) {
+            getFormConfigDataById.call(this, detailFormId, function (data) {
               if (data && data.formContent) {
                 _self.tableCf.configdata = JSON.parse(data.formContent);
               }
@@ -1339,7 +1342,10 @@ export default {
         case "delete":
           let selecteDeleRow = this.widget.configdata.list[0].options
             .multipleSelection;
-          if (selecteDeleRow && selecteDeleRow.length < 1 || typeof selecteDeleRow == "undefined") {
+          if (
+            (selecteDeleRow && selecteDeleRow.length < 1) ||
+            typeof selecteDeleRow == "undefined"
+          ) {
             this.$message("请至少选择一行数据");
             return;
           } else {

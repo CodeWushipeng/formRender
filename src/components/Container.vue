@@ -403,8 +403,12 @@
           <div class="wrap">
             <codemirror ref="myCm" v-model="code" :options="cmOptions"></codemirror>
             <div class="data-list">
-              <div class="data">models</div>
-              <div class="data" v-for="item in modelLists" :key="item.model">{{item.model}}</div>
+              <div class="data">字段标识列表</div>
+              <div
+                class="data"
+                v-for="item in modelLists"
+                :key="item.model"
+              >{{'models.'+item.model}}</div>
             </div>
           </div>
         </cus-dialog>
@@ -588,29 +592,7 @@ export default {
       codeVisible: false,
       uploadVisible: false,
       formVisible: false,
-      remoteFuncs: {
-        func_test(resolve) {
-          setTimeout(() => {
-            const options = [
-              { id: "1", name: "1111" },
-              { id: "2", name: "2222" },
-              { id: "3", name: "3333" },
-            ];
-
-            resolve(options);
-          }, 2000);
-        },
-        funcGetToken(resolve) {
-          request
-            .get("http://tools-server.xiaoyaoji.cn/api/uptoken")
-            .then((res) => {
-              resolve(res.uptoken);
-            });
-        },
-        upload_callback(response, file, fileList) {
-          console.log("callback", response, file, fileList);
-        },
-      },
+      remoteFuncs: {},
       widgetModels: {},
       blank: "",
       htmlTemplate: "",
@@ -630,6 +612,7 @@ export default {
       codeActiveName: "vue",
       undo: false,
       redo: false,
+      copyModel: new DataTransfer(),
     };
   },
   computed: {
@@ -764,6 +747,10 @@ export default {
         if (this.nowEle.multiCondition != "") {
           this.code = this.nowEle.multiCondition;
         }
+      } else if (this.modify == "请输入远程方法") {
+        if (this.nowEle.options.remoteFunc != "") {
+          this.code = this.nowEle.options.remoteFunc;
+        }
       }
       this.getModels();
       this.mirrorVisible = true;
@@ -818,6 +805,8 @@ export default {
       } else if (this.modify == "调用函数") {
         this.nowEle.options.buttonfun = this.code;
         console.log(this.nowEle.options.buttonfun);
+      } else if (this.modify == "请输入远程方法") {
+        this.nowEle.options.remoteFunc = this.code;
       }
       this.mirrorVisible = false;
       this.extendFunc = "";
@@ -1094,7 +1083,7 @@ export default {
   height: 30px;
   line-height: 30px;
   padding: 0 5px;
-  cursor: pointer;
+  cursor: text;
   border-bottom: 1px solid #eee;
 }
 </style>

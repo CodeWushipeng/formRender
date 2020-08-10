@@ -276,7 +276,16 @@ export const basicComponents = [
         value: "value",
         label: "label",
       },
-      remoteFunc: "",
+      remoteFunc: `function main (request){
+      	//request为axios对象
+      	//post请求示例
+      	request.post(url,{data:123})
+      	.then(res=>{
+          console.log(res))
+          return res
+      	})
+      	.catch(error=>{console.log(error)})
+      }`,
       disabled: false,
     },
     hidden:
@@ -370,7 +379,16 @@ export const basicComponents = [
         value: "value",
         label: "label",
       },
-      remoteFunc: "",
+      remoteFunc: `function main (request){
+      	//request为axios对象
+      	//post请求示例
+      	request.post(url,{data:123})
+      	.then(res=>{
+          console.log(res))
+          return res
+      	})
+      	.catch(error=>{console.log(error)})
+      }`,
       disabled: false,
     },
     hidden:
@@ -783,8 +801,17 @@ export const basicComponents = [
         value: "value",
         label: "label",
       },
-      remoteFunc: "",
-      remoteUrl: "",
+
+      remoteFunc: `function main (request){
+      	//request为axios对象
+      	//post请求示例
+      	request.post(url,{data:123})
+      	.then(res=>{
+          console.log(res))
+          return res
+      	})
+      	.catch(error=>{console.log(error)})
+      }`,
     },
     isCascader: false,
     cascaderUrl: "",
@@ -1194,7 +1221,16 @@ export const advanceComponents = [
         label: "label",
         children: "children",
       },
-      remoteFunc: "",
+      remoteFunc: `function main (request){
+      	//request为axios对象
+      	//post请求示例
+      	request.post(url,{data:123})
+      	.then(res=>{
+          console.log(res))
+          return res
+      	})
+      	.catch(error=>{console.log(error)})
+      }`,
     },
     hidden:
       "function main (models,utils)" +
@@ -1327,10 +1363,10 @@ export const tableComponents = [
       isDetailCustom: false,
       displayColumns: [],
       remoteFunc:
-        "function main (currentObj,request,callBack)" +
+        "function main (request)" +
         "{\n" +
-        "\t//currentObj为当前表格组件对象 request为请求方法,callBack回调方法\n" +
-        "\treturn {}\n" +
+        "\trequest为请求方法\n" +
+        "\treturn []\n" +
         "}",
       addFn:
         "function main (currentObj,request,callBack)" +

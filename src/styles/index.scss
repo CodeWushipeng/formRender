@@ -1,13 +1,15 @@
-$primary-color: #409EFF;
+$primary-color: #409eff;
 $primary-background-color: #ecf5ff;
 
-*, :after, :before {
+*,
+:after,
+:before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-.fa-icon{
+.fa-icon {
   width: auto;
   height: 1em; /* 或任意其它字体大小相对值 */
 
@@ -17,22 +19,22 @@ $primary-background-color: #ecf5ff;
   vertical-align: middle;
 }
 
-.fm2-container{
+.fm2-container {
   background: #fff;
   height: 100%;
   border: 1px solid #e0e0e0;
 
-  .el-container{
+  .el-container {
     height: 100% !important;
   }
 
-  &>.el-container{
+  & > .el-container {
     background: #fff;
   }
-  .fm2-main{
+  .fm2-main {
     position: relative;
 
-    &>.el-container{
+    & > .el-container {
       position: absolute;
       top: 0;
       bottom: 0;
@@ -40,11 +42,11 @@ $primary-background-color: #ecf5ff;
       right: 0;
     }
   }
-  main{
+  main {
     padding: 0;
   }
 
-  footer{
+  footer {
     height: 30px;
     line-height: 30px;
     border-top: 1px solid #e0e0e0;
@@ -53,13 +55,13 @@ $primary-background-color: #ecf5ff;
     color: $primary-color;
     background: #fafafa;
 
-    a{
+    a {
       color: $primary-color;
     }
   }
 }
 
-.fm-report-table__table{
+.fm-report-table__table {
   border-top-style: solid;
   border-left-style: solid;
   width: 100%;
@@ -69,17 +71,17 @@ $primary-background-color: #ecf5ff;
     border-right-style: solid;
     padding: 5px;
 
-    .el-form-item:not(.is-error){
+    .el-form-item:not(.is-error) {
       margin-bottom: 0;
     }
   }
 }
 
-.center-container{
+.center-container {
   border-left: 1px solid #e0e0e0;
   border-right: 1px solid #e0e0e0;
 
-  .btn-bar{
+  .btn-bar {
     height: 45px;
     line-height: 45px;
     font-size: 18px;
@@ -87,31 +89,31 @@ $primary-background-color: #ecf5ff;
     text-align: right;
   }
 
-  .el-main{
+  .el-main {
     padding: 0;
     position: relative;
     background: #fafafa;
   }
 }
 
-.components-list{
+.components-list {
   padding: 8px 0;
   width: 100%;
   height: 100%;
 
-  .widget-cate{
+  .widget-cate {
     padding: 8px 12px;
     font-size: 13px;
   }
 
-  ul{
+  ul {
     position: relative;
     overflow: hidden;
     padding: 0 10px 10px;
     margin: 0;
   }
 
-  .form-edit-widget-label{
+  .form-edit-widget-label {
     font-size: 12px;
     display: block;
     width: 48%;
@@ -124,28 +126,28 @@ $primary-background-color: #ecf5ff;
     white-space: nowrap;
     margin: 1%;
     color: #333;
-    border: 1px solid #F4F6FC;
+    border: 1px solid #f4f6fc;
 
-    a{
+    a {
       color: #333;
     }
 
-    &:hover{
+    &:hover {
       color: $primary-color;
       border: 1px dashed $primary-color;
 
-      a{
+      a {
         color: $primary-color;
       }
     }
 
-    &>a{
+    & > a {
       display: block;
       cursor: move;
-      background: #F4F6FC;
-      border: 1px solid #F4F6FC;
+      background: #f4f6fc;
+      border: 1px solid #f4f6fc;
 
-      .icon{
+      .icon {
         margin-right: 6px;
         margin-left: 8px;
         font-size: 14px;
@@ -153,7 +155,7 @@ $primary-background-color: #ecf5ff;
         vertical-align: middle;
       }
 
-      span{
+      span {
         display: inline-block;
         vertical-align: middle;
       }
@@ -161,14 +163,14 @@ $primary-background-color: #ecf5ff;
   }
 }
 
-.widget-form-container{
+.widget-form-container {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
 
-  .form-empty{
+  .form-empty {
     position: absolute;
     text-align: center;
     width: 300px;
@@ -178,75 +180,76 @@ $primary-background-color: #ecf5ff;
     width: 100%;
     margin-top: -10px;
     color: #ccc;
+    margin-left: -50%;
   }
 
-  form{
+  form {
     height: calc(100% - 10px);
 
-    >div{
+    > div {
       height: calc(100% - 10px);
     }
   }
-  
-  .widget-form-list{
+
+  .widget-form-list {
     background: #fff;
     // border: 1px dashed #999;
     border: 1px dashed #999;
     min-height: 100%;
     margin: 10px;
 
-    .widget-view-model{
+    .widget-view-model {
       position: absolute;
       top: -8px;
       right: 3px;
       font-size: 12px;
-      color: #67C23A;
+      color: #67c23a;
       // opacity: 0.8;
       z-index: 9;
       font-weight: 500;
     }
 
-    .widget-col-list{
+    .widget-col-list {
       min-height: 50px;
       border: 1px dashed #ccc;
       background: #fff;
     }
 
-    .widget-view{
+    .widget-view {
       padding-bottom: 18px;
       position: relative;
-      border: 1px dashed rgba(170,170,170,0.5);
+      border: 1px dashed rgba(170, 170, 170, 0.5);
       // border: 1px dashed transparent;
-      background-color: rgba(236, 245, 255, .3);
+      background-color: rgba(236, 245, 255, 0.3);
       margin: 2px;
       overflow: hidden;
 
-      .el-form-item__content{
+      .el-form-item__content {
         position: static;
         // line-height: 1;
       }
 
-      &.is_req{
-        .el-form-item__label::before{
-          content: '*';
+      &.is_req {
+        .el-form-item__label::before {
+          content: "*";
           color: #f56c6c;
           margin-right: 4px;
         }
       }
 
-      &.is_hidden{
+      &.is_hidden {
         background: #fef0f0;
       }
 
-      .widget-view-description{
+      .widget-view-description {
         height: 15px;
         line-height: 15px;
-        font-size:13px;
+        font-size: 13px;
         margin-top: 6px;
-        color:#909399;
+        color: #909399;
       }
 
-      .widget-view-action{
+      .widget-view-action {
         position: absolute;
         right: 0;
         bottom: 0;
@@ -255,16 +258,15 @@ $primary-background-color: #ecf5ff;
         background: $primary-color;
         z-index: 9;
 
-        i{
+        i {
           font-size: 14px;
           color: #fff;
           margin: 0 5px;
           cursor: pointer;
-          
         }
       }
 
-      .widget-view-drag{
+      .widget-view-drag {
         position: absolute;
         left: -2px;
         top: -2px;
@@ -275,7 +277,7 @@ $primary-background-color: #ecf5ff;
         z-index: 10;
         // display: none;
 
-        i{
+        i {
           font-size: 14px;
           color: #fff;
           margin: 0 5px;
@@ -283,7 +285,7 @@ $primary-background-color: #ecf5ff;
         }
       }
 
-      &::after{
+      &::after {
         position: absolute;
         left: 0;
         right: 0;
@@ -291,120 +293,119 @@ $primary-background-color: #ecf5ff;
         bottom: 0;
         display: block;
         z-index: 8;
-        content: '';
+        content: "";
       }
 
-      &:hover{
+      &:hover {
         background: $primary-background-color;
         outline: 1px solid $primary-color;
         outline-offset: 0px;
 
-        &.active{
+        &.active {
           outline: 2px solid $primary-color;
           border: 1px solid $primary-color;
           outline-offset: 0;
         }
 
-        .widget-view-drag{
+        .widget-view-drag {
           display: block;
         }
       }
 
-      &.active{
+      &.active {
         outline: 2px solid $primary-color;
         border: 1px solid $primary-color;
       }
 
-      &.ghost{
-        background: #F56C6C;
-        border: 2px solid #F56C6C;
+      &.ghost {
+        background: #f56c6c;
+        border: 2px solid #f56c6c;
         outline-width: 0;
         height: 3px;
         box-sizing: border-box;
         font-size: 0;
-        content: '';
+        content: "";
         overflow: hidden;
         padding: 0;
         margin: 2px;
       }
     }
 
-    .widget-table{
+    .widget-table {
       padding-bottom: 0;
       padding: 5px;
-      background-color: rgba(253,246,236, .3);
+      background-color: rgba(253, 246, 236, 0.3);
 
-      .widget-table-wrapper{
+      .widget-table-wrapper {
         min-height: 50px;
         background: #fff;
         display: flex;
         justify-content: flex-start;
 
-        .widget-table-row{
-          
-          td{
+        .widget-table-row {
+          td {
             border-bottom: 0;
           }
         }
 
-        .widget-table-left{
+        .widget-table-left {
           width: 51px;
-          border-left: 1px solid #EBEEF5;
-          border-right: 1px solid #EBEEF5;
-          border-top: 1px solid #EBEEF5;
+          border-left: 1px solid #ebeef5;
+          border-right: 1px solid #ebeef5;
+          border-top: 1px solid #ebeef5;
           flex: none;
           overflow: hidden;
 
-          .el-table__body-wrapper{
+          .el-table__body-wrapper {
             overflow: hidden;
           }
 
-          .el-table__fixed{
+          .el-table__fixed {
             min-height: 88px !important;
           }
         }
 
-        .widget-table-view{
-          border: 1px solid #EBEEF5;
+        .widget-table-view {
+          border: 1px solid #ebeef5;
           width: 200px;
           float: left;
           height: 100%;
           position: relative;
           display: block;
 
-          .el-table{
+          .el-table {
             height: 100%;
           }
 
-          .el-table th.required>div::before{
-            content: '*';
+          .el-table th.required > div::before {
+            content: "*";
             color: #f56c6c;
             margin-right: 4px;
             background: transparent;
             vertical-align: top;
           }
 
-          &.is_req{
-            .el-form-item__label::before{
-              content: '*';
+          &.is_req {
+            .el-form-item__label::before {
+              content: "*";
               color: #f56c6c;
               margin-right: 4px;
             }
           }
 
-          &.is_hidden{
+          &.is_hidden {
             background: #fef0f0;
           }
-    
-          .widget-view-description{
+
+          .widget-view-description {
             height: 15px;
             line-height: 15px;
-            font-size:13px;
+            font-size: 13px;
             margin-top: 6px;
-            color:#909399;
+            color: #909399;
           }
-    
-          .widget-view-action{
+
+          .widget-view-action {
             position: absolute;
             right: 0;
             bottom: 0;
@@ -412,17 +413,16 @@ $primary-background-color: #ecf5ff;
             line-height: 28px;
             background: $primary-color;
             z-index: 9;
-    
-            i{
+
+            i {
               font-size: 14px;
               color: #fff;
               margin: 0 5px;
               cursor: pointer;
-              
             }
           }
-    
-          .widget-view-drag{
+
+          .widget-view-drag {
             position: absolute;
             left: -2px;
             top: -2px;
@@ -432,91 +432,91 @@ $primary-background-color: #ecf5ff;
             background: $primary-color;
             z-index: 9;
             // display: none;
-    
-            i{
+
+            i {
               font-size: 14px;
               color: #fff;
               margin: 0 5px;
               cursor: move;
             }
           }
-    
-          &::after{
+
+          &::after {
             position: absolute;
             left: 0;
             right: 0;
             top: 0;
             bottom: 0;
             display: block;
-            content: '';
+            content: "";
           }
 
-          &::before{
+          &::before {
             display: none;
           }
-    
-          &:hover{
+
+          &:hover {
             background: $primary-background-color;
             outline: 1px solid $primary-color;
             outline-offset: -1px;
-    
-            &.active{
+
+            &.active {
               // outline: 1px solid $primary-color;
               border: 1px solid $primary-color;
               outline: 1px solid $primary-color;
               outline-offset: -1px;
             }
-    
-            .widget-view-drag{
+
+            .widget-view-drag {
               display: block;
             }
           }
-    
-          &.active{
+
+          &.active {
             outline: 1px solid $primary-color;
             border: 1px solid $primary-color;
             outline-offset: -1px;
           }
-    
-          &.ghost{
-            background: #F56C6C;
+
+          &.ghost {
+            background: #f56c6c;
             outline-width: 0;
             width: 5px !important;
             box-sizing: border-box;
             font-size: 0;
-            content: '';
+            content: "";
             overflow: hidden;
             padding: 0;
             position: relative;
-            outline: none !important; 
+            outline: none !important;
             border: 0 !important;
             margin: 2px;
 
-            &::after{
-              background: #F56C6C;
+            &::after {
+              background: #f56c6c;
               position: absolute;
               top: 0;
               left: 0;
               bottom: 0;
               right: 0;
               z-index: 9999;
-              content: '';
+              content: "";
               outline: none;
             }
           }
         }
 
-        .widget-table-content{
-          width:100%;
+        .widget-table-content {
+          width: 100%;
           // border: 1px dashed #ccc;
           outline: 1px dashed #ccc;
           background: #fff;
-          flex:1;
+          flex: 1;
           margin: 0 1px;
           overflow: auto;
           position: relative;
 
-          .table-empty{
+          .table-empty {
             position: absolute;
             text-align: center;
             width: 300px;
@@ -528,18 +528,18 @@ $primary-background-color: #ecf5ff;
             color: #ccc;
           }
 
-          &>div{
+          & > div {
             height: 100%;
           }
 
-          .widget-table-col{
+          .widget-table-col {
             height: 100%;
-            
-            .ghost{
-              background: #F56C6C;
+
+            .ghost {
+              background: #f56c6c;
               // border: 2px solid #F56C6C;
               position: relative;
-              content: '';
+              content: "";
               float: left;
               height: calc(100% - 4px);
               width: 5px !important;
@@ -548,16 +548,16 @@ $primary-background-color: #ecf5ff;
               overflow: hidden;
               outline: none;
               margin: 2px;
-            
-              &::after{
-                background: #F56C6C;
+
+              &::after {
+                background: #f56c6c;
                 position: absolute;
                 top: 0;
                 left: 0;
                 bottom: 0;
                 right: 0;
                 z-index: 9999;
-                content: '';
+                content: "";
                 outline: none;
               }
             }
@@ -565,42 +565,42 @@ $primary-background-color: #ecf5ff;
         }
       }
 
-      &.active{
+      &.active {
         outline: 2px solid #e6a23c;
         border: 1px solid #e6a23c;
       }
 
-      &:hover{
+      &:hover {
         background: #fdf6ec;
         outline: 1px solid #e6a23c;
         outline-offset: 0px;
 
-        &.active{
+        &.active {
           outline: 2px solid #e6a23c;
           border: 1px solid #e6a23c;
           outline-offset: 0;
         }
       }
 
-      .widget-view-action.widget-col-action{
+      .widget-view-action.widget-col-action {
         background: #e6a23c;
       }
 
-      .widget-view-drag.widget-col-drag{
+      .widget-view-drag.widget-col-drag {
         background: #e6a23c;
       }
 
-      &::after{
+      &::after {
         display: none;
       }
 
-      &.ghost{
-        background: #F56C6C;
+      &.ghost {
+        background: #f56c6c;
         outline-width: 0;
         height: 5px;
         box-sizing: border-box;
         font-size: 0;
-        content: '';
+        content: "";
         overflow: hidden;
         padding: 0;
         position: relative;
@@ -608,230 +608,230 @@ $primary-background-color: #ecf5ff;
         border: 0;
         margin: 2px;
 
-        &::after{
-          background: #F56C6C;
+        &::after {
+          background: #f56c6c;
           position: absolute;
-          top:0;
+          top: 0;
           left: 0;
           right: 0;
           bottom: 0;
-          content: '';
+          content: "";
           display: block;
           z-index: 999;
         }
       }
     }
 
-    .widget-report-item{
+    .widget-report-item {
       padding: 5px;
-      background-color: rgba(253,246,236, .3);
+      background-color: rgba(253, 246, 236, 0.3);
       min-height: 50px;
       min-width: 50px;
       position: relative;
       box-sizing: border-box;
 
-      &.active{
+      &.active {
         outline: 2px solid #e6a23c;
         border: 1px solid #e6a23c;
         outline-offset: -1px;
       }
 
-      &:hover{
+      &:hover {
         background: #fdf6ec;
         outline: 2px solid #e6a23c;
         border: 1px solid #e6a23c;
         outline-offset: -1px;
 
-        &.active{
+        &.active {
           outline: 2px solid #e6a23c;
           border: 1px solid #e6a23c;
           outline-offset: -1px;
         }
       }
 
-      &::after{
+      &::after {
         display: none;
       }
     }
 
-    .widget-report{
+    .widget-report {
       padding: 5px;
       // padding-bottom: 5;
-      background-color: rgba(253,246,236, .3);
+      background-color: rgba(253, 246, 236, 0.3);
       box-sizing: border-box;
 
-      &.active{
+      &.active {
         outline: 2px solid #e6a23c;
         border: 1px solid #e6a23c;
       }
 
-      &:hover{
+      &:hover {
         background: #fdf6ec;
         outline: 1px solid #e6a23c;
         outline-offset: 0px;
 
-        &.active{
+        &.active {
           outline: 2px solid #e6a23c;
           border: 1px solid #e6a23c;
           outline-offset: 0;
         }
       }
 
-      &.ghost{
-        background: #F56C6C;
-        border: 2px solid #F56C6C;
+      &.ghost {
+        background: #f56c6c;
+        border: 2px solid #f56c6c;
         outline-width: 0;
         height: 3px;
         box-sizing: border-box;
         font-size: 0;
-        content: '';
+        content: "";
         overflow: hidden;
         padding: 0;
         margin: 2px;
       }
 
-      .widget-view-action.widget-col-action{
+      .widget-view-action.widget-col-action {
         background: #e6a23c;
       }
 
-      .widget-view-drag.widget-col-drag{
+      .widget-view-drag.widget-col-drag {
         background: #e6a23c;
       }
 
-      &::after{
+      &::after {
         display: none;
       }
     }
 
-    .widget-tab{
+    .widget-tab {
       padding: 5px;
-      background-color: rgba(253,246,236, .3);
+      background-color: rgba(253, 246, 236, 0.3);
 
-      &.active{
+      &.active {
         outline: 2px solid #e6a23c;
         border: 1px solid #e6a23c;
       }
 
-      &:hover{
+      &:hover {
         background: #fdf6ec;
         outline: 1px solid #e6a23c;
         outline-offset: 0px;
 
-        &.active{
+        &.active {
           outline: 2px solid #e6a23c;
           border: 1px solid #e6a23c;
           outline-offset: 0;
         }
       }
 
-      &.ghost{
-        background: #F56C6C;
-        border: 2px solid #F56C6C;
+      &.ghost {
+        background: #f56c6c;
+        border: 2px solid #f56c6c;
         outline-width: 0;
         height: 3px;
         box-sizing: border-box;
         font-size: 0;
-        content: '';
+        content: "";
         overflow: hidden;
         padding: 0;
         margin: 2px;
       }
 
-      .widget-view-action.widget-col-action{
+      .widget-view-action.widget-col-action {
         background: #e6a23c;
       }
 
-      .widget-view-drag.widget-col-drag{
+      .widget-view-drag.widget-col-drag {
         background: #e6a23c;
       }
 
-      &::after{
+      &::after {
         display: none;
       }
     }
 
-    .widget-col{
+    .widget-col {
       padding-bottom: 0;
       padding: 5px;
       // margin-left: 2px !important;
       // margin-right: 2px !important;
-      background-color: rgba(253,246,236, .3);
+      background-color: rgba(253, 246, 236, 0.3);
       position: relative;
 
-      &.active{
+      &.active {
         outline: 2px solid #e6a23c;
         border: 1px solid #e6a23c;
       }
 
-      &:hover{
+      &:hover {
         background: #fdf6ec;
         outline: 1px solid #e6a23c;
         outline-offset: 0px;
 
-        &.active{
+        &.active {
           outline: 2px solid #e6a23c;
           border: 1px solid #e6a23c;
           outline-offset: 0;
         }
       }
 
-      .el-col{
+      .el-col {
         min-height: 50px;
       }
 
-      &.ghost{
-        background: #F56C6C;
-        border: 2px solid #F56C6C;
+      &.ghost {
+        background: #f56c6c;
+        border: 2px solid #f56c6c;
         outline-width: 0;
         height: 3px;
         box-sizing: border-box;
         font-size: 0;
-        content: '';
+        content: "";
         overflow: hidden;
         padding: 0;
         margin: 2px;
         display: block;
       }
 
-      .widget-view-action.widget-col-action{
+      .widget-view-action.widget-col-action {
         background: #e6a23c;
       }
 
-      .widget-view-drag.widget-col-drag{
+      .widget-view-drag.widget-col-drag {
         background: #e6a23c;
       }
 
-      &::after{
+      &::after {
         display: none;
       }
     }
 
-    .ghost{
-      background: #F56C6C;
-      border: 2px solid #F56C6C;
+    .ghost {
+      background: #f56c6c;
+      border: 2px solid #f56c6c;
       outline-width: 0;
       height: 3px;
       box-sizing: border-box;
       font-size: 0;
-      content: '';
+      content: "";
       overflow: hidden;
       padding: 0;
       margin: 2px;
     }
   }
 
-  .ghost{
-    background: #F56C6C;
-    border: 2px solid #F56C6C;
+  .ghost {
+    background: #f56c6c;
+    border: 2px solid #f56c6c;
     position: relative;
     margin: 2px;
-  
-    &::after{
-      background: #F56C6C;
+
+    &::after {
+      background: #f56c6c;
     }
   }
-  
-  li.ghost{
+
+  li.ghost {
     height: 5px;
     list-style: none;
     font-size: 0;
@@ -839,46 +839,46 @@ $primary-background-color: #ecf5ff;
     margin: 2px;
   }
 
-  .widget-grid{
-    background: #F4F6FC;
+  .widget-grid {
+    background: #f4f6fc;
     position: relative;
     border-left: 5px solid transparent;
     padding: 5px;
     margin: 0 !important;
 
-    &.active{
+    &.active {
       border-left: 5px solid $primary-color;
       background: #b3d8ff;
     }
   }
 
-  .widget-grid-container{
-    &.ghost{
-      background: #F56C6C;
-      border: 2px solid #F56C6C;
+  .widget-grid-container {
+    &.ghost {
+      background: #f56c6c;
+      border: 2px solid #f56c6c;
       outline-width: 0;
       height: 3px;
       box-sizing: border-box;
       font-size: 0;
-      content: '';
+      content: "";
       overflow: hidden;
       padding: 0;
       margin: 2px;
     }
   }
 
-  .ghost{
-    background: #F56C6C;
-    border: 2px solid #F56C6C;
+  .ghost {
+    background: #f56c6c;
+    border: 2px solid #f56c6c;
     position: relative;
     margin: 2px;
-  
-    &::after{
-      background: #F56C6C;
+
+    &::after {
+      background: #f56c6c;
     }
   }
-  
-  li.ghost{
+
+  li.ghost {
     height: 5px;
     list-style: none;
     font-size: 0;
@@ -887,15 +887,15 @@ $primary-background-color: #ecf5ff;
   }
 }
 
-.widget-config-container{
+.widget-config-container {
   position: relative;
 
-  .el-header{
+  .el-header {
     border-bottom: solid 2px #e4e7ed;
     padding: 0 5px;
   }
 
-  .config-tab{
+  .config-tab {
     height: 45px;
     line-height: 45px;
     display: inline-block;
@@ -906,16 +906,16 @@ $primary-background-color: #ecf5ff;
     position: relative;
     cursor: pointer;
 
-    &.active{
+    &.active {
       border-bottom: solid 2px $primary-color;
     }
   }
 
-  .config-content{
+  .config-content {
     padding: 10px;
     position: relative;
 
-    .empty{
+    .empty {
       position: absolute;
       text-align: center;
       width: 100px;
@@ -927,7 +927,7 @@ $primary-background-color: #ecf5ff;
       color: #ccc;
     }
 
-    .el-form-item__label{
+    .el-form-item__label {
       padding: 0;
       font-weight: 500;
     }
@@ -937,27 +937,27 @@ $primary-background-color: #ecf5ff;
       padding-bottom: 10px;
     }
 
-    .validate-block{
-      +.validate-block{
+    .validate-block {
+      + .validate-block {
         margin-top: 10px;
       }
 
-      .message-input{
+      .message-input {
         margin-left: 24px;
         width: 239px;
       }
     }
   }
 
-  .ghost{
+  .ghost {
     background: #fff;
     border: 1px dashed $primary-color;
     margin: 2px;
-  
-    &::after{
+
+    &::after {
       background: #fff;
       display: block;
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
@@ -965,13 +965,13 @@ $primary-background-color: #ecf5ff;
       bottom: 0;
     }
   }
-  
-  ul{
+
+  ul {
     margin: 0;
     padding: 0;
   }
-  
-  li.ghost{
+
+  li.ghost {
     list-style: none;
     font-size: 0;
     display: block;
@@ -980,6 +980,6 @@ $primary-background-color: #ecf5ff;
   }
 }
 
-.viewer-container{
+.viewer-container {
   z-index: 99999 !important;
 }
