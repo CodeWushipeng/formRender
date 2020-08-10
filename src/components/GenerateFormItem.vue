@@ -891,14 +891,16 @@ export default {
         request
       );
       console.log(this.widget.options.remoteFunc);
-      this.widget.options.remoteOptions = remoteData.map((item) => {
-        //remoteOptions 表单动态选项配置
-        return {
-          value: item[this.widget.options.props.value],
-          label: item[this.widget.options.props.label],
-          children: item[this.widget.options.props.children],
-        };
-      });
+      if (remoteData && typeof remoteData === "object") {
+        this.widget.options.remoteOptions = remoteData.map((item) => {
+          //remoteOptions 表单动态选项配置
+          return {
+            value: item[this.widget.options.props.value],
+            label: item[this.widget.options.props.label],
+            children: item[this.widget.options.props.children],
+          };
+        });
+      }
     }
     // 七牛图片上传
     if (this.widget.type === "imgupload" && this.widget.options.isQiniu) {
