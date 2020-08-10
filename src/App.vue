@@ -1,21 +1,17 @@
 <template>
   <div id="app">
     <div class="fm-header">
-      <img class="fm-logo" src="./assets/logo.png">
+      <img class="fm-logo" src="./assets/logo.png" />
       <div class="fm-title" @click="handleHome">{{$t('header.title')}}</div>
 
       <!--<iframe style="vertical-align: middle;margin-top:10px;margin-left: 10px;" src="https://ghbtns.com/github-btn.html?user=GavinZhulei&repo=vue-form-making&type=star&count=true" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>-->
 
-      <div class="fm-link">
-        <a target="_blank" href="http://form.xiaoyaoji.cn/pricing">{{$t('header.pricing')}}</a>
-        <a target="_blank" href="http://docs.form.xiaoyaoji.cn">{{$t('header.document')}}</a>
-        <a target="_blank" href="http://docs.form.xiaoyaoji.cn/zh/other/course.html" v-if="$lang == 'zh-CN'">学习课程</a>
-        <a target="_blank" href="https://github.com/GavinZhuLei/vue-form-making">GitHub</a>
-
+      <!-- <div class="fm-link">
         <div class="action-item">
           <el-dropdown trigger="click" @command="handleLangCommand">
             <span class="el-dropdown-link">
-              {{$route.params.lang == 'zh-CN' ? '简体中文' : 'English'}}<i class="el-icon-arrow-down el-icon--right"></i>
+              {{$route.params.lang == 'zh-CN' ? '简体中文' : 'English'}}
+              <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="zh-CN">简体中文</el-dropdown-item>
@@ -23,44 +19,46 @@
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-
-        <a class="ad" href="http://form.xiaoyaoji.cn" target="_blank">{{$t('header.advanced')}}</a>
-        <a class="ad" href="http://www.xiaoyaoji.cn" target="_blank" v-if="$lang == 'zh-CN'">小幺鸡接口工具</a>
-      </div>
+      </div>-->
     </div>
-    <div  class="fm-container"><router-view/></div>
+    <div class="fm-container">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
+import Vue from "vue";
 export default {
-  name: 'app',
+  name: "app",
   methods: {
-    handleHome () {
-      this.$router.push({path: '/'})
+    handleHome() {
+      this.$router.push({ path: "/" });
     },
 
-    handleLangCommand (command) {
-      this.$router.replace({name: this.$route.name, params: {lang: command}})
-    }
-  }
-}
+    handleLangCommand(command) {
+      this.$router.replace({
+        name: this.$route.name,
+        params: { lang: command },
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss">
-.fm-header{
+.fm-header {
   height: 50px;
-  box-shadow: 0 2px 10px rgba(70,160,252, 0.6);
+  box-shadow: 0 2px 10px rgba(70, 160, 252, 0.6);
   padding: 0 10px;
-  background-image: linear-gradient(to right,#1278f6,#00b4aa);
+  background-image: linear-gradient(to right, #1278f6, #00b4aa);
   position: relative;
 
-  .fm-logo{
+  .fm-logo {
     height: 26px;
     vertical-align: middle;
   }
-  .fm-title{
+  .fm-title {
     display: inline-block;
     line-height: 50px;
     vertical-align: middle;
@@ -71,11 +69,11 @@ export default {
     margin-left: 6px;
     cursor: pointer;
   }
-  .fm-link{
+  .fm-link {
     height: 50px;
     float: right;
 
-    a{
+    a {
       color: #fff;
       text-decoration: none;
       font-size: 14px;
@@ -83,48 +81,51 @@ export default {
       font-weight: 500;
       margin-left: 15px;
 
-      &:hover{
+      &:hover {
         opacity: 0.8;
       }
 
-      &.ad{
+      &.ad {
         color: #f5dab1;
       }
     }
 
-    .action-item{
+    .action-item {
       display: inline-block;
       margin-left: 15px;
-      .el-dropdown{
+      .el-dropdown {
         // font-size: 16px;
         // font-weight: 500;
       }
-      .el-dropdown-link{
+      .el-dropdown-link {
         cursor: pointer;
         color: #fff;
 
-        &:hover{
+        &:hover {
           opacity: 0.8;
         }
       }
 
-      &.action-item-user{
-        .el-dropdown-link{
+      &.action-item-user {
+        .el-dropdown-link {
           color: #f5dab1;
         }
       }
     }
   }
 }
-.fm-container{
+.fm-container {
   height: calc(100% - 50px);
 }
-*, :after, :before {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+*,
+:after,
+:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
-html,body{
+html,
+body {
   height: 100%;
 }
 #app {
