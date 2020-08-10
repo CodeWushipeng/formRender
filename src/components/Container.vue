@@ -230,7 +230,8 @@
 
         <el-aside
           v-if="widgetFormSelect && widgetFormSelect.type == 'elTable'"
-          class="widget-config-container">
+          class="widget-config-container"
+        >
           <el-container>
             <el-header height="45px">
               <div
@@ -292,7 +293,7 @@
 
         <cus-dialog
           :visible="previewVisible"
-          @on-close="previewVisible = false"
+          @on-close="closePreview"
           ref="widgetPreview"
           width="1000px"
           form
@@ -545,7 +546,7 @@ export default {
         theme: "monokai",
         lineNumbers: true,
         lineWrapping: true,
-        extraKeys: { Ctrl: "autocomplete" },
+        extraKeys: { Tab: "autocomplete" },
         autofocus: true,
         matchBrackets: true,
         smartIndent: true,
@@ -554,8 +555,11 @@ export default {
         scrollbarStyle: "overlay",
         spellcheck: true,
         autocorrect: true,
+        autoCloseBrackets: true,
         indentUnit: 2,
         line: true,
+        showHint: true,
+        gutters: ["CodeMirror-lint-markers"],
       },
       modelLists: [],
       mirrorVisible: false,
@@ -576,6 +580,7 @@ export default {
         },
         extendDetail: "function main ()" + "{\n" + "}",
       },
+      oldWidgetForm: [], //保存预览之前的组件配置数据
       configTab: "widget",
       widgetFormSelect: null,
       previewVisible: false,
@@ -631,6 +636,9 @@ export default {
     codemirror() {
       return this.$refs.myCm.codemirror;
     },
+  },
+  created() {
+    localStorage.removeItem("selectIndex");
   },
   mounted() {
     this._loadComponents();
@@ -857,6 +865,7 @@ export default {
       }
     },
     handlePreview() {
+      this.oldWidgetForm = JSON.parse(JSON.stringify(this.widgetForm));
       let tempList = [];
       this.widgetForm.list.forEach((item) => {
         if (item.type === "grid") {
@@ -871,6 +880,13 @@ export default {
         return;
       }
       this.previewVisible = true;
+    },
+    closePreview() {
+      this.widgetForm = this.oldWidgetForm;
+      this._loadComponents();
+      let index = localStorage.getItem("selectIndex") * 1;
+      this.widgetFormSelect = this.widgetForm.list[index];
+      this.previewVisible = false;
     },
     handleTest() {
       this.$refs.generateForm

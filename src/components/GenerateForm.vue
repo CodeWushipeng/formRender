@@ -62,7 +62,13 @@
         </template>
 
         <template v-else-if="item.type == 'blank'">
-          <el-form-item :label="item.name" :prop="item.model" :key="item.key" class="targetEle">
+          <el-form-item
+            :label="item.name"
+            :prop="item.model"
+            :key="item.key"
+            class="targetEle"
+            :style="{'width':item.options.width}"
+          >
             <slot :name="item.model" :model="models"></slot>
           </el-form-item>
         </template>
@@ -368,7 +374,7 @@ export default {
       }
     },
     clearValidate() {
-      let lists = this.data.list;
+      let lists = this.comArr;
       for (let i = 0; i < lists.length; i++) {
         if (
           lists[i].options.disabled ||
@@ -384,7 +390,6 @@ export default {
           }
         }
       }
-      console.log(this.data);
     },
     // 重置表单
     reset() {

@@ -2,7 +2,7 @@
   <div v-if="show">
     <el-form
       label-position="top"
-      v-show="data.type !='grid' && data.type !=='imageshow' && data.type !=='imageupload' && data.type !=='fileupload' && data.type !=='videoupload' && data.type !=='divider'"
+      v-show="data.type !='grid' && data.type !=='imageshow' && data.type !=='imageupload' && data.type !=='fileupload' && data.type !=='videoupload' && data.type !=='divider' && data.type !=='blank'"
     >
       <!-- 字典服务 -->
       <el-form-item :label="$t('fm.config.common.remoteCode')" v-if="data.type == 'select'">

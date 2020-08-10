@@ -390,6 +390,7 @@ export default {
   mounted() {},
   methods: {
     handleSelectWidget(index) {
+      localStorage.setItem("selectIndex", index);
       this.selectWidget = this.data.list[index];
     },
     handleWidgetDelete(index) {

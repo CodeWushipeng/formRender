@@ -15,7 +15,6 @@ export const bankingComponents = [
       disabled: false,
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
       tips: "",
     },
     hidden:
@@ -96,7 +95,6 @@ export const bankingComponents = [
       disabled: false,
       labelWidth: 100,
       isLabelWidth: false,
-      showPassword: false,
       tips: "",
     },
     hidden:
