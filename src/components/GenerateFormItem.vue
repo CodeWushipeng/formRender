@@ -136,14 +136,17 @@
           @keyup.native.enter="change"
           :ref="widget.model"
         >
-          <template slot="prepend">
-            <el-button
-              v-if="widget.options.tips != ''"
-              @click="showTips(widget.options.tips)"
-              slot="prepend"
-              icon="el-icon-question"
-            ></el-button>
-          </template>
+          <el-tooltip
+            v-if="widget.options.tips != ''"
+            slot="prepend"
+            class="item"
+            effect="dark"
+            :content="widget.options.tips"
+            placement="top-start"
+          >
+            <!-- <el-button icon="el-icon-question" @click="showTips(widget.options.tips)"></el-button> -->
+            <el-button icon="el-icon-question"></el-button>
+          </el-tooltip>
         </el-input>
       </template>
 
