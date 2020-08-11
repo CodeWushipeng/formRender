@@ -162,7 +162,7 @@
       </el-form-item>
 
       <el-form-item
-        label="$t('fm.config.widget.allowHalf')"
+        :label="$t('fm.config.widget.allowHalf')"
         v-if="Object.keys(data.options).indexOf('allowHalf')>=0"
       >
         <el-switch v-model="data.options.allowHalf"></el-switch>
