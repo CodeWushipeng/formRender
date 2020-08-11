@@ -118,7 +118,6 @@ let handlers = {
     },
     // 获取表格全部tr
     getAllPoupTr() {
-      debugger;
       let generate = document.querySelector('.el-dialog .generateForm');
       if (generate) {
         // debugger
@@ -145,6 +144,12 @@ let handlers = {
               this.allTrs[mark].classList.remove('tr-bg');
               mark--;
               this.allTrs[mark].classList.add('tr-bg');
+            } else if (window.event.keyCode === 13) {
+              // debugger;
+              let rowData = this.$parent.$parent.gridData.list[0].configdata
+                .list[0].options.tableData[mark];
+              console.log(this.$parent.$parent.gridData.list[0]);
+              this.getRowData(rowData);
             }
           });
         });
@@ -153,7 +158,6 @@ let handlers = {
     },
     // 表格配置项弹出后接管流程控制
     toggleGenerate(rowData) {
-      // debugger;
       localStorage.setItem('oldMark', this.outMark);
     },
     // 表格配置项弹窗关闭
