@@ -779,6 +779,7 @@ import { InputMoney } from "../util/amtUtil";
 import request from "../util/request.js";
 import ElImage from "element-ui/packages/image/src/main";
 import { RES_OK, FAIL_CODE } from "@/api/config";
+import { getDicTwo } from "@/api/forms";
 import { getFormConfigDataById } from "../components/table/tableAction";
 import itemHandle from "./mixins/itemHandle.js";
 import hrSelect from "./base-components/my-select/select";
@@ -901,6 +902,61 @@ export default {
           };
         });
       }
+    }
+    if (this.widget.remoteCode) {
+      getDicTwo({
+        body: {
+          dicName: this.widget.remoteCode,
+        },
+        header: {
+          pageIndex: this.startPage,
+          pageSize: 10,
+          gloSeqNo: new Date(),
+          reqSeqNo: "sit anim",
+          reqTime: "officia ad anim",
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.header && res.header.rspCode == RES_OK) {
+            this.$notify({
+              title: "Success",
+              message: "查询成功",
+              type: "success",
+              duration: 2000,
+            });
+            let tempArr = res.body.dics.records;
+            let resultArr = [];
+            tempArr.forEach((item) => {
+              let tempJson = {
+                value: "",
+                label: "",
+              };
+              tempJson.label = item.itemValue;
+              tempJson.value = item.itemCode;
+              resultArr.push(tempJson);
+            });
+            console.log(tempArr, resultArr);
+            this.widget.options.options = resultArr;
+          } else if (res.header && res.header.rspCode == FAIL_CODE) {
+            this.$notify({
+              title: "fail",
+              message: "查询失败",
+              type: "info",
+              duration: 2000,
+            });
+            return;
+          }
+        })
+        .catch((error) => {
+          this.$notify({
+            title: "fail",
+            message: "查询失败",
+            type: "info",
+            duration: 2000,
+          });
+          return;
+        });
     }
     // 七牛图片上传
     if (this.widget.type === "imgupload" && this.widget.options.isQiniu) {
