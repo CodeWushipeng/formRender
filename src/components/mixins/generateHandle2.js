@@ -118,6 +118,7 @@ let handlers = {
     },
     // 获取表格全部tr
     getAllPoupTr() {
+      debugger;
       let generate = document.querySelector('.el-dialog .generateForm');
       if (generate) {
         // debugger
@@ -538,6 +539,7 @@ let handlers = {
       try {
         tempFunc(this.$parent.$parent.models, res.body);
         this.$parent.$parent.trade = false;
+        this.$parent.$parent.gridData = null;
       } catch (error) {
         this.$parent.$parent.handelValidate(
           'error',
