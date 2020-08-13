@@ -184,19 +184,12 @@ export default {
       this.mirrorVisible = true;
       this.tableCodeCf.codeType = type;
       if (type == "handleCurrentChange") {
-        this.tableCodeCf.tableCodeFn =
-          "function main(page){debugger; console.log(page);}";
+        this.tableCodeCf.tableCodeFn = this.data.options.pagination.handleCurrentChange;
       } else if (type == "handleSizeChange") {
-        this.tableCodeCf.tableCodeFn =
-          "function mian(page){debugger; console.log(page);}";
+        this.tableCodeCf.tableCodeFn = this.data.options.pagination.handleSizeChange;
       } else if (type == "tableRemotFun") {
-        if(this.data.options.remoteFunc){
-          this.tableCodeCf.tableCodeFn = this.data.options.remoteFunc;
-        }else{
-          this.tableCodeCf.tableCodeFn ="function mian(currentObj, request, callBack) {debugger;}";
-        }
+        this.tableCodeCf.tableCodeFn = this.data.options.remoteFunc;
       }
-
     },
     closeMirror() {
       this.mirrorVisible = false;
@@ -295,7 +288,7 @@ export default {
       let temTableCfg = deepClone(row);
       this.data.configdata = JSON.parse(temTableCfg.listContent);
       this.handleDisplayColumns(this.data.configdata);
-      this.tableName = temTableCfg.listName;
+      this.tableName = temTableCfg.listName+'('+temTableCfg.listCode+')';
       this.tableCode = temTableCfg.listCode;
       this.dialogTableVisible = false;
       this.tableCodeCf.tableCodeFn ="function mian(currentObj, request, callBack) {debugger;}";
@@ -304,9 +297,12 @@ export default {
       if(configdata&&configdata.list[0]){
         let columns = configdata.list[0].options.columns;
         let displayColumns = [];
-        columns.map(item =>{
+        columns.forEach(item =>{
           if(item.isDisplay){
             displayColumns.push(item.prop);
+          }
+          if(typeof(item.formatter) == 'string'){
+            item.formatter = eval("(" + item.formatter + ")");
           }
         })
         this.data.options.displayColumns = displayColumns;
