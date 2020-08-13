@@ -69,6 +69,15 @@ let handlers = {
     // 初始化时复制一份models数据
     copyMOdels() {
       Object.assign(this.widgetPreValue, this.models);
+      for (const key in this.widgetPreValue) {
+        if (this.widgetPreValue.hasOwnProperty(key)) {
+          const element = this.widgetPreValue[key];
+          if (element) {
+            this.widgetPreValue[key] = '';
+          }
+        }
+      }
+      console.log(this.widgetPreValue);
     },
     // 组件失去焦点
     blurValidate(params) {
@@ -120,7 +129,6 @@ let handlers = {
     getAllPoupTr() {
       let generate = document.querySelector('.el-dialog .generateForm');
       if (generate) {
-        // debugger
         this.allTrs = generate.getElementsByClassName('el-table__row');
         if (this.allTrs.length === 0) {
           return;
@@ -145,9 +153,11 @@ let handlers = {
               mark--;
               this.allTrs[mark].classList.add('tr-bg');
             } else if (window.event.keyCode === 13) {
-              // debugger;
-              let rowData = this.$parent.$parent.gridData.list[0].configdata
-                .list[0].options.tableData[mark];
+              debugger;
+              let rowData =
+                this.$parent.$parent.gridData &&
+                this.$parent.$parent.gridData.list[0].configdata.list[0].options
+                  .tableData[mark];
               console.log(this.$parent.$parent.gridData.list[0]);
               this.getRowData(rowData);
             }
@@ -734,20 +744,19 @@ let handlers = {
     },
     // 回车事件
     onElChange(params) {
-      // debugger
       if (this.cancelNext) {
         this.cancelNext = false;
         return;
       }
-      if (
-        this.widgetPreValue[params] &&
-        this.models[params] &&
-        this.widgetPreValue[params] == this.models[params]
-      ) {
-        this.handelFlow();
-        return;
-      }
       if (this.outMark < this.canFocusLength) {
+        if (
+          this.widgetPreValue[params] &&
+          this.models[params] &&
+          this.widgetPreValue[params] == this.models[params]
+        ) {
+          this.handelFlow();
+          return;
+        }
         this.allValidate(this.outMark);
         this.remoteValidate(this.outMark);
       } else if (this.outMark == this.canFocusLength) {
