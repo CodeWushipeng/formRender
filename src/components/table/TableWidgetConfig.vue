@@ -230,32 +230,29 @@ export default {
     getTableListData() {
       this.dialogTableVisible = true;
       getTableList(
+        "",
         // .post("/dev-api/tableDevelop/listManage/queryAllDefine", {
         {
-          body: {
-            listName: this.tablePageCf.searchValue,
-          },
-          header: {
-            antiWeightSeqNo: "anim",
-            gloSeqNo: "G11111",
-            pageIndex: this.tablePageCf.startPage,
-            pageSize: this.tablePageCf.pageSize,
-            projectId: "consequat sit",
-            reqSeqNo: "R11111",
-            reqTime: "202012121212",
-            serviceGroupid: "pariatur anim in",
-            serviceId: "consectetur",
-            serviceName: "dolor nisi ex",
-            subProjectId: "velit in t",
-            userInfo: {
-              role: [
-                "dolor do",
-                "deserunt ea",
-                "anim occaecat ea",
-                "sint aliqua dolore",
-              ],
-              username: "veniam",
-            },
+          listName: this.tablePageCf.searchValue,
+          antiWeightSeqNo: "anim",
+          gloSeqNo: "G11111",
+          pageIndex: this.tablePageCf.startPage,
+          pageSize: this.tablePageCf.pageSize,
+          projectId: "consequat sit",
+          reqSeqNo: "R11111",
+          reqTime: "202012121212",
+          serviceGroupid: "pariatur anim in",
+          serviceId: "consectetur",
+          serviceName: "dolor nisi ex",
+          subProjectId: "velit in t",
+          userInfo: {
+            role: [
+              "dolor do",
+              "deserunt ea",
+              "anim occaecat ea",
+              "sint aliqua dolore",
+            ],
+            username: "veniam",
           },
         }
       )
