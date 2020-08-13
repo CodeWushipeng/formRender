@@ -812,7 +812,7 @@ let handlers = {
       this.comArr.forEach((item) => {
         if (item.options.remote && item.options.remoteFunc) {
           let result = eval('(' + item.options.remoteFunc + ')')();
-          let resultArr;
+          let resultArr = [];
           let resValue = item.options.props.value;
           let resLabel = item.options.props.label;
           result.forEach((resitem) => {
