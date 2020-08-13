@@ -22,6 +22,7 @@
               style="marginLeft:20px"
               @click="search"
               icon="el-icon-search"
+              :disabled="!value"
             >搜索</el-button>
           </div>
           <el-table :data="gridData" border @row-dblclick="setData">

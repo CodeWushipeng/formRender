@@ -25,7 +25,7 @@
 
     <el-form-item
       class="widget-view"
-      v-if="element && element.key && element.type != 'divider'"
+      v-if="element && element.key && element.type != 'divider' || element.type != 'tabs'"
       :label="(element.type != 'buttonCom' && element.type != 'alink' && !element.options.hideLabel) ? element.name : ''"
       @click.native.stop="handleSelectWidget(index)"
       :class="{active: selectWidget.key == element.key, 'is_req': element.options.required, 'is_hidden': element.options.hidden}"

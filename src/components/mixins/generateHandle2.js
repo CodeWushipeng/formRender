@@ -810,16 +810,18 @@ let handlers = {
     // 发送remote方法
     pushRemoteFunc() {
       this.comArr.forEach((item) => {
-        if (item.options.remoteFunc) {
-          let result = this.evalWrap(item.options.remoteFunc);
+        if (item.options.remote && item.options.remoteFunc) {
+          let result = eval('(' + item.options.remoteFunc + ')')();
           let resultArr;
+          let resValue = item.options.props.value;
+          let resLabel = item.options.props.label;
           result.forEach((resitem) => {
             let tempJson = {
               value: '',
               label: '',
             };
-            tempJson.label = resitem.itemValue;
-            tempJson.value = resitem.itemCode;
+            tempJson.label = resitem[resLabel];
+            tempJson.value = resitem[resValue];
             resultArr.push(tempJson);
           });
           item.options.options = resultArr;
@@ -943,6 +945,7 @@ let handlers = {
         clearInterval(inter);
         this.mountExtendJS();
         this.tranData(this.data);
+        this.pushRemoteFunc();
         this.handelHidden();
         this.enterCheck();
         this.getAllItems();

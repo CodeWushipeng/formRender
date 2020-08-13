@@ -66,7 +66,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -144,7 +144,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -223,7 +223,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -329,7 +329,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -432,7 +432,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -515,7 +515,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -598,7 +598,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -673,7 +673,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -747,7 +747,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -808,7 +808,8 @@ export const basicComponents = [
       	request.post(url,{data:123})
       	.then(res=>{
           console.log(res))
-          return res
+          //将需要赋值给组件的数组或者列表数据返回
+          return res.body.list
       	})
       	.catch(error=>{console.log(error)})
       }`,
@@ -816,8 +817,18 @@ export const basicComponents = [
     isCascader: false,
     cascaderUrl: '',
     fatherModel: '',
-    requestData: '',
-    responseData: '',
+    requestData:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 返回请求的JSON数据\n' +
+      '\treturn {}\n' +
+      '}',
+    responseData:
+      'function main (models,res,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
     hidden:
       'function main (models,utils)' +
       '{\n' +
@@ -860,7 +871,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -933,7 +944,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -1012,7 +1023,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -1084,7 +1095,7 @@ export const basicComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -1197,7 +1208,7 @@ export const advanceComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
@@ -1289,7 +1300,7 @@ export const advanceComponents = [
     success:
       'function main (models,res,utils)' +
       '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
     multiToggle: false,
