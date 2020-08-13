@@ -281,7 +281,7 @@ export const basicComponents = [
       	//post请求示例
       	request.post(url,{data:123})
       	.then(res=>{
-          console.log(res))
+          console.log(res)
           return res
       	})
       	.catch(error=>{console.log(error)})
@@ -384,7 +384,7 @@ export const basicComponents = [
       	//post请求示例
       	request.post(url,{data:123})
       	.then(res=>{
-          console.log(res))
+          console.log(res)
           return res
       	})
       	.catch(error=>{console.log(error)})
@@ -807,7 +807,7 @@ export const basicComponents = [
       	//post请求示例
       	request.post(url,{data:123})
       	.then(res=>{
-          console.log(res))
+          console.log(res)
           //将需要赋值给组件的数组或者列表数据返回
           return res.body.list
       	})
@@ -1253,7 +1253,7 @@ export const advanceComponents = [
       	//post请求示例
       	request.post(url,{data:123})
       	.then(res=>{
-          console.log(res))
+          console.log(res)
           return res
       	})
       	.catch(error=>{console.log(error)})
@@ -1390,84 +1390,84 @@ export const tableComponents = [
       isDetailCustom: false,
       displayColumns: [],
       remoteFunc:
-        '/**'+
-        '\n* 自定义数据来源main函数'+
-        '\n* @param {'+
-        '\n* currentObj  当前vue组件（widgetFomItem）实例'+
-        '\n* request 请求数据方法'+
-        '\n* callBack 回调函数'+
-        '\n* }'+
-        '\n*/'+
+        '/**' +
+        '\n* 自定义数据来源main函数' +
+        '\n* @param {' +
+        '\n* currentObj  当前vue组件（widgetFomItem）实例' +
+        '\n* request 请求数据方法' +
+        '\n* callBack 回调函数' +
+        '\n* }' +
+        '\n*/' +
         '\nfunction main (currentObj,request,callBack){' +
-        '\n// request.post(url, {}).then(res => {'+
-        '\n//   callBack(res);'+
-        '\n// }).catch(error => console.log(error));'+
+        '\n// request.post(url, {}).then(res => {' +
+        '\n//   callBack(res);' +
+        '\n// }).catch(error => console.log(error));' +
         '\n}',
       addFn:
-        '/**'+
-        '\n* @param {'+
-        '\n* currentObj  当前表格组件对象'+
-        '\n* request 请求数据方法'+
-        '\n* callBack 回调函数'+
-        '\n* }'+
-        '\n*/'+
+        '/**' +
+        '\n* @param {' +
+        '\n* currentObj  当前表格组件对象' +
+        '\n* request 请求数据方法' +
+        '\n* callBack 回调函数' +
+        '\n* }' +
+        '\n*/' +
         '\nfunction main (currentObj,request,callBack){' +
-        '\n\treturn {}'+
+        '\n\treturn {}' +
         '\n}',
       editFn:
-        '/**'+
-        '\n* @param {'+
-        '\n* currentObj  当前表格组件对象'+
-        '\n* request 请求数据方法'+
-        '\n* callBack 回调函数'+
-        '\n* }'+
-        '\n*/'+
+        '/**' +
+        '\n* @param {' +
+        '\n* currentObj  当前表格组件对象' +
+        '\n* request 请求数据方法' +
+        '\n* callBack 回调函数' +
+        '\n* }' +
+        '\n*/' +
         '\nfunction main (currentObj,request,callBack){' +
-        '\n\treturn {}'+
+        '\n\treturn {}' +
         '\n}',
       detailFn:
-        '/**'+
-        '\n* @param {'+
-        '\n* currentObj  当前表格组件对象'+
-        '\n* request 请求数据方法'+
-        '\n* callBack 回调函数'+
-        '\n* }'+
-        '\n*/'+
+        '/**' +
+        '\n* @param {' +
+        '\n* currentObj  当前表格组件对象' +
+        '\n* request 请求数据方法' +
+        '\n* callBack 回调函数' +
+        '\n* }' +
+        '\n*/' +
         '\nfunction main (currentObj,request,callBack){' +
-        '\n\treturn {}'+
+        '\n\treturn {}' +
         '\n}',
       deleteFn:
-        '/**'+
-        '\n* @param {'+
-        '\n* currentObj  当前表格组件对象'+
-        '\n* request 请求数据方法'+
-        '\n* callBack 回调函数'+
-        '\n* }'+
-        '\n*/'+
+        '/**' +
+        '\n* @param {' +
+        '\n* currentObj  当前表格组件对象' +
+        '\n* request 请求数据方法' +
+        '\n* callBack 回调函数' +
+        '\n* }' +
+        '\n*/' +
         '\nfunction main (currentObj,request,callBack){' +
-        '\n\treturn {}'+
+        '\n\treturn {}' +
         '\n}',
       pagination: {
         pageSize: 1,
         currentPage: 1,
         pagerCount: 5,
         total: 0,
-        handleSizeChange: 
-        '/**'+
-        '\n* @param {'+
-        '\n* pageSize  每页条数'+
-        '\n* }'+
-        '\n*/'+
-        '\nfunction main (pageSize){' +
-        '\n}',
-        handleCurrentChange: 
-        '/**'+
-        '\n* @param {'+
-        '\n* page  当前页'+
-        '\n* }'+
-        '\n*/'+
-        '\nfunction main (page){' +
-        '\n}',
+        handleSizeChange:
+          '/**' +
+          '\n* @param {' +
+          '\n* pageSize  每页条数' +
+          '\n* }' +
+          '\n*/' +
+          '\nfunction main (pageSize){' +
+          '\n}',
+        handleCurrentChange:
+          '/**' +
+          '\n* @param {' +
+          '\n* page  当前页' +
+          '\n* }' +
+          '\n*/' +
+          '\nfunction main (page){' +
+          '\n}',
       },
       eventConfig: {},
     },
