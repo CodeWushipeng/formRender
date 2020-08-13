@@ -229,33 +229,29 @@ export default {
     // 获取表格已经配置的表格信息
     getTableListData() {
       this.dialogTableVisible = true;
-      getTableList(
-        "",
-        // .post("/dev-api/tableDevelop/listManage/queryAllDefine", {
-        {
-          listName: this.tablePageCf.searchValue,
-          antiWeightSeqNo: "anim",
-          gloSeqNo: "G11111",
-          pageIndex: this.tablePageCf.startPage,
-          pageSize: this.tablePageCf.pageSize,
-          projectId: "consequat sit",
-          reqSeqNo: "R11111",
-          reqTime: "202012121212",
-          serviceGroupid: "pariatur anim in",
-          serviceId: "consectetur",
-          serviceName: "dolor nisi ex",
-          subProjectId: "velit in t",
-          userInfo: {
-            role: [
-              "dolor do",
-              "deserunt ea",
-              "anim occaecat ea",
-              "sint aliqua dolore",
-            ],
-            username: "veniam",
-          },
-        }
-      )
+      getTableList({
+        listName: this.tablePageCf.searchValue,
+        antiWeightSeqNo: "anim",
+        gloSeqNo: "G11111",
+        pageIndex: this.tablePageCf.startPage,
+        pageSize: this.tablePageCf.pageSize,
+        projectId: "consequat sit",
+        reqSeqNo: "R11111",
+        reqTime: "202012121212",
+        serviceGroupid: "pariatur anim in",
+        serviceId: "consectetur",
+        serviceName: "dolor nisi ex",
+        subProjectId: "velit in t",
+        userInfo: {
+          role: [
+            "dolor do",
+            "deserunt ea",
+            "anim occaecat ea",
+            "sint aliqua dolore",
+          ],
+          username: "veniam",
+        },
+      })
         .then((res) => {
           console.log(res);
           if (
