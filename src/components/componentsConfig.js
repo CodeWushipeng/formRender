@@ -1379,48 +1379,84 @@ export const tableComponents = [
       isDetailCustom: false,
       displayColumns: [],
       remoteFunc:
-        'function main (request)' +
-        '{\n' +
-        '\trequest为请求方法\n' +
-        '\treturn []\n' +
-        '}',
+        '/**'+
+        '\n* 自定义数据来源main函数'+
+        '\n* @param {'+
+        '\n* currentObj  当前vue组件（widgetFomItem）实例'+
+        '\n* request 请求数据方法'+
+        '\n* callBack 回调函数'+
+        '\n* }'+
+        '\n*/'+
+        '\nfunction main (currentObj,request,callBack){' +
+        '\n// request.post(url, {}).then(res => {'+
+        '\n//   callBack(res);'+
+        '\n// }).catch(error => console.log(error));'+
+        '\n}',
       addFn:
-        'function main (currentObj,request,callBack)' +
-        '{\n' +
-        '\t//currentObj为当前表格组件对象 request为请求方法,callBack回调方法\n' +
-        '\treturn {}\n' +
-        '}',
+        '/**'+
+        '\n* @param {'+
+        '\n* currentObj  当前表格组件对象'+
+        '\n* request 请求数据方法'+
+        '\n* callBack 回调函数'+
+        '\n* }'+
+        '\n*/'+
+        '\nfunction main (currentObj,request,callBack){' +
+        '\n\treturn {}'+
+        '\n}',
       editFn:
-        'function main (currentObj,request,callBack)' +
-        '{\n' +
-        '\t//currentObj为当前表格组件对象 request为请求方法,callBack回调方法\n' +
-        '\treturn {}\n' +
-        '}',
+        '/**'+
+        '\n* @param {'+
+        '\n* currentObj  当前表格组件对象'+
+        '\n* request 请求数据方法'+
+        '\n* callBack 回调函数'+
+        '\n* }'+
+        '\n*/'+
+        '\nfunction main (currentObj,request,callBack){' +
+        '\n\treturn {}'+
+        '\n}',
       detailFn:
-        'function main (currentObj,request,callBack)' +
-        '{\n' +
-        '\t//currentObj为当前表格组件对象 request为请求方法,callBack回调方法\n' +
-        '\treturn {}\n' +
-        '}',
+        '/**'+
+        '\n* @param {'+
+        '\n* currentObj  当前表格组件对象'+
+        '\n* request 请求数据方法'+
+        '\n* callBack 回调函数'+
+        '\n* }'+
+        '\n*/'+
+        '\nfunction main (currentObj,request,callBack){' +
+        '\n\treturn {}'+
+        '\n}',
       deleteFn:
-        'function main (currentObj,request,callBack)' +
-        '{\n' +
-        '\t//currentObj为当前表格组件对象 request为请求方法,callBack回调方法\n' +
-        '\treturn {}\n' +
-        '}',
+        '/**'+
+        '\n* @param {'+
+        '\n* currentObj  当前表格组件对象'+
+        '\n* request 请求数据方法'+
+        '\n* callBack 回调函数'+
+        '\n* }'+
+        '\n*/'+
+        '\nfunction main (currentObj,request,callBack){' +
+        '\n\treturn {}'+
+        '\n}',
       pagination: {
         pageSize: 1,
         currentPage: 1,
         pagerCount: 5,
         total: 0,
-        handleSizeChange: `function(page){
-          
-          console.log(page)
-        }`,
-        handleCurrentChange: `function (pageSize) {
-          
-          console.log(pageSize)
-        }`,
+        handleSizeChange: 
+        '/**'+
+        '\n* @param {'+
+        '\n* pageSize  每页条数'+
+        '\n* }'+
+        '\n*/'+
+        '\nfunction main (pageSize){' +
+        '\n}',
+        handleCurrentChange: 
+        '/**'+
+        '\n* @param {'+
+        '\n* page  当前页'+
+        '\n* }'+
+        '\n*/'+
+        '\nfunction main (page){' +
+        '\n}',
       },
       eventConfig: {},
     },

@@ -170,7 +170,7 @@ export default {
   },
   methods: {
     // codeMirror弹出函数
-    handelMirror(type) {debugger
+    handelMirror(type) {
       this.mirrorVisible = true
       this.tableEventCodeCf.codeType = type;
       if (type == "add") {
