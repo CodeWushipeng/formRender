@@ -134,6 +134,7 @@ export default {
           },
           key,
           model: "object",
+          tableName:'',
           rules: [],
         });
 
@@ -209,12 +210,9 @@ export default {
       console.log("index", newIndex, oldIndex);
     },
     handleSelectWidget(index) {
-      console.log(index, "#####");
       this.selectWidget = this.data.list[index];
     },
     handleWidgetAdd(evt) {
-      console.log("add", evt);
-      console.log("end", evt);
       const newIndex = evt.newIndex;
       const to = evt.to;
       console.log(to);
@@ -230,6 +228,7 @@ export default {
         key,
         // 绑定键值
         model: "object",
+        tableName:'',
         rules: [],
       });
 
@@ -302,6 +301,7 @@ export default {
         key,
         // 绑定键值
         model: "object",
+        tableName:'',
         rules: [],
       });
 

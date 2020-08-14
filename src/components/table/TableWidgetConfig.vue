@@ -6,7 +6,7 @@
           <el-input v-model="data.model"></el-input>
         </el-form-item>
         <el-form-item :label="$t('fm.tableWidget.widget.selectTableConfig')">
-          <el-input v-model="tableName" size="mini" @focus="getTableListData"></el-input>
+          <el-input v-model="data.tableName" size="mini" @focus="getTableListData"></el-input>
         </el-form-item>
         <!-- <el-form-item
             label="表格编码"
@@ -17,7 +17,7 @@
         <el-form-item :label="$t('fm.config.widget.name')">
           <el-input v-model="data.name"></el-input>
         </el-form-item>
-        <div v-if="tableName != ''">
+        <div v-if="data.tableName != ''">
           <el-form-item :label="$t('fm.tableWidget.widget.dataIdentification')">
             <el-input
               v-model="data.options.remoteFunc"
@@ -127,7 +127,6 @@ export default {
   props: ["data"],
   data() {
     return {
-      tableName: "",
       tableCode: "",
       tableRemotFun: "",
       dialogTableVisible: false,
@@ -165,7 +164,7 @@ export default {
             this.valiatePattern("/^\\d+$/" )
         })*/
     if (this.data && this.data.configdata.list[0]) {
-      this.tableName = this.data.configdata.list[0].name;
+      this.data.tableName = this.data.configdata.list[0].name;
     }
   },
   computed: {
@@ -284,7 +283,7 @@ export default {
       let temTableCfg = deepClone(row);
       this.data.configdata = JSON.parse(temTableCfg.listContent);
       this.handleDisplayColumns(this.data.configdata);
-      this.tableName = temTableCfg.listName + "(" + temTableCfg.listCode + ")";
+      this.data.tableName = temTableCfg.listName + "(" + temTableCfg.listCode + ")";
       this.tableCode = temTableCfg.listCode;
       this.dialogTableVisible = false;
       this.tableCodeCf.tableCodeFn =
