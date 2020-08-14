@@ -33,7 +33,12 @@
           </el-form-item>
           <div v-if="data.options.isPagination">
             <el-form-item label-width="100px" label="每页条目个数">
-              <el-input type="number" min="0" v-model.number="data.options.pagination.pageSize" size="mini"></el-input>
+              <el-input
+                type="number"
+                min="0"
+                v-model.number="data.options.pagination.pageSize"
+                size="mini"
+              ></el-input>
             </el-form-item>
             <!-- <el-form-item label-width="100px" label="每页条目个数改变的方法">
               <el-input
@@ -43,7 +48,7 @@
                 v-model="data.options.pagination.handleSizeChange"
                 placeholder="条目个数改变的方法"
               ></el-input>
-            </el-form-item> -->
+            </el-form-item>-->
             <el-form-item label-width="100px" label="当前页改变的方法">
               <el-input
                 style="text-overflow: ellipsis;"
@@ -113,201 +118,213 @@
 </template>
 
 <script>
-import Draggable from "vuedraggable";
-import request from "../../util/request";
-import { deepClone } from "../../util/index";
-import CusDialog from "../CusDialog";
-import { getTableList } from "../../api/forms";
+import Draggable from 'vuedraggable'
+import request from '../../util/request'
+import { deepClone } from '../../util/index'
+import CusDialog from '../CusDialog'
+import { getTableList } from '../../api/forms'
 
 export default {
   components: {
     Draggable,
-    CusDialog,
+    CusDialog
   },
-  props: ["data"],
+  props: ['data'],
   data() {
     return {
-      tableName: "",
-      tableCode: "",
-      tableRemotFun: "",
+      tableName: '',
+      tableCode: '',
+      tableRemotFun: '',
       dialogTableVisible: false,
       mirrorVisible: false,
       tablePageCf: {
         startPage: 1,
         pageSize: 5,
         total: 0,
-        searchValue: "",
-        tablesCfData: [],
+        searchValue: '',
+        tablesCfData: []
       },
       tableCodeCf: {
         cmOptions: {
           tabSize: 4,
-          mode: "javascript",
-          theme: "monokai",
+          mode: 'javascript',
+          theme: 'monokai',
           lineNumbers: true,
           smartIndent: true,
           autofocus: true,
           styleActiveLine: true,
-          scrollbarStyle: "overlay",
+          scrollbarStyle: 'overlay',
           lineWrapping: true,
           spellcheck: true,
           autocorrect: true,
           indentUnit: 2,
-          line: true,
+          line: true
         },
-        tableCodeFn: "",
-        codeType: "",
-      },
-    };
+        tableCodeFn: '',
+        codeType: ''
+      }
+    }
   },
   created() {
     /*this.$nextTick(()=>{
             this.valiatePattern("/^\\d+$/" )
         })*/
     if (this.data && this.data.configdata.list[0]) {
-      this.tableName = this.data.configdata.list[0].name;
+      this.tableName = this.data.configdata.list[0].name
     }
   },
   computed: {
     show() {
       if (this.data && Object.keys(this.data).length > 0) {
-        return true;
+        return true
       }
-      return false;
-    },
+      return false
+    }
   },
   mounted() {
-    console.log(this.data);
+    console.log(this.data)
   },
   methods: {
     // codeMirror弹出函数
     openCode(type) {
-      this.mirrorVisible = true;
-      this.tableCodeCf.codeType = type;
-      if (type == "handleCurrentChange") {
-        this.tableCodeCf.tableCodeFn = this.data.options.pagination.handleCurrentChange;
-      } else if (type == "handleSizeChange") {
-        this.tableCodeCf.tableCodeFn = this.data.options.pagination.handleSizeChange;
-      } else if (type == "tableRemotFun") {
-        this.tableCodeCf.tableCodeFn = this.data.options.remoteFunc;
+      this.mirrorVisible = true
+      this.tableCodeCf.codeType = type
+      if (type == 'handleCurrentChange') {
+        this.tableCodeCf.tableCodeFn = this.data.options.pagination.handleCurrentChange
+      } else if (type == 'handleSizeChange') {
+        this.tableCodeCf.tableCodeFn = this.data.options.pagination.handleSizeChange
+      } else if (type == 'tableRemotFun') {
+        this.tableCodeCf.tableCodeFn = this.data.options.remoteFunc
       }
     },
     closeMirror() {
-      this.mirrorVisible = false;
+      this.mirrorVisible = false
     },
     getCodeData() {
-      let type = this.tableCodeCf.codeType;
-      let temFen = "";
+      let type = this.tableCodeCf.codeType
+      let temFen = ''
 
       try {
-        temFen = eval("(" + this.tableCodeCf.tableCodeFn + ")");
+        temFen = eval('(' + this.tableCodeCf.tableCodeFn + ')')
       } catch (e) {
-        console.log(e);
+        console.log(e)
         this.$notify({
-          title: "fail",
-          message: "语法错误",
-          type: "success",
-          duration: 2000,
-        });
-        return;
+          title: 'fail',
+          message: '语法错误',
+          type: 'success',
+          duration: 2000
+        })
+        return
       }
-      if (type == "handleCurrentChange") {
-        this.data.options.pagination.handleCurrentChange = this.tableCodeCf.tableCodeFn;
-      } else if (type == "handleSizeChange") {
-        this.data.options.pagination.handleSizeChange = this.tableCodeCf.tableCodeFn;
-      } else if (type == "tableRemotFun") {
+      if (type == 'handleCurrentChange') {
+        this.data.options.pagination.handleCurrentChange = this.tableCodeCf.tableCodeFn
+      } else if (type == 'handleSizeChange') {
+        this.data.options.pagination.handleSizeChange = this.tableCodeCf.tableCodeFn
+      } else if (type == 'tableRemotFun') {
         if (this.data.options && this.data.options.remoteFunc) {
-          this.data.options.remoteFunc = this.tableCodeCf.tableCodeFn;
+          this.data.options.remoteFunc = this.tableCodeCf.tableCodeFn
           // temFen(this.data.options);
         }
       }
-      this.mirrorVisible = false;
+      this.mirrorVisible = false
     },
     // 分页查询
     handleTableCfCurrentChange(val) {
-      this.tablePageCf.startPage = val;
-      this.getTableListData();
+      this.tablePageCf.startPage = val
+      this.getTableListData()
     },
     // 获取表格已经配置的表格信息
     getTableListData() {
-      this.dialogTableVisible = true;
+      this.dialogTableVisible = true
       getTableList({
         listName: this.tablePageCf.searchValue,
-        antiWeightSeqNo: "anim",
-        gloSeqNo: "G11111",
+        antiWeightSeqNo: 'anim',
+        gloSeqNo: 'G11111',
         pageIndex: this.tablePageCf.startPage,
         pageSize: this.tablePageCf.pageSize,
-        projectId: "consequat sit",
-        reqSeqNo: "R11111",
-        reqTime: "202012121212",
-        serviceGroupid: "pariatur anim in",
-        serviceId: "consectetur",
-        serviceName: "dolor nisi ex",
-        subProjectId: "velit in t",
+        projectId: 'consequat sit',
+        reqSeqNo: 'R11111',
+        reqTime: '202012121212',
+        serviceGroupid: 'pariatur anim in',
+        serviceId: 'consectetur',
+        serviceName: 'dolor nisi ex',
+        subProjectId: 'velit in t',
         userInfo: {
           role: [
-            "dolor do",
-            "deserunt ea",
-            "anim occaecat ea",
-            "sint aliqua dolore",
+            'dolor do',
+            'deserunt ea',
+            'anim occaecat ea',
+            'sint aliqua dolore'
           ],
-          username: "veniam",
-        },
+          username: 'veniam'
+        }
       })
         .then((res) => {
-          console.log(res);
+          console.log(res)
           if (
-            res.header?res.header.rspCode == "SP000000":res.rspCode =="SP000000"
+            res.header
+              ? res.header.rspCode == 'SP000000'
+              : res.rspCode == 'SP000000'
           ) {
             this.$notify({
-              title: "Success",
-              message: "查询成功",
-              type: "success",
-              duration: 2000,
-            });
-          } else if (res.header?res.header.rspCode == "99999999":res.rspCode =="99999999") {
+              title: 'Success',
+              message: '查询成功',
+              type: 'success',
+              duration: 2000
+            })
+          } else if (
+            res.header
+              ? res.header.rspCode == '99999999'
+              : res.rspCode == '99999999'
+          ) {
             this.$notify({
-              title: "fail",
-              message: "查询失败",
-              type: "info",
-              duration: 2000,
-            });
-            return;
+              title: 'fail',
+              message: '查询失败',
+              type: 'info',
+              duration: 2000
+            })
+            return
           }
-          this.tablePageCf.tablesCfData = res.body.define.records;
-          this.tablePageCf.total = res.body.define.total;
-          this.tablePageCf.pageSize = res.body.define.size;
+          this.tablePageCf.tablesCfData = res.body
+            ? res.body.define.records
+            : res.define.records
+          this.tablePageCf.total = res.body
+            ? res.body.define.total
+            : res.define.total
+          this.tablePageCf.pageSize = res.body
+            ? res.body.define.size
+            : res.define.size
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error))
     },
     handleSelectionRow(row, column, event) {
-      let temTableCfg = deepClone(row);
-      this.data.configdata = JSON.parse(temTableCfg.listContent);
-      this.handleDisplayColumns(this.data.configdata);
-      this.tableName = temTableCfg.listName + "(" + temTableCfg.listCode + ")";
-      this.tableCode = temTableCfg.listCode;
-      this.dialogTableVisible = false;
+      let temTableCfg = deepClone(row)
+      this.data.configdata = JSON.parse(temTableCfg.listContent)
+      this.handleDisplayColumns(this.data.configdata)
+      this.tableName = temTableCfg.listName + '(' + temTableCfg.listCode + ')'
+      this.tableCode = temTableCfg.listCode
+      this.dialogTableVisible = false
       this.tableCodeCf.tableCodeFn =
-        "function mian(currentObj, request, callBack) {debugger;}";
+        'function mian(currentObj, request, callBack) {debugger;}'
     },
     handleDisplayColumns(configdata) {
       if (configdata && configdata.list[0]) {
-        let columns = configdata.list[0].options.columns;
-        let displayColumns = [];
+        let columns = configdata.list[0].options.columns
+        let displayColumns = []
         columns.forEach((item) => {
           if (item.isDisplay) {
-            displayColumns.push(item.prop);
+            displayColumns.push(item.prop)
           }
-          if (typeof item.formatter == "string") {
-            item.formatter = eval("(" + item.formatter + ")");
+          if (typeof item.formatter == 'string') {
+            item.formatter = eval('(' + item.formatter + ')')
           }
-        });
-        this.data.options.displayColumns = displayColumns;
+        })
+        this.data.options.displayColumns = displayColumns
       }
-    },
+    }
   },
   watch: {
-    "data.options.isPagination": function (val) {},
-  },
-};
+    'data.options.isPagination': function (val) {}
+  }
+}
 </script>
