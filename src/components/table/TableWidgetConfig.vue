@@ -257,7 +257,6 @@ export default {
         .then((res) => {
           console.log(res);
           if (
-            res.header.rspCode == "00000000" &&
             res.header.rspCode == "SP000000"
           ) {
             this.$notify({

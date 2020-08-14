@@ -25,7 +25,7 @@
               :disabled="!value"
             >搜索</el-button>
           </div>
-          <el-table :data="gridData" border @row-dblclick="setData">
+          <el-table :data="gridData" border @row-dblclick="setData" style="cursor:pointer;">
             <!-- <el-table-column label="操作" width="80">
               <template slot-scope="scope">
                 <el-button @click="setData(scope.row)" type="text">赋值</el-button>
@@ -122,12 +122,12 @@
             </el-input>
             <el-input
               v-model="data.url"
-              placeholder="校验地址"
+              placeholder="服务名"
               style="margin-bottom:15px;text-overflow: ellipsis;"
               @focus="handelMirror"
               readonly
             >
-              <template slot="prepend">URL</template>
+              <template slot="prepend">服务名</template>
             </el-input>
             <el-input
               style="text-overflow: ellipsis;margin-bottom:15px"
@@ -293,7 +293,7 @@ export default {
               resultArr.push(tempJson)
             })
             console.log(tempArr, resultArr)
-            // this.data.options.options = resultArr;
+            this.data.options.options = resultArr;
             console.log(this.data.options.options)
           })
           .catch((error) => console.log(error))
@@ -303,7 +303,7 @@ export default {
     setData(params) {
       console.log('11111', params)
       this.data.remoteCode = params.dicName
-      // this.dialogTableVisible = false;
+      this.dialogTableVisible = false;
     },
     // 查询信息
     search() {
@@ -361,7 +361,7 @@ export default {
             resultArr.push(tempJson)
           })
           console.log(tempArr, resultArr)
-          // this.data.options.options = resultArr
+          this.data.options.options = resultArr
         })
         .catch((error) => console.log(error))
     }

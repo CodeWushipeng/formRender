@@ -384,8 +384,12 @@ let handlers = {
                 // 判断是否有表格数据，没有执行赋值
                 if (!tableKey) {
                   try {
-                    tempFunc(self.models, res, self.utils);
-                    self.setDataToTable();
+                    let total = 0
+                    if (res.body.define && res.body.define.total){
+                      total = res.body.define.total
+                    }
+                    tempFunc(self.models, res, self.utils)
+                    self.setDataToTable(total)
                     self.handelAssignment(i);
                     self.handelFlow();
                   } catch (error) {
@@ -454,14 +458,15 @@ let handlers = {
       }
     },
     // 表格赋值
-    setDataToTable() {
+    setDataToTable(total) {
       this.$nextTick(() => {
         for (let m = 0; m < this.comArr.length; m++) {
           if (this.comArr[m].type === 'elTable') {
             if (Array.isArray(this.models[this.comArr[m].model])) {
-              this.comArr[m].configdata.list[0].options.tableData = this.models[
-                this.comArr[m].model
-              ];
+              let pageSize = this.comArr[m].options.pagination.pageSize
+              let tableData = this.models[this.comArr[m].model].slice(0,pageSize)
+              this.comArr[m].configdata.list[0].options.tableData = tableData
+              this.comArr[m].options.pagination.total = total
             }
           }
         }
