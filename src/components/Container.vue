@@ -722,7 +722,7 @@ export default {
         if (this.nowEle.isRemote != "") {
           this.code = this.nowEle.isRemote;
         }
-      } else if (this.modify == "校验地址") {
+      } else if (this.modify == "服务名") {
         if (this.nowEle.url != "") {
           this.code = this.nowEle.url;
         }
@@ -778,7 +778,7 @@ export default {
         this.nowEle.assignment = this.code;
       } else if (this.modify == "启动条件") {
         this.nowEle.isRemote = this.code;
-      } else if (this.modify == "校验地址") {
+      } else if (this.modify == "服务名") {
         this.nowEle.url = this.code;
       } else if (this.modify == "出口数据") {
         this.nowEle.success = this.code;
