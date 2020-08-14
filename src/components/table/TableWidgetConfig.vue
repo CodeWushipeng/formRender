@@ -33,9 +33,9 @@
           </el-form-item>
           <div v-if="data.options.isPagination">
             <el-form-item label-width="100px" label="每页条目个数">
-              <el-input v-model="data.options.pagination.pageSize" size="mini"></el-input>
+              <el-input type="number" min="0" v-model.number="data.options.pagination.pageSize" size="mini"></el-input>
             </el-form-item>
-            <el-form-item label-width="100px" label="每页条目个数改变的方法">
+            <!-- <el-form-item label-width="100px" label="每页条目个数改变的方法">
               <el-input
                 style="text-overflow: ellipsis;"
                 readonly
@@ -43,7 +43,7 @@
                 v-model="data.options.pagination.handleSizeChange"
                 placeholder="条目个数改变的方法"
               ></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label-width="100px" label="当前页改变的方法">
               <el-input
                 style="text-overflow: ellipsis;"
@@ -211,10 +211,12 @@ export default {
         return;
       }
       if (type == "handleCurrentChange") {
+        this.data.options.pagination.handleCurrentChange = this.tableCodeCf.tableCodeFn;
       } else if (type == "handleSizeChange") {
+        this.data.options.pagination.handleSizeChange = this.tableCodeCf.tableCodeFn;
       } else if (type == "tableRemotFun") {
         if (this.data.options && this.data.options.remoteFunc) {
-          this.data.options.remoteFunc = ""+temFen;
+          this.data.options.remoteFunc = this.tableCodeCf.tableCodeFn;
           // temFen(this.data.options);
         }
       }
