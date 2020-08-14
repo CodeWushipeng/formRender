@@ -257,7 +257,7 @@ export default {
         .then((res) => {
           console.log(res);
           if (
-            res.header.rspCode == "SP000000"
+            res.header?res.header.rspCode == "SP000000":res.rspCode =="SP000000"
           ) {
             this.$notify({
               title: "Success",
@@ -265,7 +265,7 @@ export default {
               type: "success",
               duration: 2000,
             });
-          } else if (res.header.rspCode == "99999999") {
+          } else if (res.header?res.header.rspCode == "99999999":res.rspCode =="99999999") {
             this.$notify({
               title: "fail",
               message: "查询失败",
