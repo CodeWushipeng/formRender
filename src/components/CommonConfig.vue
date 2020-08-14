@@ -189,92 +189,92 @@
 </template>
 
 <script>
-import Draggable from "vuedraggable";
-import request from "../util/request";
-import { RES_OK, FAIL_CODE } from "@/api/config";
-import { getDicTwo } from "@/api/forms";
+import Draggable from 'vuedraggable'
+import request from '../util/request'
+import { RES_OK, FAIL_CODE } from '@/api/config'
+import { getDicTwo } from '@/api/forms'
 export default {
   components: {
-    Draggable,
+    Draggable
   },
-  props: ["data"],
+  props: ['data'],
   data() {
     return {
       dialogTableVisible: false,
-      activeName: "first",
+      activeName: 'first',
       startPage: 1,
       pageSize: 10,
       total: 0,
-      value: "",
-      gridData: [],
-    };
+      value: '',
+      gridData: []
+    }
   },
   mounted() {
-    console.log(this.data);
+    console.log(this.data)
   },
   computed: {
     show() {
       if (this.data && Object.keys(this.data).length > 0) {
-        return true;
+        return true
       }
-      return false;
-    },
+      return false
+    }
   },
   methods: {
     // codeMirror弹出函数
     handelMirror(e) {
-      console.log(this.data);
-      this.$emit("mirror", this.data, e.target.placeholder);
+      console.log(this.data)
+      this.$emit('mirror', this.data, e.target.placeholder)
     },
     // 分页查询
     handleCurrentChange(val) {
-      this.startPage = val;
-      this.search();
+      this.startPage = val
+      this.search()
     },
     // 获取字典服务数据
     getData(data) {
       if (this.dialogTableVisible) {
-        return;
+        return
       }
       if (this.data.remoteCode) {
         getDicTwo({
           body: {
             dicName: this.data.remoteCode,
-            selType: 2,
+            selType: 2
           },
           header: {
             pageIndex: this.startPage,
             pageSize: 10,
             gloSeqNo: new Date(),
-            reqSeqNo: "sit anim",
-            reqTime: "officia ad anim",
-          },
+            reqSeqNo: 'sit anim',
+            reqTime: 'officia ad anim'
+          }
         })
           .then((res) => {
-            console.log(res);
+            console.log(res)
             if (res.header && res.header.rspCode == RES_OK) {
               this.$notify({
-                title: "Success",
-                message: "查询成功",
-                type: "success",
-                duration: 2000,
-              });
+                title: 'Success',
+                message: '查询成功',
+                type: 'success',
+                duration: 2000
+              })
             } else if (res.header && res.header.rspCode == FAIL_CODE) {
               this.$notify({
-                title: "fail",
-                message: "查询失败",
-                type: "info",
-                duration: 2000,
-              });
-              return;
+                title: 'fail',
+                message: '查询失败',
+                type: 'info',
+                duration: 2000
+              })
+              return
             }
 
-            let tempArr = null;
+            let tempArr = null
             if (res.header && res.header.rspCode == RES_OK && res.body) {
-              this.gridData = res.body.dics.records;
-              tempArr = res.body.dics.records;
-              this.total = res.body.dics.total;
-              this.pageSize = res.body.dics.size;
+              this.gridData = res.body.dics.records
+              tempArr = res.body.dics.records
+              this.total = res.body.dics.total
+              this.pageSize = res.body.dics.size
             } else {
               // this.gridData = res.dics.records;
               // tempArr = res.dics.records;
@@ -282,27 +282,27 @@ export default {
               // this.pageSize = res.dics.size;
             }
 
-            let resultArr = [];
+            let resultArr = []
             tempArr.forEach((item) => {
               let tempJson = {
-                value: "",
-                label: "",
-              };
-              tempJson.label = item.itemValue;
-              tempJson.value = item.itemCode;
-              resultArr.push(tempJson);
-            });
-            console.log(tempArr, resultArr);
-            this.data.options.options = resultArr;
-            console.log(this.data.options.options);
+                value: '',
+                label: ''
+              }
+              tempJson.label = item.itemValue
+              tempJson.value = item.itemCode
+              resultArr.push(tempJson)
+            })
+            console.log(tempArr, resultArr)
+            // this.data.options.options = resultArr;
+            console.log(this.data.options.options)
           })
-          .catch((error) => console.log(error));
+          .catch((error) => console.log(error))
       }
-      this.dialogTableVisible = true;
+      this.dialogTableVisible = true
     },
     setData(params) {
-      console.log("11111", params);
-      this.data.remoteCode = params.dicName;
+      console.log('11111', params)
+      this.data.remoteCode = params.dicName
       // this.dialogTableVisible = false;
     },
     // 查询信息
@@ -310,7 +310,7 @@ export default {
       getDicTwo({
         body: {
           dicName: this.value,
-          selType: 2,
+          selType: 2
           // itemCode: this.value,
           // itemValue: this.value,
         },
@@ -318,53 +318,53 @@ export default {
           pageIndex: 1,
           pageSize: 999,
           gloSeqNo: new Date(),
-          reqSeqNo: "sit anim",
-          reqTime: "officia ad anim",
-        },
+          reqSeqNo: 'sit anim',
+          reqTime: 'officia ad anim'
+        }
       })
         .then((res) => {
-          console.log(res);
+          console.log(res)
           if (res.header && res.header.rspCode == RES_OK) {
             this.$notify({
-              title: "Success",
-              message: "查询成功",
-              type: "success",
-              duration: 2000,
-            });
+              title: 'Success',
+              message: '查询成功',
+              type: 'success',
+              duration: 2000
+            })
           } else if (res.header && res.header.rspCode == FAIL_CODE) {
             this.$notify({
-              title: "fail",
-              message: "查询失败",
-              type: "info",
-              duration: 2000,
-            });
-            return;
+              title: 'fail',
+              message: '查询失败',
+              type: 'info',
+              duration: 2000
+            })
+            return
           }
 
-          let tempArr = null;
+          let tempArr = null
           if (res.header && res.header.rspCode == RES_OK && res.body) {
-            this.gridData = res.body.dics.records;
-            tempArr = res.body.dics.records;
+            this.gridData = res.body.dics.records
+            tempArr = res.body.dics.records
           } else {
             // this.gridData = res.dics.records;
             // tempArr = res.dics.records;
           }
 
-          let resultArr = [];
+          let resultArr = []
           tempArr.forEach((item) => {
             let tempJson = {
-              value: "",
-              label: "",
-            };
-            tempJson.label = item.itemValue;
-            tempJson.value = item.itemCode;
-            resultArr.push(tempJson);
-          });
-          console.log(tempArr, resultArr);
-          this.data.options.options = resultArr;
+              value: '',
+              label: ''
+            }
+            tempJson.label = item.itemValue
+            tempJson.value = item.itemCode
+            resultArr.push(tempJson)
+          })
+          console.log(tempArr, resultArr)
+          // this.data.options.options = resultArr
         })
-        .catch((error) => console.log(error));
-    },
-  },
-};
+        .catch((error) => console.log(error))
+    }
+  }
+}
 </script>

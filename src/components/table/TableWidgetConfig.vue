@@ -117,11 +117,12 @@ import Draggable from "vuedraggable";
 import request from "../../util/request";
 import { deepClone } from "../../util/index";
 import CusDialog from "../CusDialog";
+import { getTableList } from "../../api/forms";
 
 export default {
   components: {
     Draggable,
-    CusDialog
+    CusDialog,
   },
   props: ["data"],
   data() {
@@ -136,7 +137,7 @@ export default {
         pageSize: 5,
         total: 0,
         searchValue: "",
-        tablesCfData: []
+        tablesCfData: [],
       },
       tableCodeCf: {
         cmOptions: {
@@ -152,19 +153,19 @@ export default {
           spellcheck: true,
           autocorrect: true,
           indentUnit: 2,
-          line: true
+          line: true,
         },
         tableCodeFn: "",
-        codeType: ""
-      }
+        codeType: "",
+      },
     };
   },
   created() {
     /*this.$nextTick(()=>{
             this.valiatePattern("/^\\d+$/" )
         })*/
-    if(this.data && this.data.configdata.list[0]){
-      this.tableName = this.data.configdata.list[0].name
+    if (this.data && this.data.configdata.list[0]) {
+      this.tableName = this.data.configdata.list[0].name;
     }
   },
   computed: {
@@ -173,7 +174,7 @@ export default {
         return true;
       }
       return false;
-    }
+    },
   },
   mounted() {
     console.log(this.data);
@@ -206,7 +207,7 @@ export default {
           title: "fail",
           message: "语法错误",
           type: "success",
-          duration: 2000
+          duration: 2000,
         });
         return;
       }
@@ -230,36 +231,30 @@ export default {
     // 获取表格已经配置的表格信息
     getTableListData() {
       this.dialogTableVisible = true;
-      request
-        // .post("/dev-api/tableDevelop/listManage/queryAllDefine", {
-        .post("/dev-api/listDevelop/qryAllListDefine", {
-          body: {
-            listName: this.tablePageCf.searchValue
-          },
-          header: {
-            antiWeightSeqNo: "anim",
-            gloSeqNo: "G11111",
-            pageIndex: this.tablePageCf.startPage,
-            pageSize: this.tablePageCf.pageSize,
-            projectId: "consequat sit",
-            reqSeqNo: "R11111",
-            reqTime: "202012121212",
-            serviceGroupid: "pariatur anim in",
-            serviceId: "consectetur",
-            serviceName: "dolor nisi ex",
-            subProjectId: "velit in t",
-            userInfo: {
-              role: [
-                "dolor do",
-                "deserunt ea",
-                "anim occaecat ea",
-                "sint aliqua dolore"
-              ],
-              username: "veniam"
-            }
-          }
-        })
-        .then(res => {
+      getTableList({
+        listName: this.tablePageCf.searchValue,
+        antiWeightSeqNo: "anim",
+        gloSeqNo: "G11111",
+        pageIndex: this.tablePageCf.startPage,
+        pageSize: this.tablePageCf.pageSize,
+        projectId: "consequat sit",
+        reqSeqNo: "R11111",
+        reqTime: "202012121212",
+        serviceGroupid: "pariatur anim in",
+        serviceId: "consectetur",
+        serviceName: "dolor nisi ex",
+        subProjectId: "velit in t",
+        userInfo: {
+          role: [
+            "dolor do",
+            "deserunt ea",
+            "anim occaecat ea",
+            "sint aliqua dolore",
+          ],
+          username: "veniam",
+        },
+      })
+        .then((res) => {
           console.log(res);
           if (
             res.header.rspCode == "00000000" &&
@@ -269,14 +264,14 @@ export default {
               title: "Success",
               message: "查询成功",
               type: "success",
-              duration: 2000
+              duration: 2000,
             });
           } else if (res.header.rspCode == "99999999") {
             this.$notify({
               title: "fail",
               message: "查询失败",
               type: "info",
-              duration: 2000
+              duration: 2000,
             });
             return;
           }
@@ -284,35 +279,36 @@ export default {
           this.tablePageCf.total = res.body.define.total;
           this.tablePageCf.pageSize = res.body.define.size;
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     },
     handleSelectionRow(row, column, event) {
       let temTableCfg = deepClone(row);
       this.data.configdata = JSON.parse(temTableCfg.listContent);
       this.handleDisplayColumns(this.data.configdata);
-      this.tableName = temTableCfg.listName+'('+temTableCfg.listCode+')';
+      this.tableName = temTableCfg.listName + "(" + temTableCfg.listCode + ")";
       this.tableCode = temTableCfg.listCode;
       this.dialogTableVisible = false;
-      this.tableCodeCf.tableCodeFn ="function mian(currentObj, request, callBack) {debugger;}";
+      this.tableCodeCf.tableCodeFn =
+        "function mian(currentObj, request, callBack) {debugger;}";
     },
-    handleDisplayColumns(configdata){
-      if(configdata&&configdata.list[0]){
+    handleDisplayColumns(configdata) {
+      if (configdata && configdata.list[0]) {
         let columns = configdata.list[0].options.columns;
         let displayColumns = [];
-        columns.forEach(item =>{
-          if(item.isDisplay){
+        columns.forEach((item) => {
+          if (item.isDisplay) {
             displayColumns.push(item.prop);
           }
-          if(typeof(item.formatter) == 'string'){
+          if (typeof item.formatter == "string") {
             item.formatter = eval("(" + item.formatter + ")");
           }
-        })
+        });
         this.data.options.displayColumns = displayColumns;
       }
-    }
+    },
   },
   watch: {
-    "data.options.isPagination": function(val) {}
-  }
+    "data.options.isPagination": function (val) {},
+  },
 };
 </script>
