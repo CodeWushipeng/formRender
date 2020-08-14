@@ -17,26 +17,32 @@ export const getFormConfigDataById = function(formId,callback) {
   })
     .then((res) => {
       console.log(res);
-      if (res.header.rspCode == "SP000000") {
-        let formConfigData = "";
-        if (res.body.define && res.body.define.records.length > 0) {
-          formConfigData = res.body.define.records[0];
+      if (
+        res.header
+          ? res.header.rspCode == 'SP000000'
+          : res.rspCode == 'SP000000'
+      ) {
+        let formConfigData = ''
+        if (res.body && res.body.define && res.body.define.records.length > 0) {
+          formConfigData = res.body.define.records[0]
+        }else{
+          formConfigData = res.define.records[0]
         }
-        callback(formConfigData);
+        callback(formConfigData)
         this.$notify({
-          title: "Success",
-          message: "查询成功",
-          type: "success",
-          duration: 2000,
-        });
-      } else if (res.header.rspCode == "99999999") {
+          title: 'Success',
+          message: '查询成功',
+          type: 'success',
+          duration: 2000
+        })
+      } else if (res.header.rspCode == '99999999') {
         this.$notify({
-          title: "fail",
-          message: "查询失败",
-          type: "info",
-          duration: 2000,
-        });
-        return;
+          title: 'fail',
+          message: '查询失败',
+          type: 'info',
+          duration: 2000
+        })
+        return
       }
     })
     .catch((error) => console.log(error));
