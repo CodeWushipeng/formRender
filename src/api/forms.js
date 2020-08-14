@@ -3,7 +3,7 @@ import request from '../demo/demo3/js/request'
 //查询表单列表
 export function getFormList(data) {
   return request({
-    url: `/formDevelop/qryFromDefineList2`,
+    url: '/formDevelop/qryFromDefineList2',
     method: 'post',
     data
   })
@@ -36,15 +36,6 @@ export function getTrade(url, data) {
 export function getTableList(data) {
   return request({
     url: `/listDevelop/qryAllListDefine`,
-    method: 'post',
-    data
-  })
-}
-
-//表格预览查询表单列表
-export function previewGetFormList(data) {
-  return request({
-    url: '/formDevelop/qryFromDefineList2',
     method: 'post',
     data
   })

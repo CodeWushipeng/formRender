@@ -3,7 +3,7 @@
  * gcc - v1.0.0 (2020-07-14)
  * dependent on request.js
  */
-import { previewGetFormList } from "../../api/forms";
+import { getFormList } from "../../api/forms";
 
 /**
  *
@@ -12,7 +12,7 @@ import { previewGetFormList } from "../../api/forms";
  */
 
 export const getFormConfigDataById = function(formId,callback) {
-  previewGetFormList({ 
+  getFormList({ 
     formCode: formId 
   })
     .then((res) => {
