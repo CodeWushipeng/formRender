@@ -190,7 +190,6 @@
               @click="handleUpload"
             >{{ $t("fm.actions.import") }}</el-button>
             <el-button
-              v-if="clearable"
               type="text"
               size="medium"
               icon="el-icon-delete"

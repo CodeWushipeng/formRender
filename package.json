@@ -1,7 +1,7 @@
 {
   "name": "hr-form-render",
   "description": "A generator and controller of form base on form-making.",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "author": "wushipeng",
   "license": "GPL",
   "keywords": [

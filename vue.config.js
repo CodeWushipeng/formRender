@@ -35,7 +35,7 @@ module.exports = {
         changeOrigin: true
       },
       '/formDevelop': {
-        target: 'http://192.168.2.84:21004'
+        target: 'http://192.168.1.194:21004'
       },
       '/flowDevelop': {
         target: 'http://192.168.1.194:21004'
