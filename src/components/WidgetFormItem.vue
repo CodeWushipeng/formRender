@@ -351,7 +351,7 @@
           <div style="text-align: end;">
             <el-pagination
               @size-change="element.options.pagination.handleSizeChange"
-              @current-change="element.options.pagination.handleCurrentChange"
+              @current-change="currentChange"
               :current-page.sync="element.options.pagination.currentPage"
               :page-size="element.options.pagination.pageSize"
               layout="prev, pager, next"
@@ -389,6 +389,12 @@ export default {
   },
   mounted() {},
   methods: {
+    currentChange(pageSize){
+      eval("("+this.element.options.pagination.handleCurrentChange+")")(pageSize,(res)=>{
+        console.log(res);
+        this.element.configdata = res;
+      })
+    },
     handleSelectWidget(index) {
       localStorage.setItem("selectIndex", index);
       this.selectWidget = this.data.list[index];

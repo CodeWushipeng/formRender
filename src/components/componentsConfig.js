@@ -1466,7 +1466,7 @@ export const tableComponents = [
           '\n* page  当前页' +
           '\n* }' +
           '\n*/' +
-          '\nfunction main (page){' +
+          '\nfunction main (page,callback){' +
           '\n}',
       },
       eventConfig: {},
