@@ -772,22 +772,22 @@
 </template>
 
 <script>
-import FmUpload from "./Upload";
-import FmUploadExtend from "./Uploadextend";
-import CusDialog from "./CusDialog";
-import radioFormItem from "./radioFormItem";
-import cameraFormItem from "./cameraFormItem";
-import { getInputValue, delcommafy } from "../util/comother.js";
-import { InputMoney } from "../util/amtUtil";
-import request from "../util/request.js";
-import ElImage from "element-ui/packages/image/src/main";
-import { RES_OK, FAIL_CODE } from "@/api/config";
-import { getDicTwo } from "@/api/forms";
-import { getFormConfigDataById } from "../components/table/tableAction";
-import itemHandle from "./mixins/itemHandle.js";
-import hrSelect from "./base-components/my-select/select";
+import FmUpload from './Upload'
+import FmUploadExtend from './Uploadextend'
+import CusDialog from './CusDialog'
+import radioFormItem from './radioFormItem'
+import cameraFormItem from './cameraFormItem'
+import { getInputValue, delcommafy } from '../util/comother.js'
+import { InputMoney } from '../util/amtUtil'
+import request from '../util/request.js'
+import ElImage from 'element-ui/packages/image/src/main'
+import { RES_OK, FAIL_CODE } from '@/api/config'
+import { getDicTwo } from '@/api/forms'
+import { getFormConfigDataById } from '../components/table/tableAction'
+import itemHandle from './mixins/itemHandle.js'
+import hrSelect from './base-components/my-select/select'
 export default {
-  props: ["widget", "models", "rules", "remote"], // widget为当前组件json数据
+  props: ['widget', 'models', 'rules', 'remote'], // widget为当前组件json数据
   components: {
     ElImage,
     FmUpload,
@@ -795,95 +795,95 @@ export default {
     CusDialog,
     cameraFormItem,
     radioFormItem,
-    hrSelect,
+    hrSelect
   },
   mixins: [itemHandle],
   data() {
     return {
-      imagesrc: require("../assets/wenjian.png"),
+      imagesrc: require('../assets/wenjian.png'),
       /*imagesrc: "",*/
       radioVisible: false,
       cameraVisible: false,
       cameraList: [],
-      cameraimage: "",
+      cameraimage: '',
       amountvisible: false, // 控制金额放大镜的显隐
       dataModel: this.models[this.widget.model], // 当前组件的默认值，是双向绑定的
       pickerOptionsDate: {
         disabledDate(time) {
-          return time.getTime() > Date.now();
+          return time.getTime() > Date.now()
         },
         shortcuts: [
           {
-            text: "今天",
+            text: '今天',
             onClick(picker) {
-              picker.$emit("pick", new Date());
-            },
+              picker.$emit('pick', new Date())
+            }
           },
           {
-            text: "昨天",
+            text: '昨天',
             onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", date);
-            },
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24)
+              picker.$emit('pick', date)
+            }
           },
           {
-            text: "一周前",
+            text: '一周前',
             onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", date);
-            },
-          },
-        ],
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', date)
+            }
+          }
+        ]
       },
       pickerOptionsRange: {
         shortcuts: [
           {
-            text: "最近一周",
+            text: '最近一周',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            },
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
           },
           {
-            text: "最近一个月",
+            text: '最近一个月',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            },
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
           },
           {
-            text: "最近三个月",
+            text: '最近三个月',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }
+        ]
       },
-      dynamicTags: ["标签一", "标签二", "标签三"],
+      dynamicTags: ['标签一', '标签二', '标签三'],
       inputVisible: false,
-      inputValue: "",
+      inputValue: '',
       tableCf: {
         tableDataEAVisible: false,
         configdata: null,
         editData: null,
-        dialogType: "",
-      },
-    };
+        dialogType: ''
+      }
+    }
   },
   created() {
-    if (this.widget.type == "taglable") {
+    if (this.widget.type == 'taglable') {
       this.$nextTick((_) => {
-        this.dataModel = this.dynamicTags;
-      });
+        this.dataModel = this.dynamicTags
+      })
     }
     if (
       // 如果获取远程数据属性为真且指定了获取数据的回调函数
@@ -891,140 +891,83 @@ export default {
       this.widget.options.remoteFunc
     ) {
       // 执行对应的回调函数
-      let remoteData = eval("(" + this.widget.options.remoteFunc + ")")(
-        request
-      );
-      console.log(this.widget.options.remoteFunc);
-      if (remoteData && typeof remoteData === "object") {
+      let remoteData = eval('(' + this.widget.options.remoteFunc + ')')(request)
+      console.log(this.widget.options.remoteFunc)
+      if (remoteData && typeof remoteData === 'object') {
         this.widget.options.remoteOptions = remoteData.map((item) => {
           //remoteOptions 表单动态选项配置
           return {
             value: item[this.widget.options.props.value],
             label: item[this.widget.options.props.label],
-            children: item[this.widget.options.props.children],
-          };
-        });
-      }
-    }
-    if (this.widget.remoteCode) {
-      getDicTwo({
-        body: {
-          dicName: this.widget.remoteCode,
-        },
-        header: {
-          pageIndex: this.startPage,
-          pageSize: 10,
-          gloSeqNo: new Date(),
-          reqSeqNo: "sit anim",
-          reqTime: "officia ad anim",
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.header && res.header.rspCode == RES_OK) {
-            this.$notify({
-              title: "Success",
-              message: "查询成功",
-              type: "success",
-              duration: 2000,
-            });
-            let tempArr = res.body.dics.records;
-            let resultArr = [];
-            tempArr.forEach((item) => {
-              let tempJson = {
-                value: "",
-                label: "",
-              };
-              tempJson.label = item.itemValue;
-              tempJson.value = item.itemCode;
-              resultArr.push(tempJson);
-            });
-            console.log(tempArr, resultArr);
-            this.widget.options.options = resultArr;
-          } else if (res.header && res.header.rspCode == FAIL_CODE) {
-            this.$notify({
-              title: "fail",
-              message: "查询失败",
-              type: "info",
-              duration: 2000,
-            });
-            return;
+            children: item[this.widget.options.props.children]
           }
         })
-        .catch((error) => {
-          this.$notify({
-            title: "fail",
-            message: "查询失败",
-            type: "info",
-            duration: 2000,
-          });
-          return;
-        });
+      }
     }
     // 七牛图片上传
-    if (this.widget.type === "imgupload" && this.widget.options.isQiniu) {
+    if (this.widget.type === 'imgupload' && this.widget.options.isQiniu) {
       this.remote[this.widget.options.tokenFunc]((data) => {
-        this.widget.options.token = data;
-      });
+        this.widget.options.token = data
+      })
     }
     //table
-    if (this.widget.type === "elTable" && this.widget.options.remoteFunc) {
-      let temFun = this.getExeCustomFn(this.widget.options.remoteFunc);
+    if (this.widget.type === 'elTable' && this.widget.options.remoteFunc) {
+      let temFun = this.getExeCustomFn(this.widget.options.remoteFunc)
       if (temFun) {
-        this.handleRemoteFn(temFun);
+        this.handleRemoteFn(temFun)
       }
     }
   },
   methods: {
     /*标签方法*/
     handleClose(tag) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
-      this.dataModel = this.dynamicTags;
+      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+      this.dataModel = this.dynamicTags
     },
     showInput() {
-      this.inputVisible = true;
+      this.inputVisible = true
       this.$nextTick((_) => {
-        this.$refs.saveTagInput.$refs.input.focus();
-      });
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
     },
     handleInputConfirm() {
-      let inputValue = this.inputValue;
+      let inputValue = this.inputValue
       if (inputValue) {
-        this.dynamicTags.push(inputValue);
+        this.dynamicTags.push(inputValue)
       }
-      this.inputVisible = false;
-      this.inputValue = "";
-      this.dataModel = this.dynamicTags;
+      this.inputVisible = false
+      this.inputValue = ''
+      this.dataModel = this.dynamicTags
     },
     /*标签方法*/
 
     /*单选 多选快捷键方法*/
     radioVisibleFun() {
-      this.radioVisible = false;
+      this.radioVisible = false
     },
     radioFun() {
-      const keyType = event.type;
-      const keyCode = event.keyCode;
+      const keyType = event.type
+      const keyCode = event.keyCode
       //console.log(this.widget)
-      if (keyType == "keydown" && keyCode == "32") {
-        console.log("这是一个space键操作......");
-        this.radioVisible = true;
-      } else if (keyType == "click") {
-        this.radioVisible = true;
+      if (keyType == 'keydown' && keyCode == '32') {
+        console.log('这是一个space键操作......')
+        this.radioVisible = true
+      } else if (keyType == 'click') {
+        this.radioVisible = true
       }
     },
     /*单选 多选快捷键方法*/
 
     /*摄像头*/
     cameraVisibleFun() {
-      this.cameraVisible = false;
+      this.cameraVisible = false
     },
     oncameraimage(val) {
-      this.cameraimage = val;
+      this.cameraimage = val
     },
     /*摄像头*/
     cameraFun() {
-      this.cameraVisible = true;
+      this.cameraVisible = true
     },
     focus() {
       // this.$on("focus",function(){
@@ -1035,8 +978,8 @@ export default {
       this.$message({
         showClose: true,
         duration: 5000,
-        message: msg,
-      });
+        message: msg
+      })
     },
     /*密码相关方法*/
     passwordKeyup(event) {
@@ -1046,140 +989,137 @@ export default {
         this.widget.options.peripheral &&
         this.widget.options.peripheral == true
       ) {
-        this.dataModel = "";
+        this.dataModel = ''
         //alert("请用外设键盘输入")
         this.$notify({
-          title: "fail",
-          message: "请用外设键盘输入",
-          type: "info",
-          duration: 2000,
-        });
+          title: 'fail',
+          message: '请用外设键盘输入',
+          type: 'info',
+          duration: 2000
+        })
       }
     },
     //身份证   peripheral
     peripheral() {
-      var _this = this;
+      var _this = this
       function peripheralreq() {
-        var paraObj = {};
-        if (_this.widget.type == "idencard") {
-          paraObj.para1 = "GNQ_04";
-          paraObj.para2 = "";
+        var paraObj = {}
+        if (_this.widget.type == 'idencard') {
+          paraObj.para1 = 'GNQ_04'
+          paraObj.para2 = ''
         } else if (
-          _this.widget.type == "readcard" &&
-          _this.widget.options.cardType == "01"
+          _this.widget.type == 'readcard' &&
+          _this.widget.options.cardType == '01'
         ) {
-          paraObj.para1 = "GNQ_10";
-          const para2Obj = {};
-          (para2Obj.tradeCode = "0101"), //四位交易码
-            (para2Obj.cardInfoPara = "AA"), //两位参数具体如下
-            (paraObj.para2 = JSON.stringify(para2Obj));
+          paraObj.para1 = 'GNQ_10'
+          const para2Obj = {}
+          ;(para2Obj.tradeCode = '0101'), //四位交易码
+            (para2Obj.cardInfoPara = 'AA'), //两位参数具体如下
+            (paraObj.para2 = JSON.stringify(para2Obj))
         } else if (
-          _this.widget.type == "readcard" &&
-          _this.widget.options.cardType == "02"
+          _this.widget.type == 'readcard' &&
+          _this.widget.options.cardType == '02'
         ) {
-          paraObj.para1 = "GNQ_05";
-          paraObj.para2 = "";
-        } else if (_this.widget.type == "password") {
-          paraObj.para1 = "GWQ_11";
-          paraObj.para2 = "01234567890123"; //字符串第一位为标志位 0-请输入密码 1-请再次输入密码，标志位后面是待加密数据，一般为银行账号
-        } else if (_this.widget.type == "againpassword") {
-          paraObj.para1 = "GWQ_11";
-          paraObj.para2 = "11234567890123"; //字符串第一位为标志位 0-请输入密码 1-请再次输入密码，标志位后面是待加密数据，一般为银行账号
+          paraObj.para1 = 'GNQ_05'
+          paraObj.para2 = ''
+        } else if (_this.widget.type == 'password') {
+          paraObj.para1 = 'GWQ_11'
+          paraObj.para2 = '01234567890123' //字符串第一位为标志位 0-请输入密码 1-请再次输入密码，标志位后面是待加密数据，一般为银行账号
+        } else if (_this.widget.type == 'againpassword') {
+          paraObj.para1 = 'GWQ_11'
+          paraObj.para2 = '11234567890123' //字符串第一位为标志位 0-请输入密码 1-请再次输入密码，标志位后面是待加密数据，一般为银行账号
         }
 
         return new Promise(function (resolve, reject) {
           try {
-            const idenTemp = smartClient.allDevice(
-              paraObj.para1,
-              paraObj.para2
-            );
-            resolve(idenTemp);
+            const idenTemp = smartClient.allDevice(paraObj.para1, paraObj.para2)
+            resolve(idenTemp)
           } catch (err) {
-            console.log(err);
+            console.log(err)
             //alert('请连接设备或手输')
             _this.$notify({
-              title: "fail",
-              message: "请连接设备",
-              type: "info",
-              duration: 2000,
-            });
+              title: 'fail',
+              message: '请连接设备',
+              type: 'info',
+              duration: 2000
+            })
           }
-        });
+        })
       }
       peripheralreq().then((idenTemp) => {
         if (idenTemp) {
-          const idenTempObj = JSON.parse(idenTemp);
+          const idenTempObj = JSON.parse(idenTemp)
           //alert(idenTempObj)
           if (idenTempObj.rCode == 0) {
-            if (this.widget.type == "idencard") {
-              this.dataModel = idenTempObj.idInfo.IDNumber;
+            if (this.widget.type == 'idencard') {
+              this.dataModel = idenTempObj.idInfo.IDNumber
             } else if (
-              this.widget.type == "readcard" &&
-              this.widget.options.cardType == "01"
+              this.widget.type == 'readcard' &&
+              this.widget.options.cardType == '01'
             ) {
-              this.dataModel = idenTempObj.cardInfo.cardNO;
+              this.dataModel = idenTempObj.cardInfo.cardNO
             } else if (
-              this.widget.type == "readcard" &&
-              this.widget.options.cardType == "02"
+              this.widget.type == 'readcard' &&
+              this.widget.options.cardType == '02'
             ) {
-              this.dataModel = idenTempObj.szTrack2;
+              this.dataModel = idenTempObj.szTrack2
               //todo szTrack3 暂时不知道可不可用
-              var szTrack3 = idenTempObj.szTrack3;
+              var szTrack3 = idenTempObj.szTrack3
             } else if (
-              this.widget.type == "password" ||
-              this.widget.type == "againpassword"
+              this.widget.type == 'password' ||
+              this.widget.type == 'againpassword'
             ) {
-              this.dataModel = idenTempObj.password;
+              this.dataModel = idenTempObj.password
             }
           } else {
-            alert("检测失败：" + idenTemp);
+            alert('检测失败：' + idenTemp)
           }
         } else {
-          alert("无");
+          alert('无')
         }
-      });
+      })
     },
     inputHandler(refId) {
       // const keyType = event.type;
       // const keyCode = event.keyCode;
       // console.log('event.keyType',event.type);
       // console.log('event.keyCode',event.keyCode);
-      if (event.type == "focus") {
-        this.amountvisible = !!this.dataModel;
-        let amountObj = getInputValue(this.models[this.widget.model]);
-        this.bigPastAdjustFee = amountObj.bigPastAdjustFee;
+      if (event.type == 'focus') {
+        this.amountvisible = !!this.dataModel
+        let amountObj = getInputValue(this.models[this.widget.model])
+        this.bigPastAdjustFee = amountObj.bigPastAdjustFee
       }
-      if (typeof refId == "string") {
-        const refsId = this.$refs[refId];
+      if (typeof refId == 'string') {
+        const refsId = this.$refs[refId]
         // console.log('refsid',refsId)
         // refsId._dot = 2;
-        refsId.maxLength = 12;
-        InputMoney(refsId);
+        refsId.maxLength = 12
+        InputMoney(refsId)
       }
-      this.$emit("el-focus", this.widget.model);
+      this.$emit('el-focus', this.widget.model)
     },
     keyupHandler(refId) {
-      if (typeof refId == "string") {
-        const refsId = this.$refs[refId];
-        this.amountvisible = !!this.dataModel;
-        let amountObj = getInputValue(refsId.value);
-        this.bigPastAdjustFee = amountObj.bigPastAdjustFee;
+      if (typeof refId == 'string') {
+        const refsId = this.$refs[refId]
+        this.amountvisible = !!this.dataModel
+        let amountObj = getInputValue(refsId.value)
+        this.bigPastAdjustFee = amountObj.bigPastAdjustFee
 
-        console.log("value", refsId.value);
-        this.dataModel = refsId.value;
-        this.amountvisible = !!this.dataModel;
+        console.log('value', refsId.value)
+        this.dataModel = refsId.value
+        this.amountvisible = !!this.dataModel
       }
     },
     enterHandler(refId) {
-      console.log("这是一个enter键操作...");
-      const refsId = this.$refs[refId];
-      this.amountvisible = false;
-      this.dataModel = delcommafy(refsId.value);
-      this.$emit("el-change", this);
+      console.log('这是一个enter键操作...')
+      const refsId = this.$refs[refId]
+      this.amountvisible = false
+      this.dataModel = delcommafy(refsId.value)
+      this.$emit('el-change', this)
     },
     blurHandler() {
-      this.amountvisible = false;
-      this.$emit("el-blur", this.widget.model);
+      this.amountvisible = false
+      this.$emit('el-blur', this.widget.model)
     },
     /*下拉框*/
     // select下拉框的change事件
@@ -1187,42 +1127,42 @@ export default {
       if (this.widget.options.multiple) {
         var weekList = this.widget.options.remote
           ? this.widget.options.remoteOptions
-          : this.widget.options.options;
+          : this.widget.options.options
         weekList.forEach((v) => {
-          v.isCheck = false;
-        });
+          v.isCheck = false
+        })
         val.forEach((el) => {
           weekList.forEach((v) => {
             if (el === v.value) {
-              v.isCheck = true;
+              v.isCheck = true
             }
-          });
-        });
+          })
+        })
         this.widget.options.remote
           ? (this.widget.options.remoteOptions = weekList)
-          : (this.widget.options.options = weekList);
+          : (this.widget.options.options = weekList)
       }
     },
     clickCheckbox(e) {
-      e.preventDefault();
+      e.preventDefault()
     },
     /*下拉框*/
 
     /*摄像头*/
     camera() {
-      var _this = this;
+      var _this = this
       navigator.mediaDevices.enumerateDevices().then(function (devices) {
-        console.log(devices);
-        _this.cameraList = [];
+        console.log(devices)
+        _this.cameraList = []
         devices.forEach(function (device) {
-          if (device.kind == "videoinput") {
+          if (device.kind == 'videoinput') {
             _this.cameraList.push({
               label: device.label,
-              value: device.deviceId,
-            });
+              value: device.deviceId
+            })
           }
-        });
-      });
+        })
+      })
     },
     /*摄像头*/
 
@@ -1230,61 +1170,61 @@ export default {
     buttonfun(event_name, title) {
       if (this.widget.options.buttonfun) {
         try {
-          var buttonfun = this.widget.options.buttonfun;
-          if (buttonfun.indexOf("function") != -1) {
+          var buttonfun = this.widget.options.buttonfun
+          if (buttonfun.indexOf('function') != -1) {
             //执行函数
-            let tempFunc = eval("(" + buttonfun + ")");
+            let tempFunc = eval('(' + buttonfun + ')')
             //console.log(tempFunc);
-            var result = tempFunc();
+            var result = tempFunc()
           } else {
             //调用方法
-            this[buttonfun](title);
+            this[buttonfun](title)
           }
         } catch (error) {
-          console.log(error);
+          console.log(error)
         }
       } else if (this.widget.options.buttonurl) {
-        window.location = this.widget.options.buttonurl;
+        window.location = this.widget.options.buttonurl
       }
     },
     /*按钮*/
 
     getBase64Image(img) {
-      var canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
+      var canvas = document.createElement('canvas')
+      canvas.width = img.width
+      canvas.height = img.height
 
-      var ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, img.width, img.height);
-      var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
-      var dataURL = canvas.toDataURL("image/" + ext);
-      return dataURL;
+      var ctx = canvas.getContext('2d')
+      ctx.drawImage(img, 0, 0, img.width, img.height)
+      var ext = img.src.substring(img.src.lastIndexOf('.') + 1).toLowerCase()
+      var dataURL = canvas.toDataURL('image/' + ext)
+      return dataURL
     },
 
     //自定义数据来源方法解析函数
     handleRemoteFn(fn) {
-      var _this = this;
+      var _this = this
       try {
         fn.call(this, this, request, function (tableCfData) {
           if (_this.widget.configdata.list) {
-            let tempTableCf = _this.widget.configdata.list[0];
+            let tempTableCf = _this.widget.configdata.list[0]
             if (tableCfData instanceof Array) {
-              tempTableCf.options.tableData = tableCfData; //??
+              tempTableCf.options.tableData = tableCfData //??
             } else {
               tempTableCf.options.tableData = JSON.parse(
                 tableCfData.records[0].listContent
-              ).list[0].options.tableData;
+              ).list[0].options.tableData
             }
             //带有分页
             if (_this.widget.options.isPagination === true) {
-              _this.widget.options.pagination.pageSize = tableCfData.size;
-              _this.widget.options.pagination.currentPage = tableCfData.current;
-              _this.widget.options.pagination.total = tableCfData.total;
+              _this.widget.options.pagination.pageSize = tableCfData.size
+              _this.widget.options.pagination.currentPage = tableCfData.current
+              _this.widget.options.pagination.total = tableCfData.total
             }
           }
-        });
+        })
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
     },
     dblhandleCurrentRow(row, column, event) {
@@ -1297,221 +1237,221 @@ export default {
       //     }
       //   } else {
       // this.$message(JSON.stringify(row));
-      this.handleTableEvent("detail", row);
+      this.handleTableEvent('detail', row)
       //   }
       // }
     },
     handleTableEvent(action, currentRow) {
-      let _self = this;
+      let _self = this
       switch (action) {
-        case "add":
+        case 'add':
           if (this.widget.options.isAddBtnCustom) {
             if (this.widget.options.addFn) {
-              let temFun = this.getExeCustomFn(this.widget.options.addFn);
+              let temFun = this.getExeCustomFn(this.widget.options.addFn)
               if (temFun) {
                 temFun(this, request, function (data) {
-                  console.log(data);
-                });
+                  console.log(data)
+                })
               }
             }
           } else {
-            let addFormId = this.widget.options.addFormId;
-            if (addFormId == "") {
-              this.$message("请配置表单编码");
-              return;
+            let addFormId = this.widget.options.addFormId
+            if (addFormId == '') {
+              this.$message('请配置表单编码')
+              return
             }
-            this.tableCf.dialogType = "add";
+            this.tableCf.dialogType = 'add'
             getFormConfigDataById.call(this, addFormId, (data) => {
               if (data && data.formContent) {
-                this.tableCf.configdata = JSON.parse(data.formContent);
+                this.tableCf.configdata = JSON.parse(data.formContent)
               }
-              this.$emit("toggleGenerate", this.tableCf.configdata);
-              this.tableCf.tableDataEAVisible = true;
-            });
+              this.$emit('toggleGenerate', this.tableCf.configdata)
+              this.tableCf.tableDataEAVisible = true
+            })
           }
-          break;
-        case "edit":
-          let editFormId = this.widget.options.editFormId;
+          break
+        case 'edit':
+          let editFormId = this.widget.options.editFormId
           let selecteRow = this.widget.configdata.list[0].options
-            .multipleSelection;
+            .multipleSelection
           if (
             (selecteRow && selecteRow.length != 1) ||
-            typeof selecteRow == "undefined"
+            typeof selecteRow == 'undefined'
           ) {
-            this.$message("请选择一行数据");
-            return;
+            this.$message('请选择一行数据')
+            return
           } else {
-            this.tableCf.editData = selecteRow[0];
-            this.$emit("toggleGenerate", selecteRow[0]);
+            this.tableCf.editData = selecteRow[0]
+            this.$emit('toggleGenerate', selecteRow[0])
           }
           if (this.widget.options.isEditBtnCustom) {
             if (this.widget.options.editFn) {
-              let temFun = this.getExeCustomFn(this.widget.options.editFn);
+              let temFun = this.getExeCustomFn(this.widget.options.editFn)
               if (temFun) {
                 temFun(this, request, function (data) {
-                  console.log(data);
-                });
+                  console.log(data)
+                })
               }
             }
           } else {
-            if (editFormId == "") {
-              this.$message("请配置表单编码");
-              return;
+            if (editFormId == '') {
+              this.$message('请配置表单编码')
+              return
             }
-            this.tableCf.dialogType = "edit";
+            this.tableCf.dialogType = 'edit'
             getFormConfigDataById.call(this, editFormId, function (data) {
               if (data && data.formContent) {
-                _self.tableCf.configdata = JSON.parse(data.formContent);
-                _self.$emit("toggleGenerate", _self.tableCf.configdata);
-                _self.tableCf.tableDataEAVisible = true;
+                _self.tableCf.configdata = JSON.parse(data.formContent)
+                _self.$emit('toggleGenerate', _self.tableCf.configdata)
+                _self.tableCf.tableDataEAVisible = true
               }
-            });
+            })
           }
-          break;
-        case "detail":
-          let detailFormId = this.widget.options.detailFormId;
-          let dbSelecteRow = currentRow;
-          if (dbSelecteRow == "" || dbSelecteRow == null) {
-            this.$message("无数据");
-            return;
+          break
+        case 'detail':
+          let detailFormId = this.widget.options.detailFormId
+          let dbSelecteRow = currentRow
+          if (dbSelecteRow == '' || dbSelecteRow == null) {
+            this.$message('无数据')
+            return
           } else {
-            this.tableCf.editData = dbSelecteRow;
+            this.tableCf.editData = dbSelecteRow
           }
           if (this.widget.options.isDetailCustom) {
             if (this.widget.options.detailFn) {
-              let temFun = this.getExeCustomFn(this.widget.options.detailFn);
+              let temFun = this.getExeCustomFn(this.widget.options.detailFn)
               if (temFun) {
                 temFun(this, request, function (data) {
-                  console.log(data);
-                });
+                  console.log(data)
+                })
               }
             }
           } else {
-            if (detailFormId == "") {
-              this.$message("请配置表单编码");
-              return;
+            if (detailFormId == '') {
+              this.$message('请配置表单编码')
+              return
             }
-            this.tableCf.dialogType = "detail";
-            this.tableCf.tableDataEAVisible = true;
+            this.tableCf.dialogType = 'detail'
+            this.tableCf.tableDataEAVisible = true
             getFormConfigDataById.call(this, detailFormId, function (data) {
               if (data && data.formContent) {
-                _self.tableCf.configdata = JSON.parse(data.formContent);
+                _self.tableCf.configdata = JSON.parse(data.formContent)
               }
-            });
+            })
           }
-          break;
-        case "delete":
+          break
+        case 'delete':
           let selecteDeleRow = this.widget.configdata.list[0].options
-            .multipleSelection;
+            .multipleSelection
           if (
             (selecteDeleRow && selecteDeleRow.length < 1) ||
-            typeof selecteDeleRow == "undefined"
+            typeof selecteDeleRow == 'undefined'
           ) {
-            this.$message("请至少选择一行数据");
-            return;
+            this.$message('请至少选择一行数据')
+            return
           } else {
             if (this.widget.options.isDeleteBtnCustom) {
               if (this.widget.options.deleteFn) {
-                let temFun = this.getExeCustomFn(this.widget.options.deleteFn);
+                let temFun = this.getExeCustomFn(this.widget.options.deleteFn)
                 if (temFun) {
                   temFun(this, request, function (data) {
-                    console.log(data);
-                  });
+                    console.log(data)
+                  })
                 }
               }
             } else {
               let tragtTableData = this.widget.configdata.list[0].options
-                .tableData;
+                .tableData
               if (tragtTableData && tragtTableData.length > 0) {
                 tragtTableData.map((item, index) => {
                   selecteDeleRow.map((j) => {
                     if (item.id === j.id) {
-                      tragtTableData.splice(index, 1);
+                      tragtTableData.splice(index, 1)
                     }
-                  });
-                });
+                  })
+                })
               }
             }
           }
 
-          break;
+          break
         default:
-          console.log(action);
+          console.log(action)
       }
     },
     getExeCustomFn(fun) {
-      let temFen = null;
+      let temFen = null
       try {
-        temFen = eval("(" + fun + ")");
+        temFen = eval('(' + fun + ')')
       } catch (e) {
-        console.log(e);
+        console.log(e)
       }
-      return temFen;
+      return temFen
     },
     displayColumnsChange() {
-      let columns = [];
-      let flag = false;
+      let columns = []
+      let flag = false
       if (this.widget.configdata) {
-        columns = this.widget.configdata.list[0].options.columns;
+        columns = this.widget.configdata.list[0].options.columns
         columns.map((c) => {
           if (this.widget.options.displayColumns) {
-            flag = this.widget.options.displayColumns.includes(c.prop);
+            flag = this.widget.options.displayColumns.includes(c.prop)
             if (flag) {
-              c.isDisplay = true;
+              c.isDisplay = true
             } else {
-              c.isDisplay = false;
+              c.isDisplay = false
             }
           }
-        });
+        })
       }
     },
     closeTableDataEA() {
-      this.tableCf.tableDataEAVisible = false;
-      this.$emit("close-dialog");
+      this.tableCf.tableDataEAVisible = false
+      this.$emit('close-dialog')
     },
     handelTableDataEA() {
-      let type = this.tableCf.dialogType;
-      let tempTableData = this.$refs.addEditForm.models;
-      let tragtTableData = this.widget.configdata.list[0].options.tableData;
-      if (type == "add") {
+      let type = this.tableCf.dialogType
+      let tempTableData = this.$refs.addEditForm.models
+      let tragtTableData = this.widget.configdata.list[0].options.tableData
+      if (type == 'add') {
         if (tempTableData) {
-          tragtTableData.push(tempTableData);
+          tragtTableData.push(tempTableData)
         }
-      } else if (type == "edit") {
+      } else if (type == 'edit') {
         if (tragtTableData && tragtTableData.length > 0) {
           tragtTableData.map((item) => {
             if (
               item.id === tempTableData.id ||
               item.listCode == tempTableData.listCode
             ) {
-              for (let key in tempTableData) item[key] = tempTableData[key];
+              for (let key in tempTableData) item[key] = tempTableData[key]
             }
-          });
+          })
         }
       }
-      this.closeTableDataEA();
-    },
+      this.closeTableDataEA()
+    }
   },
   mounted() {
-    if (this.widget.type == "camera") {
-      this.camera();
+    if (this.widget.type == 'camera') {
+      this.camera()
     } else if (
-      this.widget.type == "buttonCom" &&
+      this.widget.type == 'buttonCom' &&
       (this.widget.options.buttontext || this.widget.options.defaultValue)
     ) {
       this.$refs.buttonSpanRef.textContent = this.widget.options.buttontext
         ? this.widget.options.buttontext
-        : this.widget.options.defaultValue;
+        : this.widget.options.defaultValue
     } else if (
-      this.widget.type == "alink" &&
+      this.widget.type == 'alink' &&
       (this.widget.options.buttontext || this.widget.options.defaultValue)
     ) {
       this.$refs.alinkSpanRef.textContent = this.widget.options.buttontext
         ? this.widget.options.buttontext
-        : this.widget.options.defaultValue;
-    } else if (this.widget.type == "imageshow") {
-      this.dataModel = this.imagesrc = require("../assets/" +
-        this.widget.options.imagesrc);
+        : this.widget.options.defaultValue
+    } else if (this.widget.type == 'imageshow') {
+      this.dataModel = this.imagesrc = require('../assets/' +
+        this.widget.options.imagesrc)
 
       /*var img = "D:\\jcbankWork\\form-making-secondary\\src\\assets\\wenjian.png";
           var image = new Image();
@@ -1530,25 +1470,25 @@ export default {
       immediate: true,
       handler(val) {
         // console.log(val)
-        this.models[this.widget.model] = val;
-        this.$emit("update:models", {
+        this.models[this.widget.model] = val
+        this.$emit('update:models', {
           ...this.models,
-          [this.widget.model]: val,
-        });
-        this.$emit("input-change", val, this.widget.model);
-      },
+          [this.widget.model]: val
+        })
+        this.$emit('input-change', val, this.widget.model)
+      }
     },
     models: {
       // 深度监听models，models修改时读取修改后的值赋值给dataModel
       deep: true,
       immediate: true,
       handler(val) {
-        console.log(val);
-        this.dataModel = val[this.widget.model];
-      },
-    },
-  },
-};
+        console.log(val)
+        this.dataModel = val[this.widget.model]
+      }
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 /*金额放大镜*/
