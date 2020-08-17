@@ -350,12 +350,9 @@
         <template v-if="element.options.isPagination">
           <div style="text-align: end;">
             <el-pagination
-              @size-change="element.options.pagination.handleSizeChange"
               @current-change="currentChange"
-              :current-page.sync="element.options.pagination.currentPage"
               :page-size="element.options.pagination.pageSize"
               layout="prev, pager, next"
-              :pager-count="element.options.pagination.pagerCount"
               :total="element.options.pagination.total"
             ></el-pagination>
           </div>

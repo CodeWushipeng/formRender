@@ -1448,18 +1448,8 @@ export const tableComponents = [
         '\n\treturn {}' +
         '\n}',
       pagination: {
-        pageSize: 1,
-        currentPage: 1,
-        pagerCount: 5,
-        total: 0,
-        handleSizeChange:
-          '/**' +
-          '\n* @param {' +
-          '\n* pageSize  每页条数' +
-          '\n* }' +
-          '\n*/' +
-          '\nfunction main (pageSize){' +
-          '\n}',
+        pageSize: 5,
+        total: 15,
         handleCurrentChange:
           '/**' +
           '\n* @param {' +
@@ -1467,6 +1457,8 @@ export const tableComponents = [
           '\n* }' +
           '\n*/' +
           '\nfunction main (page,callback){' +
+          '\n\tlet res = {list:[]}' +
+          '\ncallback(res)' +
           '\n}',
       },
       eventConfig: {},
