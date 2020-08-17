@@ -1,6 +1,14 @@
 import request from '../demo/demo3/js/request'
 
 //查询表单列表
+export function mappingUrl(data) {
+  return request({
+    url: '/requestForwardDevelop/requestForwardDetail',
+    method: 'post',
+    data
+  })
+}
+//查询表单列表
 export function getFormList(data) {
   return request({
     url: '/formDevelop/qryFromDefineList2',

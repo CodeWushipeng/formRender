@@ -1,6 +1,7 @@
 import { RES_OK } from '@/api/config';
-import { getTrade, getFormList } from '@/api/forms';
+import { getTrade, getFormList, mappingUrl } from '@/api/forms';
 import storage from 'good-storage';
+import { resolve, reject } from 'core-js/fn/promise';
 
 const KEY_ENTER = 13;
 const KEY_LEFT = 37;
@@ -337,6 +338,34 @@ let handlers = {
         this.conditionError = false;
       }
     },
+    // 根据配置的code解析真实url
+    mappingTrueUrl(code){
+      let data = {
+        frontServiceName: code
+      }
+      return new Promise((resolve, reject) => {
+        mappingUrl(data)
+          .then((res) => {
+            console.log(res)
+            // let serviceName = res.body.frontServiceName
+            // let hostId = res.body.hostSystemId
+            let httpType =
+              res.body.httpType === '1'
+                ? 'GET'
+                : res.body.httpType === '2'
+                ? 'POST'
+                : ''
+            let serviceName = res.body.targetServiceName
+            resolve(httpType, serviceName)
+          })
+          .catch((error) => {
+            console.log(error)
+            reject(error)
+          })
+      })
+      
+      
+    },
     // 字段交易
     remoteValidate(i) {
       // debugger;
@@ -358,7 +387,11 @@ let handlers = {
         let start = eval('(' + lists[i].isRemote + ')');
         let startFlag = start(this.models, this.utils);
         if (startFlag) {
-          let url = lists[i].url;
+          let url,httpType;
+          this.mappingTrueUrl(lists[i].url).then((type, sever) => {
+            url = sever
+            httpType = type
+          })
           let postData = this.evalWrap(lists[i].data);
           let tableKey = lists[i].tableKey; //表格表单标识
           // let tableModel = lists[i].tableModel;

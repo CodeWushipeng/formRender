@@ -45,6 +45,9 @@ module.exports = {
       },
       '/requestForward': {
         target: 'http://localhost:38081'
+      },
+      '/requestForwardDevelop': {
+        target: 'http://192.168.1.194:21004'
       }
     },
     overlay: {
