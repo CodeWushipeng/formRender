@@ -27,23 +27,23 @@ export function getDic(url, data) {
 //查询字典服务
 export function getDicTwo(data) {
   return request({
-    url: `/dictionary/quertDicByPage`,
+    url: '/dictionary/quertDicByPage',
     method: 'post',
     data
   })
 }
 //查询字段交易
-export function getTrade(url, method, data) {
+export function getTrade(url, data) {
   return request({
-    url,
-    method,
+    url: `/requestForward/${url}`,
+    method: 'post',
     data
   })
 }
 // 查询表格
 export function getTableList(data) {
   return request({
-    url: `/listDevelop/qryAllListDefine`,
+    url: '/listDevelop/qryAllListDefine',
     method: 'post',
     data
   })
