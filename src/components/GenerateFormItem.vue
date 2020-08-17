@@ -736,12 +736,9 @@
         <template v-if="widget.options.isPagination">
           <div style="text-align: end;">
             <el-pagination
-              @size-change="widget.options.pagination.handleSizeChange"
               @current-change="currentChange"
-              :current-page.sync="widget.options.pagination.currentPage"
               :page-size="widget.options.pagination.pageSize"
               layout="prev, pager, next"
-              :pager-count="widget.options.pagination.pagerCount"
               :total="widget.options.pagination.total"
             ></el-pagination>
           </div>
@@ -921,8 +918,10 @@ export default {
   methods: {
     currentChange(pageSize){
       eval("("+this.widget.options.pagination.handleCurrentChange+")")(pageSize,(res)=>{
-        console.log(res);
-        this.widget.configdata = res;
+        console.log(Object.prototype.toString.call(res));
+        if(Object.prototype.toString.call(res) == '[object Object]'&&res.list&&res.list.length>0) {
+          this.widget.configdata = res;
+        }
       })
     },
     /*标签方法*/
