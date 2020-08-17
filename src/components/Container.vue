@@ -894,6 +894,7 @@ export default {
       console.log(item);
       EventBus.$emit("on-field-add", item);
     },
+    //撤销
     handleUndo() {
       historyManager
         .updateLatest(
@@ -914,6 +915,7 @@ export default {
           });
         });
     },
+    //重做
     handleRedo() {
       historyManager.redo().then((data) => {
         this.widgetForm = { ...data.data };
@@ -998,6 +1000,7 @@ export default {
         this.$refs.uploadJson.end();
       }
     },
+    //清空  
     handleClear() {
       this.widgetForm = {
         list: [],

@@ -122,7 +122,8 @@ export default {
           });
           return;
         }
-        getFormList(this.url, { formCode: inputFormCode })
+        // this.url,
+        getFormList({formCode: inputFormCode })
           .then((res) => {
             console.log("=====form-making-secondary===res============", res);
             const { rspCode } = res.header;
