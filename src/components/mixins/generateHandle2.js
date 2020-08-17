@@ -400,7 +400,7 @@ let handlers = {
           localStorage.setItem('removeFunc', success);
           let tempFunc = eval('(' + success + ')');
           let self = this;
-          getTrade(url, {
+          getTrade(url, httpType, {
             body: postData,
             header: {
               pageIndex: 1,

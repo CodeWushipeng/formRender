@@ -33,10 +33,10 @@ export function getDicTwo(data) {
   })
 }
 //查询字段交易
-export function getTrade(url, data) {
+export function getTrade(url, method, data) {
   return request({
     url,
-    method: 'post',
+    method,
     data
   })
 }
