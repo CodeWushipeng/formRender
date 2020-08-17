@@ -737,7 +737,7 @@
           <div style="text-align: end;">
             <el-pagination
               @size-change="widget.options.pagination.handleSizeChange"
-              @current-change="widget.options.pagination.handleCurrentChange"
+              @current-change="currentChange"
               :current-page.sync="widget.options.pagination.currentPage"
               :page-size="widget.options.pagination.pageSize"
               layout="prev, pager, next"
@@ -919,6 +919,12 @@ export default {
     }
   },
   methods: {
+    currentChange(pageSize){
+      eval("("+this.widget.options.pagination.handleCurrentChange+")")(pageSize,(res)=>{
+        console.log(res);
+        this.widget.configdata = res;
+      })
+    },
     /*标签方法*/
     handleClose(tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
