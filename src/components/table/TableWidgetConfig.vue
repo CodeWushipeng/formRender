@@ -40,15 +40,6 @@
                 size="mini"
               ></el-input>
             </el-form-item>
-            <!-- <el-form-item label-width="100px" label="每页条目个数改变的方法">
-              <el-input
-                style="text-overflow: ellipsis;"
-                readonly
-                @focus="openCode('handleSizeChange')"
-                v-model="data.options.pagination.handleSizeChange"
-                placeholder="条目个数改变的方法"
-              ></el-input>
-            </el-form-item>-->
             <el-form-item label-width="100px" label="当前页改变的方法">
               <el-input
                 style="text-overflow: ellipsis;"
@@ -190,9 +181,7 @@ export default {
       this.tableCodeCf.codeType = type
       if (type == 'handleCurrentChange') {
         this.tableCodeCf.tableCodeFn = this.data.options.pagination.handleCurrentChange
-      } else if (type == 'handleSizeChange') {
-        this.tableCodeCf.tableCodeFn = this.data.options.pagination.handleSizeChange
-      } else if (type == 'tableRemotFun') {
+      }else if (type == 'tableRemotFun') {
         this.tableCodeCf.tableCodeFn = this.data.options.remoteFunc
       }
     },
@@ -217,9 +206,7 @@ export default {
       }
       if (type == 'handleCurrentChange') {
         this.data.options.pagination.handleCurrentChange = this.tableCodeCf.tableCodeFn
-      } else if (type == 'handleSizeChange') {
-        this.data.options.pagination.handleSizeChange = this.tableCodeCf.tableCodeFn
-      } else if (type == 'tableRemotFun') {
+      }else if (type == 'tableRemotFun') {
         if (this.data.options && this.data.options.remoteFunc) {
           this.data.options.remoteFunc = this.tableCodeCf.tableCodeFn
           // temFen(this.data.options);

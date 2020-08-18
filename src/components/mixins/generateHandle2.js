@@ -358,7 +358,7 @@ let handlers = {
         let start = eval('(' + lists[i].isRemote + ')');
         let startFlag = start(this.models, this.utils);
         if (startFlag) {
-          let url = lists[i].url;
+          let url = lists[i].url
           let postData = this.evalWrap(lists[i].data);
           let tableKey = lists[i].tableKey; //表格表单标识
           // let tableModel = lists[i].tableModel;

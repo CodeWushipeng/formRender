@@ -1,6 +1,14 @@
 import request from '../demo/demo3/js/request'
 
 //查询表单列表
+export function mappingUrl(data) {
+  return request({
+    url: '/requestForwardDevelop/requestForwardDetail',
+    method: 'post',
+    data
+  })
+}
+//查询表单列表
 export function getFormList(data) {
   return request({
     url: '/formDevelop/qryFromDefineList2',
@@ -19,7 +27,7 @@ export function getDic(url, data) {
 //查询字典服务
 export function getDicTwo(data) {
   return request({
-    url: `/dictionary/quertDicByPage`,
+    url: '/dictionary/quertDicByPage',
     method: 'post',
     data
   })
@@ -27,7 +35,7 @@ export function getDicTwo(data) {
 //查询字段交易
 export function getTrade(url, data) {
   return request({
-    url,
+    url: `/requestForward/${url}`,
     method: 'post',
     data
   })
@@ -35,7 +43,7 @@ export function getTrade(url, data) {
 // 查询表格
 export function getTableList(data) {
   return request({
-    url: `/listDevelop/qryAllListDefine`,
+    url: '/listDevelop/qryAllListDefine',
     method: 'post',
     data
   })

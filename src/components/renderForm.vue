@@ -127,20 +127,27 @@ export default {
           .then((res) => {
             console.log("=====form-making-secondary===res============", res);
             const { rspCode } = res.header;
+            let formContent;
             if (rspCode == RES_OK) {
               const rest = res.body.define;
-              if (rest && rest.records.length > 0) {
-                const formContent = rest.records[0]["formContent"];
+              if (rest && rest.records) {
+                if(typeof rest.records === 'string'){
+                  const tempArr = new Array(JSON.parse(rest.records.slice(1,-1)));
+                  formContent = tempArr[0]["formContent"]
+                }else if (Array.isArray(rest.records)){
+                  formContent = rest.records[0]["formContent"];
+                }
                 // 设置数据
                 let temp =
                   typeof formContent == "string"
                     ? JSON.parse(formContent)
                     : formContent;
+                    console.log("temp", temp);
                 this.flatGridData(temp);
                 this.handleDynamicData(temp);
                 this.handleDynamicInFlow(temp);
                 this.jsonData = temp;
-                console.log("temp", temp);
+                
                 console.log("jsonData", this.jsonData);
               } else {
                 this.$notify.error({
@@ -247,8 +254,15 @@ export default {
           // this.hideLoading();
           if (rspCode == RES_OK) {
             const rest = res.body.define;
-            if (rest && rest.records.length > 0) {
-              const formContent = rest.records[0]["formContent"];
+            if (rest && rest.records) {
+              // const formContent = rest.records[0]["formContent"];
+              let formContent
+              if(typeof rest.records === 'string'){
+                  const tempArr = new Array(JSON.parse(rest.records.slice(1,-1)));
+                  formContent = tempArr[0]["formContent"]
+                }else if (Array.isArray(rest.records)){
+                  formContent = rest.records[0]["formContent"];
+                }
               const temp =
                 typeof formContent == "string"
                   ? JSON.parse(formContent)
