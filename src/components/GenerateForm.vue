@@ -6,8 +6,7 @@
 
     rules:{{rules}} <br>-->
     <!--models:{{ models }} <br />-->
-    <!--{{btnFocusIndex}}-->
-
+    <!--btnFocusIndex:{{btnFocusIndex}}-->
     <el-form
       class="generateForm"
       v-if="keysLength"

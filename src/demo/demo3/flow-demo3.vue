@@ -36,9 +36,11 @@
             >
               <!--操作按钮-->
               <div style="text-align:center;">
-                <el-button  ref="back"  @click="prev">Back</el-button>
-                <el-button  ref="submit"  @click="submit">Submit</el-button>
-                <el-button  ref="cancel"  @click="cancel">Cancel</el-button>
+                <el-button ref="back"   @click="prev"><i class="el-icon-arrow-left"></i>上一步</el-button>
+                <el-button ref="submit" @click="submit">下一步 <i class="el-icon-arrow-right"></i></el-button>
+                <el-button ref="buyProd" @click="buyProd"><i class="el-icon-sell"></i>&nbsp;立即购买</el-button>
+                <el-button ref="addCart" @click="addCart"><i class="el-icon-shopping-cart-2"></i>&nbsp;加入购物车</el-button>
+                <el-button ref="cancel" @click="cancel"><i class="el-icon-top-left"></i>取消</el-button>
               </div>
             </render-form>
           </div>
@@ -48,12 +50,13 @@
       </div>
       <div class="debugs" id="debugs" v-if="debug">
         <!--操作按钮-->
-        <flowBtns ref="operations"
+        <flowDebug ref="flowDebug"
                   :data="data"
                   :records="records"
                   :formData="formData"
                   @getFormHandler="getFormHandler"/>
       </div>
+      <flowDialog ref="flowDialog"></flowDialog>
     </div>
   </div>
 </template>
@@ -61,7 +64,8 @@
 <script>
   import storage from 'good-storage';
   import request from './js/request';
-  import flowBtns from './flow-buttons';
+  import flowDebug from './flow-debug';
+  import flowDialog from './flow-dialog';
   // import getFG from 'fg-control';
   import getFG from "./js/fg-control";
 
@@ -74,16 +78,21 @@
   import {platform, user} from "./js/flowData";
 
   const DEBUG_KEY = '__debug__';
-  const Rank_BTNS = ['prev', 'submit', 'cancel'];
+  const Rank_BTNS = ['prev', 'submit', 'buyProd', 'addCart', 'cancel'];
 
-  const KEY_SHIFT = 16;
-  const KEY_NUM2 = 50;
+  const KEY_CTRL = 17;
+  const KEY_ALT = 18;
+  const KEY_NUM0 = 48;
+  // const KEY_NUM9 = 57;
+  // const KEY_SHIFT = 16;
+  // const KEY_NUM2 = 50;
 
   export default {
     name: "flowDemo",
     mixins: [flowMixin],
     components: {
-      flowBtns,
+      flowDebug,
+      flowDialog,
     },
     directives: {
       ...directives
@@ -131,6 +140,7 @@
         const _self = _this;
         let code = 0;
         let code2 = 0;
+        let code3 = 0;
         let timer = null;
         const $doc = document;
         $doc.onkeydown = function (e) {
@@ -139,24 +149,23 @@
           let e1 = e || event || window.event || arguments.callee.caller.arguments[0];
           console.log('e1.keyCode', e1.keyCode)
           const key = e1.keyCode;
-          if (key === KEY_SHIFT) { // key:shift
-            code = 1;
-          }
-          if (key === KEY_NUM2) { // key:2
-            code2 = 1;
-          }
-          if (code === 1 && code2 === 1) {
-            // alert('Shift+2');
+          if (key === KEY_CTRL) code  = 1;
+          if (key === KEY_ALT)  code2 = 1;
+          if (key === KEY_NUM0) code3 = 1;
+          if (code === 1 && code2 === 1 && code3===1) {
             if (_self.isDebugMode) {
               _self.debug = !_self.debug;
               storage.session.set(DEBUG_KEY, _self.debug)
             }
             code = 0;
             code2 = 0;
+            code3 = 0;
           }
+          console.log(code,code2,code3)
           timer = setTimeout(() => {
             code = 0;
             code2 = 0;
+            code3 = 0;
           }, 1000)
         }
       },
@@ -520,12 +529,21 @@
         console.log("FG", FG);
         this.$router.push("/")
       },
+      buyProd(){
+        this.$refs.flowDialog.show()
+      },
+      addCart(){
+        this.$message({
+          message: '加入购物车',
+          type: 'success'
+        });
+      },
       getFormHandler() {
         if (this.$refs.renderForm) {
           this.$refs.renderForm.getData().then(data => {
             console.log("data...", data)
             this.formData = data;
-            this.$refs.operations.show();
+            this.$refs.flowDebug.show();
           })
         } else {
           this.$notify.info({

@@ -796,7 +796,15 @@ let handlers = {
     },
 
     focusCurrentBtn() {
-      this.btnLists[this.btnFocusIndex].focus();
+      // this.btnLists[this.btnFocusIndex].focus();
+      this.btnLists.forEach((btn, index) => {
+        if (index == this.btnFocusIndex) {
+          btn.className = 'el-button el-button--primary el-button--small';
+          btn.focus();
+        } else {
+          btn.className = 'el-button el-button--default el-button--small';
+        }
+      })
     },
 
     calBtnIndex(keyCode) {
