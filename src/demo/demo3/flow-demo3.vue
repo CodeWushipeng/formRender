@@ -36,9 +36,11 @@
             >
               <!--操作按钮-->
               <div style="text-align:center;">
-                <el-button  ref="back"  @click="prev">Back</el-button>
-                <el-button  ref="submit"  @click="submit">Submit</el-button>
-                <el-button  ref="cancel"  @click="cancel">Cancel</el-button>
+                <el-button ref="back"   @click="prev"><i class="el-icon-arrow-left"></i>上一步</el-button>
+                <el-button ref="submit" @click="submit">下一步 <i class="el-icon-arrow-right"></i></el-button>
+                <el-button ref="buyProd" @click="buyProd"><i class="el-icon-sell"></i>&nbsp;立即购买</el-button>
+                <el-button ref="addCart" @click="addCart"><i class="el-icon-shopping-cart-2"></i>&nbsp;加入购物车</el-button>
+                <el-button ref="cancel" @click="cancel"><i class="el-icon-top-left"></i>取消</el-button>
               </div>
             </render-form>
           </div>
@@ -48,12 +50,13 @@
       </div>
       <div class="debugs" id="debugs" v-if="debug">
         <!--操作按钮-->
-        <flowBtns ref="operations"
+        <flowDebug ref="operations"
                   :data="data"
                   :records="records"
                   :formData="formData"
                   @getFormHandler="getFormHandler"/>
       </div>
+      <flowDialog ref="flowDialog"></flowDialog>
     </div>
   </div>
 </template>
@@ -61,7 +64,8 @@
 <script>
   import storage from 'good-storage';
   import request from './js/request';
-  import flowBtns from './flow-buttons';
+  import flowDebug from './flow-debug';
+  import flowDialog from './flow-dialog';
   // import getFG from 'fg-control';
   import getFG from "./js/fg-control";
 
@@ -74,7 +78,7 @@
   import {platform, user} from "./js/flowData";
 
   const DEBUG_KEY = '__debug__';
-  const Rank_BTNS = ['prev', 'submit', 'cancel'];
+  const Rank_BTNS = ['prev', 'submit', 'buyProd', 'addCart', 'cancel'];
 
   const KEY_SHIFT = 16;
   const KEY_NUM2 = 50;
@@ -83,7 +87,8 @@
     name: "flowDemo",
     mixins: [flowMixin],
     components: {
-      flowBtns,
+      flowDebug,
+      flowDialog,
     },
     directives: {
       ...directives
@@ -519,6 +524,15 @@
         alert("已清理这个流程");
         console.log("FG", FG);
         this.$router.push("/")
+      },
+      buyProd(){
+        this.$refs.flowDialog.show()
+      },
+      addCart(){
+        this.$message({
+          message: '加入购物车',
+          type: 'success'
+        });
       },
       getFormHandler() {
         if (this.$refs.renderForm) {
