@@ -50,7 +50,7 @@
       </div>
       <div class="debugs" id="debugs" v-if="debug">
         <!--操作按钮-->
-        <flowDebug ref="operations"
+        <flowDebug ref="flowDebug"
                   :data="data"
                   :records="records"
                   :formData="formData"
@@ -80,8 +80,12 @@
   const DEBUG_KEY = '__debug__';
   const Rank_BTNS = ['prev', 'submit', 'buyProd', 'addCart', 'cancel'];
 
-  const KEY_SHIFT = 16;
-  const KEY_NUM2 = 50;
+  const KEY_CTRL = 17;
+  const KEY_ALT = 18;
+  const KEY_NUM0 = 48;
+  // const KEY_NUM9 = 57;
+  // const KEY_SHIFT = 16;
+  // const KEY_NUM2 = 50;
 
   export default {
     name: "flowDemo",
@@ -136,6 +140,7 @@
         const _self = _this;
         let code = 0;
         let code2 = 0;
+        let code3 = 0;
         let timer = null;
         const $doc = document;
         $doc.onkeydown = function (e) {
@@ -144,13 +149,16 @@
           let e1 = e || event || window.event || arguments.callee.caller.arguments[0];
           console.log('e1.keyCode', e1.keyCode)
           const key = e1.keyCode;
-          if (key === KEY_SHIFT) { // key:shift
+          if (key === KEY_CTRL) {
             code = 1;
           }
-          if (key === KEY_NUM2) { // key:2
+          if (key === KEY_ALT) {
             code2 = 1;
           }
-          if (code === 1 && code2 === 1) {
+          if (key === KEY_NUM0){
+            code3 = 1;
+          }
+          if (code === 1 && code2 === 1 && code3===1) {
             // alert('Shift+2');
             if (_self.isDebugMode) {
               _self.debug = !_self.debug;
@@ -158,10 +166,13 @@
             }
             code = 0;
             code2 = 0;
+            code3 = 0;
           }
+          console.log(code,code2,code3)
           timer = setTimeout(() => {
-            code = 0;
-            code2 = 0;
+            // code = 0;
+            // code2 = 0;
+            // code3 = 0;
           }, 1000)
         }
       },
@@ -539,7 +550,7 @@
           this.$refs.renderForm.getData().then(data => {
             console.log("data...", data)
             this.formData = data;
-            this.$refs.operations.show();
+            this.$refs.flowDebug.show();
           })
         } else {
           this.$notify.info({
