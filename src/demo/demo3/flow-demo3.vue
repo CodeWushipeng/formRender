@@ -149,17 +149,10 @@
           let e1 = e || event || window.event || arguments.callee.caller.arguments[0];
           console.log('e1.keyCode', e1.keyCode)
           const key = e1.keyCode;
-          if (key === KEY_CTRL) {
-            code = 1;
-          }
-          if (key === KEY_ALT) {
-            code2 = 1;
-          }
-          if (key === KEY_NUM0){
-            code3 = 1;
-          }
+          if (key === KEY_CTRL) code  = 1;
+          if (key === KEY_ALT)  code2 = 1;
+          if (key === KEY_NUM0) code3 = 1;
           if (code === 1 && code2 === 1 && code3===1) {
-            // alert('Shift+2');
             if (_self.isDebugMode) {
               _self.debug = !_self.debug;
               storage.session.set(DEBUG_KEY, _self.debug)
@@ -170,9 +163,9 @@
           }
           console.log(code,code2,code3)
           timer = setTimeout(() => {
-            // code = 0;
-            // code2 = 0;
-            // code3 = 0;
+            code = 0;
+            code2 = 0;
+            code3 = 0;
           }, 1000)
         }
       },
