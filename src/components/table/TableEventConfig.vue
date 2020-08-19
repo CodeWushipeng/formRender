@@ -24,7 +24,9 @@
           style="text-overflow: ellipsis;"
           :disabled="data.options.isAddBtnCustom"
           v-model="data.options.addFormId"
+          readonly
           placeholder="表单编码"
+          @focus="_focus"
         ></el-input>
       </el-form-item>
        <!-- 双击查看详情 -->
@@ -51,6 +53,8 @@
            :disabled="data.options.isDetailCustom"
           v-model="data.options.detailFormId"
           placeholder="表单编码"
+          readonly
+          @focus="_focus"
         ></el-input>
       </el-form-item>
       <!-- 编辑 -->
@@ -77,6 +81,8 @@
           style="text-overflow: ellipsis;"
           v-model="data.options.editFormId"
           placeholder="表单编码"
+          readonly
+          @focus="_focus"
         ></el-input>
       </el-form-item>
       <!-- 删除 -->
@@ -119,6 +125,45 @@
         :options="tableEventCodeCf.cmOptions"
       ></codemirror>
     </cus-dialog>
+    <el-dialog
+      title="查询表单编码"
+      :visible.sync="dialogFormVis"
+      width="70%">
+      <div class="search-wrap">
+        <div class="search-panel">
+          <el-input v-model="search" placeholder="表单名称关键字搜索" clearable />
+          <el-button type="primary" icon="el-icon-search" @click="searchForm">搜索</el-button>
+        </div>
+      </div>
+      
+      <el-table
+        :data="formList"
+        highlight-current-row
+        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+        @cell-dblclick="handleDbClick"
+        v-loading="loading"
+      >
+        <el-table-column prop="formCode" label="表单唯一编码" width="160"></el-table-column>
+        <el-table-column prop="projectName" label="项目名称" width="160"></el-table-column>
+        <el-table-column prop="formType" label="表单类型" width="160"></el-table-column>
+        <el-table-column prop="formName" label="表单名称" width="160"></el-table-column>
+        <el-table-column prop="formDescribe" label="表单描述"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="200">
+          <template slot-scope="scope">
+            <el-button @click="viewFormDdetail(scope.row)" type="text" size="small">查看</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        style="text-align: right;"
+        layout="prev, pager, next"
+        :page-size="pageSize"
+        :total="totalNum"
+        :current-page="startPage"
+        @current-change="handleCurrentChange"
+      >
+      </el-pagination>
+  </el-dialog>
   </div>
 </template>
 
@@ -126,6 +171,8 @@
 import Draggable from "vuedraggable";
 import request from "../../util/request";
 import CusDialog from "../CusDialog";
+import {getFormList} from '@/api/forms'
+import { debounce } from '@/util'
 
 export default {
   components: {
@@ -154,11 +201,20 @@ export default {
         },
         tableCodeFn: "",
         codeType: ""
-      }
+      },
+      dialogFormVis:false,
+      search:"",//模糊匹配关键字
+      startPage:1,//第几页
+      pageSize:5,//每页数据数
+      totalNum:0,//总数
+      loading:true,
+      formList:[],
     };
   },
-  mounted() {
-    console.log(this.data);
+  created() {
+    this.$watch('search', debounce((newQuery) => {
+      this.searchForm()
+    }, 800))
   },
   computed: {
     show() {
@@ -225,7 +281,46 @@ export default {
     //关闭code窗口
     closeMirror(val) {
      this.mirrorVisible = false
-    }
+    },
+    viewFormDdetail(row){
+      
+    },
+    _focus(){
+      this.dialogFormVis = true;
+      this.searchForm();
+    },
+    handleDbClick(row) {
+      this.dialogFormVis = false;
+      this.data.options.addFormId = row.formCode;
+    },
+    handleCurrentChange(startPage){
+      this.startPage = startPage;
+      this.searchForm();
+    },
+    searchForm() {
+      let params = {
+        pageIndex: this.startPage,
+        pageSize: this.pageSize,
+        formCode:this.search
+      };
+      getFormList(params).then(res => {
+        this.loading = false;
+        this.formList = res.body.define.records
+        this.totalNum = res.body.define.total;
+      })
+    },
   }
 };
 </script>
+<style scoped>
+.search-wrap{
+  display:flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.search-panel>.el-input{
+  width:200px;
+  margin-right: 20px;
+}
+
+</style>

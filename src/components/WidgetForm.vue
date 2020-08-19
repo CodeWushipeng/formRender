@@ -135,6 +135,7 @@ export default {
           key,
           model: "object",
           tableName:'',
+          tableCode:'',
           rules: [],
         });
 
@@ -228,6 +229,7 @@ export default {
         // 绑定键值
         model: "object",
         tableName:'',
+        tableCode:'',
         rules: [],
       });
 
@@ -301,6 +303,7 @@ export default {
         // 绑定键值
         model: "object",
         tableName:'',
+        tableCode:'',
         rules: [],
       });
 

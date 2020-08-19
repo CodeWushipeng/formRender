@@ -129,7 +129,6 @@ export default {
   props: ['data'],
   data() {
     return {
-      tableCode: "",
       tableRemotFun: "",
       dialogTableVisible: false,
       mirrorVisible: false,
@@ -298,7 +297,7 @@ export default {
       this.data.configdata = JSON.parse(temTableCfg.listContent);
       this.handleDisplayColumns(this.data.configdata);
       this.data.tableName = temTableCfg.listName + "(" + temTableCfg.listCode + ")";
-      this.tableCode = temTableCfg.listCode;
+      this.data.tableCode = temTableCfg.listCode;
       this.dialogTableVisible = false;
       this.tableCodeCf.tableCodeFn =
         'function mian(currentObj, request, callBack) {debugger;}'
