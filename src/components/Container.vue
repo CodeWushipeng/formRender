@@ -556,7 +556,7 @@ export default {
         smartIndent: true,
         matchBrackets: true,
         styleActiveLine: true,
-        scrollbarStyle: "overlay",
+        // scrollbarStyle: "overlay",
         spellcheck: true,
         autocorrect: true,
         autoCloseBrackets: true,
