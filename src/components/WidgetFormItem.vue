@@ -374,6 +374,7 @@
 <script>
 import FmUpload from "./Upload";
 import { EventBus } from "../util/event-bus.js";
+import request from '../demo/demo3/js/request'
 export default {
   props: ["element", "select", "index", "data"],
   components: {
@@ -387,8 +388,7 @@ export default {
   mounted() {},
   methods: {
     currentChange(pageSize){
-      eval("("+this.element.options.pagination.handleCurrentChange+")")(pageSize,(res)=>{
-        console.log(res);
+      eval("("+this.element.options.pagination.handleCurrentChange+")")(request,pageSize,(res)=>{
         this.element.configdata = res;
       })
     },

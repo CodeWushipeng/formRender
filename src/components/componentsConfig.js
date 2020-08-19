@@ -1456,9 +1456,8 @@ export const tableComponents = [
           '\n* page  当前页' +
           '\n* }' +
           '\n*/' +
-          '\nfunction main (page,callback){' +
-          '\n\tlet res = {list:[]}' +
-          '\ncallback(res)' +
+          '\nfunction main (request,page,callback){' +
+          '\ncallback()' +
           '\n}',
       },
       eventConfig: {},

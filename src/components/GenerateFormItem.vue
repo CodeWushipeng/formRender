@@ -776,13 +776,14 @@ import radioFormItem from './radioFormItem'
 import cameraFormItem from './cameraFormItem'
 import { getInputValue, delcommafy } from '../util/comother.js'
 import { InputMoney } from '../util/amtUtil'
-import request from '../util/request.js'
+// import request from '../util/request.js'
 import ElImage from 'element-ui/packages/image/src/main'
 import { RES_OK, FAIL_CODE } from '@/api/config'
 import { getDicTwo } from '@/api/forms'
 import { getFormConfigDataById } from '../components/table/tableAction'
 import itemHandle from './mixins/itemHandle.js'
 import hrSelect from './base-components/my-select/select'
+import request from '../demo/demo3/js/request'
 export default {
   props: ['widget', 'models', 'rules', 'remote'], // widget为当前组件json数据
   components: {
@@ -917,8 +918,7 @@ export default {
   },
   methods: {
     currentChange(pageSize){
-      eval("("+this.widget.options.pagination.handleCurrentChange+")")(pageSize,(res)=>{
-        console.log(Object.prototype.toString.call(res));
+      eval("("+this.widget.options.pagination.handleCurrentChange+")")(request,pageSize,(res)=>{
         if(Object.prototype.toString.call(res) == '[object Object]'&&res.list&&res.list.length>0) {
           this.widget.configdata = res;
         }
