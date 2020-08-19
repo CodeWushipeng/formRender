@@ -142,7 +142,6 @@ export default {
         if (widgetItem.type == "report") {
           widgetItem.rows = generateKeyToTD(widgetItem.rows);
         }
-
         this._addWidget(this.data.list, widgetItem);
 
         this.$nextTick(() => {

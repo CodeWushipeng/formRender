@@ -65,6 +65,12 @@
               @click="getTableListData"
               icon="el-icon-search"
             >搜索</el-button>
+            <el-button
+              type="primary"
+              style="marginLeft:20px"
+              @click="emitAddTable"
+              icon="el-icon-circle-plus-outline"
+            >新增表格</el-button>
           </div>
           <el-table
             ref="selectTable"
@@ -281,6 +287,10 @@ export default {
             : res.define.size
         })
         .catch((error) => console.log(error))
+    },
+    // 发射新增表格事件
+    emitAddTable(){
+      this.$emit("addTable")
     },
     handleSelectionRow(row, column, event) {
       let temTableCfg = deepClone(row);

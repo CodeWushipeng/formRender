@@ -21,6 +21,9 @@ let itemHandle = {
           this.peripheral();
         }
       }
+      if (this.widget.type==="date" && this.widget.options.editable) {
+        // this.dateShow()
+      }
       this.$emit('el-focus', this.widget.model, this.widget.type);
     },
     // 组件失去焦点事件
@@ -148,12 +151,12 @@ let itemHandle = {
     },
     // date选择器失去焦点事件
     dateBlur() {
-      this.widget.options.editable = false;
+      // this.widget.options.editable = false;
       this.$emit('date-blur', this.widget.model, this.widget);
     },
     dateShow() {
-      this.$refs[this.widget.model].handleFocus();
-      this.widget.options.editable = true;
+      // this.$refs[this.widget.model].handleFocus()
+      // this.widget.options.editable = true
     },
     pickShow(params) {
       console.log('pickShowpickShowpickShowpickShowpickShowpickShow', params);

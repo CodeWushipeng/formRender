@@ -249,6 +249,7 @@
                 v-show="configTab == 'widget'"
                 :data="widgetFormSelect"
                 @mirror="showMirror"
+                @addTable="toAddTable"
               ></table-widget-config>
               <table-event-config
                 v-show="configTab == 'common'"
@@ -829,6 +830,10 @@ export default {
     },
     handleMove() {
       return true;
+    },
+    // 监听新增表格
+    toAddTable(){
+      this.$emit("table")
     },
     // 检查model是否有重复
     checkModels(item) {
