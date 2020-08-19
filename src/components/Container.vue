@@ -833,10 +833,7 @@ export default {
     },
     // 监听新增表格
     toAddTable(){
-      debugger
-      this.$parent.$parent.$router.push({
-        path: '/tables/add',
-      })
+      this.$emit("table")
     },
     // 检查model是否有重复
     checkModels(item) {
