@@ -26,7 +26,7 @@
           v-model="data.options.addFormId"
           readonly
           placeholder="表单编码"
-          @focus="_focus"
+          @focus="_focus('addFormId')"
         ></el-input>
       </el-form-item>
        <!-- 双击查看详情 -->
@@ -54,7 +54,7 @@
           v-model="data.options.detailFormId"
           placeholder="表单编码"
           readonly
-          @focus="_focus"
+          @focus="_focus('detailFormId')"
         ></el-input>
       </el-form-item>
       <!-- 编辑 -->
@@ -82,7 +82,7 @@
           v-model="data.options.editFormId"
           placeholder="表单编码"
           readonly
-          @focus="_focus"
+          @focus="_focus('editFormId')"
         ></el-input>
       </el-form-item>
       <!-- 删除 -->
@@ -151,6 +151,7 @@
         <el-table-column fixed="right" label="操作" width="200">
           <template slot-scope="scope">
             <el-button @click="viewFormDdetail(scope.row)" type="text" size="small">查看</el-button>
+            <el-button @click="handleDbClick(scope.row)" type="text" size="small">选择</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -164,10 +165,18 @@
       >
       </el-pagination>
   </el-dialog>
+  <el-dialog
+    title="表单详情"
+    :visible.sync="formPopVisible"
+    top="8vh"
+    width="90%">
+    <node-form-pop ref="formPop"></node-form-pop>
+  </el-dialog>
   </div>
 </template>
 
 <script>
+import nodeFormPop from './node-form-pop'
 import Draggable from "vuedraggable";
 import request from "../../util/request";
 import CusDialog from "../CusDialog";
@@ -177,7 +186,8 @@ import { debounce } from '@/util'
 export default {
   components: {
     Draggable,
-    CusDialog
+    CusDialog,
+    nodeFormPop
   },
   props: ["data"],
   data() {
@@ -203,12 +213,14 @@ export default {
         codeType: ""
       },
       dialogFormVis:false,
+      formPopVisible:false,
       search:"",//模糊匹配关键字
       startPage:1,//第几页
       pageSize:5,//每页数据数
       totalNum:0,//总数
       loading:true,
       formList:[],
+      selectForm:""
     };
   },
   created() {
@@ -283,15 +295,19 @@ export default {
      this.mirrorVisible = false
     },
     viewFormDdetail(row){
-      
+      this.formPopVisible = true;
+      this.$nextTick(() => {
+        this.$refs.formPop.setData(row)
+      })
     },
-    _focus(){
+    _focus(flag){
+      this.selectForm = flag;
       this.dialogFormVis = true;
       this.searchForm();
     },
     handleDbClick(row) {
       this.dialogFormVis = false;
-      this.data.options.addFormId = row.formCode;
+      this.data.options[this.selectForm] = row.formCode;
     },
     handleCurrentChange(startPage){
       this.startPage = startPage;
