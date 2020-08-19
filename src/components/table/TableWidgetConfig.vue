@@ -148,7 +148,7 @@ export default {
           smartIndent: true,
           autofocus: true,
           styleActiveLine: true,
-          scrollbarStyle: 'overlay',
+          // scrollbarStyle: 'overlay',
           lineWrapping: true,
           spellcheck: true,
           autocorrect: true,
