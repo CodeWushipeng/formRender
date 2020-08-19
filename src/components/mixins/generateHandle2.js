@@ -371,13 +371,14 @@ let handlers = {
             body: postData,
             header: {
               pageIndex: 1,
-              pageSize: 1,
+              pageSize: 999,
               gloSeqNo: new Date(),
               reqSeqNo: 'sit anim',
               reqTime: 'officia ad anim',
             },
           })
             .then((res) => {
+              debugger
               console.log(res);
               if (res.header.rspCode == RES_OK) {
                 self.handelValidate('success', '', i);
@@ -460,11 +461,18 @@ let handlers = {
     // 表格赋值
     setDataToTable(total) {
       this.$nextTick(() => {
+        debugger
         for (let m = 0; m < this.comArr.length; m++) {
           if (this.comArr[m].type === 'elTable') {
-            if (Array.isArray(this.models[this.comArr[m].model])) {
+            if (
+              Array.isArray(this.models[this.comArr[m].model]) &&
+              this.models[this.comArr[m].model].length>0
+            ) {
               let pageSize = this.comArr[m].options.pagination.pageSize
-              let tableData = this.models[this.comArr[m].model].slice(0,pageSize)
+              let tableData = this.models[this.comArr[m].model].slice(
+                0,
+                pageSize
+              )
               this.comArr[m].configdata.list[0].options.tableData = tableData
               this.comArr[m].options.pagination.total = total
             }
