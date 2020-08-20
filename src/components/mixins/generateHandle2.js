@@ -46,8 +46,9 @@ let handlers = {
         'readcard',
         'camera',
         'buttonCom',
-      ],
-    };
+        'taglable'
+      ]
+    }
   },
   methods: {
     // 组件获取焦点
@@ -212,7 +213,7 @@ let handlers = {
     },
     // eval封装
     evalWrap(targetEval, i) {
-      if (!targetEval) {
+      if (!targetEval || typeof targetEval !='string') {
         return;
       }
       let result;

@@ -17,6 +17,13 @@
         <el-form-item :label="$t('fm.config.widget.name')">
           <el-input v-model="data.name"></el-input>
         </el-form-item>
+        <el-form-item label="操作属性">
+          <el-checkbox v-model="data.options.hidden">隐藏</el-checkbox>
+        </el-form-item>
+        <el-form-item label="隐藏条件">
+          <el-input readonly
+          @focus="openCode('hidden')" placeholder="隐藏条件" v-model="data.hidden"></el-input>
+        </el-form-item>
         <div v-if="data.tableName != ''">
           <el-form-item :label="$t('fm.tableWidget.widget.dataIdentification')">
             <el-input
@@ -188,6 +195,8 @@ export default {
         this.tableCodeCf.tableCodeFn = this.data.options.pagination.handleCurrentChange
       }else if (type == 'tableRemotFun') {
         this.tableCodeCf.tableCodeFn = this.data.options.remoteFunc
+      }else if (type == 'hidden') {
+        this.tableCodeCf.tableCodeFn = this.data.hidden
       }
     },
     closeMirror() {
@@ -216,6 +225,8 @@ export default {
           this.data.options.remoteFunc = this.tableCodeCf.tableCodeFn
           // temFen(this.data.options);
         }
+      }else if(type == 'hidden'){
+        this.data.hidden = this.tableCodeCf.tableCodeFn
       }
       this.mirrorVisible = false
     },

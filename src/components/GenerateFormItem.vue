@@ -731,6 +731,7 @@
           v-model="dataModel"
           :data="widget.configdata"
           @dblhandleCurrentRow="dblhandleCurrentRow"
+          v-if="!widget.options.hidden"
           ref="generateTable"
         ></fm-generate-table>
         <template v-if="widget.options.isPagination">
