@@ -1375,6 +1375,7 @@ export const tableComponents = [
     type: 'elTable',
     icon: 'icon-grid-',
     options: {
+      hidden: false,
       isPagination: false,
       isAddBtn: false,
       isEditBtn: false,
@@ -1462,6 +1463,11 @@ export const tableComponents = [
       },
       eventConfig: {},
     },
+    hidden: 'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n' +
+      '\treturn null\n' +
+      '}',
     configdata: {
       list: [],
       config: {},
