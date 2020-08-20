@@ -389,7 +389,7 @@ export default {
   methods: {
     currentChange(pageSize){
       eval("("+this.element.options.pagination.handleCurrentChange+")")(request,pageSize,(res)=>{
-        this.element.configdata = res;
+        this.widget.configdata.list[0].options.tableData = res;
       })
     },
     handleSelectWidget(index) {
