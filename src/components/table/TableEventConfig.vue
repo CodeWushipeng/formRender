@@ -134,6 +134,9 @@
           <el-input v-model="search" placeholder="表单名称关键字搜索" clearable />
           <el-button type="primary" icon="el-icon-search" @click="searchForm">搜索</el-button>
         </div>
+        <div class="handel-button">
+          <el-button type="primary" icon="el-icon-circle-plus-outline" @click="_addFlow">新增</el-button>
+        </div>
       </div>
       
       <el-table
@@ -237,6 +240,9 @@ export default {
     }
   },
   methods: {
+    _addFlow(){
+      this.$emit("addFlow");
+    },
     // codeMirror弹出函数
     handelMirror(type) {
       this.mirrorVisible = true

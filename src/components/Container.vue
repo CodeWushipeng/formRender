@@ -255,6 +255,7 @@
                 v-show="configTab == 'common'"
                 :data="widgetFormSelect"
                 @mirror="showMirror"
+                @addFlow="_addFlow"
               ></table-event-config>
             </el-main>
           </el-container>
@@ -645,6 +646,9 @@ export default {
     })
   },
   methods: {
+    _addFlow(){
+      this.$emit("addFlow");
+    },
     // 为每个组件添加name属性
     _loadComponents() {
       // 金融控件
