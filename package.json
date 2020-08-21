@@ -39,7 +39,8 @@
     "vue-video-player": "^5.0.2",
     "vue2-editor": "^2.10.2",
     "vuedraggable": "^2.16.0",
-    "xlsx": "^0.16.2"
+    "xlsx": "^0.16.2",
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
     "@babel/core": "^7.0.1",

@@ -443,7 +443,6 @@ import {
   tableComponents
 } from './componentsConfig.js'
 import { bankingComponents } from './componentsBankingConfig.js'
-import { loadJs, loadCss } from '../util/index.js'
 import request from '../util/request.js'
 import generateCode from './generateCode.js'
 import { EventBus } from '../util/event-bus.js'
