@@ -13,8 +13,10 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      <el-button @click="dialogFormVisible = false">返 回</el-button>
+      <!--<el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>-->
+      <el-button type="primary" @click="buyProd"><i class="el-icon-sell"></i>&nbsp;立即购买</el-button>
+      <el-button type="primary" @click="addCart"><i class="el-icon-shopping-cart-2"></i>&nbsp;加入购物车</el-button>
     </div>
   </el-dialog>
 </template>
@@ -46,7 +48,20 @@
       },
       handleChange(value) {
         console.log(value);
-      }
+      },
+      buyProd() {
+        // this.$refs.flowDialog.show()
+        this.$message({
+          message: '立即购买',
+          type: 'success'
+        });
+      },
+      addCart() {
+        this.$message({
+          message: '加入购物车',
+          type: 'success'
+        });
+      },
     }
   }
 </script>

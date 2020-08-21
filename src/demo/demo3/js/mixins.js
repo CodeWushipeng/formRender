@@ -2,7 +2,8 @@ import storage from 'good-storage';
 import { DICTS } from './dicts';
 
 const DEBUG_KEY = '__debug__';
-const Rank_BTNS = ['prev', 'submit', 'buyProd', 'addCart', 'cancel'];
+// const Rank_BTNS = ['prev', 'submit', 'buyProd', 'addCart', 'cancel'];
+const Rank_BTNS = ['prev', 'submit', 'cancel'];
 const KEY_CTRL = 17;
 const KEY_ALT  = 18;
 const KEY_NUM_0 = 48;

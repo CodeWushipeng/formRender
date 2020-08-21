@@ -2,6 +2,7 @@
   <div class="render-wrap" style="padding: 20px; " ref="loadingArea">
     <div>
       debug:{{debug}}
+      flowType:{{flowType}}
       <!--btnIndex:{{btnIndex}} <br>-->
       <!--Rank_BTNS:{{displayBtn()}} <br>-->
       <!--<el-input v-model="btnIndex" disabled></el-input>-->
@@ -36,11 +37,11 @@
               <div style="text-align:center;">
                 <el-button ref="back" @click="prev"><i class="el-icon-arrow-left"></i>上一步</el-button>
                 <el-button ref="submit" @click="submit">下一步 <i class="el-icon-arrow-right"></i></el-button>
-                <el-button ref="buyProd" @click="buyProd"><i class="el-icon-sell"></i>&nbsp;立即购买</el-button>
-                <el-button ref="addCart" @click="addCart"><i class="el-icon-shopping-cart-2"></i>&nbsp;加入购物车</el-button>
                 <el-button ref="cancel" @click="cancel"><i class="el-icon-top-left"></i>取消</el-button>
               </div>
             </render-form>
+
+            <flowDialog ref="flowDialog"></flowDialog>
           </div>
         </div>
         <!--拖拽-->
@@ -54,7 +55,7 @@
                    :formData="formData"
                    @getFormHandler="getFormHandler"/>
       </div>
-      <flowDialog ref="flowDialog"></flowDialog>
+
     </div>
   </div>
 </template>
@@ -91,6 +92,7 @@
         data: {},
         // =========数据显示================
         records: [], // 流程数据
+        flowType:null,
         // url: "",
         // 流控数据
         configdata: {
@@ -143,6 +145,7 @@
 
             // records数据
             this.records = list;
+            this.flowType = flowType;
 
             // 挂载数据
             FG.setData("user", user);
@@ -301,7 +304,14 @@
         }
         // 执行
         if (findNextNode) {
-          this.config(findNextNode);
+          const nodeData = FG.getNodeData(findNextNode)
+          const {type} = nodeData;
+          if(type == FG.END && this.flowType == "01"){
+            // 订单提交
+            this.$refs.flowDialog.show();
+          }else{
+            this.config(findNextNode);
+          }
         } else {
           this.$notify.error({
             title: "错误",
@@ -440,15 +450,7 @@
         console.log("FG", FG);
         this.$router.push("/");
       },
-      buyProd() {
-        this.$refs.flowDialog.show()
-      },
-      addCart() {
-        this.$message({
-          message: '加入购物车',
-          type: 'success'
-        });
-      },
+
       getFormHandler() {
         if (this.$refs.renderForm) {
           this.$refs.renderForm.getData().then(data => {
