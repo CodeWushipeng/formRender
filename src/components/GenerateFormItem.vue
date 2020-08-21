@@ -753,6 +753,7 @@
           form
         >
           <fm-generate-form
+            class="tableConfig"
             v-if="tableCf.configdata != null"
             :data="tableCf.configdata"
             :value="tableCf.editData"

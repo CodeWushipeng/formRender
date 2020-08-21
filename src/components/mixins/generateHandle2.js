@@ -110,7 +110,7 @@ let handlers = {
     getAllItems() {
       let generate;
       if (localStorage.getItem('oldMark')) {
-        generate = document.querySelector('.el-dialog .generateForm');
+        generate = document.querySelector('.tableConfig')
       } else {
         generate = document.querySelector('.form-wrap .generateForm')
           ? document.querySelector('.form-wrap .generateForm')
@@ -128,7 +128,7 @@ let handlers = {
     },
     // 获取表格全部tr
     getAllPoupTr() {
-      let generate = document.querySelector('.el-dialog .generateForm');
+      let generate = document.querySelector('.tableForm')
       if (generate) {
         this.allTrs = generate.getElementsByClassName('el-table__row');
         if (this.allTrs.length === 0) {
@@ -154,7 +154,6 @@ let handlers = {
               mark--;
               this.allTrs[mark].classList.add('tr-bg');
             } else if (window.event.keyCode === 13) {
-              debugger;
               let rowData =
                 this.$parent.$parent.gridData &&
                 this.$parent.$parent.gridData.list[0].configdata.list[0].options

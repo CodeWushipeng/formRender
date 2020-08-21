@@ -112,7 +112,7 @@
     <!-- 字段交易弹出框 -->
     <el-dialog :visible.sync="trade" @close="goFlow" :close-on-click-modal="false">
       <div>
-        <fm-generate-form v-if="gridData" :data="gridData" ref="grid"></fm-generate-form>
+        <fm-generate-form class="tableForm" v-if="gridData" :data="gridData" ref="grid"></fm-generate-form>
       </div>
     </el-dialog>
   </div>
