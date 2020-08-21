@@ -395,7 +395,7 @@
 
       <el-form-item
         :label="$t('fm.config.widget.defaultValue')"
-        v-if="Object.keys(data.options).indexOf('defaultValue')>=0"
+        v-if="Object.keys(data.options).indexOf('defaultValue')>=0 && (data.type == 'text' || data.type == 'textarea' || data.type == 'input' || data.type=='number' || data.type=='rate' || data.type=='color' || data.type=='switch')"
       >
         <el-input
           v-if="data.type=='textarea'"
