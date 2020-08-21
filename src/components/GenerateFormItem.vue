@@ -920,9 +920,7 @@ export default {
   methods: {
     currentChange(pageSize){
       eval("("+this.widget.options.pagination.handleCurrentChange+")")(request,pageSize,(res)=>{
-        if(Object.prototype.toString.call(res) == '[object Object]'&&res.list&&res.list.length>0) {
-          this.widget.configdata = res;
-        }
+        this.widget.configdata.list[0].options.tableData = res;
       })
     },
     /*标签方法*/
