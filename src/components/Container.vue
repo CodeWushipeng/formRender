@@ -404,12 +404,21 @@
           <div class="wrap">
             <codemirror ref="myCm" v-model="code" :options="cmOptions"></codemirror>
             <div class="data-list">
-              <div class="data">字段标识列表</div>
-              <div
-                class="data"
-                v-for="item in modelLists"
-                :key="item.model"
-              >{{'models.'+item.model}}</div>
+              <div class="data">
+                <div>
+                  <span>字段标识列表</span>
+                  <div
+                  class="model"
+                    v-for="item in modelLists"
+                    :key="item.model"
+                    :title="item.model"
+                  >{{'models.'+item.model}}</div>
+                </div>
+                <div>
+                  <span>组件描述</span>
+                  <div class="info" :title="item.name" v-for="item in modelLists" :key="item.model">{{item.name}}</div>
+                </div>
+              </div>
             </div>
           </div>
         </cus-dialog>
@@ -646,8 +655,8 @@ export default {
     })
   },
   methods: {
-    _addFlow(){
-      this.$emit("addFlow");
+    _addFlow() {
+      this.$emit('addFlow')
     },
     // 为每个组件添加name属性
     _loadComponents() {
@@ -872,7 +881,7 @@ export default {
             type: 'error'
           })
           return false
-        }else{
+        } else {
           return true
         }
       }
@@ -1101,16 +1110,38 @@ export default {
   width: 550px;
 }
 .data-list {
-  width: 200px;
+  width: 260px;
   height: 300px;
   overflow-y: scroll;
   border-left: 1px solid #eee;
 }
 .data-list > .data {
+  padding: 0 10px;
+  cursor: text;
+}
+.data>div{
+  display: inline-block;
+}
+.data>div:first-child{
+  width: 65%;
+}
+.data>div:nth-child(2){
+  width: 35%;
+}
+.data .model{
+  display: inline-block;
+  width: 100%;
   height: 30px;
   line-height: 30px;
-  padding: 0 5px;
-  cursor: text;
   border-bottom: 1px solid #eee;
+  overflow: hidden;
+}
+.data span,.data .info{
+  display: inline-block;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  border-bottom: 1px solid #eee;
+  overflow: hidden;
 }
 </style>
