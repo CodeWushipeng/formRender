@@ -166,7 +166,7 @@ export const bankingComponents = [
       hidden: false,
       maxlength: 20,
       width: "100%",
-      defaultValue: "",
+      defaultValue: 0,
       required: false,
       dataType: "",
       amountmoney: true,

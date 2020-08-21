@@ -21,8 +21,7 @@
           <el-checkbox v-model="data.options.hidden">隐藏</el-checkbox>
         </el-form-item>
         <el-form-item label="隐藏条件">
-          <el-input readonly
-          @focus="openCode('hidden')" placeholder="隐藏条件" v-model="data.hidden"></el-input>
+          <el-input readonly @focus="openCode('hidden')" placeholder="隐藏条件" v-model="data.hidden"></el-input>
         </el-form-item>
         <div v-if="data.tableName != ''">
           <el-form-item :label="$t('fm.tableWidget.widget.dataIdentification')">
@@ -136,7 +135,7 @@ export default {
   props: ['data'],
   data() {
     return {
-      tableRemotFun: "",
+      tableRemotFun: '',
       dialogTableVisible: false,
       mirrorVisible: false,
       tablePageCf: {
@@ -172,7 +171,7 @@ export default {
             this.valiatePattern("/^\\d+$/" )
         })*/
     if (this.data && this.data.configdata.list[0]) {
-      this.data.tableName = this.data.configdata.list[0].name;
+      this.data.tableName = this.data.configdata.list[0].name
     }
   },
   computed: {
@@ -193,9 +192,9 @@ export default {
       this.tableCodeCf.codeType = type
       if (type == 'handleCurrentChange') {
         this.tableCodeCf.tableCodeFn = this.data.options.pagination.handleCurrentChange
-      }else if (type == 'tableRemotFun') {
+      } else if (type == 'tableRemotFun') {
         this.tableCodeCf.tableCodeFn = this.data.options.remoteFunc
-      }else if (type == 'hidden') {
+      } else if (type == 'hidden') {
         this.tableCodeCf.tableCodeFn = this.data.hidden
       }
     },
@@ -220,12 +219,12 @@ export default {
       }
       if (type == 'handleCurrentChange') {
         this.data.options.pagination.handleCurrentChange = this.tableCodeCf.tableCodeFn
-      }else if (type == 'tableRemotFun') {
+      } else if (type == 'tableRemotFun') {
         if (this.data.options && this.data.options.remoteFunc) {
           this.data.options.remoteFunc = this.tableCodeCf.tableCodeFn
           // temFen(this.data.options);
         }
-      }else if(type == 'hidden'){
+      } else if (type == 'hidden') {
         this.data.hidden = this.tableCodeCf.tableCodeFn
       }
       this.mirrorVisible = false
@@ -300,16 +299,17 @@ export default {
         .catch((error) => console.log(error))
     },
     // 发射新增表格事件
-    emitAddTable(){
-      this.$emit("addTable")
+    emitAddTable() {
+      this.$emit('addTable')
     },
     handleSelectionRow(row, column, event) {
-      let temTableCfg = deepClone(row);
-      this.data.configdata = JSON.parse(temTableCfg.listContent);
-      this.handleDisplayColumns(this.data.configdata);
-      this.data.tableName = temTableCfg.listName + "(" + temTableCfg.listCode + ")";
-      this.data.tableCode = temTableCfg.listCode;
-      this.dialogTableVisible = false;
+      let temTableCfg = deepClone(row)
+      this.data.configdata = JSON.parse(temTableCfg.listContent)
+      this.handleDisplayColumns(this.data.configdata)
+      this.data.tableName =
+        temTableCfg.listName + '(' + temTableCfg.listCode + ')'
+      this.data.tableCode = temTableCfg.listCode
+      this.dialogTableVisible = false
       this.tableCodeCf.tableCodeFn =
         'function mian(currentObj, request, callBack) {debugger;}'
     },

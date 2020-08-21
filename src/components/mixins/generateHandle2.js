@@ -211,6 +211,28 @@ let handlers = {
       });
       this.validateStatu = statu;
     },
+    // 转换金额域
+    changeAmount(){
+      let that = this
+      that.comArr.forEach(item => {
+        if (item.type == 'amount') {
+          that.models[item.model] = that.models[item.model].replace(/,/gi, '')
+        }
+      })
+    },
+    // 将models字符串数值转为数值
+    changeStringToNumber(){
+      this.changeAmount()
+      for (const key in this.models) {
+        if (this.models.hasOwnProperty(key)) {
+          let item = this.models[key]
+          if (typeof item == 'string' && item == Number(item)) {
+            this.models[key] = Number(item)
+          }
+        }
+      }
+      console.log(this.models)
+    },
     // eval封装
     evalWrap(targetEval, i) {
       if (!targetEval || typeof targetEval !='string') {
@@ -758,6 +780,7 @@ let handlers = {
     },
     // 回车事件
     onElChange(params) {
+      this.changeStringToNumber()
       if (this.cancelNext) {
         this.cancelNext = false;
         return;
