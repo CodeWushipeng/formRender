@@ -8,7 +8,7 @@
                 <el-row :gutter="20">
                     <el-col :span="6" class="label-color">节点类型：</el-col>
                     <el-col :span="6">
-                        <el-tag :type="filterType(type)">{{ filterStatus(type)}}</el-tag>
+                        <el-tag :type="getElTagType(type)">{{ getNodeName(type)}}</el-tag>
                     </el-col>
                     <!--<el-col :span="6" class="label-color">总节点个数：</el-col>-->
                     <!--<el-col :span="6">-->
@@ -16,7 +16,7 @@
                     <!--</el-col>-->
                     <el-col :span="6" class="label-color">提交类型：</el-col>
                     <el-col :span="6">
-                        <el-tag v-if="data.commitType" type="info">{{filterSubType(data.commitType)}}</el-tag>
+                        <el-tag v-if="data.commitType" type="info">{{getSubType(data.commitType)}}</el-tag>
                         <el-tag v-else type="info">无</el-tag>
                     </el-col>
                 </el-row>

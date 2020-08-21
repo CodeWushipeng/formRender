@@ -1,3 +1,16 @@
+import storage from 'good-storage';
+import { DICTS } from './dicts';
+
+const DEBUG_KEY = '__debug__';
+const Rank_BTNS = ['prev', 'submit', 'buyProd', 'addCart', 'cancel'];
+const KEY_CTRL = 17;
+const KEY_ALT  = 18;
+const KEY_NUM_0 = 48;
+// const KEY_NUM9 = 57;
+// const KEY_SHIFT = 16;
+// const KEY_NUM2 = 50;
+
+
 const flowMixin = {
   data(){
     return {
@@ -6,7 +19,10 @@ const flowMixin = {
     }
   },
   computed: {
-    NodeType() {
+    nodeName(){
+      return this.data.nodeName
+    },
+    nodeType() {
       return this.data.type;
     },
     isDebugMode() {
@@ -19,41 +35,52 @@ const flowMixin = {
       return this.debug == false ? 'mains' : 'mains-debug';
     }
   },
+  created() {
+    storage.session.set('Rank_BTNS', Rank_BTNS.join("-"))
+    this.debug = storage.session.get(DEBUG_KEY, false);
+  },
   methods: {
-    filterType(type) {
-      if (!type) return '';
-      const elTag = {
-        '01': "",
-        '02': "danger",
-        '03': "success",
-        '04': "info",
-        '05': "warning",
-      };
-
-      return elTag[type];
+    openDebug(_this) {
+      const _self = _this;
+      let code = 0;
+      let code2 = 0;
+      let code3 = 0;
+      let timer = null;
+      const $doc= document;
+      $doc.onkeydown = function (e) {
+        clearTimeout(timer);
+        //事件对象兼容
+        let e1 = e || event || window.event // || arguments.callee.caller.arguments[0];
+        console.log('e1.keyCode', e1.keyCode);
+        const key = e1.keyCode;
+        if (key === KEY_CTRL) code = 1;
+        if (key === KEY_ALT)  code2 = 1;
+        if (key === KEY_NUM_0) code3 = 1;
+        if (code === 1 && code2 === 1 && code3 === 1) {
+          if (_self.isDebugMode) {
+            _self.debug = !_self.debug;
+            storage.session.set(DEBUG_KEY, _self.debug)
+          }
+          code  = 0;
+          code2 = 0;
+          code3 = 0;
+        }
+        console.log(code, code2, code3);
+        timer = setTimeout(() => {
+          code  = 0;
+          code2 = 0;
+          code3 = 0;
+        }, 1000)
+      }
     },
-    filterStatus(type) {
-      if (!type) return '';
-      const fsTxt = {
-        '01': "开始节点",
-        '02': "结束节点",
-        '03': "表单节点",
-        '04': "复核节点",
-        '05': "授权节点",
-      };
-
-      return fsTxt[type];
+    getElTagType(type) {
+      return DICTS.elTagType[type];
     },
-    filterSubType(type) {
-      if (!type) return '';
-      const fsTxt = {
-        '01': "通用通信提交",
-        '02': "订单提交",
-        '03': "自定义函数提交",
-        '04': "本地提交",
-      };
-
-      return fsTxt[type];
+    getNodeName(type) {
+      return DICTS.nodeName[type];
+    },
+    getSubType(type) {
+      return DICTS.subType[type];
     },
     resetComponent() {
       // 销毁组件
@@ -65,6 +92,7 @@ const flowMixin = {
         });
       });
     },
+
   }
 };
 export default flowMixin;
