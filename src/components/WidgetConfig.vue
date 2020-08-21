@@ -403,26 +403,26 @@
           :rows="data.options.textarearows"
           v-model="data.options.defaultValue"
         ></el-input>
-        <el-rate
-          v-if="data.type == 'rate'"
-          style="display:inline-block;vertical-align: middle;"
-          :max="data.options.max"
-          :allow-half="data.options.allowHalf"
-          v-model="data.options.defaultValue"
-        ></el-rate>
-        <el-button
-          type="text"
-          v-if="data.type == 'rate'"
-          style="display:inline-block;vertical-align: middle;margin-left: 10px;"
-          @click="data.options.defaultValue=0"
-        >{{$t('fm.actions.clear')}}</el-button>
+        <template v-else-if="data.type == 'rate'">
+          <el-rate
+            style="display:inline-block;vertical-align: middle;"
+            :max="data.options.max"
+            :allow-half="data.options.allowHalf"
+            v-model="data.options.defaultValue"
+          ></el-rate>
+          <el-button
+            type="text"
+            style="display:inline-block;vertical-align: middle;margin-left: 10px;"
+            @click="data.options.defaultValue=0"
+          >{{$t('fm.actions.clear')}}</el-button>
+        </template>
         <el-color-picker
-          v-if="data.type == 'color'"
+          v-else-if="data.type == 'color'"
           v-model="data.options.defaultValue"
           :show-alpha="data.options.showAlpha"
         ></el-color-picker>
-        <el-switch v-if="data.type=='switch'" v-model="data.options.defaultValue"></el-switch>
-        <el-input v-if="data.type=='input'" v-model="data.options.defaultValue"></el-input>
+        <el-switch v-else-if="data.type=='switch'" v-model="data.options.defaultValue"></el-switch>
+        <el-input v-else v-model="data.options.defaultValue"></el-input>
       </el-form-item>
 
       <template v-if="data.type == 'time' || data.type == 'date'">
@@ -811,24 +811,24 @@
 </template>
 
 <script>
-import Draggable from "vuedraggable";
+import Draggable from 'vuedraggable'
 
 export default {
   components: {
-    Draggable,
+    Draggable
   },
-  props: ["data"],
+  props: ['data'],
   data() {
     return {
-      patternpara: "",
+      patternpara: '',
       validator: {
         type: null,
         required: null,
         pattern: null,
         range: null,
-        length: null,
-      },
-    };
+        length: null
+      }
+    }
   },
   created() {
     /*this.$nextTick(()=>{
@@ -838,97 +838,97 @@ export default {
   computed: {
     show() {
       if (this.data && Object.keys(this.data).length > 0) {
-        return true;
+        return true
       }
-      return false;
-    },
+      return false
+    }
   },
   methods: {
     // codeMirror弹出函数
     handelMirror(e) {
-      console.log(this.data);
-      this.$emit("mirror", this.data, e.target.placeholder);
+      console.log(this.data)
+      this.$emit('mirror', this.data, e.target.placeholder)
     },
     handleOptionsRemove(index) {
-      if (this.data.type === "grid") {
-        this.data.columns.splice(index, 1);
-      } else if (this.data.type === "tabs") {
-        this.data.tabs.splice(index, 1);
+      if (this.data.type === 'grid') {
+        this.data.columns.splice(index, 1)
+      } else if (this.data.type === 'tabs') {
+        this.data.tabs.splice(index, 1)
       } else if (
-        this.data.type === "imgupload" ||
-        this.data.type === "fileupload"
+        this.data.type === 'imgupload' ||
+        this.data.type === 'fileupload'
       ) {
-        this.data.options.headers.splice(index, 1);
+        this.data.options.headers.splice(index, 1)
       } else {
         if (
           !this.data.options.remote &&
           this.data.options.options[index].value
         ) {
           this.data.options.defaultValue =
-            typeof this.data.options.defaultValue === "string" ? "" : [];
+            typeof this.data.options.defaultValue === 'string' ? '' : []
         }
 
-        this.data.options.options.splice(index, 1);
+        this.data.options.options.splice(index, 1)
       }
     },
     handleAddOption() {
       if (this.data.options.showLabel) {
         this.data.options.options.push({
-          value: this.$t("fm.config.widget.newOption"),
-          label: this.$t("fm.config.widget.newOption"),
-        });
+          value: this.$t('fm.config.widget.newOption'),
+          label: this.$t('fm.config.widget.newOption')
+        })
       } else {
         this.data.options.options.push({
-          value: this.$t("fm.config.widget.newOption"),
-        });
+          value: this.$t('fm.config.widget.newOption')
+        })
       }
     },
     handleAddColumn() {
       this.data.columns.push({
-        span: "",
-        list: [],
-      });
+        span: '',
+        list: []
+      })
     },
     handleAddTab() {
-      let length = this.data.tabs.length;
+      let length = this.data.tabs.length
 
       this.data.tabs.push({
-        label: this.$t("fm.config.widget.tab") + (length + 1),
-        name: "tab_" + new Date().getTime(),
-        list: [],
-      });
+        label: this.$t('fm.config.widget.tab') + (length + 1),
+        name: 'tab_' + new Date().getTime(),
+        list: []
+      })
     },
     handleAddHeader() {
-      if ("headers" in this.data.options) {
+      if ('headers' in this.data.options) {
         this.data.options.headers.push({
-          key: "",
-          value: "",
-        });
+          key: '',
+          value: ''
+        })
       } else {
-        this.$set(this.data.options, "headers", [{ key: "", value: "" }]);
+        this.$set(this.data.options, 'headers', [{ key: '', value: '' }])
       }
     },
     generateRule() {
-      this.data.rules = [];
+      this.data.rules = []
       Object.keys(this.validator).forEach((key) => {
         if (this.validator[key]) {
-          this.data.rules.push(this.validator[key]);
+          this.data.rules.push(this.validator[key])
         }
-      });
+      })
     },
     handleSelectMuliple(value) {
-      if (this.data.type == "select") {
+      if (this.data.type == 'select') {
         if (value) {
           if (this.data.options.defaultValue) {
-            this.data.options.defaultValue = [this.data.options.defaultValue];
+            this.data.options.defaultValue = [this.data.options.defaultValue]
           } else {
-            this.data.options.defaultValue = [];
+            this.data.options.defaultValue = []
           }
         } else {
           if (this.data.options.defaultValue.length > 0) {
-            this.data.options.defaultValue = this.data.options.defaultValue[0];
+            this.data.options.defaultValue = this.data.options.defaultValue[0]
           } else {
-            this.data.options.defaultValue = "";
+            this.data.options.defaultValue = ''
           }
         }
       }
@@ -940,138 +940,138 @@ export default {
           required: true,
           message: this.data.options.requiredMessage
             ? this.data.options.requiredMessage
-            : `${this.$t("fm.config.widget.validatorRequired")}`,
-        };
+            : `${this.$t('fm.config.widget.validatorRequired')}`
+        }
       } else {
-        this.validator.required = null;
+        this.validator.required = null
       }
 
       this.$nextTick(() => {
-        this.generateRule();
-      });
+        this.generateRule()
+      })
     },
 
     validateDataType(val) {
       if (!this.show) {
-        return false;
+        return false
       }
 
       // todo 排除密码和确认密码 (单独自定义校验方法)
       if (
         val &&
-        val !== "password" &&
-        val !== "againpassword" &&
-        val !== "text" &&
-        val !== "integer" &&
-        val !== "float" &&
+        val !== 'password' &&
+        val !== 'againpassword' &&
+        val !== 'text' &&
+        val !== 'integer' &&
+        val !== 'float' &&
         (this.data.options.dataTypeCheck ||
-          !Object.keys(this.data.options).includes("dataTypeCheck"))
+          !Object.keys(this.data.options).includes('dataTypeCheck'))
       ) {
         this.validator.type = {
           type: val,
           message: this.data.options.dataTypeMessage
             ? this.data.options.dataTypeMessage
-            : this.$t("fm.config.widget.validatorType"),
-        };
+            : this.$t('fm.config.widget.validatorType')
+        }
       } else {
-        this.validator.type = null;
+        this.validator.type = null
       }
 
-      this.generateRule();
+      this.generateRule()
     },
     valiatePattern(val) {
       if (!this.show) {
-        return false;
+        return false
       }
 
       if (
         val &&
         (this.data.options.patternCheck ||
-          !Object.keys(this.data.options).includes("patternCheck"))
+          !Object.keys(this.data.options).includes('patternCheck'))
       ) {
         this.validator.pattern = {
           pattern: val,
           message: this.data.options.patternMessage
             ? this.data.options.patternMessage
-            : this.$t("fm.config.widget.validatorPattern"),
-        };
+            : this.$t('fm.config.widget.validatorPattern')
+        }
       } else {
-        this.validator.pattern = null;
+        this.validator.pattern = null
       }
 
-      this.generateRule();
-    },
+      this.generateRule()
+    }
   },
   watch: {
     patternpara: function (val) {
-      this.data.options.pattern = val;
+      this.data.options.pattern = val
     },
-    "data.options.isRange": function (val) {
-      if (typeof val !== "undefined") {
+    'data.options.isRange': function (val) {
+      if (typeof val !== 'undefined') {
         if (val) {
-          this.data.options.defaultValue = null;
+          this.data.options.defaultValue = null
         } else {
-          if (Object.keys(this.data.options).indexOf("defaultValue") >= 0)
-            this.data.options.defaultValue = "";
+          if (Object.keys(this.data.options).indexOf('defaultValue') >= 0)
+            this.data.options.defaultValue = ''
         }
       }
     },
-    "data.options.required": function (val) {
-      this.validateRequired(val);
+    'data.options.required': function (val) {
+      this.validateRequired(val)
     },
-    "data.options.requiredMessage": function (val) {
+    'data.options.requiredMessage': function (val) {
       this.validateRequired(
         this.data && this.data.options ? this.data.options.required : false
-      );
+      )
     },
-    "data.options.dataType": function (val) {
-      this.validateDataType(val);
+    'data.options.dataType': function (val) {
+      this.validateDataType(val)
     },
-    "data.options.dataTypeCheck": function (val) {
+    'data.options.dataTypeCheck': function (val) {
       this.validateDataType(
-        this.data && this.data.options ? this.data.options.dataType : ""
-      );
+        this.data && this.data.options ? this.data.options.dataType : ''
+      )
     },
-    "data.options.dataTypeMessage": function (val) {
+    'data.options.dataTypeMessage': function (val) {
       this.validateDataType(
-        this.data && this.data.options ? this.data.options.dataType : ""
-      );
+        this.data && this.data.options ? this.data.options.dataType : ''
+      )
     },
-    "data.options.pattern": function (val) {
-      this.valiatePattern(val);
+    'data.options.pattern': function (val) {
+      this.valiatePattern(val)
     },
-    "data.options.patternCheck": function (val) {
+    'data.options.patternCheck': function (val) {
       this.valiatePattern(
-        this.data && this.data.options ? this.data.options.pattern : ""
-      );
+        this.data && this.data.options ? this.data.options.pattern : ''
+      )
     },
-    "data.options.patternMessage": function (val) {
+    'data.options.patternMessage': function (val) {
       this.valiatePattern(
-        this.data && this.data.options ? this.data.options.pattern : ""
-      );
+        this.data && this.data.options ? this.data.options.pattern : ''
+      )
     },
-    "data.options.options": {
+    'data.options.options': {
       deep: true,
       handler(val) {
-        console.log(val);
-        console.log(typeof this.data.options.defaultValue);
-        if (typeof this.data.options.defaultValue == "array") {
+        console.log(val)
+        console.log(typeof this.data.options.defaultValue)
+        if (typeof this.data.options.defaultValue == 'array') {
           this.data.options.defaultValue = this.data.options.defaultValue.filter(
             (item) => val.map((item) => item.value).includes(item)
-          );
+          )
         }
-        if (typeof this.data.options.defaultValue == "string") {
+        if (typeof this.data.options.defaultValue == 'string') {
           if (
-            typeof val == "array" &&
+            typeof val == 'array' &&
             !val
               .map((item) => item.value)
               .includes(this.data.options.defaultValue)
           ) {
-            this.data.options.defaultValue = "";
+            this.data.options.defaultValue = ''
           }
         }
-      },
-    },
-  },
-};
+      }
+    }
+  }
+}
 </script>
