@@ -14,18 +14,17 @@
           v-model="data.remoteCode"
           readonly="readonly"
           @focus="getData(data.remoteCode)"
-        >
-          <!-- <el-button slot="append" @click="getData(data.remoteCode)">查询</el-button> -->
-        </el-input>
+        ></el-input>
         <el-dialog
           :visible.sync="dialogTableVisible"
           :close-on-click-modal="false"
           :destroy-on-close="true"
-          @close='dialogClose'
+          @close="dialogClose"
         >
           <template v-if="dialogTableVisible">
             <div style="display:flex;marginBottom:20px;">
-              <el-input style="width:200px" placeholder="请输入内容" v-model="value" clearable></el-input>
+              <!-- <el-input style="width:200px" placeholder="请输入内容" v-model="value" clearable></el-input> -->
+              <el-cascader v-model="value" :options="cascaderData" :props="casProps" clearable filterable></el-cascader>
               <el-button
                 type="primary"
                 style="marginLeft:20px"
@@ -38,6 +37,7 @@
               <el-table-column property="dicName" label="选项代码"></el-table-column>
               <el-table-column property="itemValue" label="选项名称"></el-table-column>
               <el-table-column property="itemCode" label="选项值"></el-table-column>
+              <el-table-column property="itemParentCode" label="父级代码"></el-table-column>
             </el-table>
             <el-pagination
               style="marginTop:20px"
@@ -211,7 +211,67 @@ export default {
       pageSize: 10,
       total: 0,
       value: '',
-      dicData: []
+      dicData: [],
+      casProps: {
+        checkStrictly: true,
+        lazy: true,
+        lazyLoad(node, resolve) {
+          console.log(node)
+          // this.getData(node.value)
+          getDicTwo({
+          body: {
+            dicName: node.data.name,
+            itemParentCode: node.parent?node.value:'',
+            selType: 1,
+          },
+          header: {
+            pageIndex: 1,
+            pageSize: 10,
+            gloSeqNo: new Date(),
+            reqSeqNo: 'sit anim',
+            reqTime: 'officia ad anim'
+          }
+        })
+          .then((res) => {
+            console.log(res)
+            if (res.header && res.header.rspCode == RES_OK) {
+              if (res.body) {
+                // this.dicData = res.body.dics.records
+                // this.setDicData(this.dicData)
+                // this.total = res.body.dics.total
+                // this.pageSize = res.body.dics.size
+                let originData = res.body.dics.records
+                let nodes = originData.map(item => ({
+                  label: item.itemValue,
+                  value: item.itemCode,
+                  name: node.name,
+                }))
+                resolve(nodes);
+                // this.cascaderData = [...this.cascaderData,...tranData]
+              }
+            } else if (res.header && res.header.rspCode == FAIL_CODE) {
+              this.$notify({
+                title: 'fail',
+                message: '查询失败',
+                type: 'info',
+                duration: 2000
+              })
+              return
+            }
+          })
+          .catch((error) => console.log(error))
+        }
+      },
+      cascaderData: [
+        {
+          label: '国家',
+          name: 'cityList'
+        },
+        {
+          label: '性别',
+          name: 'sex'
+        },
+      ]
     }
   },
   mounted() {
@@ -237,14 +297,14 @@ export default {
       this.search()
     },
     // 获取字典服务数据
-    getData(data) {
+    getData(select) {
       if (this.dialogTableVisible) {
         return
       }
-      if (this.data.remoteCode) {
         getDicTwo({
           body: {
-            dicName: this.data.remoteCode,
+            dicName: '',
+            itemParentCode: '',
             selType: 2
           },
           header: {
@@ -265,10 +325,16 @@ export default {
                 duration: 2000
               })
               if (res.body) {
-                this.dicData = res.body.dics.records
-                this.setDicData(this.dicData)
-                this.total = res.body.dics.total
-                this.pageSize = res.body.dics.size
+                // this.dicData = res.body.dics.records
+                // this.setDicData(this.dicData)
+                // this.total = res.body.dics.total
+                // this.pageSize = res.body.dics.size
+                let originData = res.body.dics.records
+                this.cascaderData = originData.map(item => ({
+                  label: item.dicDescribe,
+                  value: item.dicName,
+                  name: item.dicName
+                }))
               }
             } else if (res.header && res.header.rspCode == FAIL_CODE) {
               this.$notify({
@@ -281,7 +347,7 @@ export default {
             }
           })
           .catch((error) => console.log(error))
-      }
+      
       this.dialogTableVisible = true
     },
     setData(params) {
@@ -290,7 +356,7 @@ export default {
       this.setDicData(this.dicData)
     },
     // dialog关闭
-    dialogClose(){
+    dialogClose() {
       this.value = '',
       this.dicData = [],
       this.nowPage = 1,
@@ -310,7 +376,7 @@ export default {
         resultArr.push(tempJson)
       })
       this.data.options.options = resultArr
-      if(resultArr[0].itemValue){
+      if (resultArr[0].itemValue) {
         this.data.options.showLabel = true
       }
     },
@@ -318,8 +384,9 @@ export default {
     search() {
       getDicTwo({
         body: {
-          dicName: this.value,
-          selType: 2
+          dicName: this.value[0],
+          itemParentCode: this.value[this.value.length-1],
+          selType: 1
           // itemCode: this.value,
           // itemValue: this.value,
         },

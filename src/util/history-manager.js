@@ -30,7 +30,6 @@ export default {
         historyStore.clear()
         trans.oncomplete = (e) => {
           idb.cursor = 0
-          window.indexedDB.deleteDatabase(idb.name)
           resolve()
         }
       })
