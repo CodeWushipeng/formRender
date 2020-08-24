@@ -408,7 +408,7 @@
                 <div>
                   <span>字段标识列表</span>
                   <div
-                  class="model"
+                    class="model"
                     v-for="item in modelLists"
                     :key="item.model"
                     :title="item.model"
@@ -416,7 +416,12 @@
                 </div>
                 <div>
                   <span>组件描述</span>
-                  <div class="info" :title="item.name" v-for="item in modelLists" :key="item.model">{{item.name}}</div>
+                  <div
+                    class="info"
+                    :title="item.name"
+                    v-for="item in modelLists"
+                    :key="item.model"
+                  >{{item.name}}</div>
                 </div>
               </div>
             </div>
@@ -635,22 +640,29 @@ export default {
   mounted() {
     this._loadComponents()
     const _this = this
-
-    historyManager.clear().then(() => {
+    historyManager.clear().then((e) => {
+      debugger
       EventBus.$on('on-history-add', () => {
-        console.log('xxx', this.widgetFormSelect)
+        console.log('xxx', _this.widgetFormSelect)
         historyManager
           .add(
-            this.widgetForm,
-            this.widgetFormSelect && this.widgetFormSelect.key
-              ? this.widgetFormSelect.key
+            _this.widgetForm,
+            _this.widgetFormSelect && _this.widgetFormSelect.key
+              ? _this.widgetFormSelect.key
               : ''
           )
           .then(() => {
+            debugger
             _this.undo = true
             _this.redo = false
           })
       })
+    })
+  },
+  beforeDestroy() {
+    historyManager.clear().then((e) => {
+      debugger
+      console.log(historyManager)
     })
   },
   methods: {
@@ -1118,16 +1130,16 @@ export default {
   padding: 0 10px;
   cursor: text;
 }
-.data>div{
+.data > div {
   display: inline-block;
 }
-.data>div:first-child{
+.data > div:first-child {
   width: 65%;
 }
-.data>div:nth-child(2){
+.data > div:nth-child(2) {
   width: 35%;
 }
-.data .model{
+.data .model {
   display: inline-block;
   width: 100%;
   height: 30px;
@@ -1135,7 +1147,8 @@ export default {
   border-bottom: 1px solid #eee;
   overflow: hidden;
 }
-.data span,.data .info{
+.data span,
+.data .info {
   display: inline-block;
   width: 100%;
   height: 30px;

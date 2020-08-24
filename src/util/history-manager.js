@@ -27,11 +27,10 @@ export default {
       idb.openDB(idb.name).then((db) => {
         const trans = db.transaction(['history'], 'readwrite')
         const historyStore = trans.objectStore('history')
-
         historyStore.clear()
-
         trans.oncomplete = (e) => {
           idb.cursor = 0
+          window.indexedDB.deleteDatabase(idb.name)
           resolve()
         }
       })
@@ -58,6 +57,7 @@ export default {
   add (data, selectedKey) {
     return new Promise((resolve, reject) => {
       idb.openDB(idb.name).then((db) => {
+        debugger
         const trans = db.transaction(['history'], 'readwrite')
         const historyStore = trans.objectStore('history')
 
@@ -69,6 +69,7 @@ export default {
 
         historyStore.openCursor().onsuccess = (e) => {
           const cursor = e.target.result
+          debugger
           if (cursor) {
             historyList.push(cursor.value)
             cursor.continue()

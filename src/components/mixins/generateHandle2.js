@@ -228,7 +228,9 @@ let handlers = {
         if (this.models.hasOwnProperty(key)) {
           let item = this.models[key]
           if (typeof item == 'string' && item == Number(item)) {
-            this.models[key] = Number(item)
+            if (item[0] != '0') {
+              this.models[key] = Number(item)
+            }
           }
         }
       }
