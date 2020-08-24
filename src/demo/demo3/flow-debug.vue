@@ -22,7 +22,7 @@
           <el-table-column property="type" label="节点类型">
             <template slot-scope="scope">
                 <span>
-                  <el-tag :type="filterType(scope.row.type)">{{ filterStatus(scope.row.type)}}</el-tag>
+                  <el-tag :type="getElTagType(scope.row.type)">{{ getNodeName(scope.row.type)}}</el-tag>
                 </span>
             </template>
           </el-table-column>
@@ -113,7 +113,8 @@
 </template>
 
 <script>
-  import getFG from "./js/fg-control";
+  // import getFG from "./js/fg-control";
+  import getFG from "fg-control";
   const FG = new getFG();
   import flowMixin from './js/mixins'
   import flowNode from './flow-node'
