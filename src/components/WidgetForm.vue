@@ -213,6 +213,7 @@ export default {
       this.selectWidget = this.data.list[index];
     },
     handleWidgetAdd(evt) {
+      debugger
       const newIndex = evt.newIndex;
       const to = evt.to;
       console.log(to);

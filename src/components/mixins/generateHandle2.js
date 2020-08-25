@@ -214,26 +214,32 @@ let handlers = {
     },
     // 转换金额域
     changeAmount() {
-      let that = this
-      that.comArr.forEach(item => {
-        if (item.type == 'amount') {
-          that.models[item.model] = that.models[item.model].replace(/,/gi, '')
-        }
-      })
+      debugger
+      let type = this.comArr[this.outMark].type
+      let model = this.comArr[this.outMark].model
+      if (type == 'amount') {
+        this.models[model] = this.models[model].replace(/,/gi, '')
+      }
     },
     // 将models字符串数值转为数值
     changeStringToNumber() {
       this.changeAmount()
-      for (const key in this.models) {
-        if (this.models.hasOwnProperty(key)) {
-          let item = this.models[key]
+      this.comArr.forEach(element => {
+        if (
+          element.type != 'radio' ||
+          element.type != 'checkbox' ||
+          element.type != 'select' ||
+          element.type != 'cascader'
+        ) {
+          let model = element.model
+          let item = this.models[model]
           if (typeof item == 'string' && item && item == Number(item)) {
             if (item[0] != '0') {
-              this.models[key] = Number(item)
+              this.models[model] = Number(item)
             }
           }
         }
-      }
+      })
       console.log(this.models)
     },
     // eval封装

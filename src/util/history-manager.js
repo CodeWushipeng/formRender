@@ -24,15 +24,26 @@ const idb = {
 export default {
   clear () {
     return new Promise((resolve, reject) => {
-      idb.openDB(idb.name).then((db) => {
-        const trans = db.transaction(['history'], 'readwrite')
-        const historyStore = trans.objectStore('history')
-        historyStore.clear()
-        trans.oncomplete = (e) => {
-          idb.cursor = 0
-          resolve()
-        }
-      })
+      // idb.openDB(idb.name).then((db) => {
+      //   const trans = db.transaction(['history'], 'readwrite')
+      //   const historyStore = trans.objectStore('history')
+      //   historyStore.clear()
+      //   trans.oncomplete = (e) => {
+      //     idb.cursor = 0
+      //     resolve()
+      //   }
+      // })
+      var req = indexedDB.deleteDatabase('form-making')
+      req.onsuccess = function() {
+        console.log('成功删除数据库')
+        resolve()
+      }
+      req.onerror = function() {
+        console.log('无法删除数据库')
+      }
+      req.onblocked = function() {
+        console.log('由于操作被阻止而无法删除数据库')
+      } 
     })
   },
   updateLatest (data, selectedKey) {

@@ -640,29 +640,23 @@ export default {
   mounted() {
     this._loadComponents()
     const _this = this
-    historyManager.clear().then((e) => {
+    historyManager.clear()
+    EventBus.$on('on-history-add', () => {
       debugger
-      EventBus.$on('on-history-add', () => {
-        console.log('xxx', _this.widgetFormSelect)
-        historyManager
-          .add(
-            _this.widgetForm,
-            _this.widgetFormSelect && _this.widgetFormSelect.key
-              ? _this.widgetFormSelect.key
-              : ''
-          )
-          .then(() => {
-            debugger
+      console.log('xxx', _this.widgetFormSelect)
+      historyManager
+        .add(
+          _this.widgetForm,
+          _this.widgetFormSelect && _this.widgetFormSelect.key
+            ? _this.widgetFormSelect.key
+            : ''
+        )
+        .then(() => {
+          _this.$nextTick(() => {
             _this.undo = true
             _this.redo = false
           })
-      })
-    })
-  },
-  beforeDestroy() {
-    historyManager.clear().then((e) => {
-      debugger
-      console.log(historyManager)
+        })
     })
   },
   methods: {
