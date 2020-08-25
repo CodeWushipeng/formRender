@@ -226,9 +226,9 @@ let handlers = {
       this.changeAmount()
       this.comArr.forEach(element => {
         if (
-          element.type != 'radio' ||
-          element.type != 'checkbox' ||
-          element.type != 'select' ||
+          element.type != 'radio' &&
+          element.type != 'checkbox' &&
+          element.type != 'select' &&
           element.type != 'cascader'
         ) {
           let model = element.model
@@ -634,7 +634,34 @@ let handlers = {
       if (lists[j].assignment && lists[j].assignment != '') {
         console.log('离开赋值', lists[j].assignment)
         this.evalWrap(lists[j].assignment)
+        this.$nextTick(()=>{
+          this.precisionHandel()
+        })
       }
+    },
+    // 对数字组件值做精度修正
+    precisionHandel(){
+      this.comArr.forEach(element => {
+        if (
+          element.type != 'radio' &&
+          element.type != 'checkbox' &&
+          element.type != 'select' &&
+          element.type != 'cascader'
+        ) {
+          debugger
+          let model = element.model
+          let item = this.models[model]
+          let decimal = element.options.decimal?element.options.decimal:2
+          if (item && String(item).indexOf('.') != -1) {
+            let strItem = String(item)
+            if (strItem.length - strItem.indexOf('.') > 3) {
+              let delIndex = String(item).indexOf('.') + decimal + 1
+              let result = strItem.substring(0, delIndex)
+              this.models[model] = result
+            }
+          }
+        }
+      })
     },
     // 进入条件检测
     enterCheck() {
