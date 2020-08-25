@@ -218,12 +218,21 @@ export default {
         lazyLoad(node, resolve) {
           console.log(node)
           // this.getData(node.value)
+          let postData
+          if(node.parent){
+            postData = {
+              dicName: node.data.name,
+              itemParentCode: node.value,
+              selType: 1,
+            }
+          }else{
+            postData = {
+              dicName: node.data.name,
+              selType: 2,
+            }
+          }
           getDicTwo({
-          body: {
-            dicName: node.data.name,
-            itemParentCode: node.parent?node.value:'',
-            selType: 1,
-          },
+          body: postData,
           header: {
             pageIndex: 1,
             pageSize: 10,
