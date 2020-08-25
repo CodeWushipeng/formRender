@@ -680,6 +680,7 @@ let handlers = {
     },
     // 全部节点循环事件
     iteratorAllEle() {
+      let hasFocus = false
       for (let i = this.outMark; i < this.comArr.length; i++) {
         if (
           this.comArr[i].options.disabled ||
@@ -692,9 +693,16 @@ let handlers = {
             this.setFocus(this.allItems[i])
             console.log('获取节点', this.outMark, i, this.allItems[i])
             this.outMark = i
+            hasFocus = true
             break
           }
         }
+      }
+      if(!hasFocus){
+        // 如果页面没有可聚焦元素
+        this.btnsAddEvents()
+        this.filterFirstBtnIndex()
+        this.focusCurrentBtn()
       }
     },
     // 获取页面显示的元素的长度
