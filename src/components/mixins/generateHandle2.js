@@ -642,16 +642,17 @@ let handlers = {
     // 对数字组件值做精度修正
     precisionHandel(){
       this.comArr.forEach(element => {
+        debugger
         if (
-          element.type != 'radio' &&
-          element.type != 'checkbox' &&
-          element.type != 'select' &&
-          element.type != 'cascader'
+          element.type == 'amount' ||
+          (element.options && element.options.dataType == 'integer')
         ) {
           debugger
           let model = element.model
           let item = this.models[model]
-          let decimal = element.options.decimal?element.options.decimal:2
+          let decimal = element.options.decimal
+            ? element.options.decimal
+            : element.options.decimalbits
           if (item && String(item).indexOf('.') != -1) {
             let strItem = String(item)
             if (strItem.length - strItem.indexOf('.') > 3) {
@@ -816,7 +817,7 @@ let handlers = {
     },
     // 回车事件
     onElChange(params) {
-      this.changeStringToNumber()
+      this.changeAmount()
       if (this.cancelNext) {
         this.cancelNext = false
         return
