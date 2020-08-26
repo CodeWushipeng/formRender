@@ -700,9 +700,11 @@ let handlers = {
       }
       if(!hasFocus){
         // 如果页面没有可聚焦元素
-        this.btnsAddEvents()
-        this.filterFirstBtnIndex()
-        this.focusCurrentBtn()
+        if (document.getElementById('flowButtons')) {
+          this.btnsAddEvents()
+          this.filterFirstBtnIndex()
+          this.focusCurrentBtn()
+        }
       }
     },
     // 获取页面显示的元素的长度
@@ -846,10 +848,13 @@ let handlers = {
         this.remoteValidate(this.outMark)
         this.setBlur(this.allItems[this.outMark])
         // this.$emit("isEnd", true);
-
-        this.btnsAddEvents()
-        this.filterFirstBtnIndex()
-        this.focusCurrentBtn()
+        
+        if (document.getElementById('flowButtons')) {
+          this.btnsAddEvents()
+          this.filterFirstBtnIndex()
+          this.focusCurrentBtn()
+        }
+        
       }
     },
     filterFirstBtnIndex() {
