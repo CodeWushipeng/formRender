@@ -24,7 +24,13 @@
           <template v-if="dialogTableVisible">
             <div style="display:flex;marginBottom:20px;">
               <!-- <el-input style="width:200px" placeholder="请输入内容" v-model="value" clearable></el-input> -->
-              <el-cascader v-model="value" :options="cascaderData" :props="casProps" clearable filterable></el-cascader>
+              <el-cascader
+                v-model="value"
+                :options="cascaderData"
+                :props="casProps"
+                clearable
+                filterable
+              ></el-cascader>
               <el-button
                 type="primary"
                 style="marginLeft:20px"
@@ -219,68 +225,59 @@ export default {
           console.log(node)
           // this.getData(node.value)
           let postData
-          if(node.parent){
+          if (node.parent) {
             postData = {
               dicName: node.data.name,
               itemParentCode: node.value,
-              selType: 1,
+              selType: 1
             }
-          }else{
+          } else {
             postData = {
               dicName: node.data.name,
-              selType: 2,
+              selType: 2
             }
           }
           getDicTwo({
-          body: postData,
-          header: {
-            pageIndex: 1,
-            pageSize: 10,
-            gloSeqNo: new Date(),
-            reqSeqNo: 'sit anim',
-            reqTime: 'officia ad anim'
-          }
-        })
-          .then((res) => {
-            console.log(res)
-            if (res.header && res.header.rspCode == RES_OK) {
-              if (res.body) {
-                // this.dicData = res.body.dics.records
-                // this.setDicData(this.dicData)
-                // this.total = res.body.dics.total
-                // this.pageSize = res.body.dics.size
-                let originData = res.body.dics.records
-                let nodes = originData.map(item => ({
-                  label: item.itemValue,
-                  value: item.itemCode,
-                  name: node.name,
-                }))
-                resolve(nodes);
-                // this.cascaderData = [...this.cascaderData,...tranData]
-              }
-            } else if (res.header && res.header.rspCode == FAIL_CODE) {
-              this.$notify({
-                title: 'fail',
-                message: '查询失败',
-                type: 'info',
-                duration: 2000
-              })
-              return
+            body: postData,
+            header: {
+              pageIndex: 1,
+              pageSize: 10,
+              gloSeqNo: new Date(),
+              reqSeqNo: 'sit anim',
+              reqTime: 'officia ad anim'
             }
           })
-          .catch((error) => console.log(error))
+            .then((res) => {
+              console.log(res)
+              if (res.header && res.header.rspCode == RES_OK) {
+                if (res.body) {
+                  // this.dicData = res.body.dics.records
+                  // this.setDicData(this.dicData)
+                  // this.total = res.body.dics.total
+                  // this.pageSize = res.body.dics.size
+                  let originData = res.body.dics.records
+                  let nodes = originData.map((item) => ({
+                    label: item.itemValue,
+                    value: item.itemCode,
+                    name: node.name
+                  }))
+                  resolve(nodes)
+                  // this.cascaderData = [...this.cascaderData,...tranData]
+                }
+              } else if (res.header && res.header.rspCode == FAIL_CODE) {
+                this.$notify({
+                  title: 'fail',
+                  message: '查询失败',
+                  type: 'info',
+                  duration: 2000
+                })
+                return
+              }
+            })
+            .catch((error) => console.log(error))
         }
       },
-      cascaderData: [
-        {
-          label: '国家',
-          name: 'cityList'
-        },
-        {
-          label: '性别',
-          name: 'sex'
-        },
-      ]
+      cascaderData: []
     }
   },
   mounted() {
@@ -310,53 +307,53 @@ export default {
       if (this.dialogTableVisible) {
         return
       }
-        getDicTwo({
-          body: {
-            dicName: '',
-            itemParentCode: '',
-            selType: 2
-          },
-          header: {
-            pageIndex: this.nowPage,
-            pageSize: this.pageSize,
-            gloSeqNo: new Date(),
-            reqSeqNo: 'sit anim',
-            reqTime: 'officia ad anim'
+      getDicTwo({
+        body: {
+          dicName: '',
+          itemParentCode: '',
+          selType: 2
+        },
+        header: {
+          pageIndex: this.nowPage,
+          pageSize: this.pageSize,
+          gloSeqNo: new Date(),
+          reqSeqNo: 'sit anim',
+          reqTime: 'officia ad anim'
+        }
+      })
+        .then((res) => {
+          console.log(res)
+          if (res.header && res.header.rspCode == RES_OK) {
+            this.$notify({
+              title: 'Success',
+              message: '查询成功',
+              type: 'success',
+              duration: 2000
+            })
+            if (res.body) {
+              // this.dicData = res.body.dics.records
+              // this.setDicData(this.dicData)
+              // this.total = res.body.dics.total
+              // this.pageSize = res.body.dics.size
+              let originData = res.body.dics.records
+              this.cascaderData = originData.map((item) => ({
+                label: item.dicDescribe,
+                value: item.dicName,
+                name: item.dicName
+              }))
+            }
+          } else if (res.header && res.header.rspCode == FAIL_CODE) {
+            this.$notify({
+              title: 'fail',
+              message: '查询失败',
+              type: 'info',
+              duration: 2000
+            })
+            return
           }
         })
-          .then((res) => {
-            console.log(res)
-            if (res.header && res.header.rspCode == RES_OK) {
-              this.$notify({
-                title: 'Success',
-                message: '查询成功',
-                type: 'success',
-                duration: 2000
-              })
-              if (res.body) {
-                // this.dicData = res.body.dics.records
-                // this.setDicData(this.dicData)
-                // this.total = res.body.dics.total
-                // this.pageSize = res.body.dics.size
-                let originData = res.body.dics.records
-                this.cascaderData = originData.map(item => ({
-                  label: item.dicDescribe,
-                  value: item.dicName,
-                  name: item.dicName
-                }))
-              }
-            } else if (res.header && res.header.rspCode == FAIL_CODE) {
-              this.$notify({
-                title: 'fail',
-                message: '查询失败',
-                type: 'info',
-                duration: 2000
-              })
-              return
-            }
-          })
-          .catch((error) => console.log(error))
-      
+        .catch((error) => console.log(error))
+
       this.dialogTableVisible = true
     },
     setData(params) {
@@ -366,11 +363,11 @@ export default {
     },
     // dialog关闭
     dialogClose() {
-      this.value = '',
-      this.dicData = [],
-      this.nowPage = 1,
-      this.pageSize = 10,
-      this.total = 0
+      ;(this.value = ''),
+        (this.dicData = []),
+        (this.nowPage = 1),
+        (this.pageSize = 10),
+        (this.total = 0)
     },
     // 字典数据赋值给组件
     setDicData(dicArr) {
@@ -391,22 +388,38 @@ export default {
     },
     // 查询信息
     search() {
-      getDicTwo({
-        body: {
-          dicName: this.value[0],
-          itemParentCode: this.value[this.value.length-1],
-          selType: 1
-          // itemCode: this.value,
-          // itemValue: this.value,
-        },
-        header: {
-          pageIndex: this.nowPage,
-          pageSize: this.pageSize,
-          gloSeqNo: new Date(),
-          reqSeqNo: 'sit anim',
-          reqTime: 'officia ad anim'
+      let postData
+      if (this.value.length > 1) {
+        postData = {
+          body: {
+            dicName: this.value[0],
+            itemParentCode: this.value[this.value.length - 1],
+            selType: 1
+          },
+          header: {
+            pageIndex: this.nowPage,
+            pageSize: this.pageSize,
+            gloSeqNo: new Date(),
+            reqSeqNo: 'sit anim',
+            reqTime: 'officia ad anim'
+          }
         }
-      })
+      } else if (this.value.length == 1) {
+        postData = {
+          body: {
+            dicName: this.value[0],
+            selType: 2
+          },
+          header: {
+            pageIndex: this.nowPage,
+            pageSize: this.pageSize,
+            gloSeqNo: new Date(),
+            reqSeqNo: 'sit anim',
+            reqTime: 'officia ad anim'
+          }
+        }
+      }
+      getDicTwo(postData)
         .then((res) => {
           console.log(res)
           if (res.header && res.header.rspCode == RES_OK) {

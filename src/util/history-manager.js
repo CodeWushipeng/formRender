@@ -3,16 +3,16 @@ const idb = {
     const request = window.indexedDB.open(name, version)
 
     return new Promise((resolve, reject) => {
-      request.onerror = (e) => {
+      request.onerror = e => {
         reject(e.currentTarget.error.message)
       }
-      request.onsuccess = (e) => {
+      request.onsuccess = e => {
         resolve(e.target.result)
       }
-      request.onupgradeneeded = (e) => {
+      request.onupgradeneeded = e => {
         const db = e.target.result
         if (!db.objectStoreNames.contains('history')) {
-          const store = db.createObjectStore('history', { keyPath: 'id' })
+          const store = db.createObjectStore('history', { keyPath: selected })
         }
       }
     })
@@ -22,33 +22,27 @@ const idb = {
 }
 
 export default {
-  clear () {
+  clear() {
     return new Promise((resolve, reject) => {
-      // idb.openDB(idb.name).then((db) => {
-      //   const trans = db.transaction(['history'], 'readwrite')
-      //   const historyStore = trans.objectStore('history')
-      //   historyStore.clear()
-      //   trans.oncomplete = (e) => {
-      //     idb.cursor = 0
-      //     resolve()
-      //   }
-      // })
-      var req = indexedDB.deleteDatabase('form-making')
-      req.onsuccess = function() {
-        console.log('成功删除数据库')
-        resolve()
-      }
-      req.onerror = function() {
-        console.log('无法删除数据库')
-      }
-      req.onblocked = function() {
-        console.log('由于操作被阻止而无法删除数据库')
-      } 
+      idb.openDB(idb.name).then(db => {
+        const trans = db.transaction(['history'], 'readwrite')
+        const historyStore = trans.objectStore('history')
+
+        historyStore.clear()
+
+        trans.oncomplete = e => {
+          idb.cursor = 0
+          resolve()
+        }
+        trans.onerror = e => {
+          console.log(e)
+        }
+      })
     })
   },
-  updateLatest (data, selectedKey) {
+  updateLatest(data, selectedKey) {
     return new Promise((resolve, reject) => {
-      idb.openDB(idb.name).then((db) => {
+      idb.openDB(idb.name).then(db => {
         const trans = db.transaction(['history'], 'readwrite')
         const historyStore = trans.objectStore('history')
 
@@ -58,16 +52,15 @@ export default {
           selected: selectedKey
         })
 
-        trans.oncomplete = (e) => {
+        trans.oncomplete = e => {
           resolve()
         }
       })
     })
   },
-  add (data, selectedKey) {
+  add(data, selectedKey) {
     return new Promise((resolve, reject) => {
-      idb.openDB(idb.name).then((db) => {
-        debugger
+      idb.openDB(idb.name).then(db => {
         const trans = db.transaction(['history'], 'readwrite')
         const historyStore = trans.objectStore('history')
 
@@ -77,9 +70,8 @@ export default {
 
         const historyList = []
 
-        historyStore.openCursor().onsuccess = (e) => {
+        historyStore.openCursor().onsuccess = e => {
           const cursor = e.target.result
-          debugger
           if (cursor) {
             historyList.push(cursor.value)
             cursor.continue()
@@ -97,40 +89,51 @@ export default {
             })
           }
         }
+        // historyStore.add({
+        //   id: id,
+        //   data: data,
+        //   selected: selectedKey
+        // })
 
-        trans.oncomplete = (e) => {
+        trans.oncomplete = e => {
           idb.cursor = id
           resolve()
+        }
+        trans.onerror = e => {
+          console.log(e)
         }
       })
     })
   },
-  undo () {
+  undo() {
     return new Promise((resolve, reject) => {
-      idb.openDB(idb.name).then((db) => {
+      idb.openDB(idb.name).then(db => {
         const trans = db.transaction(['history'], 'readwrite')
         const historyStore = trans.objectStore('history')
 
         console.log(idb.cursor, historyStore.count())
 
-        let cursor = 0, data = {
-          list: [],
-          config: {
-            labelWidth: 100,
-            labelPosition: 'right',
-            size: 'small',
-            customClass: '',
-            ui: 'element',
-            layout: 'horizontal',
-            labelCol: 3
+        let cursor = 0,
+          data = {
+            list: [],
+            config: {
+              labelWidth: 100,
+              labelPosition: 'right',
+              size: 'small',
+              customClass: '',
+              ui: 'element',
+              layout: 'horizontal',
+              labelCol: 3
+            }
           },
-        }, undo = false, redo = true, key = ''
-        
+          undo = false,
+          redo = true,
+          key = ''
+
         if (idb.cursor > 1) {
           const request = historyStore.get(idb.cursor - 1)
 
-          request.onsuccess = (e) => {
-            
+          request.onsuccess = e => {
             data = request.result.data
 
             key = request.result.selected
@@ -139,22 +142,26 @@ export default {
           }
         }
 
-        trans.oncomplete = (e) => {
+        trans.oncomplete = e => {
           idb.cursor = idb.cursor - 1
-          resolve({data, key, undo, redo})
+          resolve({ data, key, undo, redo })
         }
       })
     })
   },
-  redo () {
+  redo() {
     return new Promise((resolve, reject) => {
-      idb.openDB(idb.name).then((db) => {
+      idb.openDB(idb.name).then(db => {
         const trans = db.transaction(['history'], 'readwrite')
         const historyStore = trans.objectStore('history')
 
         console.log(idb.cursor)
 
-        let cursor = 0, data = {}, undo = true, redo = false, key = ''
+        let cursor = 0,
+          data = {},
+          undo = true,
+          redo = false,
+          key = ''
 
         const countRequest = historyStore.count()
 
@@ -164,8 +171,7 @@ export default {
           if (idb.cursor < count) {
             const request = historyStore.get(idb.cursor + 1)
 
-            request.onsuccess = (e) => {
-              
+            request.onsuccess = e => {
               data = request.result.data
 
               key = request.result.selected
@@ -175,9 +181,9 @@ export default {
           }
         }
 
-        trans.oncomplete = (e) => {
+        trans.oncomplete = e => {
           idb.cursor = idb.cursor + 1
-          resolve({data, key, undo, redo})
+          resolve({ data, key, undo, redo })
         }
       })
     })
