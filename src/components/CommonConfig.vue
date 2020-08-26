@@ -360,7 +360,7 @@ export default {
       this.dialogTableVisible = true
     },
     setData(params) {
-      this.data.remoteCode = params.dicName
+      this.data.remoteCode = params.itemCode
       this.dialogTableVisible = false
       this.setDicData(this.dicData)
     },
