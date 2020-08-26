@@ -520,7 +520,8 @@ export default {
         'videoupload',
         'camera',
         'buttonCom',
-        'alink'
+        'alink',
+        'frequency'
       ]
     },
     basicFields: {

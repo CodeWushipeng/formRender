@@ -142,8 +142,8 @@
           v-model="data.options.buttonfun"
           placeholder="调用函数"
         ></el-input>
-        {{$t('fm.config.widget.buttonurl')}}
-        <el-input v-model="data.options.buttonurl"></el-input>
+        {{$t('fm.config.widget.funname')}}
+        <el-input v-model="data.options.funname"></el-input>
       </el-form-item>
 
       <!--密码相关属性-->

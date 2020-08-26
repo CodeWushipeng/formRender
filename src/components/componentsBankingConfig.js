@@ -1461,4 +1461,84 @@ export const bankingComponents = [
     tableKey: "",
     tableModel: "",
   },
+  {
+      type: "frequency",
+      icon: "icon-input",
+      options: {
+          hidden: false,
+          width: "100%",
+          defaultValue: "",
+          required: false,
+          integerbits: 17,
+          decimalbits: 3,
+          dataType: "string",
+          pattern: "",
+          placeholder: "",
+          disabled: false,
+          labelWidth: 100,
+          isLabelWidth: false,
+          tips: "",
+      },
+      hidden:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn false\n" +
+      "}",
+      enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn null\n" +
+      "}",
+      condition:
+      "function main (models,utils,message,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){message('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
+      valueRange: "",
+      assignment:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "}",
+      isRemote:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn false\n" +
+      "}",
+      url: "",
+      data:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn {}\n" +
+      "}",
+      success:
+      "function main (models,res,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn {}\n" +
+      "}",
+      multiToggle: false,
+      multiCondition:
+      "function main (models,utils,request)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 request为axios对象\n" +
+      "\t//post请求示例\n" +
+      "\trequest.post(url,{data:123})\n" +
+      "\t.then(res=>{\n" +
+      "\t\tconsole.log(res)\n" +
+      "\t\trequest.post(url,{data:res.test})\n" +
+      "\t\t.then(response =>{console.log(response)})\n" +
+      "\t\t.catch(error=>{console.log(error)})\n" +
+      "\t})\n" +
+      "\t.catch(error=>{console.log(error)})\n" +
+      "}",
+      tableKey: "",
+      tableModel: "",
+  },
 ];
