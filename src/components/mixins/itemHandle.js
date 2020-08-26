@@ -21,6 +21,9 @@ let itemHandle = {
           this.peripheral();
         }
       }
+      if (this.widget.type==="frequency") {
+          this.frequencyVisible = true
+      }
       if (this.widget.type==="date" && this.widget.options.editable) {
         // this.dateShow()
       }
@@ -36,6 +39,13 @@ let itemHandle = {
     },
     // radio组件change事件
     valueChange() {
+      if(this.widget.type ==="frequency"){
+          if(this.frequencyNum && this.frequencyUnit){
+              this.dataModel = this.frequencyNum + this.frequencyUnit
+          }else{
+              this.dataModel = ""
+          }
+      }
       this.$emit('radio-change', this.widget.model);
     },
     // select组件回车抬起事件

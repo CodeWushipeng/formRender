@@ -23,6 +23,7 @@ export default {
         camera: "摄像头",
         buttonCom: "按钮",
         alink: "A 链接",
+        frequency: "频率",
       },
       fields: {
         input: "单行文本",
@@ -192,7 +193,7 @@ export default {
         buttontext: "文本内容",
         buttonicon: "图标",
         buttonfun: "调用函数",
-        buttonurl: "访问URL",
+        funname: "调用方法名",
         imagesrc: "图片访问URL",
         email: "邮箱地址",
         hex: "十六进制",

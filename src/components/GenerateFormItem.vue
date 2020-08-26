@@ -479,16 +479,11 @@
               : item.value
           "
           >
-            <span style="float: left">
+            <span>
               {{
               widget.options.showLabel || widget.options.remote
-              ? item.label
+              ? item.label + " -- " + item.value
               : item.value
-              }}
-            </span>
-            <span style="margin-left: 8px;color: #8492a6; font-size: 13px">
-              {{
-              item.value
               }}
             </span>
           </el-option>
@@ -591,6 +586,44 @@
           <span ref="alinkSpanRef">a 链接</span>
         </a>
       </template>
+
+      <!--频率-->
+      <template v-if="widget.type == 'frequency'">
+        <el-input
+                :type="widget.options.dataType"
+                v-model="dataModel"
+                :disabled="widget.options.disabled"
+                :placeholder="widget.options.placeholder"
+                :style="{ width: widget.options.width }"
+                @input="handleInput1($event)"
+                @blur="comBlur"
+                @focus="comFocus"
+                @keyup.native.enter="change"
+        >
+        </el-input>
+        <!--@focus="comFocus"-->
+      </template>
+      <!--frequency-->
+      <cus-dialog
+              :visible.sync="frequencyVisible"
+              @on-close="frequencyVisible = false"
+              ref="frequencyPreview"
+              width="500px"
+              form
+      >
+        <el-input-number v-model="frequencyNum" :min="1" :max="100" @change="valueChange"></el-input-number>
+        <el-select v-model="frequencyUnit" @change="valueChange" placeholder="请选择">
+          <el-option
+                  v-for="item in frequencyOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+          </el-option>
+        </el-select>
+        <template slot="action">
+          <span></span>
+        </template>
+      </cus-dialog>
 
       <!--{{widget.options.imagesrc}}&&&
       {{imagesrc}}-->
@@ -803,9 +836,12 @@ export default {
       imagesrc: require('../assets/wenjian.png'),
       /*imagesrc: "",*/
       radioVisible: false,
+      frequencyVisible: false,
       cameraVisible: false,
       cameraList: [],
       cameraimage: '',
+      frequencyNum: 1,
+      frequencyUnit: "",
       amountvisible: false, // 控制金额放大镜的显隐
       dataModel: this.models[this.widget.model], // 当前组件的默认值，是双向绑定的
       pickerOptionsDate: {
@@ -869,6 +905,25 @@ export default {
         ]
       },
       dynamicTags: ['标签一', '标签二', '标签三'],
+      frequencyOptions: [{
+          value: 'D',
+          label: '日'
+      }, {
+          value: 'W',
+          label: '周'
+      }, {
+          value: 'T',
+          label: '旬'
+      }, {
+          value: 'M',
+          label: '月'
+      }, {
+          value: 'S',
+          label: '季'
+      }, {
+          value: 'Y',
+          label: '年'
+      }],
       inputVisible: false,
       inputValue: '',
       tableCf: {
@@ -961,6 +1016,7 @@ export default {
         this.radioVisible = true
       }
     },
+
     /*单选 多选快捷键方法*/
 
     /*摄像头*/
@@ -1188,8 +1244,8 @@ export default {
         } catch (error) {
           console.log(error)
         }
-      } else if (this.widget.options.buttonurl) {
-        window.location = this.widget.options.buttonurl
+      } else if (this.widget.options.funname) {
+        //todo
       }
     },
     /*按钮*/
