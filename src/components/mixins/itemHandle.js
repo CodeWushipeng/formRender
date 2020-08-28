@@ -190,7 +190,6 @@ let itemHandle = {
             let cascaderData = JSON.parse(localStorage.getItem('cascaderData'))
             let fatherList
             fatherList= this.getDicFloor(cascaderData ,fatherData)
-            console.log(this.getDicFloor(cascaderData, fatherData))
             fatherList.forEach(item => {
               let tempJson = {
                 value: '',
@@ -208,18 +207,17 @@ let itemHandle = {
     // 递归获取当前字典项层级
     getDicFloor(target,search) {
       debugger
-      var result=[]
+      var result
       for (let index = 0; index < target.length; index++) {
         if (target[index].value == search || !target[index].children) {
           if (target[index].children) {
             result = target[index].children
           }
-          break
-        } else {
-          this.getDicFloor(target[index].children, search)
+          return result
+        }else{
+          return this.getDicFloor(target[index].children, search)
         }
       }
-      return result
     },
     // date选择器失去焦点事件
     dateBlur() {
