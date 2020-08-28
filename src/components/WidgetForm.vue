@@ -69,15 +69,6 @@
                 </div>
               </el-row>
             </template>
-            <!-- <widget-tab-item
-              v-else-if="element.type === 'tabs'"
-              :key="element.key"
-              :element="element"
-              :select.sync="selectWidget" 
-              :index="index" :data="data"
-              @select-change="handleSelectChange"  
-            >
-            </widget-tab-item>-->
             <template v-else>
               <widget-form-item
                 v-if="element && element.key"
@@ -123,6 +114,7 @@ export default {
       }
     }),
       EventBus.$on("on-field-add", (item) => {
+        debugger
         console.log(".....");
         console.log(item, this.data, this.select);
 
@@ -142,15 +134,15 @@ export default {
         if (widgetItem.type == "report") {
           widgetItem.rows = generateKeyToTD(widgetItem.rows);
         }
+        this.data.list.push(widgetItem)
+        this.selectWidget = this.data.list[this.data.list.length - 1];
         this._addWidget(this.data.list, widgetItem);
-
-        this.$nextTick(() => {
-          EventBus.$emit("on-history-add");
-        });
+        EventBus.$emit('on-history-add')
       });
   },
   methods: {
     _addWidget(list, widget, isTable = false) {
+      debugger
       if (
         isTable &&
         (widget.type == "grid" ||
@@ -213,7 +205,6 @@ export default {
       this.selectWidget = this.data.list[index];
     },
     handleWidgetAdd(evt) {
-      debugger
       const newIndex = evt.newIndex;
       const to = evt.to;
       console.log(to);
@@ -344,14 +335,6 @@ export default {
         this.$nextTick(() => {
           EventBus.$emit("on-history-add");
         });
-      });
-    },
-    handleSelectChange(index) {
-      console.log("select-change", index);
-      setTimeout(() => {
-        index >= 0
-          ? (this.selectWidget = this.data.list[index])
-          : (this.selectWidget = {});
       });
     },
   },

@@ -451,7 +451,7 @@ import { bankingComponents } from './componentsBankingConfig.js'
 import request from '../util/request.js'
 import generateCode from './generateCode.js'
 import { EventBus } from '../util/event-bus.js'
-import historyManager from '../util/history-manager.js'
+// import historyManager from '../util/history-manager.js'
 import TableWidgetConfig from './table/TableWidgetConfig'
 import TableEventConfig from './table/TableEventConfig'
 
@@ -627,7 +627,10 @@ export default {
       codeActiveName: 'vue',
       undo: false,
       redo: false,
-      copyModel: new DataTransfer()
+      copyModel: new DataTransfer(),
+      revokeNumber: 0,
+      rollNumbers: 0,
+      widgetLists: []
     }
   },
   computed: {
@@ -640,23 +643,69 @@ export default {
   },
   mounted() {
     this._loadComponents()
-    const _this = this
-    historyManager.clear().then((e) => {
-      EventBus.$on('on-history-add', () => {
-        debugger
-        console.log('xxx', _this.widgetFormSelect)
-        historyManager.add(
-            _this.widgetForm,
-            _this.widgetFormSelect && _this.widgetFormSelect.key
-              ? _this.widgetFormSelect.key
-              : ''
-          )
-          _this.undo = true
-          _this.redo = false
-      })
+    // historyManager.clear().then((e) => {
+    //   EventBus.$on('on-history-add', () => {
+    //     console.log('xxx', _this.widgetFormSelect)
+    //     historyManager.add(
+    //       _this.widgetForm,
+    //       _this.widgetFormSelect && _this.widgetFormSelect.key
+    //         ? _this.widgetFormSelect.key
+    //         : ''
+    //     )
+    //     _this.undo = true
+    //     _this.redo = false
+    //   })
+    // })
+    let that =this
+    console.log(that.widgetLists)
+    EventBus.$on('on-history-add', () => {
+      debugger
+      let cloneWidget = Object.assign({}, that.widgetForm)
+      that.widgetLists.push(cloneWidget)
+      that.undo = true
+      that.redo = false
     })
   },
   methods: {
+    // 撤销
+    handleUndo() {
+      debugger
+      this.revokeNumber++
+      if (this.widgetLists.length >this.revokeNumber) {
+        let end = this.widgetLists.length - this.revokeNumber
+        this.widgetForm = this.widgetLists.slice(end - 1, end)[0]
+        this.widgetFormSelect = this.widgetForm.list[this.widgetForm.list.length-1]
+      } else if ((this.widgetLists.length == this.revokeNumber)) {
+        this.widgetForm = {
+          list: [],
+          config: {
+            labelWidth: 100,
+            labelPosition: 'right',
+            size: 'small'
+          },
+          extendDetail: 'function main ()' + '{\n' + '}'
+        }
+        this.widgetFormSelect = {}
+        this.undo = false
+      }
+      this.redo = true
+    },
+    // 重做
+    handleRedo() {
+      debugger
+      if (this.revokeNumber > 0) {
+        let start = this.widgetLists.length - this.revokeNumber
+        this.widgetForm = this.widgetLists.slice(start, start + 1)[0]
+        this.widgetFormSelect = this.widgetForm.list[this.widgetForm.list.length-1]
+        this.revokeNumber--
+        this.undo = true
+        this.$nextTick(() => {
+          if (this.revokeNumber == 0) {
+            this.redo = false
+          }
+        })
+      }
+    },
     _addFlow() {
       this.$emit('addFlow')
     },
@@ -927,43 +976,30 @@ export default {
       this.$refs.generateForm.reset()
     },
     handleField(item) {
-      console.log(item)
-      EventBus.$emit('on-field-add', item)
+      console.log(item,'-------',this.widgetForm)
+      // EventBus.$emit('on-field-add', item)
     },
     //撤销
-    handleUndo() {
-      historyManager
-        .updateLatest(
-          this.widgetForm,
-          this.widgetFormSelect && this.widgetFormSelect.key
-            ? this.widgetFormSelect.key
-            : ''
-        )
-        .then(() => {
-          historyManager.undo().then((data) => {
-            this.widgetForm = { ...data.data }
-            this.widgetFormSelect = this._findWidgetItem(
-              this.widgetForm.list,
-              data.key
-            )
-            this.undo = data.undo
-            this.redo = data.redo
-          })
-        })
-    },
-    //重做
-    handleRedo() {
-      historyManager.redo().then((data) => {
-        this.widgetForm = { ...data.data }
-        this.widgetFormSelect = this._findWidgetItem(
-          this.widgetForm.list,
-          data.key
-        )
-
-        this.undo = data.undo
-        this.redo = data.redo
-      })
-    },
+    // handleUndo() {
+    //   historyManager
+    //     .updateLatest(
+    //       this.widgetForm,
+    //       this.widgetFormSelect && this.widgetFormSelect.key
+    //         ? this.widgetFormSelect.key
+    //         : ''
+    //     )
+    //     .then(() => {
+    //       historyManager.undo().then((data) => {
+    //         this.widgetForm = { ...data.data }
+    //         this.widgetFormSelect = this._findWidgetItem(
+    //           this.widgetForm.list,
+    //           data.key
+    //         )
+    //         this.undo = data.undo
+    //         this.redo = data.redo
+    //       })
+    //     })
+    // },
     _findWidgetItem(list, key) {
       const index = list.findIndex((item) => item.key == key)
 

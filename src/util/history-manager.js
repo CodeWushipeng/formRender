@@ -1,25 +1,33 @@
-const idb = {
-  openDB(name, version = 1) {
-    const request = window.indexedDB.open(name, version)
+function initDB() {
+  if (idb) {
+    return idb
+  } else {
+    return {
+      openDB(name, version = 1) {
+        const request = window.indexedDB.open(name, version)
 
-    return new Promise((resolve, reject) => {
-      request.onerror = e => {
-        reject(e.currentTarget.error.message)
-      }
-      request.onsuccess = e => {
-        resolve(e.target.result)
-      }
-      request.onupgradeneeded = e => {
-        const db = e.target.result
-        if (!db.objectStoreNames.contains('history')) {
-          const store = db.createObjectStore('history', { keyPath: selected })
-        }
-      }
-    })
-  },
-  name: 'form-making',
-  cursor: 0
+        return new Promise((resolve, reject) => {
+          request.onerror = e => {
+            reject(e.currentTarget.error.message)
+          }
+          request.onsuccess = e => {
+            resolve(e.target.result)
+          }
+          request.onupgradeneeded = e => {
+            const db = e.target.result
+            if (!db.objectStoreNames.contains('history')) {
+              const store = db.createObjectStore('history', { keyPath: 'id' })
+            }
+          }
+        })
+      },
+      name: 'form-making',
+      cursor: 0
+    }
+  }
 }
+
+const idb = initDB()
 
 export default {
   clear() {
@@ -27,9 +35,8 @@ export default {
       idb.openDB(idb.name).then(db => {
         const trans = db.transaction(['history'], 'readwrite')
         const historyStore = trans.objectStore('history')
-
         historyStore.clear()
-
+        console.log(historyStore.getAll())
         trans.oncomplete = e => {
           idb.cursor = 0
           resolve()
@@ -52,15 +59,19 @@ export default {
           selected: selectedKey
         })
 
-        trans.oncomplete = e => {
+        ;(trans.oncomplete = e => {
           resolve()
-        }
+        }),
+          (trans.onerror = e => {
+            console.log(e)
+          })
       })
     })
   },
   add(data, selectedKey) {
     return new Promise((resolve, reject) => {
       idb.openDB(idb.name).then(db => {
+        debugger
         const trans = db.transaction(['history'], 'readwrite')
         const historyStore = trans.objectStore('history')
 
@@ -73,15 +84,12 @@ export default {
         historyStore.openCursor().onsuccess = e => {
           const cursor = e.target.result
           if (cursor) {
-            historyList.push(cursor.value)
+            let oldData = cursor.value
+            if (oldData.id > idb.cursor) {
+              historyStore.delete(oldData.id)
+            }
             cursor.continue()
           } else {
-            for (let i = 0; i < historyList.length; i++) {
-              if (historyList[i].id > idb.cursor) {
-                historyStore.delete(historyList[i].id)
-              }
-            }
-
             historyStore.add({
               id: id,
               data: data,
@@ -89,11 +97,6 @@ export default {
             })
           }
         }
-        // historyStore.add({
-        //   id: id,
-        //   data: data,
-        //   selected: selectedKey
-        // })
 
         trans.oncomplete = e => {
           idb.cursor = id
@@ -140,11 +143,17 @@ export default {
 
             undo = true
           }
+          request.onerror = e => {
+            console.log(e)
+          }
         }
 
         trans.oncomplete = e => {
           idb.cursor = idb.cursor - 1
           resolve({ data, key, undo, redo })
+        }
+        trans.onerror = e => {
+          console.log(e)
         }
       })
     })
