@@ -310,7 +310,6 @@ export default {
       getDicTwo({
         body: {
           dicName: '',
-          itemParentCode: '',
           selType: 2
         },
         header: {

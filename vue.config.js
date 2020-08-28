@@ -5,6 +5,7 @@ module.exports = {
     proxy: {
       '/dictionary': {
         target: 'http://192.168.1.194:21009',
+        // target: 'http://192.168.2.84:21008'
       },
       '/formDevelop': {
         target: 'http://192.168.1.194:21004'
@@ -14,7 +15,7 @@ module.exports = {
       },
       '/listDevelop': {
         target: 'http://192.168.1.194:21004'
-      },
+      }
       // '/requestForward': {
       //   target: 'http://localhost:38081'
       // },
