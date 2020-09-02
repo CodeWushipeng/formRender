@@ -587,7 +587,7 @@
         </a>
       </template>
 
-      <!--频率-->
+      <!--间隔周期-->
       <template v-if="widget.type == 'frequency'">
         <el-input
                 :type="widget.options.dataType"
@@ -605,21 +605,81 @@
       </template>
       <!--frequency-->
       <cus-dialog
-              :visible.sync="frequencyVisible"
-              @on-close="frequencyVisible = false"
-              ref="frequencyPreview"
-              width="500px"
-              form
+              :visible.sync="pingLuConfigPopVisible"
+              @on-close="pingLuConfigPopVisible = false"
+              width="600px"
       >
-        <el-input-number v-model="frequencyNum" :min="1" :max="100" @change="valueChange"></el-input-number>
-        <el-select v-model="frequencyUnit" @change="valueChange" placeholder="请选择">
-          <el-option
-                  v-for="item in frequencyOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-          </el-option>
-        </el-select>
+        <el-form v-if="widget.options.spaceType" :model="spaceForm" :rules="spaceRrules" ref="spaceForm" >
+          <el-form-item v-if ="formDisabled.xunHuanLiang" label="频率类型":label-width="spaceFormLabelWidth"  prop="xunHuanLiang">
+            <el-radio-group ref="xunHuanLiangRef" v-model="spaceForm.xunHuanLiang" @change="xunHuanLiangChange">
+              <el-radio
+                      :label="item.value"
+                      v-for="(item, index) in widget.options.spaceType == 'pingLuConfigPop_zhouqi' ? xunHuanLiangObj_zhouqi : xunHuanLiangObj "
+              >
+                <template>
+                  {{item.label}}
+                </template>
+              </el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item v-if ="widget.options.spaceType == 'qiXianConfigPop'" label="期限" :label-width="spaceFormLabelWidth" prop="qixian_input">
+            <el-input-number v-model="spaceForm.qixian_input" :min="1" :max="100" ></el-input-number>
+          </el-form-item>
+          <el-form-item v-if ="formDisabled.meijitian_number && widget.options.spaceType != 'qiXianConfigPop'" label="频率明细" :label-width="spaceFormLabelWidth" prop="meijitian_number">
+            <label>每</label>
+            <el-input-number v-model="spaceForm.meijitian_number" :min="1" :max="100" ></el-input-number>
+            <label>{{xunHuanDanwei}}</label>
+          </el-form-item>
+          <el-form-item v-if ="formDisabled.gongzuori && widget.options.spaceType != 'qiXianConfigPop'" label="工作日":label-width="spaceFormLabelWidth" prop="gongzuori">
+            <el-radio-group v-model="spaceForm.gongzuori">
+              <el-radio  label="A">A-实际工作日</el-radio>
+              <el-radio  label="N">N-下一个工作日</el-radio>
+              <el-radio  label="P">P-上一个工作日</el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item v-if ="formDisabled.jutiri && widget.options.spaceType != 'qiXianConfigPop'" label="具体日":label-width="spaceFormLabelWidth" prop="jutiri">
+            <el-radio-group v-model="spaceForm.jutiri" @change="jutiriChange">
+              <el-radio  label="F">F-第一天</el-radio>
+              <el-radio  label="E">E-最后一天</el-radio>
+              <el-radio  label="D">D-天数</el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item v-if ="formDisabled.jiyuefen && widget.options.spaceType != 'qiXianConfigPop'" label="季月份":label-width="spaceFormLabelWidth" prop="jiyuefen">
+            <el-radio-group v-model="spaceForm.jiyuefen">
+              <el-radio  label="F">F-第一个月</el-radio>
+              <el-radio  label="M">M-第二个月</el-radio>
+              <el-radio  label="E">E-第三个月</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item v-if ="formDisabled.jutiri_nian && widget.options.spaceType != 'qiXianConfigPop'" label="具体日":label-width="spaceFormLabelWidth" prop="jutiri_nian">
+            <el-radio-group v-model="spaceForm.jutiri_nian" @change="jutiri_nianChange">
+              <el-radio  label="R">R-指定日期</el-radio>
+              <el-radio  label="F">F-第一天</el-radio>
+              <el-radio  label="E">E-最后一天</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item v-if ="formDisabled.riqi_nian && widget.options.spaceType != 'qiXianConfigPop'" label="日期" :label-width="spaceFormLabelWidth" prop="riqi_nian">
+            <el-date-picker
+                    v-model="spaceForm.riqi_nian"
+                    align="right"
+                    type="date"
+                    value-format="yyyy-MM-dd"
+                    format="yyyy-MM-dd"
+                    placeholder="选择日期"
+                    :picker-options="spacePickerOptions">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item v-if ="formDisabled.tianshu && widget.options.spaceType != 'qiXianConfigPop'" label="天数" :label-width="spaceFormLabelWidth" prop="tianshu">
+            <el-input-number v-model="spaceForm.tianshu" :min="1" :max="100" ></el-input-number>
+          </el-form-item>
+          <el-form-item style="text-align: center">
+            <el-button @click="resetForm('spaceForm')">重置</el-button>
+            <el-button type="primary" @click="submitForm('spaceForm')">确定</el-button>
+          </el-form-item>
+        </el-form>
         <template slot="action">
           <span></span>
         </template>
@@ -836,7 +896,7 @@ export default {
       imagesrc: require('../assets/wenjian.png'),
       /*imagesrc: "",*/
       radioVisible: false,
-      frequencyVisible: false,
+      pingLuConfigPopVisible: false,
       cameraVisible: false,
       cameraList: [],
       cameraimage: '',
@@ -1229,6 +1289,7 @@ export default {
 
     /*按钮*/
     buttonfun(event_name, title) {
+      var _this = this
       if (this.widget.options.buttonfun) {
         try {
           var buttonfun = this.widget.options.buttonfun
@@ -1246,6 +1307,13 @@ export default {
         }
       } else if (this.widget.options.funname) {
         //todo
+          console.log("11111",_this.$parent.utils)
+
+        var funname = _this.widget.options.funname
+          _this.$parent.$parent.utils[funname]()
+          debugger
+      } else if (this.widget.options.buttonurl) {
+          window.location = this.widget.options.buttonurl
       }
     },
     /*按钮*/
@@ -1547,6 +1615,14 @@ export default {
         console.log(val)
         this.dataModel = val[this.widget.model]
       }
+    },
+    pingLuConfigPopVisible: {
+        deep: true,
+        handler (val) {
+            if(!val){
+                this.resetForm('spaceForm')
+            }
+        }
     }
   }
 }

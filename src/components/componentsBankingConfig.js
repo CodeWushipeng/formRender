@@ -1473,6 +1473,7 @@ export const bankingComponents = [
           decimalbits: 3,
           dataType: "string",
           pattern: "",
+          spaceType:'pingLuConfigPop',
           placeholder: "",
           disabled: false,
           labelWidth: 100,

@@ -3,6 +3,126 @@ import { RES_OK } from '@/api/config'
 let itemHandle = {
   data() {
     return {
+      spaceType:"",
+      xunHuanDanwei:"",
+      pingLuConfigPopVisible: false,
+      spacePickerOptions: {
+          /*disabledDate(time) {
+              return time.getTime() < Date.now();
+          },*/
+          shortcuts: [{
+              text: '今天',
+              onClick(picker) {
+                  picker.$emit('pick', new Date());
+              }
+          }, {
+              text: '昨天',
+              onClick(picker) {
+                  const date = new Date();
+                  date.setTime(date.getTime() - 3600 * 1000 * 24);
+                  picker.$emit('pick', date);
+              }
+          }, {
+              text: '一周前',
+              onClick(picker) {
+                  const date = new Date();
+                  date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                  picker.$emit('pick', date);
+              }
+          }]
+      },
+      xunHuanLiangObj:[
+          {
+              label : "天",
+              value : "D"
+          },
+          {
+              label : "周",
+              value : "W"
+          },
+          {
+              label : "旬",
+              value : "S"
+          },
+          {
+              label : "月",
+              value : "M"
+          },
+          {
+              label : "季",
+              value : "Q"
+          },
+          {
+              label : "年",
+              value : "Y"
+          },
+      ],
+      xunHuanLiangObj_zhouqi:[
+          {
+              label : "月",
+              value : 'M'
+          },
+          {
+              label : "季",
+              value : 'Q'
+          },
+          {
+              label : "年",
+              value : 'Y'
+          },
+      ],
+      spaceForm: {
+          xunHuanLiang: '',
+          qixian_input: '',
+          meijitian_number: '',
+          gongzuori: '',
+          jutiri: '',
+          jiyuefen: '',
+          jutiri_nian: '',
+          riqi_nian: '',
+          tianshu: ''
+      },
+      formDisabled: {
+          xunHuanLiang: true,
+          meijitian_number: true,
+          gongzuori: true,
+          jutiri: false,
+          jiyuefen: false,
+          jutiri_nian: false,
+          riqi_nian: false,
+          tianshu: false
+      },
+      spaceRrules: {
+          xunHuanLiang: [
+              { required: true, message: '请选择', trigger: 'change' }
+          ],
+          qixian_input: [
+              { required: true, message: '请输入', trigger: 'blur' },
+          ],
+          meijitian_number: [
+              { required: true, message: '请输入', trigger: 'blur' },
+          ],
+          gongzuori: [
+              { required: true, message: '请选择', trigger: 'change' }
+          ],
+          jutiri: [
+              { required: true, message: '请选择', trigger: 'change' }
+          ],
+          jiyuefen: [
+              { required: true, message: '请选择', trigger: 'change' }
+          ],
+          jutiri_nian: [
+              { required: true, message: '请选择', trigger: 'change' }
+          ],
+          riqi_nian: [
+              { required: true, message: '请输入', trigger: 'blur' },
+          ],
+          tianshu: [
+              { required: true, message: '请输入', trigger: 'blur' },
+          ],
+      },
+      spaceFormLabelWidth: '100px',
+
       checkIndex: 0,
       selectStatu: false,
       cascaderData: []
@@ -23,7 +143,7 @@ let itemHandle = {
         }
       }
       if (this.widget.type === 'frequency') {
-        this.frequencyVisible = true
+        this.pingLuConfigPopVisible = true
       }
       if (this.widget.type === 'date' && this.widget.options.editable) {
         // this.dateShow()
@@ -256,7 +376,187 @@ let itemHandle = {
         checks[this.checkIndex].focus()
         break
       }
-    }
+    },
+      
+    //间隔周期
+    spaceTypeFun(val){
+      if(val){
+          this.widget.options.spaceType = val
+          this.pingLuConfigPopVisible = true
+      }else{
+          this.widget.options.spaceType = ""
+          this.pingLuConfigPopVisible = false
+      }
+    },
+    showObj(targetList) {
+      targetList.forEach((item) => {
+          this.formDisabled[item] = true
+      })
+    },
+    displayObj(targetList) {
+      targetList.forEach((item) => {
+          this.spaceForm[item] = ""
+          this.formDisabled[item] = false
+      })
+    },
+    xunHuanLiangChange(event) {
+      var _this = this
+      var xunHuanLiangObjTemp = _this.xunHuanLiangObj.find(item => item.value === this.spaceForm.xunHuanLiang)
+      xunHuanLiangObjTemp ? _this.xunHuanDanwei = xunHuanLiangObjTemp.label : ""
+    
+      if(this.spaceForm.xunHuanLiang){
+          var xunhuangliang = this.spaceForm.xunHuanLiang
+          if (xunhuangliang == "D") {
+              _this.showObj(["meijitian","gongzuori"])
+              _this.displayObj(["jutiri","jiyuefen","jutiri_nian","riqi_nian"])
+          } else if (xunhuangliang == "W") {
+              _this.showObj(["meijitian","gongzuori","jutiri"])
+              _this.displayObj(["jiyuefen","jutiri_nian","riqi_nian"])
+          } else if (xunhuangliang == "S") {
+              _this.showObj(["meijitian","gongzuori","jutiri"])
+              _this.displayObj(["jiyuefen","jutiri_nian","riqi_nian"])
+          } else if (xunhuangliang == "M") {
+              _this.showObj(["meijitian","gongzuori","jutiri"])
+              _this.displayObj(["jiyuefen","jutiri_nian","riqi_nian"])
+          } else if (xunhuangliang == "Q") {
+              _this.showObj(["meijitian","gongzuori","jutiri","jiyuefen"])
+              _this.displayObj(["jutiri_nian","riqi_nian"])
+          } else if (xunhuangliang == "Y") {
+              _this.showObj(["meijitian","gongzuori","jutiri_nian"])
+              _this.displayObj(["jutiri","jiyuefen","riqi_nian"])
+          }
+      }
+    },
+    jutiriChange(){
+      if (this.spaceForm.jutiri == "D") {
+          this.showObj(["tianshu"])
+      } else {
+          this.displayObj(["tianshu"])
+      }
+    },
+    jutiri_nianChange(){
+      if (this.spaceForm.jutiri_nian == "R") {
+          this.showObj(["riqi_nian"])
+      } else {
+          this.displayObj(["riqi_nian"])
+      }
+    },
+    getXunHuanLiang_zhouqi() {
+      var dygx = ["月", "季", "年"];
+      var xunHuanLiangs = document.getElementsByName("xunHuanLiang");
+      for (var i in xunHuanLiangs) {
+          if (xunHuanLiangs[i].checked == true) {
+              console.log(xunHuanLiangs[i].value);
+              var lableText = document.getElementById("xunHuanDanwei").innerHTML = dygx[i];
+              console.log(lableText);
+              this.displayHTML(xunHuanLiangs[i].value);
+          }
+      }
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+          if (valid) {
+              var finalValue = "";
+              var xunhuangliang = this.spaceForm.xunHuanLiang;
+              if(this.widget.options.spaceType == "qiXianConfigPop"){
+                  finalValue = this.spaceForm.qixian_input + xunhuangliang
+              }else{
+                  // 间隔
+                  finalValue = finalValue + this.spaceForm.meijitian_number
+    
+                  if (xunhuangliang == "D") {// 天
+                      // 循环量
+                      finalValue = finalValue + "D";
+                      // 工作日选项
+                      finalValue = finalValue + this.spaceForm.gongzuori
+                  }
+                  if (xunhuangliang == "W") {// 周
+                      // 循环量
+                      finalValue = finalValue + "W";
+                      // 工作日选项
+                      finalValue = finalValue + this.spaceForm.gongzuori
+                      // 具体日
+                      if (this.spaceForm.jutiri == "D") { // 如果选择具体日为
+                          // D-天数
+                          finalValue = finalValue + this.spaceForm.tianshu
+                      } else {
+                          finalValue = finalValue + this.spaceForm.jutiri
+                      }
+                  }
+                  if (xunhuangliang == "S") {// 旬
+                      // 循环量
+                      finalValue = finalValue + "S";
+                      // 工作日选项
+                      finalValue = finalValue + this.spaceForm.gongzuori
+                      // 具体日
+                      if (this.spaceForm.jutiri == "D") { // 如果选择具体日为
+                          // D-天数
+                          finalValue = finalValue + this.spaceForm.tianshu;
+                      } else {
+                          finalValue = finalValue + this.spaceForm.jutiri;
+                      }
+                  }
+                  if (xunhuangliang == "M") {// 月
+                      // 循环量
+                      finalValue = finalValue + "M";
+                      // 工作日选项
+                      finalValue = finalValue + this.spaceForm.gongzuori
+                      // 具体日
+                      if (this.spaceForm.jutiri == "D") { // 如果选择具体日为
+                          // D-天数
+                          finalValue = finalValue + this.spaceForm.tianshu;
+                      } else {
+                          finalValue = finalValue + this.spaceForm.jutiri;
+                      }
+                  }
+                  if (xunhuangliang == "Q") {// 季
+                      // 循环量
+                      finalValue = finalValue + "Q";
+                      // 工作日选项
+                      finalValue = finalValue + this.spaceForm.gongzuori
+                      // 具体日
+                      if (this.spaceForm.jutiri == "D") { // 如果选择具体日为
+                          // D-天数
+                          finalValue = finalValue + this.spaceForm.tianshu;
+                      } else {
+                          finalValue = finalValue + this.spaceForm.jutiri;
+                      }
+                      // 季月份
+                      finalValue = finalValue + this.spaceForm.jiyuefen
+                  }
+                  if (xunhuangliang == "Y") {// 年
+                      // 循环量
+                      finalValue = finalValue + "Y";
+                      // 工作日选项
+                      finalValue = finalValue + this.spaceForm.gongzuori
+                      // 具体日
+                      finalValue = finalValue + this.spaceForm.jutiri_nian
+                      // 日期
+                      var temp = this.spaceForm.riqi_nian;
+                      temp = temp.replace(/-/g, "");
+                      finalValue = finalValue + temp;
+                  }
+              }
+              this.dataModel = finalValue
+              this.pingLuConfigPopVisible = false
+          } else {
+              console.log('error submit!!');
+          }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+      this.formDisabled = {
+          xunHuanLiang: true,
+          meijitian_number: true,
+          gongzuori: true,
+          jutiri: false,
+          jiyuefen: false,
+          jutiri_nian: false,
+          riqi_nian: false,
+          tianshu: false
+      }
+    },
   }
 }
 export default itemHandle

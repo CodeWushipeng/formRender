@@ -126,6 +126,15 @@
         </div>
       </el-form-item>
 
+        <el-form-item v-if="data.type=='frequency'">
+            {{$t('fm.config.widget.spaceType')}}
+            <el-select v-model="data.options.spaceType">
+                <el-option value='pingLuConfigPop' :label="$t('fm.config.widget.pingLuConfigPop')"></el-option>
+                <el-option value='qiXianConfigPop' :label="$t('fm.config.widget.qiXianConfigPop')"></el-option>
+                <el-option value='pingLuConfigPop_zhouqi' :label="$t('fm.config.widget.pingLuConfigPop_zhouqi')"></el-option>
+            </el-select>
+        </el-form-item>
+
       <!--按钮相关属性-->
       <el-form-item v-if="data.type=='buttonCom' | data.type=='alink'">
         {{$t('fm.config.widget.buttontext')}}
@@ -143,7 +152,9 @@
           placeholder="调用函数"
         ></el-input>
         {{$t('fm.config.widget.funname')}}
-        <el-input v-model="data.options.funname"></el-input>
+        <el-input v-model="data.options.funname" placeholder="调用方法名"></el-input>
+        {{$t('fm.config.widget.buttonurl')}}
+        <el-input v-model="data.options.buttonurl" placeholder="调用url"></el-input>
       </el-form-item>
 
       <!--密码相关属性-->

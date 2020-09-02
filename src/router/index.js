@@ -11,7 +11,6 @@ import testSelect from "../demo/copyComponents/test-select";
 import testDate from "../demo/copyComponents/test-date";
 import testUntil from "../demo/testUntil/index";
 import nofound from "../demo/testUntil/404";
-//import image from "../demo/image";
 
 Vue.use(Router);
 
@@ -76,11 +75,6 @@ export default new Router({
           hidden: true
         },
         {path: '*', redirect: '/404', hidden: true}
-        /*{
-            path: 'image',
-            name: 'image',
-            component: image
-        },*/
       ]
     }
   ]
