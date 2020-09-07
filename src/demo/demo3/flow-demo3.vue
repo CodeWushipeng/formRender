@@ -5,7 +5,6 @@
       flowType:{{flowType}}
       <!--btnIndex:{{btnIndex}} <br>-->
       <!--Rank_BTNS:{{displayBtn()}} <br>-->
-      <!--<el-input v-model="btnIndex" disabled></el-input>-->
     </div>
     <!--{{leftCol}} <br>-->
     <!--{{rightCol}} <br>-->
@@ -124,8 +123,8 @@
     methods: {
 
       initflow() {
-        // const flowCode = this.$route.name;
         const query = this.$route.query;
+        // const flowCode = this.$route.name;
         // console.log("this.$routes.name:", this.$route.name);
         // console.log("this.$routes.query:", this.$route.query);
         let params = {
@@ -521,6 +520,4 @@
       overflow: hidden;
     }
   }
-
-
 </style>
