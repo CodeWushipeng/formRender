@@ -848,13 +848,13 @@ let handlers = {
         this.remoteValidate(this.outMark)
         this.setBlur(this.allItems[this.outMark])
         // this.$emit("isEnd", true);
-        
+
         if (document.getElementById('flowButtons')) {
           this.btnsAddEvents()
           this.filterFirstBtnIndex()
           this.focusCurrentBtn()
         }
-        
+
       }
     },
     filterFirstBtnIndex() {
@@ -864,17 +864,17 @@ let handlers = {
       this.btnFocusIndex = index
     },
 
+    calls(e){
+      let e1 = e || event || window.event // || arguments.callee.caller.arguments[0];
+      console.log('e1.keyCode', e1.keyCode);
+      const key = e1.keyCode;
+      this.calBtnIndex(key);
+      this.focusCurrentBtn();
+    },
     btnsAddEvents() {
-      const $flowButtons = document.getElementById('flowButtons')
-      $flowButtons.addEventListener('keyup', e => {
-        // debugger
-        let e1 = e || event || window.event // || arguments.callee.caller.arguments[0];
-        console.log('e1.keyCode', e1.keyCode)
-        const key = e1.keyCode
-
-        this.calBtnIndex(key)
-        this.focusCurrentBtn()
-      })
+      const $flowButtons = document.getElementById('flowButtons');
+      $flowButtons.removeEventListener('keyup', this.calls);
+      $flowButtons.addEventListener('keyup', this.calls);
     },
 
     focusCurrentBtn() {
