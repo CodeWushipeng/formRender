@@ -293,7 +293,7 @@ export default {
         },
         key,
         // 绑定键值
-        model: "object",
+        model,
         tableName:'',
         tableCode:'',
         rules: [],
