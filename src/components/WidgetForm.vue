@@ -125,7 +125,7 @@ export default {
             ...item.options,
           },
           key,
-          model: "object",
+          model: item.model?item.model: "object",
           tableName:'',
           tableCode:'',
           rules: [],
@@ -219,7 +219,7 @@ export default {
         },
         key,
         // 绑定键值
-        model: "object",
+        model: this.data.list[newIndex].model?this.data.list[newIndex].model: "object",
         tableName:'',
         tableCode:'',
         rules: [],
@@ -293,7 +293,7 @@ export default {
         },
         key,
         // 绑定键值
-        model,
+        model:row.columns[colIndex].list[newIndex].model?row.columns[colIndex].list[newIndex].model: "object",
         tableName:'',
         tableCode:'',
         rules: [],
