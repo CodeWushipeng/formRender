@@ -12,7 +12,6 @@
         <el-input
           size="mini"
           v-model="data.remoteCode"
-          readonly="readonly"
           @focus="getData(data.remoteCode)"
         ></el-input>
         <el-dialog
