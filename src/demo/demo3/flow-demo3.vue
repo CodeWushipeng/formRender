@@ -384,6 +384,10 @@
           // 执行节点
           nodePromise.then(data => {
             console.log("res", data);
+            if(!commitType){
+              alert("提交失败，当前节点没有设置提交类型");
+              return
+            }
             // 提交类型
             if (commitType == FG.COMMIT_DEFAULT) {
               //  通信提交
