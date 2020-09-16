@@ -166,7 +166,7 @@ export const bankingComponents = [
       hidden: false,
       maxlength: 20,
       width: "100%",
-      defaultValue: '',
+      defaultValue: "",
       required: false,
       dataType: "",
       amountmoney: true,
@@ -327,209 +327,276 @@ export const bankingComponents = [
     options: {
       hidden: false,
       width: "100%",
+      maxlength: "",
+      wordLimit: false,
+      clearable: false,
       defaultValue: "",
       required: false,
       dataType: "text",
-      decimal: "",
+      dataTypeCheck: false,
+      dataTypeMessage: "",
+      integerbits: 1,
+      decimalbits: 0,
       pattern: "",
+      patternCheck: false,
+      patternMessage: "",
       placeholder: "",
       disabled: false,
       labelWidth: 100,
       isLabelWidth: false,
+      showPassword: false,
       tips: "",
     },
-    hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    enterCondition: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn null\n"
-    +"}",
-    condition:"function main (models,utils,message,i)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
-    +"\tif(false){message('error','错误提示信息',i)}\n"
-    +"\treturn true\n"
-    +"}",
+    hidden:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n" +
+      "\treturn null\n" +
+      "}",
+    enterCondition:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn null\n" +
+      "}",
+    condition:
+      "function main (models,utils,message,i)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n" +
+      "\tif(false){message('error','错误提示信息',i)}\n" +
+      "\treturn true\n" +
+      "}",
     valueRange: "",
-    assignment:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"}",
-    isRemote: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    url:"",
-    data:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
-    success: "function main (models,res,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
+    assignment:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "}",
+    isRemote:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn false\n" +
+      "}",
+    url: "",
+    data:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn {}\n" +
+      "}",
+    success:
+      "function main (models,res,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n" +
+      "\treturn {}\n" +
+      "}",
     multiToggle: false,
-    multiCondition: "function main (models,utils,request)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
-    +"\t//post请求示例\n"
-    +"\trequest.post(url,{data:123})\n"
-    +"\t.then(res=>{\n"
-    +"\t\tconsole.log(res)\n"
-    +"\t\trequest.post(url,{data:res.test})\n"
-    +"\t\t.then(response =>{console.log(response)})\n"
-    +"\t\t.catch(error=>{console.log(error)})\n"
-    +"\t})\n"
-    +"\t.catch(error=>{console.log(error)})\n"
-    +"}",
-    tableKey: '',
-    tableModel: '',
+    multiCondition:
+      "function main (models,utils,request)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数 request为axios对象\n" +
+      "\t//post请求示例\n" +
+      "\trequest.post(url,{data:123})\n" +
+      "\t.then(res=>{\n" +
+      "\t\tconsole.log(res)\n" +
+      "\t\trequest.post(url,{data:res.test})\n" +
+      "\t\t.then(response =>{console.log(response)})\n" +
+      "\t\t.catch(error=>{console.log(error)})\n" +
+      "\t})\n" +
+      "\t.catch(error=>{console.log(error)})\n" +
+      "}",
+    tableKey: "",
+    tableModel: "",
+    tableCode: "",
   },
   {
-    type: "textarea",
-    icon: "icon-diy-com-textarea",
+    type: 'textarea',
+    icon: 'icon-diy-com-textarea',
     options: {
       hidden: false,
-      width: "100%",
-      defaultValue: "",
+      width: '100%',
+      defaultValue: '',
       required: false,
       disabled: false,
-      pattern: "",
-      placeholder: "",
+      pattern: '',
+      placeholder: '',
       labelWidth: 100,
       isLabelWidth: false,
-      tips: "",
+      tips: '',
     },
-    hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    enterCondition: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn null\n"
-    +"}",
-    condition:"function main (models,utils,message,i)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
-    +"\tif(false){message('error','错误提示信息',i)}\n"
-    +"\treturn true\n"
-    +"}",
-    valueRange: "",
-    assignment:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"}",
-    isRemote: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    url:"",
-    data:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
-    success: "function main (models,res,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
+    hidden:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n' +
+      '\treturn null\n' +
+      '}',
+    enterCondition:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn null\n' +
+      '}',
+    condition:
+      'function main (models,utils,message,i)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n' +
+      "\tif(false){message('error','错误提示信息',i)}\n" +
+      '\treturn true\n' +
+      '}',
+    valueRange: '',
+    assignment:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '}',
+    isRemote:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn false\n' +
+      '}',
+    url: '',
+    data:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
+    success:
+      'function main (models,res,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
     multiToggle: false,
-    multiCondition: "function main (models,utils,request)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
-    +"\t//post请求示例\n"
-    +"\trequest.post(url,{data:123})\n"
-    +"\t.then(res=>{\n"
-    +"\t\tconsole.log(res)\n"
-    +"\t\trequest.post(url,{data:res.test})\n"
-    +"\t\t.then(response =>{console.log(response)})\n"
-    +"\t\t.catch(error=>{console.log(error)})\n"
-    +"\t})\n"
-    +"\t.catch(error=>{console.log(error)})\n"
-    +"}",
+    multiCondition:
+      'function main (models,utils,request)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 request为axios对象\n' +
+      '\t//post请求示例\n' +
+      '\trequest.post(url,{data:123})\n' +
+      '\t.then(res=>{\n' +
+      '\t\tconsole.log(res)\n' +
+      '\t\trequest.post(url,{data:res.test})\n' +
+      '\t\t.then(response =>{console.log(response)})\n' +
+      '\t\t.catch(error=>{console.log(error)})\n' +
+      '\t})\n' +
+      '\t.catch(error=>{console.log(error)})\n' +
+      '}',
     tableKey: '',
     tableModel: '',
+    tableCode: '',
   },
   {
-    type: "radio",
-    icon: "icon-radio-active",
+    type: 'radio',
+    icon: 'icon-radio-active',
     options: {
       hidden: false,
       inline: false,
-      defaultValue: "",
+      defaultValue: '',
       showLabel: false,
       labelWidth: 100,
       isLabelWidth: false,
       options: [
         {
-          value: "Option 1",
-          label: "Option 1",
+          value: 'Option 1',
+          label: 'Option 1',
         },
         {
-          value: "Option 2",
-          label: "Option 2",
+          value: 'Option 2',
+          label: 'Option 2',
         },
         {
-          value: "Option 3",
-          label: "Option 3",
+          value: 'Option 3',
+          label: 'Option 3',
         },
       ],
       required: false,
-      width: "",
+      width: '',
       remote: false,
       remoteOptions: [],
       props: {
-        value: "value",
-        label: "label",
+        value: 'value',
+        label: 'label',
       },
-      remoteFunc: "",
+      remoteFunc: `function main (request){
+      	//request为axios对象
+      	//post请求示例
+      	request.post(url,{data:123})
+      	.then(res=>{
+          console.log(res)
+          return res
+      	})
+      	.catch(error=>{console.log(error)})
+      }`,
       disabled: false,
-      tips: "",
     },
-    hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    enterCondition: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn null\n"
-    +"}",
-    condition:"function main (models,utils,message,i)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
-    +"\tif(false){message('error','错误提示信息',i)}\n"
-    +"\treturn true\n"
-    +"}",
-    valueRange: "",
-    assignment:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"}",
-    isRemote: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    url:"",
-    data:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
-    success: "function main (models,res,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
+    hidden:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n' +
+      '\treturn null\n' +
+      '}',
+    enterCondition:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn null\n' +
+      '}',
+    condition:
+      'function main (models,utils,message,i)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n' +
+      "\tif(false){message('error','错误提示信息',i)}\n" +
+      '\treturn true\n' +
+      '}',
+    valueRange: '',
+    assignment:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '}',
+    isRemote:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn false\n' +
+      '}',
+    url: '',
+    data:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
+    success:
+      'function main (models,res,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
     multiToggle: false,
-    multiCondition: "function main (models,utils,request)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
-    +"\t//post请求示例\n"
-    +"\trequest.post(url,{data:123})\n"
-    +"\t.then(res=>{\n"
-    +"\t\tconsole.log(res)\n"
-    +"\t\trequest.post(url,{data:res.test})\n"
-    +"\t\t.then(response =>{console.log(response)})\n"
-    +"\t\t.catch(error=>{console.log(error)})\n"
-    +"\t})\n"
-    +"\t.catch(error=>{console.log(error)})\n"
-    +"}",
+    multiCondition:
+      'function main (models,utils,request)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 request为axios对象\n' +
+      '\t//post请求示例\n' +
+      '\trequest.post(url,{data:123})\n' +
+      '\t.then(res=>{\n' +
+      '\t\tconsole.log(res)\n' +
+      '\t\trequest.post(url,{data:res.test})\n' +
+      '\t\t.then(response =>{console.log(response)})\n' +
+      '\t\t.catch(error=>{console.log(error)})\n' +
+      '\t})\n' +
+      '\t.catch(error=>{console.log(error)})\n' +
+      '}',
     tableKey: '',
-    tableModel: '',
+    tableCode: '',
   },
   {
-    type: "checkbox",
-    icon: "icon-check-box",
+    type: 'checkbox',
+    icon: 'icon-check-box',
     options: {
       hidden: false,
       inline: false,
@@ -539,296 +606,386 @@ export const bankingComponents = [
       isLabelWidth: false,
       options: [
         {
-          value: "Option 1",
+          value: 'Option 1',
         },
         {
-          value: "Option 2",
+          value: 'Option 2',
         },
         {
-          value: "Option 3",
+          value: 'Option 3',
         },
       ],
       required: false,
-      width: "",
+      width: '',
       remote: false,
       remoteOptions: [],
       props: {
-        value: "value",
-        label: "label",
+        value: 'value',
+        label: 'label',
       },
-      remoteFunc: "",
+      remoteFunc: `function main (request){
+      	//request为axios对象
+      	//post请求示例
+      	request.post(url,{data:123})
+      	.then(res=>{
+          console.log(res)
+          return res
+      	})
+      	.catch(error=>{console.log(error)})
+      }`,
       disabled: false,
-      tips: "",
     },
-    hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    enterCondition: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn null\n"
-    +"}",
-    condition:"function main (models,utils,message,i)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
-    +"\tif(false){message('error','错误提示信息',i)}\n"
-    +"\treturn true\n"
-    +"}",
-    valueRange: "",
-    assignment:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"}",
-    isRemote: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    url:"",
-    data:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
-    success: "function main (models,res,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
+    hidden:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n' +
+      '\treturn null\n' +
+      '}',
+    enterCondition:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn null\n' +
+      '}',
+    condition:
+      'function main (models,utils,message,i)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n' +
+      "\tif(false){message('error','错误提示信息',i)}\n" +
+      '\treturn true\n' +
+      '}',
+    valueRange: '',
+    assignment:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '}',
+    isRemote:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn false\n' +
+      '}',
+    url: '',
+    data:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
+    success:
+      'function main (models,res,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
     multiToggle: false,
-    multiCondition: "function main (models,utils,request)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
-    +"\t//post请求示例\n"
-    +"\trequest.post(url,{data:123})\n"
-    +"\t.then(res=>{\n"
-    +"\t\tconsole.log(res)\n"
-    +"\t\trequest.post(url,{data:res.test})\n"
-    +"\t\t.then(response =>{console.log(response)})\n"
-    +"\t\t.catch(error=>{console.log(error)})\n"
-    +"\t})\n"
-    +"\t.catch(error=>{console.log(error)})\n"
-    +"}",
+    multiCondition:
+      'function main (models,utils,request)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 request为axios对象\n' +
+      '\t//post请求示例\n' +
+      '\trequest.post(url,{data:123})\n' +
+      '\t.then(res=>{\n' +
+      '\t\tconsole.log(res)\n' +
+      '\t\trequest.post(url,{data:res.test})\n' +
+      '\t\t.then(response =>{console.log(response)})\n' +
+      '\t\t.catch(error=>{console.log(error)})\n' +
+      '\t})\n' +
+      '\t.catch(error=>{console.log(error)})\n' +
+      '}',
     tableKey: '',
-    tableModel: '',
+    tableCode: '',
   },
   {
-    type: "time",
-    icon: "icon-time",
+    type: 'time',
+    icon: 'icon-time',
     options: {
       hidden: false,
-      defaultValue: "21:19:56",
+      defaultValue: '21:19:56',
       readonly: false,
       disabled: false,
-      editable: true,
+      editable: false,
       clearable: true,
-      placeholder: "",
-      startPlaceholder: "",
-      endPlaceholder: "",
+      placeholder: '',
+      startPlaceholder: '',
+      endPlaceholder: '',
       isRange: false,
+      arrowControl: true,
+      format: 'HH:mm:ss',
+      required: false,
+      width: '',
       labelWidth: 100,
       isLabelWidth: false,
-      arrowControl: true,
-      format: "HH:mm:ss",
-      required: false,
-      width: "",
-      tips: "",
     },
-    hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    enterCondition: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn null\n"
-    +"}",
-    condition:"function main (models,utils,message,i)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
-    +"\tif(false){message('error','错误提示信息',i)}\n"
-    +"\treturn true\n"
-    +"}",
-    valueRange: "",
-    assignment:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"}",
-    isRemote: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    url:"",
-    data:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
-    success: "function main (models,res,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
+    hidden:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n' +
+      '\treturn null\n' +
+      '}',
+    enterCondition:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn null\n' +
+      '}',
+    condition:
+      'function main (models,utils,message,i)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n' +
+      "\tif(false){message('error','错误提示信息',i)}\n" +
+      '\treturn true\n' +
+      '}',
+    valueRange: '',
+    assignment:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '}',
+    isRemote:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn false\n' +
+      '}',
+    url: '',
+    data:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
+    success:
+      'function main (models,res,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
     multiToggle: false,
-    multiCondition: "function main (models,utils,request)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
-    +"\t//post请求示例\n"
-    +"\trequest.post(url,{data:123})\n"
-    +"\t.then(res=>{\n"
-    +"\t\tconsole.log(res)\n"
-    +"\t\trequest.post(url,{data:res.test})\n"
-    +"\t\t.then(response =>{console.log(response)})\n"
-    +"\t\t.catch(error=>{console.log(error)})\n"
-    +"\t})\n"
-    +"\t.catch(error=>{console.log(error)})\n"
-    +"}",
+    multiCondition:
+      'function main (models,utils,request)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 request为axios对象\n' +
+      '\t//post请求示例\n' +
+      '\trequest.post(url,{data:123})\n' +
+      '\t.then(res=>{\n' +
+      '\t\tconsole.log(res)\n' +
+      '\t\trequest.post(url,{data:res.test})\n' +
+      '\t\t.then(response =>{console.log(response)})\n' +
+      '\t\t.catch(error=>{console.log(error)})\n' +
+      '\t})\n' +
+      '\t.catch(error=>{console.log(error)})\n' +
+      '}',
     tableKey: '',
-    tableModel: '',
+    tableCode: '',
   },
   {
-    type: "date",
-    icon: "icon-date",
+    type: 'date',
+    icon: 'icon-date',
     options: {
       hidden: false,
-      defaultValue: "",
+      defaultValue: '',
       readonly: false,
       disabled: false,
-      editable: true,
+      editable: false,
       clearable: true,
-      placeholder: "",
-      startPlaceholder: "",
-      endPlaceholder: "",
-      type: "date",
-      format: "yyyy-MM-dd",
+      placeholder: '',
+      startPlaceholder: '',
+      endPlaceholder: '',
+      type: 'date',
+      format: 'yyyy-MM-dd',
       timestamp: false,
       required: false,
-      width: "",
+      width: '',
       labelWidth: 100,
       isLabelWidth: false,
-      tips: "",
     },
-    hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    enterCondition: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn null\n"
-    +"}",
-    condition:"function main (models,utils,message,i)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
-    +"\tif(false){message('error','错误提示信息',i)}\n"
-    +"\treturn true\n"
-    +"}",
-    valueRange: "",
-    assignment:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"}",
-    isRemote: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    url:"",
-    data:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
-    success: "function main (models,res,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
+    hidden:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n' +
+      '\treturn null\n' +
+      '}',
+    enterCondition:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn null\n' +
+      '}',
+    condition:
+      'function main (models,utils,message,i)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n' +
+      "\tif(false){message('error','错误提示信息',i)}\n" +
+      '\treturn true\n' +
+      '}',
+    valueRange: '',
+    assignment:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '}',
+    isRemote:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn false\n' +
+      '}',
+    url: '',
+    data:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
+    success:
+      'function main (models,res,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
     multiToggle: false,
-    multiCondition: "function main (models,utils,request)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
-    +"\t//post请求示例\n"
-    +"\trequest.post(url,{data:123})\n"
-    +"\t.then(res=>{\n"
-    +"\t\tconsole.log(res)\n"
-    +"\t\trequest.post(url,{data:res.test})\n"
-    +"\t\t.then(response =>{console.log(response)})\n"
-    +"\t\t.catch(error=>{console.log(error)})\n"
-    +"\t})\n"
-    +"\t.catch(error=>{console.log(error)})\n"
-    +"}",
+    multiCondition:
+      'function main (models,utils,request)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 request为axios对象\n' +
+      '\t//post请求示例\n' +
+      '\trequest.post(url,{data:123})\n' +
+      '\t.then(res=>{\n' +
+      '\t\tconsole.log(res)\n' +
+      '\t\trequest.post(url,{data:res.test})\n' +
+      '\t\t.then(response =>{console.log(response)})\n' +
+      '\t\t.catch(error=>{console.log(error)})\n' +
+      '\t})\n' +
+      '\t.catch(error=>{console.log(error)})\n' +
+      '}',
     tableKey: '',
-    tableModel: '',
+    tableCode: '',
   },
   {
-    type: "select",
-    icon: "icon-select",
+    type: 'select',
+    icon: 'icon-select',
     options: {
       hidden: false,
-      defaultValue: "",
+      defaultValue: '',
       multiple: false,
       disabled: false,
       clearable: false,
-      placeholder: "",
+      placeholder: '',
       required: false,
       showLabel: false,
       labelWidth: 100,
       isLabelWidth: false,
-      width: "",
+      width: '',
       options: [
         {
-          value: "value 1",
-          label: "label 1",
-          isCheck: false,
+          value: 'Option 1',
         },
         {
-          value: "value 2",
-          label: "label 2",
-          isCheck: false,
+          value: 'Option 2',
         },
         {
-          value: "value 3",
-          label: "label 3",
-          isCheck: false,
+          value: 'Option 3',
         },
       ],
       remote: false,
       filterable: false,
       remoteOptions: [],
       props: {
-        value: "value",
-        label: "label",
+        value: 'value',
+        label: 'label',
       },
-      remoteFunc: "",
-      tips: "",
+
+      remoteFunc: `function main (request){
+      	//request为axios对象
+      	//post请求示例
+      	request.post(url,{data:123})
+      	.then(res=>{
+          console.log(res)
+          //将需要赋值给组件的数组或者列表数据返回
+          return res.body.list
+      	})
+      	.catch(error=>{console.log(error)})
+      }`,
     },
-    hidden:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    enterCondition: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn null\n"
-    +"}",
-    condition:"function main (models,utils,message,i)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n"
-    +"\tif(false){message('error','错误提示信息',i)}\n"
-    +"\treturn true\n"
-    +"}",
-    valueRange: "",
-    assignment:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"}",
-    isRemote: "function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn false\n"
-    +"}",
-    url:"",
-    data:"function main (models,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
-    success: "function main (models,res,utils)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数\n"
-    +"\treturn {}\n"
-    +"}",
+    isCascader: false,
+    cascaderUrl: '',
+    fatherModel: '',
+    requestData:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 返回请求的JSON数据\n' +
+      '\treturn {}\n' +
+      '}',
+    responseData:
+      'function main (models,res,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
+    hidden:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n' +
+      '\treturn null\n' +
+      '}',
+    remoteCode: '',
+    enterCondition:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn null\n' +
+      '}',
+    condition:
+      'function main (models,utils,message,i)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n' +
+      "\tif(false){message('error','错误提示信息',i)}\n" +
+      '\treturn true\n' +
+      '}',
+    valueRange: '',
+    assignment:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '}',
+    isRemote:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn false\n' +
+      '}',
+    url: '',
+    data:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
+    success:
+      'function main (models,res,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model res为请求返回数据 utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
     multiToggle: false,
-    multiCondition: "function main (models,utils,request)"+"{\n"
-    +"\t//models为当前表单所有model utils为扩展函数 request为axios对象\n"
-    +"\t//post请求示例\n"
-    +"\trequest.post(url,{data:123})\n"
-    +"\t.then(res=>{\n"
-    +"\t\tconsole.log(res)\n"
-    +"\t\trequest.post(url,{data:res.test})\n"
-    +"\t\t.then(response =>{console.log(response)})\n"
-    +"\t\t.catch(error=>{console.log(error)})\n"
-    +"\t})\n"
-    +"\t.catch(error=>{console.log(error)})\n"
-    +"}",
+    multiCondition:
+      'function main (models,utils,request)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 request为axios对象\n' +
+      '\t//post请求示例\n' +
+      '\trequest.post(url,{data:123})\n' +
+      '\t.then(res=>{\n' +
+      '\t\tconsole.log(res)\n' +
+      '\t\trequest.post(url,{data:res.test})\n' +
+      '\t\t.then(response =>{console.log(response)})\n' +
+      '\t\t.catch(error=>{console.log(error)})\n' +
+      '\t})\n' +
+      '\t.catch(error=>{console.log(error)})\n' +
+      '}',
     tableKey: '',
-    tableModel: '',
+    tableCode: '',
   },
   {
     type: "idencard",
@@ -1462,70 +1619,70 @@ export const bankingComponents = [
     tableModel: "",
   },
   {
-      type: "frequency",
-      icon: "icon-input",
-      options: {
-          hidden: false,
-          width: "100%",
-          defaultValue: "",
-          required: false,
-          integerbits: 17,
-          decimalbits: 3,
-          dataType: "string",
-          pattern: "",
-          spaceType:'pingLuConfigPop',
-          placeholder: "",
-          disabled: false,
-          labelWidth: 100,
-          isLabelWidth: false,
-          tips: "",
-      },
-      hidden:
+    type: "frequency",
+    icon: "icon-input",
+    options: {
+      hidden: false,
+      width: "100%",
+      defaultValue: "",
+      required: false,
+      integerbits: 17,
+      decimalbits: 3,
+      dataType: "string",
+      pattern: "",
+      spaceType: "pingLuConfigPop",
+      placeholder: "",
+      disabled: false,
+      labelWidth: 100,
+      isLabelWidth: false,
+      tips: "",
+    },
+    hidden:
       "function main (models,utils)" +
       "{\n" +
       "\t//models为当前表单所有model utils为扩展函数\n" +
       "\treturn false\n" +
       "}",
-      enterCondition:
+    enterCondition:
       "function main (models,utils)" +
       "{\n" +
       "\t//models为当前表单所有model utils为扩展函数\n" +
       "\treturn null\n" +
       "}",
-      condition:
+    condition:
       "function main (models,utils,message,i)" +
       "{\n" +
       "\t//models为当前表单所有model utils为扩展函数 message为验证错误的提示函数,i为传入cb的当前组件下标\n" +
       "\tif(false){message('error','错误提示信息',i)}\n" +
       "\treturn true\n" +
       "}",
-      valueRange: "",
-      assignment:
+    valueRange: "",
+    assignment:
       "function main (models,utils)" +
       "{\n" +
       "\t//models为当前表单所有model utils为扩展函数\n" +
       "}",
-      isRemote:
+    isRemote:
       "function main (models,utils)" +
       "{\n" +
       "\t//models为当前表单所有model utils为扩展函数\n" +
       "\treturn false\n" +
       "}",
-      url: "",
-      data:
+    url: "",
+    data:
       "function main (models,utils)" +
       "{\n" +
       "\t//models为当前表单所有model utils为扩展函数\n" +
       "\treturn {}\n" +
       "}",
-      success:
+    success:
       "function main (models,res,utils)" +
       "{\n" +
       "\t//models为当前表单所有model utils为扩展函数\n" +
       "\treturn {}\n" +
       "}",
-      multiToggle: false,
-      multiCondition:
+    multiToggle: false,
+    multiCondition:
       "function main (models,utils,request)" +
       "{\n" +
       "\t//models为当前表单所有model utils为扩展函数 request为axios对象\n" +
@@ -1539,7 +1696,7 @@ export const bankingComponents = [
       "\t})\n" +
       "\t.catch(error=>{console.log(error)})\n" +
       "}",
-      tableKey: "",
-      tableModel: "",
+    tableKey: "",
+    tableModel: "",
   },
 ];
