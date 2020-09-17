@@ -28,6 +28,9 @@
             :ref="widget.key"
             v-model="dataModel"
             type="text"
+            :disabled="widget.options.disabled"
+            :placeholder="widget.options.placeholder"
+            :style="{ width: widget.options.width }"
           />
 
           <transition name="fade">
