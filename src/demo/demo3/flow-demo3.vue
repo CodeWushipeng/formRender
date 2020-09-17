@@ -304,8 +304,8 @@
         // 执行
         if (findNextNode) {
           const nodeData = FG.getNodeData(findNextNode)
-          const {type} = nodeData;
-          if(type == FG.END && this.flowType == "01"){
+          const {type,commitType} = nodeData;
+          if((type == FG.END || commitType == FG.COMMIT_ORDER) && this.flowType == "01"){
             // 订单提交
             this.$refs.flowDialog.show();
           }else{
@@ -384,6 +384,10 @@
           // 执行节点
           nodePromise.then(data => {
             console.log("res", data);
+            if(!commitType){
+              alert("提交失败，当前节点没有设置提交类型");
+              return
+            }
             // 提交类型
             if (commitType == FG.COMMIT_DEFAULT) {
               //  通信提交
@@ -430,7 +434,8 @@
               });
             }
             if (commitType == FG.COMMIT_ORDER) {
-              // TODO 订单提交
+              // 订单提交
+              this.next(nodeCode)
             }
           }).catch(error => {
             // Data verification failed
