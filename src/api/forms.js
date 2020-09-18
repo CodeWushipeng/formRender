@@ -1,5 +1,5 @@
 import request from '../demo/demo3/js/request'
-const urlPrefix = 'requestForward';
+const urlPrefix = '/requestForward';
 
 //查询表单列表
 // export function mappingUrl(data) {
