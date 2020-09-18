@@ -1,7 +1,7 @@
 {
   "name": "hr-form-render",
   "description": "A generator and controller of form base on form-making.",
-  "version": "0.1.46",
+  "version": "0.1.47",
   "author": "wushipeng",
   "license": "GPL",
   "keywords": [
@@ -66,7 +66,7 @@
     ]
   },
   "eslintConfig": {
-    "root": true,
+    "root": false,
     "extends": [
       "plugin:vue/essential"
     ]

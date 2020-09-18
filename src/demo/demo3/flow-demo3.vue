@@ -1,8 +1,8 @@
 <template>
   <div class="render-wrap" style="padding: 20px; " ref="loadingArea">
     <div>
-      debug:{{debug}}
-      flowType:{{flowType}}
+      <!--debug:{{debug}}-->
+      <!--flowType:{{flowType}}-->
       <!--btnIndex:{{btnIndex}} <br>-->
       <!--Rank_BTNS:{{displayBtn()}} <br>-->
     </div>
@@ -380,6 +380,7 @@
         }
 
         if (type == FG.DOING) {
+          debugger
           const nodePromise = this.$refs.renderForm.getData();
           // 执行节点
           nodePromise.then(data => {
