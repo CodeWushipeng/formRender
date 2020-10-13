@@ -241,9 +241,9 @@ export default {
             header: {
               pageIndex: 1,
               pageSize: 10,
-              gloSeqNo: new Date(),
-              reqSeqNo: 'sit anim',
-              reqTime: 'officia ad anim'
+              // gloSeqNo: new Date(),
+              // reqSeqNo: 'sit anim',
+              // reqTime: 'officia ad anim'
             }
           })
             .then((res) => {
@@ -314,9 +314,9 @@ export default {
         header: {
           pageIndex: this.nowPage,
           pageSize: this.pageSize,
-          gloSeqNo: new Date(),
-          reqSeqNo: 'sit anim',
-          reqTime: 'officia ad anim'
+          // gloSeqNo: new Date(),
+          // reqSeqNo: 'sit anim',
+          // reqTime: 'officia ad anim'
         }
       })
         .then((res) => {
@@ -397,9 +397,9 @@ export default {
           header: {
             pageIndex: this.nowPage,
             pageSize: this.pageSize,
-            gloSeqNo: new Date(),
-            reqSeqNo: 'sit anim',
-            reqTime: 'officia ad anim'
+            // gloSeqNo: new Date(),
+            // reqSeqNo: 'sit anim',
+            // reqTime: 'officia ad anim'
           }
         }
       } else if (this.value.length == 1) {
@@ -411,9 +411,9 @@ export default {
           header: {
             pageIndex: this.nowPage,
             pageSize: this.pageSize,
-            gloSeqNo: new Date(),
-            reqSeqNo: 'sit anim',
-            reqTime: 'officia ad anim'
+            // gloSeqNo: new Date(),
+            // reqSeqNo: 'sit anim',
+            // reqTime: 'officia ad anim'
           }
         }
       }

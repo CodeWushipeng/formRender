@@ -1,8 +1,8 @@
 <template>
   <div class="render-wrap" style="padding: 20px; " ref="loadingArea">
     <div>
-      debug:{{debug}}
-      flowType:{{flowType}}
+      <!--debug:{{debug}}-->
+      <!--flowType:{{flowType}}-->
       <!--btnIndex:{{btnIndex}} <br>-->
       <!--Rank_BTNS:{{displayBtn()}} <br>-->
     </div>
@@ -138,13 +138,15 @@
           const {rspCode} = res.header;
           if (rspCode == RES_OK) {
             const list = res.body.detail.records;
-            let flowType = res.body.define.flowType;
-            let funcCollection = res.body.define.funcCollection;
-            const funcObject = funcCollection ? FG.solveCommonJS(funcCollection) : {};
-
+            let funcObject = null;
+            if(res.body.define){
+              let flowType = res.body.define.flowType || null;
+              let funcCollection = res.body.define.funcCollection;
+              funcObject = funcCollection ? FG.solveCommonJS(funcCollection) : {};
+              this.flowType = flowType;
+            }
             // records数据
             this.records = list;
-            this.flowType = flowType;
 
             // 挂载数据
             FG.setData("user", user);
@@ -380,6 +382,7 @@
         }
 
         if (type == FG.DOING) {
+          debugger
           const nodePromise = this.$refs.renderForm.getData();
           // 执行节点
           nodePromise.then(data => {

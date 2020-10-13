@@ -2,9 +2,9 @@
   <!--<div v-if="!isDataNull">-->
   <div>
     <!--data:{{data.config}} <br>-->
-    <!--value:{{value}} <br>
+    <!--value:{{value}} <br>-->
 
-    rules:{{rules}} <br>-->
+    <!--rules:{{rules}} <br>-->
     <!--models:{{ models }} <br />-->
     <!--btnFocusIndex:{{btnFocusIndex}}-->
     <el-form
@@ -262,7 +262,8 @@ export default {
           // console.log('genList[i]',genList[i])
           const dataType = genList[i].options.dataType;
           const confirm_field = genList[i].options.confirm_field;
-          if (dataType == "againpassword") {
+          const isRequired = genList[i].rules.some(rule => rule.required == true)
+          if (dataType == "againpassword"  && isRequired) {
             var validatePass = (rule, value, callback) => {
               // console.log('this.models',JSON.stringify(_this.models));
               if (confirm_field) {
@@ -289,7 +290,7 @@ export default {
             });
           }
 
-          if (dataType == "text") {
+          if (dataType == "text" && isRequired) {
             var validatePass = (rule, value, callback) => {
               callback();
             };
@@ -299,7 +300,7 @@ export default {
             });
           }
           //整数和数字类型     整数位、小数位位数
-          if (dataType == "integer" || dataType == "float") {
+          if ((dataType == "integer" || dataType == "float") && isRequired) {
             var validatePass = (rule, value, callback) => {
               if (value) {
                 if ((value + "").indexOf(".") > -1) {
@@ -332,7 +333,7 @@ export default {
             });
           }
           //身份证校验
-          if (genList[i].type == "idencard") {
+          if (genList[i].type == "idencard" && isRequired) {
             var validatePass = (rule, value, callback) => {
               if (value && IdentityCodeValid(value)) {
                 callback();

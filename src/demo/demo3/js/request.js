@@ -39,13 +39,6 @@ service.interceptors.request.use(
         gloSeqNo: new Date().getTime(),
         reqSeqNo: new Date().getTime().toString(),
         reqTime: new Date().getTime().toString(),
-
-        // "antiWeightSeqNo": "qui",
-        // "gloSeqNo": "anim dolor deserunt",
-        // "pageIndex": 1,
-        // "pageSize": 999,
-        // "reqSeqNo": "Duis et Ut tempor qui",
-        // "reqTime": "Excepteur exercitation ut quis dolor",
         projectId: 'quis consectetur',
         serviceGroupid: 'mollit sed',
         serviceId: 'officia non',

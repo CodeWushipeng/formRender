@@ -3,18 +3,33 @@ module.exports = {
   publicPath: './',
   devServer: {
     proxy: {
-      '/dictionary': {
-        // target: 'http://192.168.1.194:21009',
-        target: 'http://192.168.2.84:21008'
+      // ====字典服务====
+      '/requestForward/dictionary': {
+        target: 'http://192.168.2.179:31913',
+        pathRewrite: {
+          '^/requestForward': ''
+        }
+      },
+      // ====表单服务====
+      '/requestForward/formDevelop': {
+        target: 'http://192.168.2.179:32340',
+        pathRewrite: {
+          '^/requestForward': ''
+        }
       },
       '/formDevelop': {
-        target: 'http://192.168.1.194:21004'
+        target: 'http://192.168.2.179:32340',
       },
+      // ====流控服务====
       '/flowDevelop': {
-        target: 'http://192.168.1.194:21004'
+        target: 'http://192.168.2.179:32340',
       },
-      '/listDevelop': {
-        target: 'http://192.168.1.194:21004'
+      // ====表格服务====
+      '/requestForward/listDevelop': {
+        target: 'http://192.168.2.179:32340',
+        pathRewrite: {
+          '^/requestForward': ''
+        }
       }
       // '/requestForward': {
       //   target: 'http://localhost:38081'

@@ -659,7 +659,7 @@ export default {
     let that =this
     console.log(that.widgetLists)
     EventBus.$on('on-history-add', () => {
-      debugger
+      // debugger
       let cloneWidget = Object.assign({}, that.widgetForm)
       that.widgetLists.push(cloneWidget)
       that.undo = true
