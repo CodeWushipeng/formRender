@@ -404,29 +404,29 @@ let handlers = {
             header: {
               pageIndex: 1,
               pageSize: 999,
-              gloSeqNo: new Date(),
-              reqSeqNo: 'sit anim',
-              reqTime: 'officia ad anim'
-            }
+              gloSeqNo: new Date().getTime(),
+              reqSeqNo: new Date().getTime(),
+              reqTime: new Date().getTime(),
+            },
           })
             .then(res => {
-              debugger
-              console.log(res)
+              debugger;
+              console.log(res);
               if (res.header.rspCode == RES_OK) {
-                self.handelValidate('success', '', i)
+                self.handelValidate('success', '', i);
                 // 判断是否有表格数据，没有执行赋值
                 if (!tableKey) {
                   try {
-                    let total = 0
+                    let total = 0;
                     if (res.body.define && res.body.define.total) {
-                      total = res.body.define.total
+                      total = res.body.define.total;
                     }
-                    tempFunc(self.models, res, self.utils)
-                    self.setDataToTable(total)
-                    self.handelAssignment(i)
-                    self.handelFlow()
+                    tempFunc(self.models, res, self.utils);
+                    self.setDataToTable(total);
+                    self.handelAssignment(i);
+                    self.handelFlow();
                   } catch (error) {
-                    self.handelValidate('error', '出口数据转换出错', i)
+                    self.handelValidate('error', '出口数据转换出错', i);
                   }
                 } else {
                   // let tableData;
@@ -453,35 +453,35 @@ let handlers = {
                   //     }
                   //   });
                   // } else {
-                  tempFunc(self.models, res.body)
-                  localStorage.setItem('response', JSON.stringify(res))
-                  self.setDataToTable()
-                  self.searchTable(tableKey, res) //不存在目标表格发起查询表格请求
+                  tempFunc(self.models, res.body);
+                  localStorage.setItem('response', JSON.stringify(res));
+                  self.setDataToTable();
+                  self.searchTable(tableKey, res); //不存在目标表格发起查询表格请求
                   // }
                 }
-                self.remoteError = false
+                self.remoteError = false;
               } else {
-                self.setFocus(self.allItems[i])
+                self.setFocus(self.allItems[i]);
                 self.$notify.error({
                   title: '错误',
-                  message: res.rspMsg
-                })
-                this.handelValidate('error', res.rspMsg, i)
-                self.remoteError = true
-                self.outMark = i
+                  message: res.rspMsg,
+                });
+                this.handelValidate('error', res.rspMsg, i);
+                self.remoteError = true;
+                self.outMark = i;
               }
             })
             .catch(error => {
-              console.log(error)
-              self.setFocus(self.allItems[i])
+              console.log(error);
+              self.setFocus(self.allItems[i]);
               self.$notify.error({
                 title: '错误',
-                message: error.rspMsg
-              })
-              this.handelValidate('error', error.rspMsg, i)
-              self.remoteError = true
-              self.outMark = i
-            })
+                message: error.rspMsg,
+              });
+              this.handelValidate('error', error.rspMsg, i);
+              self.remoteError = true;
+              self.outMark = i;
+            });
         } else {
           this.handelValidate('success', '', i)
           this.remoteError = false
