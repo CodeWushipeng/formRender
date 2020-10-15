@@ -21,7 +21,7 @@ var loading = {
 // create an axios instance
 const service = axios.create({
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 8000, // request timeout
+  timeout: 100000, // request timeout
 });
 
 // request interceptor

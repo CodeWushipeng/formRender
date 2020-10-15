@@ -539,7 +539,7 @@ let handlers = {
       // debugger;
       // let tableData = table;
       let self = this
-      getFormList('', {
+      getFormList({
         formCode: code,
         pageIndex: '1'
       })
