@@ -37,6 +37,15 @@ export function getDicTwo(data) { // isOk
   })
 }
 
+// 字典服务不分页
+export function getDicNoPage(data) {
+  return request({
+    url: urlPrefix + '/dictionary/quertDicNoPage',
+    method: 'post',
+    data,
+  });
+}
+
 //查询表单列表
 export function getFormList(data) { // isOk
   return request({
