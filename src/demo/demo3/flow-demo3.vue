@@ -305,14 +305,14 @@
         }
         // 执行
         if (findNextNode) {
-          const nodeData = FG.getNodeData(findNextNode)
-          const {type,commitType} = nodeData;
-          if((type == FG.END || commitType == FG.COMMIT_ORDER) && this.flowType == "01"){
+          // const nodeData = FG.getNodeData(findNextNode)
+          // const {type,commitType} = nodeData;
+          // if((type == FG.END || commitType == FG.COMMIT_ORDER) && this.flowType == "01"){
             // 订单提交
-            this.$refs.flowDialog.show();
-          }else{
+            // this.$refs.flowDialog.show();
+          // }else{
             this.config(findNextNode);
-          }
+          // }
         } else {
           this.$notify.error({
             title: "错误",
@@ -438,7 +438,8 @@
             }
             if (commitType == FG.COMMIT_ORDER) {
               // 订单提交
-              this.next(nodeCode)
+              this.$refs.flowDialog.show();
+              // this.next(nodeCode)
             }
           }).catch(error => {
             // Data verification failed
