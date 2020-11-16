@@ -13,7 +13,7 @@
       @isEnd="accept"
       ref="generateForm"
     ></fm-generate-form>
-    <div id="flowButtons">
+    <div id="flowButtons" @click.capture="checkForm">
       <slot></slot>
     </div>
   </div>
@@ -87,6 +87,10 @@ export default {
     },
   },
   methods: {
+    // 点击流控按钮时检测表单状态
+    checkForm(){
+      this.$refs.generateForm.getData()
+    },
     accept(params){
       console.log(params)
       this.$emit("has-end",params)

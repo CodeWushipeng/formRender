@@ -622,6 +622,7 @@ export default {
   methods: {
     emitFocus() {
       this.$emit('focus')
+      this.handleFocus()
     },
     focus() {
       if (!this.ranged) {
