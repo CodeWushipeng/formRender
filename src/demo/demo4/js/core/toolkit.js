@@ -1,9 +1,5 @@
-// export const RES_OK = "SP000000";
-// export const ERR_OK = "00000000";
-// export const FAIL_CODE = "99999999";
-
+// 工具类
 const matriToolkit = {
-
   // 处理流控数据
   solveFlow(res) {
     console.log('res', res)
@@ -15,7 +11,6 @@ const matriToolkit = {
       let funcCollection = res.body.define.funcCollection;
       fns = funcCollection ? Toolkit.matrix.solveCommonJS(funcCollection) : {};
     }
-
     return {
       list,
       flowType,
@@ -37,7 +32,7 @@ const matriToolkit = {
       throw  new Error(error)
     }
   },
-  /**
+  /** 初始化配置数据
    * @param _this 当前组件对象
    * @param fn 字符串main函数
    * @param gridObj grid
@@ -123,7 +118,6 @@ const matriToolkit = {
   }
 };
 const boxToolkit = {
-
   notUsable: false, // 不可用
   // 流程节点
   START: "01", // 开始

@@ -1,3 +1,4 @@
+// 业务数据类
 export class BusFactory {
   /**
    *
@@ -26,7 +27,7 @@ export class BusFactory {
   }
 }
 
-
+// 操作数据类
 export class OperateFactory {
   /**
    *
