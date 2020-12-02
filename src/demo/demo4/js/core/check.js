@@ -35,6 +35,36 @@ class Check {
     }
     return msg
   }
+  checkPrev(gridObj,data){
+    let res = {
+      status: 0,
+      error: ""
+    }
+    let {type, rollback, returnNode} = data;
+
+    if (!returnNode) {
+      res = {status: 1, error: "没有设置返回的节点"};
+    }
+
+    if (rollback == Toolkit.static.CANNOT_ROLLBACK || !rollback) {
+      res = {status: 1, error: "当前节点不能回退"};
+    }
+    if (type == Toolkit.static.START) {
+      res = {status: 1, error: "开始节点不能回退"};
+    }
+    if (type == Toolkit.static.END) {
+      res = {status: 1, error: "流程已经结束,不能回退"};
+    }
+    if (returnNode) {
+      // 判断上一节点是否在当前的返回列表中
+      let processList = gridObj.getProcess().slice();
+      const ret = Toolkit.matrix.handleBackNode(returnNode, processList);
+      if (!ret) {
+        res = {error: -1, text: "上一节点不在设置的回退数组中，不能回退"};
+      }
+    }
+    return res;
+  }
 }
 
 

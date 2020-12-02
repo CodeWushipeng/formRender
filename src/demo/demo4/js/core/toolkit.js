@@ -17,6 +17,32 @@ const matriToolkit = {
       utils: fns
     }
   },
+  /**
+   *
+   * @param node  返回节点
+   * @param execData 执行的流程数组
+   * @returns {*}
+   */
+  handleBackNode(node, processData){
+    let ret = null;
+    let execData = processData.slice();
+    // 判断上一节点是否在当前的返回列表中
+    let backNodes = [];
+    backNodes = node.includes(",") ?  node.split(",") : [node];
+    function findBack() {
+      if (execData.length > 0) {
+        let lastNode = execData.pop();
+        if (backNodes.includes(lastNode) == false) {
+          // findBack(execData, backNodes)
+          findBack()
+        } else {
+          ret = lastNode
+        }
+      }
+    }
+    findBack();
+    return ret;
+  },
 
   /**
    * 处理公共函数js代码

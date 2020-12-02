@@ -376,44 +376,37 @@
         this.configdata.rollbackData = {};
         // rollbackData 回退数据处理：01-清除，02-保留不处理
         const {rollback, rollbackData, returnNode} = this.data;
-        if (!returnNode) {
-          alert("没有设置返回的节点")
-          return
-        }
-
         // 判断能否回退
-        let message = this.validateBack();
-        if (message.error == -1) {
-          alert(message.text);
-          return;
-        }
-
-        // 清除当前节点后面的执行过点的节点
-        let processList = grid.getProcess().slice();
-        const prevNodeCode = handleBackNode(returnNode, processList); // 要回退到的节点
-        const index = processList.findIndex(node => {
-          return node == prevNodeCode;
-        })
-        if (processList.length > 0) {
-          processList.splice(index)
-          grid.setProcess(processList)
-        }
-
-        //  回退数据处理
-        if (rollback == Toolkit.static.CAN_ROLLBACK && prevNodeCode) {
-          const tempData = grid.getNodeData(prevNodeCode);
-          const {checkStart, type} = tempData;
-          if (type == Toolkit.static.START) {
-            alert("已到达第一个执行节点");
-            return
+        // let message = this.validateBack();
+        const isUsable = grid.checkPrev(this.data);
+        if(isUsable){
+          // 清除当前节点后面的执行过点的节点
+          let processList = grid.getProcess().slice();
+          const prevNodeCode = handleBackNode(returnNode, processList); // 要回退到的节点
+          const index = processList.findIndex(node => {
+            return node == prevNodeCode;
+          })
+          if (processList.length > 0) {
+            processList.splice(index)
+            grid.setProcess(processList)
           }
-          console.log('prev checkStart', checkStart)
-          if (grid.checkHandler(checkStart)) {
-            this.data = tempData;
-            this.configdata.list = [tempData];
-            // 数据处理（清除|保留）
-            this.processData(rollbackData, prevNodeCode);
-            grid.pushProcess(prevNodeCode);
+
+          //  回退数据处理
+          if (rollback == Toolkit.static.CAN_ROLLBACK && prevNodeCode) {
+            const tempData = grid.getNodeData(prevNodeCode);
+            const {checkStart, type} = tempData;
+            if (type == Toolkit.static.START) {
+              alert("已到达第一个执行节点");
+              return
+            }
+            console.log('prev checkStart', checkStart)
+            if (grid.checkHandler(checkStart)) {
+              this.data = tempData;
+              this.configdata.list = [tempData];
+              // 数据处理（清除|保留）
+              this.processData(rollbackData, prevNodeCode);
+              grid.pushProcess(prevNodeCode);
+            }
           }
         }
       },

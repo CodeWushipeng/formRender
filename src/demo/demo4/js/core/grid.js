@@ -134,6 +134,16 @@ class Grid extends Getting {
     }
     return isSuccess
   }
+  checkPrev(data){
+    let isSuccess = true;
+    const checker = new Check();
+    const checkmsg = checker.checkPrev(this,data);
+    if(checkmsg.status){
+      alert(checkmsg.error);
+      isSuccess=false
+    }
+    return isSuccess
+  }
 
   /**
    * 检查节点能否执行
