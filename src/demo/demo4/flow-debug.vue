@@ -122,7 +122,7 @@
 <script>
   // import getFG from "./js/fg-control";
   // import getFG from "fg-control";
-  import {oneCase} from './js/index';
+  import {oneCase} from './js/core/index';
   const grid = new oneCase();
   import flowMixin from './js/mixins'
   import flowNode from './flow-node'

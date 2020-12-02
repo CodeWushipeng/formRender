@@ -1,4 +1,4 @@
-import {BusFactory, OperateFactory} from '../factory/coreFactory';
+import {BusFactory, OperateFactory} from './coreFactory';
 import Toolkit from './toolkit';
 import Check from './check';
 
@@ -29,7 +29,7 @@ class Getting {
     return result || {}
   }
 
-  // 初始化数据
+  // 返回初始化启动数据
   getStartSet(initFunc, request) {
     if (initFunc) {
       return Toolkit.matrix.solveInitConfigJs(this, this.busdata, initFunc, request)
@@ -39,7 +39,7 @@ class Getting {
   }
 
   /**
-   * 节点数据
+   * 获取节点数据
    * @param nodeCode
    * @returns {*}
    */
@@ -64,6 +64,11 @@ class Getting {
     return this.operdata.process || [];
   }
 
+  /**
+   * 判断执行节点
+   * @param nextNodes
+   * @returns {string}
+   */
   findNext(nextNodes) {
     const _this = this;
     let findNextNode = ""; // 最终要执行的节点
@@ -152,14 +157,28 @@ class Grid extends Getting {
     this.operdata.outflag = boolean
   }
 
+  /**
+   *  设置流程是否可用
+   * @param boolean
+   */
   setUsable(boolean) {
     this.operdata.setUsable(boolean)
   }
 
+  /**
+   * 保存执行流程
+   * @param nodeCode
+   */
   pushProcess(nodeCode) {
     this.operdata.pushProcess(nodeCode)
   }
 
+  /**
+   * 保存节点数据
+   * @param data
+   * @param response
+   * @param nodeCode
+   */
   saveNodeData(data, response, nodeCode) {
     const Obj = {
       up: data,
@@ -169,9 +188,6 @@ class Grid extends Getting {
     console.log("通信提交响应数据：" + JSON.stringify(Obj));
     const copyObj = JSON.parse(JSON.stringify(Obj));
     this.setNode(nodeCode, copyObj);
-    // Object.assign(this.configdata, {
-    //   nodes: FG.getNodes() // 节点数据
-    // })
   }
 
   /**
@@ -185,8 +201,6 @@ class Grid extends Getting {
     }
     return true
   }
-
-
 
   prev() {
     console.log('prev...')

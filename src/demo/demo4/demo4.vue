@@ -4,7 +4,6 @@
      <!--{{hackRest}}-->
       {{configdata.list}}
       <!--debug:{{debug}}-->
-      <!--flowType:{{flowType}}-->
       <!--btnIndex:{{btnIndex}} <br>-->
       <!--Rank_BTNS:{{displayBtn()}} <br>-->
       <!--data :{{data}}-->
@@ -32,10 +31,7 @@
                          :remoteFuncs="remoteFuncs"
                          ref="renderForm"
             >
-
             </render-form>
-
-
 
             <flowDialog ref="flowDialog"></flowDialog>
           </div>
@@ -62,17 +58,16 @@
     </div>
   </div>
 </template>
-
 <script>
-  import  { oneCase,Toolkit,Api} from './js/index';
+  import  { oneCase,Toolkit,Api} from './js/core/index';
   const grid = new oneCase();
-
   import request from '../demo3/js/request';
   import flowDebug from '../demo4/flow-debug';
   import flowDialog from '../demo4/flow-dialog';
 
   import {queryFlowDetail} from "@/api/flows";
   import flowMixin from '../demo4/js/mixins';
+  import directives from './js/drag-directives';
   import {RES_OK} from "@/api/config";
   import {platform, user,requestASyns} from "../demo3/js/mock-data";
 
@@ -82,6 +77,9 @@
     components:{
       flowDebug,
       flowDialog,
+    },
+    directives: {
+      ...directives
     },
     computed: {
       nodeName(){
@@ -102,18 +100,14 @@
     },
     data(){
       return{
-        grid:null,
         formData: {}, // 当前表单数据
         data: {}, // 当前节点数据
         // =========数据显示================
         records: [], // 流程数据
-        flowType:null,
         // 流控数据
         configdata: {
           platform:null,
           user:null,
-          // indata:FG.indata ? FG.indata : {},
-          // indata:{key:'here is no data'},
           indata:{},
           utils: {},
           nodes: {},
@@ -128,34 +122,37 @@
     },
     mounted(){
       this.init()
-      // this.openDebug(this);
+      this.openDebug(this);
     },
     methods:{
       async init(){
         debugger
         let resdata = await this.fetchFlow();
         // 存储流控数据
-        // grid = new Grid();
         grid.build(user,platform,resdata);
         // 找到开始节点
         const startNode = grid.getStart();
         // 配置启动数据
         this.startSet(startNode);
         // 处理数据
-        this.data = startNode;
-        // records数据
-        this.records = grid.busdata.list;
-        this.extendsConfig({
-          platform:grid.busdata.platform,
-          user:  grid.busdata.user,
-          indata:grid.busdata.indata,
-          utils: grid.busdata.utils,
-          nodes: grid.operdata.nodes,
-          list: [startNode],
-        })
-
+        this.pageInit(startNode);
         // 检查开始节点
         this.firstNode(startNode);
+      },
+      pageInit(startNode){
+        const busdata = grid.busdata;
+        const operdata = grid.operdata;
+        this.data = startNode;
+        // records数据
+        this.records = busdata.list;
+        this.extendsConfig({
+          platform:busdata.platform,
+          user:  busdata.user,
+          indata:busdata.indata,
+          utils: busdata.utils,
+          nodes: operdata.nodes,
+          list: [startNode],
+        })
       },
       fetchFlow(){
         console.log("debugger....")
@@ -307,7 +304,6 @@
           // 执行
           if (findNextNode) {
             this.locationToNext(findNextNode);
-            // }
           } else {
            alert(`往下执行的节点${nextNode}没有通过启动验证`)
           }

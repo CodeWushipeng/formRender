@@ -1,5 +1,5 @@
-import Grid from './core/grid';
-import Toolkit from './core/toolkit';
+import Grid from './grid';
+import Toolkit from './toolkit';
 
 function defaultCommit(commit, data, request) {
   //  通信提交
