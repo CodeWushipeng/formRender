@@ -9,6 +9,9 @@ class Getting {
     // 操作数据
     this.operdata = null;
   }
+  getUsable(){
+    return this.operdata.isUsable
+  }
   /**
    * 开始节点
    * @returns {*}
@@ -72,26 +75,25 @@ class Getting {
   findNext(nextNodes) {
     const _this = this;
     let findNextNode = ""; // 最终要执行的节点
-    if (nextNodes && nextNodes.includes(",")) {
-      // 多节点
-      const nodes = nextNodes.split(",");
-      const findNode = (j)=>{
-        let nodeId = nodes[j];
-        return this.busdata.list.find(fl => fl.nodeCode == nodeId);
-      }
-
-      for (let j = 0; j < nodes.length; j++) {
-        const nextFlow = findNode(j);
-        try {
-          if (_this.checkStart(nextFlow["checkStart"])) {
+    if (!nextNodes) {
+      throw new Error('没有传递节点')
+    }
+    if (nextNodes.includes(",")) {
+      try {
+        // 多节点
+        const nodes = nextNodes.split(",");
+        for (let j = 0; j < nodes.length; j++) {
+          let nodeId = nodes[j];
+          const nextFlow = _this._find(this.busdata.list, item => item.nodeCode == nodeId);
+          if (_this.checkHandler(nextFlow["checkStart"])) {
             findNextNode = nextFlow["nodeCode"];
             break;
           } else {
-            console.log('checkStart error:', nextFlow["checkStart"])
+            console.log('checkHandler error:', nextFlow["checkStart"])
           }
-        } catch (error) {
-          throw new Error(error);
         }
+      } catch (error) {
+        throw new Error(error);
       }
     } else {
       // 单节点
@@ -116,7 +118,13 @@ class Grid extends Getting {
     super()
   }
 
-  check(type,commitType){
+  /**
+   * 检查是否可提交
+   * @param type
+   * @param commitType
+   * @returns {boolean}
+   */
+  checkSubmit(type,commitType){
     let isSuccess = true;
     const checker = new Check();
     const checkmsg = checker.check(this.busdata,this.operdata,type,commitType);
@@ -127,6 +135,23 @@ class Grid extends Getting {
     return isSuccess
   }
 
+  /**
+   * 检查节点能否执行
+   * @param checkstart
+   * @returns {*}
+   */
+  checkHandler(checkstart) {
+    if (checkstart) {
+      return Toolkit.matrix._solveConfigJs(this.busdata, this.operdata, checkstart)
+    }
+    return true
+  }
+  /**
+   * 创建业务和操作数据
+   * @param user
+   * @param platform
+   * @param res
+   */
   build(user, platform, res) {
     let flow = Toolkit.matrix.solveFlow(res);
     let list = flow.list;
@@ -174,6 +199,14 @@ class Grid extends Getting {
   }
 
   /**
+   *
+   * @param arr
+   */
+  setProcess(arr){
+    this.operdata.setProcess(arr || [])
+  }
+
+  /**
    * 保存节点数据
    * @param data
    * @param response
@@ -182,28 +215,11 @@ class Grid extends Getting {
   saveNodeData(data, response, nodeCode) {
     const Obj = {
       up: data,
-      down: null
+      down: {...response, rspCode: "SP000000"}
     };
-    Obj["down"] = {...response, rspCode: "SP000000"};
     console.log("通信提交响应数据：" + JSON.stringify(Obj));
     const copyObj = JSON.parse(JSON.stringify(Obj));
     this.setNode(nodeCode, copyObj);
-  }
-
-  /**
-   * 检查节点能否执行
-   * @param checkstart
-   * @returns {*}
-   */
-  checkStart(checkstart) {
-    if (checkstart) {
-      return Toolkit.matrix._solveConfigJs(this.busdata, this.operdata, checkstart)
-    }
-    return true
-  }
-
-  prev() {
-    console.log('prev...')
   }
 
   destroy() {

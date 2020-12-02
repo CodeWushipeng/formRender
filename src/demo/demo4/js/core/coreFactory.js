@@ -61,6 +61,15 @@ export class OperateFactory {
       this.process.push(nodeCode)
     }
   }
+
+  /**
+   * 设置执行流程
+   * @param arr
+   */
+  setProcess(arr){
+    this.process = arr || [];
+
+  }
 }
 
 

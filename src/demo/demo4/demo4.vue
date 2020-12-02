@@ -69,6 +69,7 @@
   import flowMixin from '../demo4/js/mixins';
   import directives from './js/drag-directives';
   import {RES_OK} from "@/api/config";
+  import {handleBackNode, handleRemoteFn, beforeRoute,alert} from './js/util';
   import {platform, user,requestASyns} from "../demo3/js/mock-data";
 
   export default {
@@ -183,10 +184,11 @@
       async firstNode(startNode) {
         // 处理开始节点
         const {checkStart, nodeCode} = startNode;
-        const isOk = await grid.checkStart(checkStart)
+        const isOk = await grid.checkHandler(checkStart)
         if (isOk) {
           grid.setUsable(true);
           grid.pushProcess(nodeCode);
+          this.submit();
         } else {
           alert(`当前节点${nodeCode}不能执行`);
         }
@@ -196,7 +198,7 @@
         if (next_node) {
           const temp = grid.getNodeData(next_node);
           const {checkStart} = temp;
-          if (grid.checkStart(checkStart)) {
+          if (grid.checkHandler(checkStart)) {
             this.extendsConfig({
               list:[temp]
             })
@@ -208,10 +210,6 @@
           }
         }
       },
-      //下一步
-      prev(){
-        grid.prev();
-      },
       async submit() {
         const {
           commitType,
@@ -219,10 +217,8 @@
           nextNode,
           commitFunc,
           nodeCode,
-          outputFromCode,
-          outputConfig
         } = this.data;
-        const isUsable = grid.check(type,commitType);
+        const isUsable = grid.checkSubmit(type,commitType);
         if(isUsable) {
           // 开始节点
           if (type == Toolkit.static.START) {
@@ -234,7 +230,6 @@
           // 响应页面
           if (grid.operdata.outflag) {
             grid.setOutFlag(false);
-            // FG.OUTFLAG = false;
             this.locationToNext(nextNode);
             return false;
           }
@@ -253,15 +248,15 @@
             resdata = await this.subInstance.defaultCommit(commitFunc,formdata)
             if(resdata){
               grid.saveNodeData(formdata,resdata,nodeCode)
-              this.responseExec(outputFromCode, outputConfig, nextNode)
+              this.responseExec(this.data)
             }
           }
           if (judgeCommit(Toolkit.static.COMMIT_DEFINE)) {
             alert('COMMIT_DEFINE')
             resdata = await this.subInstance.defineCommit(this,commitFunc);
             if(resdata){
-              grid.saveNodeData(formdata, resdata, nodeCode)
-              this.responseExec(outputFromCode, outputConfig, nextNode)
+              grid.saveNodeData(formdata, resdata, nodeCode);
+              this.responseExec(this.data)
             }
           }
           if (judgeCommit(Toolkit.static.COMMIT_LOCAL)) {
@@ -272,7 +267,7 @@
               this.extendsConfig({
                 nodes: grid.getNodes() // 节点数据
               })
-              this.responseExec(outputFromCode, outputConfig, nextNode)
+              this.responseExec(this.data)
             }
           }
           if (judgeCommit(Toolkit.static.COMMIT_ORDER)) {
@@ -289,7 +284,8 @@
         // 合并数据
         Object.assign(this.configdata, object)
       },
-      responseExec(outputFromCode, outputConfig, nextNode) {
+      responseExec(data) {
+        const {outputFromCode, outputConfig, nextNode}  = data;
         if (outputFromCode) {
           // 有响应页面
           this.$refs.renderForm.changeJsonData(
@@ -324,7 +320,102 @@
         }
       },
       cancel(){
-        grid.destroy()
+        // grid.destroy()
+        const keys = Object.keys(grid.operdata.nodes);
+        keys.forEach(key => {
+          delete grid.operdata.nodes[key];
+        });
+        // FG.ISOK = false;
+        grid.setUsable(false)
+        alert("已清理这个流程");
+        console.log("grid", grid);
+        // this.$router.push("/");
+
+      },
+      //验证是否可回退
+      validateBack() {
+        let res = {error: 0, text: null};
+        let {type, rollback, returnNode} = this.data;
+        if (rollback == Toolkit.static.CANNOT_ROLLBACK || !rollback) {
+          res = {error: -1, text: "当前节点不能回退"};
+        }
+        if (type == Toolkit.static.START) {
+          res = {error: -1, text: "开始节点不能回退"};
+        }
+        if (type == Toolkit.static.END) {
+          res = {error: -1, text: "流程已经结束,不能回退"};
+        }
+        if (returnNode) {
+          // 判断上一节点是否在当前的返回列表中
+          let processList = grid.getProcess().slice();
+          const ret = handleBackNode(returnNode, processList);
+          if (!ret) {
+            res = {error: -1, text: "上一节点不在设置的回退数组中，不能回退"};
+          }
+        }
+        return res;
+      },
+      processData(rollbackDataFlag, returnNode) {
+        if (rollbackDataFlag == grid.operdata.KEEP_DATA) {
+          // 保留数据
+          const nodeData = grid.operdata.nodes[returnNode]["up"];
+          this.configdata.rollbackData = nodeData;
+        }
+        if (rollbackDataFlag == grid.operdata.CLEAR_DATA) {
+          // 清除数据
+          delete grid.operdata.nodes[returnNode];
+        }
+      },
+      // 上一节点
+      prev() {
+        debugger
+        if (grid.getUsable() == false) {
+          alert("当前流程已经取消")
+          return;
+        }
+        this.configdata.rollbackData = {};
+        // rollbackData 回退数据处理：01-清除，02-保留不处理
+        const {rollback, rollbackData, returnNode} = this.data;
+        if (!returnNode) {
+          alert("没有设置返回的节点")
+          return
+        }
+
+        // 判断能否回退
+        let message = this.validateBack();
+        if (message.error == -1) {
+          alert(message.text);
+          return;
+        }
+
+        // 清除当前节点后面的执行过点的节点
+        let processList = grid.getProcess().slice();
+        const prevNodeCode = handleBackNode(returnNode, processList); // 要回退到的节点
+        const index = processList.findIndex(node => {
+          return node == prevNodeCode;
+        })
+        if (processList.length > 0) {
+          processList.splice(index)
+          grid.setProcess(processList)
+        }
+
+        //  回退数据处理
+        if (rollback == Toolkit.static.CAN_ROLLBACK && prevNodeCode) {
+          const tempData = grid.getNodeData(prevNodeCode);
+          const {checkStart, type} = tempData;
+          if (type == Toolkit.static.START) {
+            alert("已到达第一个执行节点");
+            return
+          }
+          console.log('prev checkStart', checkStart)
+          if (grid.checkHandler(checkStart)) {
+            this.data = tempData;
+            this.configdata.list = [tempData];
+            // 数据处理（清除|保留）
+            this.processData(rollbackData, prevNodeCode);
+            grid.pushProcess(prevNodeCode);
+          }
+        }
       },
     }
   }

@@ -22,7 +22,6 @@ class Check {
       // alert("流程已取消");
       msg.status=1;
       msg.error = '流程已取消';
-      return;
     }
     // 结束节点
     if (type == Toolkit.static.END) {

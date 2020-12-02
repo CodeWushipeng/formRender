@@ -4,7 +4,7 @@ import Toolkit from './toolkit';
 
 function defaultCommit(commit, data, request) {
   //  通信提交
-  request({
+  return request({
     // url: `/requestForward/${commit}`,
     url: `http://192.168.2.179:30099/mock/35/${commit}`,
     method: 'post',
@@ -83,9 +83,6 @@ let oneCase = (function () {
   }
 })()
 
-// export default gridInstance;
-
-
 export {
   Grid,
   oneCase,
@@ -93,7 +90,7 @@ export {
   Api
 }
 
-
+/*
 
 function main(currentObj, request, callBack) {
   debugger;
@@ -127,5 +124,6 @@ function main(currentObj, request, callBack) {
     return res.body.define;
   }).catch(error => console.log(error));
 }
+*/
 
 

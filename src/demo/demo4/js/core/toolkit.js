@@ -71,10 +71,10 @@ const matriToolkit = {
     debugger
     try {
       const platform = busdata.platform;
-      const user = busdata.user;
-      const indata = busdata.indata;
-      const utils = busdata.utils;
-      const nodes = operdata.nodes;
+      const user =     busdata.user;
+      const indata =   busdata.indata;
+      const utils =    busdata.utils;
+      const nodes =    operdata.nodes;
       // const platform = this.platform;
       // const user = this.user;
       // const indata = this.indata;
