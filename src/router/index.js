@@ -6,6 +6,7 @@ import camera from "../demo/camera";
 import LanguageView from "./LanguageView.vue";
 import preview from "../demo/preView.vue";
 import flowDemo3 from "../demo/demo3/flow-demo3";
+import flowDemo4 from "../demo/demo4/demo4";
 // import testJs from "../demo/testjs/index";
 import testSelect from "../demo/copyComponents/test-select";
 import testDate from "../demo/copyComponents/test-date";
@@ -43,6 +44,11 @@ export default new Router({
           path: 'flow',
           name: 'flowDemo',
           component: flowDemo3,
+        },
+        {
+          path: 'flow4',
+          name: 'flowDemo4',
+          component: flowDemo4,
         },
         {
           path: 'testSelect',
