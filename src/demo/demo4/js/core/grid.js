@@ -1,6 +1,5 @@
-import {BusFactory, OperateFactory} from './coreFactory';
+import {BusFactory, OperateFactory} from './factory';
 import Toolkit from './toolkit';
-import Check from './check';
 
 class Getting {
   constructor() {
@@ -18,7 +17,7 @@ class Getting {
    */
   getStart() {
     const busdata = this.busdata.list;
-    const result = this._find(busdata, item => item.type == Toolkit.static.START)
+    const result = this._find(busdata, item => item.type == Toolkit.static.isStart)
     return result || {}
   }
 
@@ -28,7 +27,7 @@ class Getting {
    */
   getEnd() {
     const busdata = this.busdata.list;
-    const result = this._find(busdata, item => item.type == Toolkit.static.END)
+    const result = this._find(busdata, item => item.type == Toolkit.static.isEnd)
     return result || {}
   }
 
@@ -119,33 +118,6 @@ class Grid extends Getting {
   }
 
   /**
-   * 检查是否可提交
-   * @param type
-   * @param commitType
-   * @returns {boolean}
-   */
-  checkSubmit(type,commitType){
-    let isSuccess = true;
-    const checker = new Check();
-    const checkmsg = checker.check(this.busdata,this.operdata,type,commitType);
-    if(checkmsg.status){
-      alert(checkmsg.error);
-      isSuccess=false
-    }
-    return isSuccess
-  }
-  checkPrev(data){
-    let isSuccess = true;
-    const checker = new Check();
-    const checkmsg = checker.checkPrev(this,data);
-    if(checkmsg.status){
-      alert(checkmsg.error);
-      isSuccess=false
-    }
-    return isSuccess
-  }
-
-  /**
    * 检查节点能否执行
    * @param checkstart
    * @returns {*}
@@ -231,10 +203,14 @@ class Grid extends Getting {
     const copyObj = JSON.parse(JSON.stringify(Obj));
     this.setNode(nodeCode, copyObj);
   }
-
-  destroy() {
+  // 取消流程
+  destroyGrid() {
     console.log('destory...')
-
+    const keys = Object.keys(this.operdata.nodes);
+    keys.forEach(key => {
+      delete this.operdata.nodes[key];
+    });
+    this.operdata.isUsable = false
   }
 }
 

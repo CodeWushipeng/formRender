@@ -24,7 +24,7 @@ function defaultCommit(commit, data, request) {
 function defineCommit(currentObj,commitFunc, request) {
   // 自定义提交
   try {
-    return Toolkit.matrix.handleRemoteFn(currentObj,request, commitFunc)
+    return Toolkit.matrix.handleDefineFn(currentObj,request, commitFunc)
   }catch (e) {
     throw new Error(e)
   }

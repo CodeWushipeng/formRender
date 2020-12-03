@@ -1,3 +1,5 @@
+import Vue from "vue"
+const Bus=new Vue();
 import storage from 'good-storage';
 import { DICTS } from './dicts';
 
@@ -12,7 +14,7 @@ const KEY_NUM_0 = 48;
 // const KEY_NUM2 = 50;
 
 
-const flowMixin = {
+export const flowMixin = {
   data(){
     return {
       hackRest: true,
@@ -96,7 +98,31 @@ const flowMixin = {
 
   }
 };
-export default flowMixin;
+
+/**
+ * 离开的路由钩子
+ * @type {{beforeRouteLeave: beforeRoute.beforeRouteLeave}}
+ */
+export const beforeRoute = {
+  beforeRouteLeave: function (to, from, next) {
+    setTimeout(() => {
+      this.$confirm('您要离开当前流程吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        next()
+      }).catch(() => {
+        next(false)
+      });
+    })
+  }
+}
+
+export function alert(msg) {
+  Bus.$message.error(msg || '操作失败了，请重试！');
+}
+
 
 
 

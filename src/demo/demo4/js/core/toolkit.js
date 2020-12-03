@@ -18,6 +18,73 @@ const matriToolkit = {
     }
   },
   /**
+   * 提交前检查
+   * @param busdata 业务数据
+   * @param operdata 操作数据
+   * @param type 节点类型
+   * @param commitType 提交处理
+   * @returns {{status: number, error: string}}
+   */
+  checkSubmit(busdata, operdata, type, commitType) {
+    const msg = {
+      status: 0,
+      error: ""
+    }
+
+    if (operdata.isUsable == Toolkit.static.notUsable) {
+      // alert("流程已取消");
+      msg.status=1;
+      msg.error = '流程已取消';
+    }
+    // 结束节点
+    if (type == Toolkit.static.isEnd) {
+      // alert("流程已经结束");
+      msg.status=1;
+      msg.error = '流程已经结束';
+    }
+    if(!commitType && type != Toolkit.static.isStart){
+      msg.status=1;
+      msg.error = '提交失败，当前节点没有设置提交类型"';
+    }
+    return msg
+  },
+  /**
+   * 上一步检查
+   * @param gridObj grid对象实例
+   * @param data 当前节点
+   * @returns {{status: number, error: string}}
+   */
+  checkPrev(gridObj,data){
+    let res = {
+      status: 0,
+      error: ""
+    }
+    let {type, rollback, returnNode} = data;
+
+    if (!returnNode) {
+      res = {status: 1, error: "没有设置返回的节点"};
+    }
+
+    if (rollback == Toolkit.static.disabledRollback || !rollback) {
+      res = {status: 1, error: "当前节点不能回退"};
+    }
+    if (type == Toolkit.static.isStart) {
+      res = {status: 1, error: "开始节点不能回退"};
+    }
+    if (type == Toolkit.static.isEnd) {
+      res = {status: 1, error: "流程已经结束,不能回退"};
+    }
+    if (returnNode) {
+      // 判断上一节点是否在当前的返回列表中
+      let processList = gridObj.getProcess().slice();
+      const ret = Toolkit.matrix.handleBackNode(returnNode, processList);
+      if (!ret) {
+        res = {error: -1, text: "上一节点不在设置的回退数组中，不能回退"};
+      }
+    }
+    return res;
+  },
+  /**
    *
    * @param node  返回节点
    * @param execData 执行的流程数组
@@ -118,11 +185,11 @@ const matriToolkit = {
     }
   },
   /**
-   * 自定义函数提交
+   * 自定义函数提交 原函数handleRemoteFn
    * @param fn 自定义函数
    * @returns {Promise<any>}
    */
-  handleRemoteFn(currentObj, request, fn) {
+  handleDefineFn(currentObj, request, fn) {
     return new Promise((resolve, reject) => {
       try {
         let fns = eval("(" + fn + ")");
@@ -146,22 +213,22 @@ const matriToolkit = {
 const boxToolkit = {
   notUsable: false, // 不可用
   // 流程节点
-  START: "01", // 开始
-  END: "02", // 结束
-  DOING: "03", // 业务类型
+  isStart: "01", // 开始
+  isEnd: "02", // 结束
+  isBusing: "03", // 业务类型
 
   // 提交类型
-  COMMIT_DEFAULT: "01", // 默认提交
-  COMMIT_ORDER: "02", // 订单提交
-  COMMIT_DEFINE: "03", // 自定义提交
-  COMMIT_LOCAL: "04", // 本地提交
+  isDefaultType: "01", // 默认提交
+  isOrderType: "02", // 订单提交
+  isDefineType: "03", // 自定义提交
+  isLocalType: "04", // 本地提交
 
   // 返回设置
-  CAN_ROLLBACK: "01", // 可以回退
-  CANNOT_ROLLBACK: "02", // 不可回退
+  canRollBack: "01", // 可以回退
+  disabledRollback: "02", // 不可回退
   // 是否保留数据
-  CLEAR_DATA: "01", // 清除数据
-  KEEP_DATA: "02",  // 保留数据
+  clearIt: "01", // 清除数据
+  keepIt: "02",  // 保留数据
 };
 
 
