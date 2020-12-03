@@ -1,21 +1,19 @@
 // 工具类
 const matriToolkit = {
   // 处理流控数据
-  solveFlow(res) {
-    console.log('res', res)
+  getFlow(res) {
     const list = res.body.detail.records;
-    let fns = {};
+    let utils = {};
     let flowType = null;
-    if (res.body.define) {
-      flowType = res.body.define.flowType || null;
-      let funcCollection = res.body.define.funcCollection;
-      fns = funcCollection ? Toolkit.matrix.solveCommonJS(funcCollection) : {};
+    let funcColn = null;
+    const define = res.body.define;
+    if (define) {
+      flowType = define.flowType || null;
+      funcColn = define.funcCollection;
+      utils = funcColn ? Toolkit.matrix.solveCommonUtilsJS(funcColn) : {};
     }
-    return {
-      list,
-      flowType,
-      utils: fns
-    }
+    // console.log('res', res)
+    return {list, flowType, utils}
   },
   /**
    * 提交前检查
@@ -26,25 +24,19 @@ const matriToolkit = {
    * @returns {{status: number, error: string}}
    */
   checkSubmit(busdata, operdata, type, commitType) {
-    const msg = {
-      status: 0,
-      error: ""
-    }
+    let msg = {status: 0,error: ""};
 
     if (operdata.isUsable == Toolkit.static.notUsable) {
       // alert("流程已取消");
-      msg.status=1;
-      msg.error = '流程已取消';
+      msg = {status: 1, error: "流程已取消"};
     }
     // 结束节点
     if (type == Toolkit.static.isEnd) {
       // alert("流程已经结束");
-      msg.status=1;
-      msg.error = '流程已经结束';
+      msg = {status: 1, error: "流程已经结束"};
     }
     if(!commitType && type != Toolkit.static.isStart){
-      msg.status=1;
-      msg.error = '提交失败，当前节点没有设置提交类型"';
+      msg = {status: 1, error: "提交失败，当前节点没有设置提交类型"};
     }
     return msg
   },
@@ -55,60 +47,32 @@ const matriToolkit = {
    * @returns {{status: number, error: string}}
    */
   checkPrev(gridObj,data){
-    let res = {
-      status: 0,
-      error: ""
-    }
+    debugger
+    let msg = {status: 0,error: ""};
     let {type, rollback, returnNode} = data;
 
     if (!returnNode) {
-      res = {status: 1, error: "没有设置返回的节点"};
+      msg = {status: 1, error: "没有设置返回的节点"};
     }
 
     if (rollback == Toolkit.static.disabledRollback || !rollback) {
-      res = {status: 1, error: "当前节点不能回退"};
+      msg = {status: 1, error: "当前节点不能回退"};
     }
     if (type == Toolkit.static.isStart) {
-      res = {status: 1, error: "开始节点不能回退"};
+      msg = {status: 1, error: "开始节点不能回退"};
     }
     if (type == Toolkit.static.isEnd) {
-      res = {status: 1, error: "流程已经结束,不能回退"};
+      msg = {status: 1, error: "流程已经结束,不能回退"};
     }
     if (returnNode) {
       // 判断上一节点是否在当前的返回列表中
       let processList = gridObj.getProcess().slice();
       const ret = Toolkit.matrix.handleBackNode(returnNode, processList);
       if (!ret) {
-        res = {error: -1, text: "上一节点不在设置的回退数组中，不能回退"};
+        msg = {error: -1, text: "上一节点不在设置的回退数组中，不能回退"};
       }
     }
-    return res;
-  },
-  /**
-   *
-   * @param node  返回节点
-   * @param execData 执行的流程数组
-   * @returns {*}
-   */
-  handleBackNode(node, processData){
-    let ret = null;
-    let execData = processData.slice();
-    // 判断上一节点是否在当前的返回列表中
-    let backNodes = [];
-    backNodes = node.includes(",") ?  node.split(",") : [node];
-    function findBack() {
-      if (execData.length > 0) {
-        let lastNode = execData.pop();
-        if (backNodes.includes(lastNode) == false) {
-          // findBack(execData, backNodes)
-          findBack()
-        } else {
-          ret = lastNode
-        }
-      }
-    }
-    findBack();
-    return ret;
+    return msg;
   },
 
   /**
@@ -117,12 +81,12 @@ const matriToolkit = {
    * @returns {any}
    * @private
    */
-  solveCommonJS(JsCode) {
+  solveCommonUtilsJS(JsCode) {
     try {
       return eval(JsCode)
     } catch (error) {
       console.log('===commonJs===', JsCode)
-      throw  new Error(error)
+      throw  new Error(JsCode)
     }
   },
   /** 初始化配置数据
@@ -132,7 +96,7 @@ const matriToolkit = {
    * @param requestObj axios对象
    * @returns {Promise<any>}
    */
-  solveInitConfigJs(_this, busdata, fn, requestObj) {
+  solveInitDataConfigJs(_this, busdata, fn, requestObj) {
     const platform = busdata.platform;
     const user = busdata.user;
     const utils = busdata.utils;
@@ -150,7 +114,7 @@ const matriToolkit = {
           }
         });
       } catch (err) {
-        throw new Error(err)
+        throw new Error(fn)
       }
     })
   },
@@ -160,7 +124,7 @@ const matriToolkit = {
    * @returns {*}
    * @private
    */
-  _solveConfigJs(busdata, operdata, JsCode) {
+  solveStartConfigJs(busdata, operdata, JsCode) {
     debugger
     try {
       const platform = busdata.platform;
@@ -168,20 +132,15 @@ const matriToolkit = {
       const indata =   busdata.indata;
       const utils =    busdata.utils;
       const nodes =    operdata.nodes;
-      // const platform = this.platform;
-      // const user = this.user;
-      // const indata = this.indata;
-      // const utils = this.utils;
-      // const nodes = this.nodes;
-      console.log('{ user, platform, indata, nodes, utils} ', {user, platform, indata, nodes, utils})
       const resCode = `function _execute(user, platform, indata, nodes, utils){  ${JsCode}  return main(...arguments);}`;
+      // console.log('{ user, platform, indata, nodes, utils} ', {user, platform, indata, nodes, utils})
       // console.log('resCode',resCode)
       const exeCode = eval("(" + resCode + ")");
       let rs = exeCode(user, platform, indata, nodes, utils);
       return rs;
     } catch (error) {
       console.log('===inputConfigJs===', JsCode)
-      throw new Error(error)
+      throw new Error(JsCode)
     }
   },
   /**
@@ -204,14 +163,48 @@ const matriToolkit = {
           }
         });
       } catch (err) {
-        console.log(err);
         throw new Error(err)
       }
     })
-  }
+
+  },
+  /**
+   * 复制数据
+   * @param object
+   * @returns {any}
+   */
+  copyObject(object){
+    return JSON.parse(JSON.stringify(object))
+  },
+  /**
+   *
+   * @param node  返回节点
+   * @param execData 执行的流程数组
+   * @returns {*}
+   */
+  handleBackNode(node, processData){
+    let ret = null;
+    let execData = processData.slice();
+    // 判断上一节点是否在当前的返回列表中
+    let backNodes = [];
+    backNodes = node.includes(",") ?  node.split(",") : [node];
+    function findBack() {
+      if (execData.length > 0) {
+        let lastNode = execData.pop();
+        if (backNodes.includes(lastNode) == false) {
+          findBack()
+        } else {
+          ret = lastNode
+        }
+      }
+    }
+    findBack();
+    return ret;
+  },
 };
 const boxToolkit = {
   notUsable: false, // 不可用
+
   // 流程节点
   isStart: "01", // 开始
   isEnd: "02", // 结束

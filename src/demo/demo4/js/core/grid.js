@@ -32,9 +32,9 @@ class Getting {
   }
 
   // 返回初始化启动数据
-  getStartSet(initFunc, request) {
+  getStartSet(_this,initFunc, request) {
     if (initFunc) {
-      return Toolkit.matrix.solveInitConfigJs(this, this.busdata, initFunc, request)
+      return Toolkit.matrix.solveInitDataConfigJs(_this, this.busdata, initFunc, request)
     } else {
       return Promise.resolve({})
     }
@@ -124,7 +124,7 @@ class Grid extends Getting {
    */
   checkHandler(checkstart) {
     if (checkstart) {
-      return Toolkit.matrix._solveConfigJs(this.busdata, this.operdata, checkstart)
+      return Toolkit.matrix.solveStartConfigJs(this.busdata, this.operdata, checkstart)
     }
     return true
   }
@@ -135,18 +135,16 @@ class Grid extends Getting {
    * @param res
    */
   build(user, platform, res) {
-    let flow = Toolkit.matrix.solveFlow(res);
-    let list = flow.list;
-    let flowType = flow.flowType;
-    let utils = flow.utils;
+    let flow = Toolkit.matrix.getFlow(res);
+    const {list, flowType, utils} = flow;
     let indata = Object.create(null);
     this.busdata = new BusFactory(user, platform, indata, list, flowType, utils);
 
     let isUsable = false;
-    let outflag = false;
-    let process = [];
-    let nodes = [];
-    this.operdata = new OperateFactory(isUsable, outflag, process, nodes);
+    let outflag  = false;
+    let process  = [];
+    let nodes    = [];
+    this.operdata= new OperateFactory(isUsable, outflag, process, nodes);
   }
 
   /**
@@ -156,7 +154,7 @@ class Grid extends Getting {
    */
   setNode(nodeCode, value) {
     this.operdata.nodes[nodeCode] = value;
-    console.log('nodes', JSON.stringify(this.operdata.nodes))
+    // console.log('nodes', JSON.stringify(this.operdata.nodes))
   }
 
   // 设置提交标识
@@ -200,7 +198,7 @@ class Grid extends Getting {
       down: {...response, rspCode: "SP000000"}
     };
     console.log("通信提交响应数据：" + JSON.stringify(Obj));
-    const copyObj = JSON.parse(JSON.stringify(Obj));
+    const copyObj = Toolkit.matrix.copyObject(Obj);
     this.setNode(nodeCode, copyObj);
   }
   // 取消流程
@@ -210,7 +208,7 @@ class Grid extends Getting {
     keys.forEach(key => {
       delete this.operdata.nodes[key];
     });
-    this.operdata.isUsable = false
+    this.operdata.isUsable = false;
   }
 }
 

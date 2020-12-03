@@ -2,13 +2,13 @@
   <div class="render-wrap" style="padding: 20px; " ref="loadingArea">
     <div>
      <!--{{hackRest}}-->
-      {{configdata.list}}
+      <!--{{configdata.list}}-->
       <!--debug:{{debug}}-->
       <!--btnIndex:{{btnIndex}} <br>-->
       <!--Rank_BTNS:{{displayBtn()}} <br>-->
       <!--data :{{data}}-->
       <!--list :{{ configdata.list}}-->
-      <br />
+      <!--<br />-->
       <!--rollbackData :{{configdata.rollbackData}} <br>-->
       <!--<hr>-->
       <!--configdata:{{configdata}}-->
@@ -20,7 +20,7 @@
       <div class="buss" id="buss" :style="bussStyle">
         <div :class="mainClass">
           <!--节点信息-->
-          <h3>{{nodeName}}-{{nodeType}}</h3>
+          <h3>{{nodeName}}</h3>
           <!--当前-->
           <div v-if="nodeType=='01'">可以开始</div>
           <div v-if="nodeType=='02'">结束</div>
@@ -28,7 +28,6 @@
             <!--render-form-->
             <render-form v-if="hackRest && configdata.list.length>0"
                          :configdata="configdata"
-                         :remoteFuncs="remoteFuncs"
                          ref="renderForm"
             >
               <!--操作按钮-->
@@ -111,7 +110,6 @@
           list: [],
           rollbackData: {}
         },
-        remoteFuncs: {},
       }
     },
     created(){
@@ -172,10 +170,12 @@
       },
 
       async startSet(startNode){
+        debugger
         //配置启动数据
         const {initFunc} = startNode;
-        const indata = await grid.getStartSet(initFunc,request);
-        grid.busdata.setIndata(indata);
+        const indata = await grid.getStartSet(this,initFunc,request);
+        // const indata = {name:11,age:111}
+        grid.busdata.setIndata(indata)
       },
       async firstNode(startNode) {
         // 处理开始节点
@@ -207,6 +207,7 @@
         }
       },
       async submit() {
+        debugger
         const {
           commitType,
           type,
@@ -266,10 +267,10 @@
           resdata = await this.subInstance.localCommit(formdata);
           if(resdata){
             grid.saveNodeData(formdata,resdata,nodeCode)
+            this.responseExec(this.data)
             this.extendsConfig({
               nodes: grid.getNodes() // 节点数据
             })
-            this.responseExec(this.data)
           }
         }
         if (judgeCommit(Toolkit.static.isOrderType)) {
@@ -287,13 +288,13 @@
       },
       responseExec(data) {
         const {outputFromCode, outputConfig, nextNode}  = data;
+        let $renderForm = this.$refs.renderForm;
         if (outputFromCode) {
           // 有响应页面
-          this.$refs.renderForm.changeJsonData(
+          $renderForm.changeJsonData(
               outputFromCode,
               outputConfig
           );
-          // FG.OUTFLAG = true;
           grid.setOutFlag(true)
         } else {
           // 无响应页面
@@ -320,17 +321,6 @@
           });
         }
       },
-      processData(rollbackDataFlag, returnNode) {
-        if (rollbackDataFlag == grid.operdata.keepIt) {
-          // 保留数据
-          const nodeData = grid.operdata.nodes[returnNode]["up"];
-          this.configdata.rollbackData = nodeData;
-        }
-        if (rollbackDataFlag == grid.operdata.clearIt) {
-          // 清除数据
-          delete grid.operdata.nodes[returnNode];
-        }
-      },
       // 上一节点
       prev() {
         debugger
@@ -338,7 +328,7 @@
           alert("当前流程已经取消")
           return;
         }
-        this.configdata.rollbackData = {};
+        // this.configdata.rollbackData = {};
         // rollbackData 回退数据处理：01-清除，02-保留不处理
         const {rollback, rollbackData, returnNode} = this.data;
 
@@ -351,31 +341,40 @@
 
         // 清除当前节点后面的执行过点的节点
         let processList = grid.getProcess().slice();
-        const prevNodeCode = Toolkit.matrix.handleBackNode(returnNode, processList); // 要回退到的节点
+        const prevCode = Toolkit.matrix.handleBackNode(returnNode, processList); // 要回退到的节点
         const index = processList.findIndex(node => {
-          return node == prevNodeCode;
+          return node == prevCode;
         })
         if (processList.length > 0) {
           processList.splice(index)
           grid.setProcess(processList)
         }
 
+        // 是否已到开始节点
+        const {type} = grid.getNodeData(prevCode);
+        if (type == Toolkit.static.isStart) {
+          alert("已到达第一个执行节点");
+          return
+        }
         //  回退数据处理
-        if (rollback == Toolkit.static.canRollBack && prevNodeCode) {
-          const tempData = grid.getNodeData(prevNodeCode);
-          const {checkStart, type} = tempData;
-          if (type == Toolkit.static.isStart) {
-            alert("已到达第一个执行节点");
-            return
+        if (rollback == Toolkit.static.canRollBack && prevCode) {
+          let operObj = {
+            rollbackData: {},
+            nodes: []
+          };
+          if (rollbackData == Toolkit.static.keepIt) {
+            // 保留数据
+            const updata = grid.operdata.nodes[returnNode]["up"];
+            operObj.rollbackData = updata;
           }
-          console.log('prev checkStart', checkStart)
-          if (grid.checkHandler(checkStart)) {
-            this.data = tempData;
-            this.configdata.list = [tempData];
-            // 数据处理（清除|保留）
-            this.processData(rollbackData, prevNodeCode);
-            grid.pushProcess(prevNodeCode);
+          if (rollbackData == Toolkit.static.clearIt) {
+            // 清除数据
+            delete grid.operdata.nodes[returnNode];
+            operObj.nodes = grid.operdata.nodes;
           }
+          this.extendsConfig(operObj);
+          // 加载节点
+          this.locationToNext(prevCode);
         }
       },
       cancel(){

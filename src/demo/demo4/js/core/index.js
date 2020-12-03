@@ -74,12 +74,12 @@ class Api {
 
 // 返回单例
 let oneCase = (function () {
-  let fee
+  let instance
   return function () {
-    if (!fee) {
-      fee = new Grid();
+    if (!instance) {
+      instance = new Grid();
     }
-    return fee
+    return instance
   }
 })()
 
