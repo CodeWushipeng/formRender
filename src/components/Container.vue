@@ -659,7 +659,7 @@ export default {
     let that =this
     console.log(that.widgetLists)
     EventBus.$on('on-history-add', () => {
-      // debugger
+      // 
       let cloneWidget = Object.assign({}, that.widgetForm)
       that.widgetLists.push(cloneWidget)
       that.undo = true
@@ -669,7 +669,7 @@ export default {
   methods: {
     // 撤销
     handleUndo() {
-      debugger
+      
       this.revokeNumber++
       if (this.widgetLists.length >this.revokeNumber) {
         let end = this.widgetLists.length - this.revokeNumber
@@ -692,7 +692,7 @@ export default {
     },
     // 重做
     handleRedo() {
-      debugger
+      
       if (this.revokeNumber > 0) {
         let start = this.widgetLists.length - this.revokeNumber
         this.widgetForm = this.widgetLists.slice(start, start + 1)[0]

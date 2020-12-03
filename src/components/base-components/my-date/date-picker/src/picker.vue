@@ -790,7 +790,7 @@ export default {
     },
 
     handleFocus() {
-      // debugger
+      // 
       const type = this.type
 
       if (HAVE_TRIGGER_TYPES.indexOf(type) !== -1 && !this.pickerVisible) {
@@ -843,13 +843,13 @@ export default {
         return
       }
       if (keyCode === 32) {
-        // debugger
+        // 
         this.handleFocus()
         event.stopPropagation()
         return
       }
       if (keyCode === 38) {
-        // debugger
+        // 
         this.userInput = ''
         this.handleChange()
       }

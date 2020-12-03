@@ -137,7 +137,7 @@ export function InputMoney(ele){
 	    // console.log('event.type',event.type)
 		switch (event.type) {
 			case 'focus':
-				//debugger;
+				//;
 				if(ele.value.replace(/,/g,'').length>13+1){//添加光标重新进入后金额域输入控制，添加小数点
 					ele.amtFlag=1;
 					ele.amtNum=ele._dot;

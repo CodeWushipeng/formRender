@@ -562,7 +562,7 @@
       },
 
       handleFocus(event) {
-        // debugger
+        // 
         if (!this.softFocus) {
           if (this.automaticDropdown || this.filterable) {
             this.visible = true;

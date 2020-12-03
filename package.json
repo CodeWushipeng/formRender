@@ -1,7 +1,7 @@
 {
   "name": "hr-form-render",
   "description": "A generator and controller of form base on form-making.",
-  "version": "0.1.51",
+  "version": "0.1.52",
   "author": "wushipeng",
   "license": "GPL",
   "keywords": [
@@ -57,7 +57,8 @@
     "rollup-plugin-uglify-es": "0.0.1",
     "rollup-plugin-vue": "^3.0.0",
     "sass-loader": "^7.3.1",
-    "terser-webpack-plugin": "^1.2.4",
+    "terser-webpack-plugin": "^1.4.5",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "vue-template-compiler": "^2.6.5"
   },
   "babel": {

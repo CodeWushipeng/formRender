@@ -133,7 +133,7 @@
         };
         // return
         queryFlowDetail(params).then(res => {
-          // debugger
+          // 
           console.log('res', res)
           const {rspCode} = res.header;
           if (rspCode == RES_OK) {
@@ -230,7 +230,7 @@
       },
       // 上一节点
       prev() {
-        debugger
+        
         this.configdata.rollbackData = {};
         // rollbackData 回退数据处理：01-清除，02-保留不处理
         const {rollback, rollbackData, returnNode} = this.data;
@@ -382,7 +382,7 @@
         }
 
         if (type == FG.DOING) {
-          debugger
+          
           const nodePromise = this.$refs.renderForm.getData();
           // 执行节点
           nodePromise.then(data => {

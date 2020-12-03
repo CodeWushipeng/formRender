@@ -34,7 +34,7 @@ export function handleRemoteFn(fn) {
       let fns = eval("(" + fn + ")");
       // console.log('fns',typeof fns)
       fns(request, function (tableCf) {
-        debugger
+        
         console.log('tableCf', tableCf)
         if (tableCf) {
           resolve(tableCf)

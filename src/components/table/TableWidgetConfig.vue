@@ -311,7 +311,7 @@ export default {
       this.data.tableCode = temTableCfg.listCode
       this.dialogTableVisible = false
       this.tableCodeCf.tableCodeFn =
-        'function mian(currentObj, request, callBack) {debugger;}'
+        'function mian(currentObj, request, callBack) {;}'
     },
     handleDisplayColumns(configdata) {
       if (configdata && configdata.list[0]) {
