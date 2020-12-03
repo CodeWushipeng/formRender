@@ -63,7 +63,7 @@ export default {
               var inputList = document.querySelectorAll("#radioDiv input");
               for(var i=0;i<inputList.length;i++){//循环数组
                   if(inputList[i].checked){//判断当前项是否被选中
-                      //debugger
+                      //
                       //已选中的操作，获取选中的值
                       document.querySelectorAll("#radioDiv input")[i].click()
                       document.querySelectorAll("#radioDiv input")[i].focus()
@@ -94,7 +94,7 @@ export default {
       dataModel: {
           deep: true,
           handler (val) {
-            //debugger
+            //
               this.models[this.widget.model] = val
 
               /*this.$emit('update:models', {
@@ -107,7 +107,7 @@ export default {
           deep: true,
           handler (val) {
               //console.log("models===",val)
-              //debugger
+              //
               this.dataModel = val[this.widget.model]
           }
       }

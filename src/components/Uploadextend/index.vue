@@ -249,7 +249,7 @@ export default {
         if((file.name).indexOf(".doc") > -1 | (file.name).indexOf(".docx") > -1){
             reader.readAsArrayBuffer(file)
             reader.onload  = (e) => {
-                debugger
+                
                 /*let blob = new Blob([e.target.result], {
                     type: `application/msword` //word文档为msword,pdf文档为pdf
                 });*/
@@ -268,7 +268,7 @@ export default {
 
                     this.editIndex = -1
                 } else {
-                    debugger
+                    
                     this.fileList.push({
                         key,
                         url: e.target.result,
@@ -282,7 +282,7 @@ export default {
         }else{
             reader.readAsDataURL(file)
             reader.onload = () => {
-                debugger
+                
                 url=reader.result.substring(reader.result.indexOf(',')+1);
                 var imgUrl='data:image/png;base64,'+url
 
@@ -321,7 +321,7 @@ export default {
       this.$refs.uploadInput.click()
     },
     handleMeitu (key) {
-        debugger
+        
       this.$emit('on-meitu', this.fileList.findIndex(item => item.key === key))
     },
     handleAdd () {
@@ -331,7 +331,7 @@ export default {
       }
     },
     handlePreviewFile (key) {
-      debugger
+      
       if(this.uploadtype == "imageupload"){
           this.viewer && this.viewer.destroy()
           this.uploadId = 'upload_' + new Date().getTime()

@@ -67,7 +67,7 @@
             },
             // 提取函数的返回数据
             solve(inputConfig){
-                debugger
+                
                 try {
                     const { platform, user, nodes, utils } = this.configdata;
                     // console.log('{ platform, user, nodes, utils} ',{ platform, user, nodes, utils} )

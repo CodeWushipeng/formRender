@@ -1,3 +1,4 @@
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 module.exports = {
   productionSourceMap: false,
   publicPath: './',
@@ -7,15 +8,15 @@ module.exports = {
       '/requestForward/dictionary': {
         target: 'http://192.168.2.179:31913',
         pathRewrite: {
-          '^/requestForward': ''
-        }
+          '^/requestForward': '',
+        },
       },
       // ====表单服务====
       '/requestForward/formDevelop': {
         target: 'http://192.168.2.179:32340',
         pathRewrite: {
-          '^/requestForward': ''
-        }
+          '^/requestForward': '',
+        },
       },
       '/formDevelop': {
         target: 'http://192.168.2.179:32340',
@@ -28,9 +29,9 @@ module.exports = {
       '/requestForward/listDevelop': {
         target: 'http://192.168.2.179:32340',
         pathRewrite: {
-          '^/requestForward': ''
-        }
-      }
+          '^/requestForward': '',
+        },
+      },
       // '/requestForward': {
       //   target: 'http://localhost:38081'
       // },
@@ -40,7 +41,7 @@ module.exports = {
     },
     overlay: {
       warnings: false,
-      errors: true
-    }
-  }
-}
+      errors: true,
+    },
+  },
+};

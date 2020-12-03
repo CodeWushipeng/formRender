@@ -270,7 +270,7 @@ let handlers = {
     },
     // 字段交易
     remoteValidate(i) {
-      // debugger
+      // 
       if (this.singleError || this.rangeError || this.conditionError) {
         return;
       }

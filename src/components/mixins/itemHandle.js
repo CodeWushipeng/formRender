@@ -180,7 +180,7 @@ let itemHandle = {
       //     this.$refs[this.widget.model].blur();
       //     this.$emit("el-change", this.widget.type);
       //   } else {
-      //     debugger
+      //     
       //     if (this.selectStatu) {
       //       this.$refs[this.widget.model].blur();
       //     } else {
@@ -279,7 +279,7 @@ let itemHandle = {
                   })
                   return
                 }
-                debugger
+                
                 let cascaderData = JSON.stringify(res.body.options)
                 localStorage.setItem('cascaderData', cascaderData)
                 let tempArr = res.body.options
@@ -303,7 +303,7 @@ let itemHandle = {
               })
               .catch(error => console.log(error))
           } else {
-            debugger
+            
             let fatherModel = this.widget.fatherModel
             let fatherData = this.models[fatherModel]
             let resultArr = []
@@ -326,7 +326,7 @@ let itemHandle = {
     },
     // 递归获取当前字典项层级
     getDicFloor(target,search) {
-      debugger
+      
       var result
       for (let index = 0; index < target.length; index++) {
         if (target[index].value == search || !target[index].children) {

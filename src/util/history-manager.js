@@ -71,7 +71,7 @@ export default {
   add(data, selectedKey) {
     return new Promise((resolve, reject) => {
       idb.openDB(idb.name).then(db => {
-        debugger
+        
         const trans = db.transaction(['history'], 'readwrite')
         const historyStore = trans.objectStore('history')
 
