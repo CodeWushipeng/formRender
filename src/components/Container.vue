@@ -530,6 +530,7 @@ export default {
         'input',
         'textarea',
         'number',
+        'counter',
         'radio',
         'checkbox',
         'time',

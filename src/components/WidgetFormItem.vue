@@ -96,7 +96,7 @@
         ></el-input>
       </template>
 
-      <template v-if="element.type == 'number'">
+      <template v-if="element.type == 'counter'">
         <el-input-number
           v-model="element.options.defaultValue"
           :disabled="element.options.disabled"

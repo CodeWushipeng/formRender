@@ -231,12 +231,14 @@
         </el-input>
       </template>
 
-      <template v-if="widget.type == 'number'">
+      <template v-if="widget.type == 'counter'">
         <el-input-number
           v-model="dataModel"
           :style="{ width: widget.options.width }"
+          :min="widget.options.min"
+          :max="widget.options.max"
           :step="widget.options.step"
-          controls-position="right"
+          :precision="widget.options.precision"
           :disabled="widget.options.disabled"
           @focus="comFocus"
           @blur="comBlur"

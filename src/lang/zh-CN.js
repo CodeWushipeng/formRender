@@ -28,7 +28,7 @@ export default {
       fields: {
         input: "单行文本",
         textarea: "多行文本",
-        number: "计数器",
+        counter: "计数器",
         radio: "单选框组",
         checkbox: "多选框组",
         time: "时间选择器",
@@ -152,6 +152,7 @@ export default {
         min: "最小值",
         max: "最大值",
         step: "步长",
+        precision: "精度",
         multiple: "是否多选",
         filterable: "是否可搜索",
         allowHalf: "允许半选",

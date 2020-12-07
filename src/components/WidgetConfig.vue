@@ -102,6 +102,12 @@
         <el-input-number v-model="data.options.step" :min="0" :max="100" :step="1"></el-input-number>
       </el-form-item>
       <el-form-item
+        :label="$t('fm.config.widget.precision')"
+        v-if="Object.keys(data.options).indexOf('precision')>=0"
+      >
+        <el-input-number v-model="data.options.precision" :min="0" :max="100" :step="1"></el-input-number>
+      </el-form-item>
+      <el-form-item
         :label="$t('fm.config.widget.multiple')"
         v-if="data.type=='select' || data.type=='imgupload' | data.type=='imageupload' |data.type=='fileupload' |data.type=='videoupload'"
       >
