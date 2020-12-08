@@ -7,7 +7,7 @@
     <!--tempValue: {{tempValue}}-->
     <!--<hr>-->
     <fm-generate-form
-      :remote="remoteFuncs"
+      :remote="remoteFuncs" v-loading="loading"
       :data="jsonData"
       :value="formdata"
       @isEnd="accept"
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { Loading } from "element-ui";
+// import { Loading } from "element-ui";
 import fmGenerateForm from "./GenerateForm";
 import { getFormList } from "../api/forms";
 import handler from "./mixins/renderHandle";
@@ -52,7 +52,7 @@ export default {
       tempValue: {}, //处理流控数据的变量
       formdata: {},
       dyData: {}, //动态数据
-      loadingInstance: null,
+      loading:false,
     };
   },
   created() {
@@ -60,31 +60,30 @@ export default {
     this._inits();
   },
   destroyed() {
-    // console.log("destroyed......")
-    console.error(
-      "===============================destroyed......==============================="
-    );
+    // console.error(
+    //   "===============================destroyed......==============================="
+    // );
   },
   computed: {
     nodesLength() {
       return this.configdata && this.configdata.list.length > 0;
     },
-    input_config() {
-      if (this.configdata && this.configdata.list.length > 0) {
-        const {
-          inputConfig,
-          checkStart,
-          nodeCode,
-          nextNode,
-        } = this.configdata.list[0];
-        return {
-          inputConfig,
-          checkStart,
-          nodeCode,
-          nextNode,
-        };
-      }
-    },
+    // input_config() {
+    //   if (this.configdata && this.configdata.list.length > 0) {
+    //     const {
+    //       inputConfig,
+    //       checkStart,
+    //       nodeCode,
+    //       nextNode,
+    //     } = this.configdata.list[0];
+    //     return {
+    //       inputConfig,
+    //       checkStart,
+    //       nodeCode,
+    //       nextNode,
+    //     };
+    //   }
+    // },
   },
   methods: {
     // 点击流控按钮时检测表单状态
@@ -96,19 +95,19 @@ export default {
       this.$emit("has-end",params)
     },
     showLoading() {
-      this.loadingInstance = Loading.service();
+      this.loading = true;
     },
     hideLoading() {
       setTimeout(() => {
-        this.loadingInstance.close();
+        this.loading = false
       }, 500);
     },
     _inits() {
       console.log("_inits===============================");
 
       // 1
-      const { platform, user, list, rollbackData } = this.configdata;
-      this.dyData = { platform, user };
+      const { platform, user, indata, list, rollbackData } = this.configdata;
+      this.dyData = { platform, user,indata };
 
       // 2 判断是否有回退数据
       this.tempValue =
@@ -126,7 +125,7 @@ export default {
           });
           return;
         }
-        // this.url,
+        this.showLoading();
         getFormList({formCode: inputFormCode })
           .then((res) => {
             console.log("=====form-making-secondary===res============", res);
@@ -151,7 +150,7 @@ export default {
                 this.handleDynamicData(temp);
                 this.handleDynamicInFlow(temp);
                 this.jsonData = temp;
-                
+
                 console.log("jsonData", this.jsonData);
               } else {
                 this.$notify.error({
@@ -164,18 +163,22 @@ export default {
                 title: "消息",
                 message: "查询失败",
               });
-            }
+            };
+            this.hideLoading();
           })
           .catch((error) => {
+            this.hideLoading();
             console.log(error);
           });
       }
     },
     // 处理流控数据中带有的动态数据
     handleDynamicInFlow(temp) {
-      console.log(this.tempValue, this.formdata);
+      // debugger
+      // console.log(this.tempValue, this.formdata);
       var platform = this.dyData.platform;
       var user = this.dyData.user;
+      var indata = this.dyData.indata;
       let formLists = temp.list;
       for (let i = 0; i < formLists.length; i++) {
         for (let key in this.tempValue) {
@@ -197,8 +200,10 @@ export default {
     },
     //  动态数据处理函数
     handleDynamicData(temp) {
+      // debugger
       var platform = this.dyData.platform;
       var user = this.dyData.user;
+      var indata = this.dyData.indata;
       let formLists = temp.list;
       // console.log(this.dyData);
       for (let i = 0; i < formLists.length; i++) {
@@ -248,11 +253,12 @@ export default {
     changeJsonData(outputFromCode, outputCofig = {}) {
       console.log("outputFromCode", outputFromCode);
       if (outputFromCode) {
-        // this.showLoading();
+        this.showLoading();
       } else {
         return false;
       }
-      getFormList(this.url, { formCode: outputFromCode })
+      // getFormList(this.url, { formCode: outputFromCode })
+      getFormList({ formCode: outputFromCode })
         .then((res) => {
           const { rspCode } = res.header;
           // this.hideLoading();
@@ -305,17 +311,18 @@ export default {
     // 处理配置数据js代码
     _solveConfigJs(JsCode) {
       try {
-        const { platform, user, nodes, utils } = this.configdata;
-        console.log("{ platform, user, nodes, utils} ", {
+        const { platform, user,indata, nodes, utils } = this.configdata;
+        console.log("{ platform, user,indata, nodes, utils} ", {
           platform,
           user,
+          indata,
           nodes,
           utils,
         });
         // console.log('{ configdata} ',JSON.stringify(this.configdata))
-        const resCode = `function _execute(user, platform, nodes, utils){  ${JsCode}  return main(...arguments);}`;
+        const resCode = `function _execute(user, platform, indata, nodes, utils){  ${JsCode}  return main(...arguments);}`;
         const exeCode = eval("(" + resCode + ")");
-        let rs = exeCode(user, platform, nodes, utils);
+        let rs = exeCode(user, platform, indata, nodes, utils);
         return rs;
       } catch (error) {
         console.log(JsCode);

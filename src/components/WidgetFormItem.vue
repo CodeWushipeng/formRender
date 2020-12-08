@@ -383,7 +383,8 @@
 <script>
 import FmUpload from "./Upload";
 import { EventBus } from "../util/event-bus.js";
-import request from '../demo/demo3/js/request'
+// import request from '../demo/demo3/js/request'
+import request from '../demo/commonjs/request'
 export default {
   props: ["element", "select", "index", "data"],
   components: {
