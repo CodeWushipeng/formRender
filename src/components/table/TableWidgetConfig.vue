@@ -122,8 +122,7 @@
 
 <script>
 import Draggable from 'vuedraggable'
-import request from '../../util/request'
-import { deepClone } from '../../util/index'
+import { deepClone,dateFormat } from '../../util/index'
 import CusDialog from '../CusDialog'
 import { getTableList } from '../../api/forms'
 
@@ -238,32 +237,7 @@ export default {
     getTableListData() {
       this.dialogTableVisible = true
       getTableList({
-          //"gloSeqNo": "10A07"+ dateFormat("YYYYmmdd", new Date()) + (new Date()).getTime().toString().substr(-4,4),
-          "gloSeqNo": "10A072020"+ (new Date()).getTime().toString().substr(-8,8),
-          "reqSeqNo": dateFormat("YYYYmmddHHMMSS", new Date()) + (new Date()).getTime().toString().substr(-3,3),
-          "reqTime": dateFormat("YYYYmmddHHMMSS", new Date()),
-          "channel": "channel",
-          "projectId": "subProjectId",
-          "subProjectId": "subProjectId",
-          "terminalCode": "terminalCode",
-          "branchId": "966999",
-          "serviceId": "serviceId",
-          "serviceName": "test",
-          "serviceGroupid": "serviceGroupid",
-          "sourceSysId": "sourceSysId",
-          "consumerId": "consumerId",
-          "pageIndex": pageIndex || 0,
-          "pageSize": pageSize || 999,
-          "mac": "mac",
-          "keyId": "keyId",
-          "extend": {
-              "TranTeller": "99988999"
-          },
-          "userInfo": {
-              "username": "123",
-              "role": []
-          },
-        //listName: this.tablePageCf.searchValue,
+        listName: this.tablePageCf.searchValue,
       })
         .then((res) => {
           console.log(res)

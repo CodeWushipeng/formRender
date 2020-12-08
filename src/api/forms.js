@@ -1,4 +1,4 @@
-import request from '../demo/demo3/js/request'
+import request from '../demo/commonjs/request'
 const urlPrefix = '/requestForward';
 
 //查询表单列表

@@ -24,7 +24,7 @@
 import fmGenerateForm from "./GenerateForm";
 import { getFormList } from "../api/forms";
 import handler from "./mixins/renderHandle";
-import { RES_OK } from "@/api/config";
+import { RES_OK,RES_OK_SEC} from "@/api/config";
 export default {
   name: "render-form",
   components: {
@@ -261,8 +261,8 @@ export default {
       getFormList({ formCode: outputFromCode })
         .then((res) => {
           const { rspCode } = res.header;
-          // this.hideLoading();
-          if (rspCode == RES_OK) {
+          this.hideLoading();
+          if (rspCode == RES_OK || rspCode == RES_OK_SEC) {
             const rest = res.body.define;
             if (rest && rest.records) {
               // const formContent = rest.records[0]["formContent"];
@@ -304,8 +304,8 @@ export default {
           }
         })
         .catch((err) => {
+          this.hideLoading();
           throw new Error(err);
-          // this.hideLoading();
         });
     },
     // 处理配置数据js代码
