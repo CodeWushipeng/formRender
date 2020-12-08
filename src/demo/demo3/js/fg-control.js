@@ -26,6 +26,7 @@ class FG {
     // 数据
     this.user = {};
     this.platform = {};
+    this.indata = {}; // 启动数据
     this.nodes = {};
     this.list = {};
     this.utils = {};
@@ -38,7 +39,15 @@ class FG {
    * @param object
    */
   setData(key, value) {
-    this[key] = value;
+    if (typeof key == 'string') {
+      this[key] = value;
+    }
+    if (isPlainObject(key)) { // 对象
+      let keysArr = Object.keys(key);
+      keysArr.forEach(k => {
+        this[k] = key[k];
+      })
+    }
   }
 
   /**
@@ -103,22 +112,53 @@ class FG {
   }
 
   /**
+   * @param _this 当前组件对象
+   * @param fn 字符串main函数
+   * @param requestObj axios对象
+   * @returns {Promise<any>}
+   */
+  solveInitConfigJs(_this, fn, requestObj) {
+    const platform = this.platform;
+    const user = this.user;
+    const utils = this.utils;
+    const request = requestObj;
+    return new Promise((resolve, reject) => {
+      try {
+        let fns = eval("(" + fn + ")");
+        fns.call(_this, user, platform, utils, request, function (callData) {
+          debugger
+          console.log('callData', callData)
+          if (callData) {
+            resolve(callData)
+          } else {
+            reject("没有返回数据")
+          }
+        });
+      } catch (err) {
+        throw new Error(err)
+      }
+    })
+  }
+
+  /**
    * 处理配置数据js代码
    * @param inputConfigJs
    * @returns {*}
    * @private
    */
   _solveConfigJs(JsCode) {
+    debugger
     try {
       const platform = this.platform;
       const user = this.user;
+      const indata = this.indata;
       const nodes = this.nodes;
       const utils = this.utils;
-      console.log('{ platform, user, nodes, utils} ', {platform, user, nodes, utils})
-      const resCode = `function _execute(user, platform, nodes, utils){  ${JsCode}  return main(...arguments);}`;
+      console.log('{ user, platform, indata, nodes, utils} ', {user, platform, indata, nodes, utils})
+      const resCode = `function _execute(user, platform, indata, nodes, utils){  ${JsCode}  return main(...arguments);}`;
       // console.log('resCode',resCode)
       const exeCode = eval("(" + resCode + ")");
-      let rs = exeCode(user, platform, nodes, utils);
+      let rs = exeCode(user, platform, indata, nodes, utils);
       return rs;
     } catch (error) {
       console.log('===inputConfigJs===', JsCode)
@@ -148,7 +188,7 @@ class FG {
 
   /**
    * 获取所有节点数据
-   * @returns {{}|*}
+   * @returns {*}
    */
   getNodes() {
     return this.nodes;
@@ -177,6 +217,11 @@ class FG {
   getProcess() {
     return this.process || [];
   }
+}
+
+// 判断对象
+function isPlainObject(val) {
+  return Object.prototype.toString.call(val) === '[object Object]'
 }
 
 // 返回单例

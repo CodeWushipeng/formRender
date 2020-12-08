@@ -56,8 +56,9 @@
   </div>
 </template>
 <script>
-  import  { oneCase,Toolkit,Api} from './js/core/index';
-  import request from './js/request';
+  // import  { oneCase,Toolkit,Api} from './js/core/index';
+  import  { oneCase,Toolkit,Api} from 'fg-control';
+  import request from '../commonjs/request';
   import flowDebug from './flow-debug';
   import flowDialog from './flow-dialog';
   import {queryFlowDetail} from "@/api/flows";
@@ -311,14 +312,15 @@
         const $refs = this.$refs.renderForm;
         if ($refs) {
           $refs.getData().then(data => {
-            console.log("data...", data)
+            // console.log("data...", data)
             this.formData = data;
           })
         } else {
-          this.$notify.info({
-            title: '消息',
-            message: '当前节点没有表单,不能获取数据'
-          });
+          // this.$notify.info({
+          //   title: '消息',
+          //   message: '当前节点没有表单,不能获取数据'
+          // });
+          alert("当前节点没有表单,不能获取数据")
         }
       },
       // 上一节点

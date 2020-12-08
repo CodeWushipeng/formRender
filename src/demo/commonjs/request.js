@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {dateFormat} from '../../../util/index'
+import {dateFormat} from '../../util/index'
 import { MessageBox, Message } from 'element-ui';
 import { Loading } from 'element-ui'; //加载中
 
