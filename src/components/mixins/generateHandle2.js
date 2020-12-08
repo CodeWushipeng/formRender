@@ -1,6 +1,7 @@
 import { RES_OK } from '@/api/config';
 import { getTrade, getFormList } from '@/api/forms';
 import storage from 'good-storage';
+import {dateFormat} from "../../util";
 
 const KEY_ENTER = 13;
 const KEY_LEFT = 37;
@@ -402,11 +403,31 @@ let handlers = {
           getTrade(url, {
             body: postData,
             header: {
-              pageIndex: 1,
-              pageSize: 999,
-              gloSeqNo: new Date().getTime(),
-              reqSeqNo: new Date().getTime(),
-              reqTime: new Date().getTime(),
+                //"gloSeqNo": "10A07"+ dateFormat("YYYYmmdd", new Date()) + (new Date()).getTime().toString().substr(-4,4),
+                "gloSeqNo": "10A072020"+ (new Date()).getTime().toString().substr(-8,8),
+                "reqSeqNo": dateFormat("YYYYmmddHHMMSS", new Date()) + (new Date()).getTime().toString().substr(-3,3),
+                "reqTime": dateFormat("YYYYmmddHHMMSS", new Date()),
+                "channel": "channel",
+                "projectId": "subProjectId",
+                "subProjectId": "subProjectId",
+                "terminalCode": "terminalCode",
+                "branchId": "966999",
+                "serviceId": "serviceId",
+                "serviceName": "test",
+                "serviceGroupid": "serviceGroupid",
+                "sourceSysId": "sourceSysId",
+                "consumerId": "consumerId",
+                "pageIndex": pageIndex || 0,
+                "pageSize": pageSize || 999,
+                "mac": "mac",
+                "keyId": "keyId",
+                "extend": {
+                    "TranTeller": "99988999"
+                },
+                "userInfo": {
+                    "username": "123",
+                    "role": []
+                },
             },
           })
             .then(res => {

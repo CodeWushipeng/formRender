@@ -1,6 +1,7 @@
 import request from "../../util/request";
 import { RES_OK } from "@/api/config";
 import { getTrade, getTableList } from "@/api/forms";
+import {dateFormat} from "../../util";
 let handlers = {
   props: {},
   data() {
@@ -294,11 +295,31 @@ let handlers = {
         getTrade(url, {
           body: postData,
           header: {
-            pageIndex: 1,
-            pageSize: 1,
-            gloSeqNo: new Date(),
-            reqSeqNo: "sit anim",
-            reqTime: "officia ad anim",
+              //"gloSeqNo": "10A07"+ dateFormat("YYYYmmdd", new Date()) + (new Date()).getTime().toString().substr(-4,4),
+              "gloSeqNo": "10A072020"+ (new Date()).getTime().toString().substr(-8,8),
+              "reqSeqNo": dateFormat("YYYYmmddHHMMSS", new Date()) + (new Date()).getTime().toString().substr(-3,3),
+              "reqTime": dateFormat("YYYYmmddHHMMSS", new Date()),
+              "channel": "channel",
+              "projectId": "subProjectId",
+              "subProjectId": "subProjectId",
+              "terminalCode": "terminalCode",
+              "branchId": "966999",
+              "serviceId": "serviceId",
+              "serviceName": "test",
+              "serviceGroupid": "serviceGroupid",
+              "sourceSysId": "sourceSysId",
+              "consumerId": "consumerId",
+              "pageIndex": 1,
+              "pageSize": 1,
+              "mac": "mac",
+              "keyId": "keyId",
+              "extend": {
+                  "TranTeller": "99988999"
+              },
+              "userInfo": {
+                  "username": "123",
+                  "role": []
+              },
           },
         })
           .then((res) => {
@@ -334,16 +355,31 @@ let handlers = {
           listCode: data.tabCode,
         },
         header: {
-          gloSeqNo: 1594800028104,
-          pageIndex: 0,
-          pageSize: 999,
-          projectId: "quis consectetur",
-          reqSeqNo: "1",
-          reqTime: "1",
-          serviceGroupid: "mollit sed",
-          serviceId: "officia non",
-          serviceName: "1",
-          subProjectId: "occaecat tempor dolor enim ex",
+            //"gloSeqNo": "10A07"+ dateFormat("YYYYmmdd", new Date()) + (new Date()).getTime().toString().substr(-4,4),
+            "gloSeqNo": "10A072020"+ (new Date()).getTime().toString().substr(-8,8),
+            "reqSeqNo": dateFormat("YYYYmmddHHMMSS", new Date()) + (new Date()).getTime().toString().substr(-3,3),
+            "reqTime": dateFormat("YYYYmmddHHMMSS", new Date()),
+            "channel": "channel",
+            "projectId": "subProjectId",
+            "subProjectId": "subProjectId",
+            "terminalCode": "terminalCode",
+            "branchId": "966999",
+            "serviceId": "serviceId",
+            "serviceName": "test",
+            "serviceGroupid": "serviceGroupid",
+            "sourceSysId": "sourceSysId",
+            "consumerId": "consumerId",
+            "pageIndex": pageIndex || 0,
+            "pageSize": pageSize || 999,
+            "mac": "mac",
+            "keyId": "keyId",
+            "extend": {
+                "TranTeller": "99988999"
+            },
+            "userInfo": {
+                "username": "123",
+                "role": []
+            },
         },
       })
         .then((res) => {

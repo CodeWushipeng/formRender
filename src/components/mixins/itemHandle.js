@@ -1,5 +1,6 @@
 import { getDic } from '@/api/forms'
 import { RES_OK } from '@/api/config'
+import {dateFormat} from "../../util";
 let itemHandle = {
   data() {
     return {
@@ -239,26 +240,31 @@ let itemHandle = {
               //   reqTime: 'officia ad anim',
               // }
               header: {
-                antiWeightSeqNo: 'pariatur d',
-                gloSeqNo: 'culpa dolor ',
-                pageIndex: 2,
-                pageSize: 10,
-                projectId: 'incididunt',
-                reqSeqNo: 'in et',
-                reqTime: 'in esse reprehen',
-                serviceGroupid: 'eiusmod in magna',
-                serviceId: 'cupidatat',
-                serviceName: 'esse qui occaecat enim aute',
-                subProjectId: 'enim',
-                userInfo: {
-                  role: [
-                    'magna officia pariatur ut ipsum',
-                    'labore sit',
-                    'adipisicing Ut sunt aliqua',
-                    'Ut Duis dolore tempor dolor'
-                  ],
-                  username: 'in mollit'
-                }
+                  //"gloSeqNo": "10A07"+ dateFormat("YYYYmmdd", new Date()) + (new Date()).getTime().toString().substr(-4,4),
+                  "gloSeqNo": "10A072020"+ (new Date()).getTime().toString().substr(-8,8),
+                  "reqSeqNo": dateFormat("YYYYmmddHHMMSS", new Date()) + (new Date()).getTime().toString().substr(-3,3),
+                  "reqTime": dateFormat("YYYYmmddHHMMSS", new Date()),
+                  "channel": "channel",
+                  "projectId": "subProjectId",
+                  "subProjectId": "subProjectId",
+                  "terminalCode": "terminalCode",
+                  "branchId": "966999",
+                  "serviceId": "serviceId",
+                  "serviceName": "test",
+                  "serviceGroupid": "serviceGroupid",
+                  "sourceSysId": "sourceSysId",
+                  "consumerId": "consumerId",
+                  "pageIndex": pageIndex || 0,
+                  "pageSize": pageSize || 999,
+                  "mac": "mac",
+                  "keyId": "keyId",
+                  "extend": {
+                      "TranTeller": "99988999"
+                  },
+                  "userInfo": {
+                      "username": "123",
+                      "role": []
+                  },
               }
             })
               .then(res => {
