@@ -1,4 +1,4 @@
-import request from '../demo/demo3/js/request'
+import request from '../demo/commonjs/request'
 
 //查询节点明细
 export function queryFlowDetail(data) {

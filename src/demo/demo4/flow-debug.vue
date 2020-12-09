@@ -120,9 +120,8 @@
 </template>
 
 <script>
-  // import getFG from "./js/fg-control";
-  // import getFG from "fg-control";
-  import {oneCase} from './js/core/index';
+  // import {oneCase} from './js/core/index';
+  import {oneCase} from "fg-control";
   import {flowMixin} from './js/mixins'
   import flowNode from './flow-node'
   const grid = new oneCase();

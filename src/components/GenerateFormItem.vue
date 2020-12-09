@@ -615,7 +615,7 @@
               width="600px"
       >
         <el-form v-if="widget.options.spaceType" :model="spaceForm" :rules="spaceRrules" ref="spaceForm" >
-          <el-form-item v-if ="formDisabled.xunHuanLiang" label="频率类型":label-width="spaceFormLabelWidth"  prop="xunHuanLiang">
+          <el-form-item v-if ="formDisabled.xunHuanLiang" label="频率类型" :label-width="spaceFormLabelWidth"  prop="xunHuanLiang">
             <el-radio-group ref="xunHuanLiangRef" v-model="spaceForm.xunHuanLiang" @change="xunHuanLiangChange">
               <el-radio
                       :label="item.value"
@@ -636,7 +636,7 @@
             <el-input-number v-model="spaceForm.meijitian_number" :min="1" :max="100" ></el-input-number>
             <label>{{xunHuanDanwei}}</label>
           </el-form-item>
-          <el-form-item v-if ="formDisabled.gongzuori && widget.options.spaceType != 'qiXianConfigPop'" label="工作日":label-width="spaceFormLabelWidth" prop="gongzuori">
+          <el-form-item v-if ="formDisabled.gongzuori && widget.options.spaceType != 'qiXianConfigPop'" label="工作日" :label-width="spaceFormLabelWidth" prop="gongzuori">
             <el-radio-group v-model="spaceForm.gongzuori">
               <el-radio  label="A">A-实际工作日</el-radio>
               <el-radio  label="N">N-下一个工作日</el-radio>
@@ -644,7 +644,7 @@
             </el-radio-group>
           </el-form-item>
 
-          <el-form-item v-if ="formDisabled.jutiri && widget.options.spaceType != 'qiXianConfigPop'" label="具体日":label-width="spaceFormLabelWidth" prop="jutiri">
+          <el-form-item v-if ="formDisabled.jutiri && widget.options.spaceType != 'qiXianConfigPop'" label="具体日" :label-width="spaceFormLabelWidth" prop="jutiri">
             <el-radio-group v-model="spaceForm.jutiri" @change="jutiriChange">
               <el-radio  label="F">F-第一天</el-radio>
               <el-radio  label="E">E-最后一天</el-radio>
@@ -652,14 +652,14 @@
             </el-radio-group>
           </el-form-item>
 
-          <el-form-item v-if ="formDisabled.jiyuefen && widget.options.spaceType != 'qiXianConfigPop'" label="季月份":label-width="spaceFormLabelWidth" prop="jiyuefen">
+          <el-form-item v-if ="formDisabled.jiyuefen && widget.options.spaceType != 'qiXianConfigPop'" label="季月份" :label-width="spaceFormLabelWidth" prop="jiyuefen">
             <el-radio-group v-model="spaceForm.jiyuefen">
               <el-radio  label="F">F-第一个月</el-radio>
               <el-radio  label="M">M-第二个月</el-radio>
               <el-radio  label="E">E-第三个月</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item v-if ="formDisabled.jutiri_nian && widget.options.spaceType != 'qiXianConfigPop'" label="具体日":label-width="spaceFormLabelWidth" prop="jutiri_nian">
+          <el-form-item v-if ="formDisabled.jutiri_nian && widget.options.spaceType != 'qiXianConfigPop'" label="具体日" :label-width="spaceFormLabelWidth" prop="jutiri_nian">
             <el-radio-group v-model="spaceForm.jutiri_nian" @change="jutiri_nianChange">
               <el-radio  label="R">R-指定日期</el-radio>
               <el-radio  label="F">F-第一天</el-radio>
@@ -884,7 +884,8 @@ import { getDicTwo } from '@/api/forms'
 import { getFormConfigDataById } from '../components/table/tableAction'
 import itemHandle from './mixins/itemHandle.js'
 import hrSelect from './base-components/my-select/select'
-import request from '../demo/demo3/js/request'
+// import request from '../demo/demo3/js/request'
+import request from '../demo/commonjs/request'
 export default {
   props: ['widget', 'models', 'rules', 'remote'], // widget为当前组件json数据
   components: {

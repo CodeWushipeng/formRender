@@ -1,19 +1,23 @@
-import request from './request';
+import request from '../../commonjs/request';
+import Vue from "vue"
+const Bus=new Vue();
 /**
  *
  * @param node  返回节点
  * @param execData 执行的流程数组
  * @returns {*}
  */
-export function handleBackNode(node,execData) {
+export function handleBackNode(node, execData) {
   let ret = null;
   // 判断上一节点是否在当前的返回列表中
-  let backNodes = node.includes(",") ?  node.split(",") : [node];
+  let backNodes = [];
+  backNodes = node.includes(",") ?  node.split(",") : [node];
   function findBack() {
     if (execData.length > 0) {
       let lastNode = execData.pop();
       if (backNodes.includes(lastNode) == false) {
-        findBack(execData, backNodes)
+        // findBack(execData, backNodes)
+        findBack()
       } else {
         ret = lastNode
       }
@@ -34,7 +38,7 @@ export function handleRemoteFn(fn) {
       let fns = eval("(" + fn + ")");
       // console.log('fns',typeof fns)
       fns(request, function (tableCf) {
-        
+
         console.log('tableCf', tableCf)
         if (tableCf) {
           resolve(tableCf)
@@ -69,8 +73,9 @@ export const beforeRoute = {
   }
 }
 
-
-
+export function alert(msg) {
+  Bus.$message.error(msg || '操作失败了，请重试！');
+}
 
 
 

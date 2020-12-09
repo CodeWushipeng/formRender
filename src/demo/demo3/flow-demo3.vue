@@ -5,18 +5,18 @@
       <!--flowType:{{flowType}}-->
       <!--btnIndex:{{btnIndex}} <br>-->
       <!--Rank_BTNS:{{displayBtn()}} <br>-->
+      <!--{{leftCol}} <br>-->
+      <!--{{rightCol}} <br>-->
+      <!--data :{{data}}-->
+      <!--list :{{configdata.list}}-->
+      <!--<br />-->
+      <!--rollbackData :{{configdata.rollbackData}} <br>-->
+      <!--<hr>-->
+      <!--configdata:{{configdata}}-->
+      <!--<hr>-->
+      <!--data:{{data}}-->
+      <!--<hr>-->
     </div>
-    <!--{{leftCol}} <br>-->
-    <!--{{rightCol}} <br>-->
-    <!--data :{{data}}-->
-    <!--list :{{configdata.list}}-->
-    <!--<br />-->
-    <!--rollbackData :{{configdata.rollbackData}} <br>-->
-    <!--<hr>-->
-    <!--configdata:{{configdata}}-->
-    <!--<hr>-->
-    <!--data:{{data}}-->
-    <!--<hr>-->
     <div class="buss-container">
       <div class="buss" id="buss" :style="bussStyle">
         <div :class="mainClass">
@@ -59,18 +59,18 @@
   </div>
 </template>
 <script>
-  import request from './js/request';
+  import request from '../commonjs/request';
   import flowDebug from './flow-debug';
   import flowDialog from './flow-dialog';
-  import getFG from 'fg-control';
-  // import getFG from "./js/fg-control";
+  // import getFG from 'fg-control';
+  import getFG from "./js/fg-control";
   import {queryFlowDetail} from "@/api/flows";
   import {RES_OK} from "@/api/config";
   import flowMixin from './js/mixins';
-  import directives from './js/directives';
-  import {handleBackNode, handleRemoteFn, beforeRoute} from './js/util';
-  import {platform, user} from "./js/mock-data";
-
+  import directives from './js/drag-directives';
+  import {handleBackNode, handleRemoteFn, beforeRoute,alert} from './js/util';
+  import {platform, user,requestASyns} from "./js/mock-data";
+  // jg wb
   const FG = new getFG();
 
   export default {
@@ -87,41 +87,29 @@
     data() {
       return {
         formData: {}, // 当前表单数据
-        // 当前节点数据
-        data: {},
+        data: {}, // 当前节点数据
         // =========数据显示================
         records: [], // 流程数据
         flowType:null,
-        // url: "",
         // 流控数据
         configdata: {
           platform,
           user,
+          indata:FG.indata ? FG.indata : {},
+          // indata:{key:'here is no data'},
           utils: {},
           nodes: {},
           list: [],
           rollbackData: {}
         },
-        remoteFuncs: {}
+        remoteFuncs: {},
       };
     },
     created() {
       this.initflow();
       this.openDebug(this);
     },
-    watch: {
-      "configdata.list": {
-        deep: true,
-        handler(list) {
-          this.resetComponent();
-        }
-      },
-      debug: function (val, oldVal) {
-        console.log('new: %s, old: %s', val, oldVal)
-      },
-    },
     methods: {
-
       initflow() {
         const query = this.$route.query;
         // const flowCode = this.$route.name;
@@ -129,11 +117,10 @@
         // console.log("this.$routes.query:", this.$route.query);
         let params = {
           // flowCode:flowCode.replace('buss','')
-          flowCode: query.id
+          flowCode: query.id,
         };
-        // return
+        // Promise.resolve(result).then(res=>{
         queryFlowDetail(params).then(res => {
-          // 
           console.log('res', res)
           const {rspCode} = res.header;
           if (rspCode == RES_OK) {
@@ -149,33 +136,51 @@
             this.records = list;
 
             // 挂载数据
-            FG.setData("user", user);
-            FG.setData("platform", platform);
-            FG.setData("list", list); // 流控数据
-            FG.setData("utils", funcObject); // 公共函数
+            // FG.setData("user", user);
+            // FG.setData("platform", platform);
+            // FG.setData("list", list); // 流控数据
+            // FG.setData("utils", funcObject); // 公共函数
+
+            FG.setData({
+              user:user,
+              platform:platform,
+              list:list, // 流控数据
+              utils:funcObject,// 公共函数
+            })
 
             // 启动开始节点
             const startNode = FG.getStartNode();
-            const {checkStart, nodeCode} = startNode;
-            if (FG.checkStart(checkStart)) {
-              // this.configdata.list = [startNode];
-              // this.configdata.utils = funcObject;
-              Object.assign(this.configdata, {
-                list: [startNode],
-                utils: funcObject,
-              })
-              this.data = startNode;
-              FG.ISOK = true;
-              FG.pushProcess(nodeCode);
-              console.log(`开始节点${nodeCode},检查通过,可以执行`);
-              this.submit();
-            } else {
-              alert(`当前节点${nodeCode}不能执行`);
-            }
+            const {checkStart, nodeCode, initFunc} = startNode;
+            // const initDataFunc = requestASyns
+            this.startSetting(initFunc).then(indata=>{
+              debugger
+              FG.setData("indata", indata); // 启动数据
+              if (FG.checkStart(checkStart)) {
+                Object.assign(this.configdata, {
+                  list: [startNode],
+                  indata: indata,
+                  utils: funcObject,
+                })
+                this.data = startNode;
+                FG.ISOK = true;
+                FG.pushProcess(nodeCode);
+                console.log(`开始节点${nodeCode},检查通过,可以执行`);
+                this.submit();
+              } else {
+                alert(`当前节点${nodeCode}不能执行`);
+              }
+            })
           }
         }).catch(error => {
           throw new Error(error);
         });
+      },
+      startSetting(fn){
+        if(fn){
+          return FG.solveInitConfigJs(this,fn,request)
+        }else{
+          return Promise.resolve({})
+        }
       },
       config(next_node) {
         if (next_node) {
@@ -230,7 +235,7 @@
       },
       // 上一节点
       prev() {
-        
+
         this.configdata.rollbackData = {};
         // rollbackData 回退数据处理：01-清除，02-保留不处理
         const {rollback, rollbackData, returnNode} = this.data;
@@ -382,7 +387,7 @@
         }
 
         if (type == FG.DOING) {
-          
+
           const nodePromise = this.$refs.renderForm.getData();
           // 执行节点
           nodePromise.then(data => {
@@ -438,11 +443,14 @@
             }
             if (commitType == FG.COMMIT_ORDER) {
               // 订单提交
-              this.$refs.flowDialog.show();
-              // this.next(nodeCode)
+              nodePromise.then(data => {
+                let _response = Object.assign({}, data);
+                this.saveData(data, _response, nodeCode)
+              }).then(res=>{
+                this.$refs.flowDialog.show();
+              })
             }
           }).catch(error => {
-            // Data verification failed
             throw new Error(error);
           });
         }
@@ -464,7 +472,6 @@
           this.$refs.renderForm.getData().then(data => {
             console.log("data...", data)
             this.formData = data;
-            this.$refs.flowDebug.show();
           })
         } else {
           this.$notify.info({
@@ -473,7 +480,18 @@
           });
         }
       },
-    }
+    },
+    watch: {
+      "configdata.list": {
+        deep: true,
+        handler(list) {
+          this.resetComponent();
+        }
+      },
+      debug: function (val, oldVal) {
+        console.log('new: %s, old: %s', val, oldVal)
+      },
+    },
   }
 </script>
 
