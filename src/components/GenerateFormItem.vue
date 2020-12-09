@@ -693,7 +693,8 @@
       <!--{{widget.options.imagesrc}}&&&
       {{imagesrc}}-->
       <template v-if="widget.type == 'imageshow'">
-        <el-image :src="imagesrc"></el-image>
+        <el-image :src="widget.options.imagesrc" :style="{width: widget.options.size.width + 'px' , height: widget.options.size.height + 'px'}"
+                  :preview-src-list="srcList" lazy></el-image>
       </template>
 
       <template v-if="widget.type == 'switch'">
@@ -898,8 +899,8 @@ export default {
   mixins: [itemHandle],
   data() {
     return {
-      imagesrc: require('../assets/wenjian.png'),
-      /*imagesrc: "",*/
+      srcList: [],
+      //imagesrc: require('http://192.168.2.179:32009/public//20201208/785912151519703040.jpg'),
       radioVisible: false,
       pingLuConfigPopVisible: false,
       cameraVisible: false,
@@ -1000,6 +1001,11 @@ export default {
     }
   },
   created() {
+    if (this.widget.type == 'imageshow') {
+      this.$nextTick((_) => {
+          this.srcList.push(this.widget.options.imagesrc)
+      })
+    }
     if (this.widget.type == 'taglable') {
       this.$nextTick((_) => {
         this.dataModel = this.dynamicTags

@@ -4,6 +4,13 @@ module.exports = {
   publicPath: './',
   devServer: {
     proxy: {
+      // ====upload====
+      '/doc/upload': {
+        target: 'http://192.168.2.120:32461',
+        pathRewrite: {
+          '': '',
+        },
+      },
       // ====字典服务====
       '/requestForward/dictionary': {
         target: 'http://192.168.2.179:31913',

@@ -1240,6 +1240,7 @@ export const bankingComponents = [
       disabled: false,
       min: 0,
       length: 8,
+      imagesrc:'',
       multiple: false,
       isDelete: true,
       labelWidth: 100,
