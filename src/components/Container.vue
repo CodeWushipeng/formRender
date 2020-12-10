@@ -516,7 +516,8 @@ export default {
         'taglable',
         'imageshow',
         'imageupload',
-        'fileupload',
+        'fileuploadExt',
+        /*'fileupload',*/
         'videoupload',
         'camera',
         'buttonCom',

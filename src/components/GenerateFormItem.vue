@@ -733,6 +733,32 @@
         ></fm-upload>
       </template>
 
+      <template v-if="widget.type == 'fileuploadExt'">
+
+        <fm-file-upload
+                el-decorator="[
+              widget.model,
+              {
+                rules: rules[widget.model],
+                initialValue: dataModel
+              }
+            ]"
+                :disabled="widget.options.disabled"
+                :style="{'width': widget.options.width}"
+                :token="widget.options.token"
+                :domain="widget.options.domain"
+                :multiple="widget.options.multiple"
+                :limit="widget.options.limit"
+                :is-qiniu="widget.options.isQiniu"
+                :min="widget.options.min"
+                :action="widget.options.action"
+                :tip="widget.options.tip"
+                ui="antd"
+                :headers="widget.options.headers || []"
+        >
+        </fm-file-upload>
+      </template>
+
       <template
         v-if="
         (widget.type == 'imageupload') |
@@ -870,6 +896,7 @@
 </template>
 
 <script>
+import { EventBus } from '../util/event-bus.js'
 import FmUpload from './Upload'
 import FmUploadExtend from './Uploadextend'
 import CusDialog from './CusDialog'
@@ -886,9 +913,11 @@ import itemHandle from './mixins/itemHandle.js'
 import hrSelect from './base-components/my-select/select'
 // import request from '../demo/demo3/js/request'
 import request from '../demo/commonjs/request'
+import FmFileUpload from './Upload/file'
 export default {
   props: ['widget', 'models', 'rules', 'remote'], // widget为当前组件json数据
   components: {
+    FmFileUpload,
     ElImage,
     FmUpload,
     FmUploadExtend,
@@ -900,6 +929,7 @@ export default {
   mixins: [itemHandle],
   data() {
     return {
+      fileList: [],
       srcList: [],
       //imagesrc: require('http://192.168.2.179:32009/public//20201208/785912151519703040.jpg'),
       radioVisible: false,
@@ -1006,6 +1036,10 @@ export default {
       this.$nextTick((_) => {
           this.srcList.push(this.widget.options.imagesrc)
       })
+    }else if(this.widget.type == 'fileuploadExt'){
+        this.$nextTick((_) => {
+          this.dataModel = this.fileList
+        })
     }
     if (this.widget.type == 'taglable') {
       this.$nextTick((_) => {
@@ -1046,6 +1080,15 @@ export default {
     }
   },
   methods: {
+      submitUpload() {
+          this.$refs.upload.submit();
+      },
+      handleRemove(file, fileList) {
+          console.log(file, fileList);
+      },
+      handlePreview(file) {
+          console.log(file);
+      },
     currentChange(pageSize){
       eval("("+this.widget.options.pagination.handleCurrentChange+")")(request,pageSize,(res)=>{
         this.widget.configdata.list[0].options.tableData = res;
@@ -1574,6 +1617,12 @@ export default {
     }
   },
   mounted() {
+      EventBus.$on("uploadE", (field, value) => {
+          this.$nextTick(() => {
+              this.dataModel = value
+          });
+      });
+
     if (this.widget.type == 'camera') {
       this.camera()
     } else if (

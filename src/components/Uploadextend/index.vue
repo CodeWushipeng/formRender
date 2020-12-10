@@ -231,19 +231,6 @@ export default {
     handleChange () {
       const files = this.$refs.uploadInput.files
 
-      /*let formData=new FormData();
-      formData.append('header.gloSeqNo', "11")
-      formData.append('header.reqSeqNo', "11")
-      formData.append('body.files', files[0])
-      formData.append('body.publicAccess', true)
-      formData.append('body.systemUserNo', "11")
-      formData.append('body.systemNo', "11")
-      upload(formData).then(res => {
-          debugger
-      }).catch(error => {
-          throw new Error(error);
-      });*/
-
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
 
@@ -258,7 +245,7 @@ export default {
             // mozilla(firefox)
             url = window.URL.createObjectURL(file);
         }
-debugger
+
         const reader = new FileReader()
         const key = (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
         if((file.name).indexOf(".doc") > -1 | (file.name).indexOf(".docx") > -1){
@@ -295,35 +282,49 @@ debugger
                 }
             }
         }else{
-          reader.readAsDataURL(file)
-          reader.onload = () => {
+          //上传
+          let formData=new FormData();
+          formData.append('header.gloSeqNo', "11")
+          formData.append('header.reqSeqNo', "11")
+          formData.append('body.files', files[0])
+          formData.append('body.publicAccess', true)
+          formData.append('body.systemUserNo', "11")
+          formData.append('body.systemNo', "11")
+          upload(formData).then(res => {
+             if(res.header.rspCode == "SP000000"){
+                 reader.readAsDataURL(file)
+                 reader.onload = () => {
 
-            url=reader.result.substring(reader.result.indexOf(',')+1);
-            var imgUrl='data:image/png;base64,'+url
+                     url=reader.result.substring(reader.result.indexOf(',')+1);
+                     var imgUrl='data:image/png;base64,'+url
 
-            if (this.editIndex >= 0) {
+                     if (this.editIndex >= 0) {
 
-                this.$set(this.fileList, this.editIndex, {
-                    key,
-                    url: reader.result,
-                    name: file.name,
-                    urlPath: url,
-                    percent: 100,
-                    status: 'success'
-                })
+                         this.$set(this.fileList, this.editIndex, {
+                             key,
+                             url: reader.result,
+                             name: file.name,
+                             urlPath: url,
+                             percent: 100,
+                             status: 'success'
+                         })
 
-                this.editIndex = -1
-            } else {
-                this.fileList.push({
-                    key,
-                    url: reader.result,
-                    name: file.name,
-                    urlPath: url,
-                    percent: 100,
-                    status: 'success'
-                })
-            }
-          }
+                         this.editIndex = -1
+                     } else {
+                         this.fileList.push({
+                             key,
+                             url: reader.result,
+                             name: file.name,
+                             urlPath: url,
+                             percent: 100,
+                             status: 'success'
+                         })
+                     }
+                 }
+             }
+          }).catch(error => {
+             throw new Error(error);
+          });
         }
       }
       this.$refs.uploadInput.value = []

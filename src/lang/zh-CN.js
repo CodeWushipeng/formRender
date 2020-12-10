@@ -18,7 +18,8 @@ export default {
         taglable: "标签",
         imageshow: "图片展示",
         imageupload: "图像上传",
-        fileupload: "文件上传",
+        /*fileupload: "文件上传",*/
+        fileuploadExt: "文件上传扩展",
         videoupload: "影像集成",
         camera: "摄像头",
         buttonCom: "按钮",
@@ -178,6 +179,7 @@ export default {
         imageAction: "图片上传地址",
         tip: "提示说明文字",
         action: "上传地址",
+        headers: "设置上传的请求头部",
         defaultType: "绑定数据类型",
         string: "字符串",
         object: "对象",

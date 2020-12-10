@@ -263,6 +263,16 @@
           domain="xxx"
         ></fm-upload>
       </template>
+      <template v-if="element.type == 'fileuploadExt'">
+        <el-upload
+                action=""
+                :disabled="element.options.disabled"
+                :limit="element.options.limit"
+        >
+          <el-button size="small" type="primary">{{$t('fm.actions.upload')}}</el-button>
+          <div v-if="element.options.tip" class="el-upload__tip" slot="tip">{{element.options.tip}}</div>
+        </el-upload>
+      </template>
 
       <template v-if="element.type == 'cascader'">
         <el-cascader

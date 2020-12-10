@@ -1358,7 +1358,7 @@ export const bankingComponents = [
     tableKey: '',
     tableModel: '',
   },
-  {
+  /*{
     type: 'fileupload',
     icon: 'icon-tupian',
     options: {
@@ -1424,6 +1424,72 @@ export const bankingComponents = [
       '}',
     tableKey: '',
     tableModel: '',
+  },*/
+  {
+      type: 'fileuploadExt',
+      icon: 'icon-wenjianshangchuan',
+      options: {
+          defaultValue: [],
+          width: '',
+          tokenFunc: 'funcGetToken',
+          token: '',
+          domain: 'http://tcdn.form.xiaoyaoji.cn/',
+          disabled: false,
+          tip: '',
+          action: 'http://tools-server.making.link/api/transfer',
+          customClass: '',
+          limit: 9,
+          multiple: false,
+          isQiniu: false,
+          labelWidth: 100,
+          isLabelWidth: false,
+          hidden: false,
+          dataBind: true,
+          headers: [],
+          required: false,
+      },
+      hidden:
+      "function main (models,utils)" +
+      "{\n" +
+      "\t//models为当前表单所有model utils为扩展函数\n" +
+      "\treturn null\n" +
+      "}",
+      isRemote:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn false\n' +
+      '}',
+      url: '',
+      data:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
+      success:
+      'function main (models,res,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn {}\n' +
+      '}',
+      multiToggle: false,
+      multiCondition:
+      'function main (models,utils,request)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 request为axios对象\n' +
+      '\t//post请求示例\n' +
+      '\trequest.post(url,{data:123})\n' +
+      '\t.then(res=>{\n' +
+      '\t\tconsole.log(res)\n' +
+      '\t\trequest.post(url,{data:res.test})\n' +
+      '\t\t.then(response =>{console.log(response)})\n' +
+      '\t\t.catch(error=>{console.log(error)})\n' +
+      '\t})\n' +
+      '\t.catch(error=>{console.log(error)})\n' +
+      '}',
+      tableKey: '',
+      tableModel: '',
   },
   {
     type: 'videoupload',
