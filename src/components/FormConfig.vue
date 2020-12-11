@@ -20,6 +20,9 @@
           <el-radio-button label="mini">mini</el-radio-button>
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="表单是否只读">
+        <el-switch v-model="data.onlyRead"></el-switch>
+      </el-form-item>
     </el-form>
   </div>
 </template>

@@ -539,7 +539,8 @@ export default {
         'select',
         'switch',
         'slider',
-        'text'
+        'text',
+        'tree'
       ]
     },
     advanceFields: {
@@ -595,7 +596,8 @@ export default {
         config: {
           labelWidth: 100,
           labelPosition: 'right',
-          size: 'small'
+          size: 'small',
+          onlyRead: false,
         },
         extendDetail: 'function main ()' + '{\n' + '}'
       },
@@ -621,8 +623,10 @@ export default {
   "config": {
     "labelWidth": 100,
     "labelPosition": "top",
-    "size": "small"
-  }
+    "size": "small",
+    "onlyRead": false,
+  },
+  "extendDetail": 'function main ()' + '{\n' + '}'
 }`,
       codeActiveName: 'vue',
       undo: false,
@@ -669,7 +673,6 @@ export default {
   methods: {
     // 撤销
     handleUndo() {
-      
       this.revokeNumber++
       if (this.widgetLists.length >this.revokeNumber) {
         let end = this.widgetLists.length - this.revokeNumber
@@ -681,7 +684,8 @@ export default {
           config: {
             labelWidth: 100,
             labelPosition: 'right',
-            size: 'small'
+            size: 'small',
+            onlyRead: false,
           },
           extendDetail: 'function main ()' + '{\n' + '}'
         }
@@ -692,7 +696,6 @@ export default {
     },
     // 重做
     handleRedo() {
-      
       if (this.revokeNumber > 0) {
         let start = this.widgetLists.length - this.revokeNumber
         this.widgetForm = this.widgetLists.slice(start, start + 1)[0]
@@ -743,19 +746,22 @@ export default {
         }
       })
     },
-    // 获取models
-    getModels() {
-      this.modelLists = []
-      this.widgetForm.list.forEach((item) => {
+    // 展平数据
+    flatList(target) {
+      target.list.forEach(item => {
         if (item.type === 'grid') {
-          item.columns.forEach((cloItem) => {
-            // this.tranData(cloItem)
-            this.modelLists = [...this.modelLists, ...cloItem.list]
-          })
+          item.columns.forEach(cloItem => {
+            this.flatList(cloItem);
+          });
         } else {
           this.modelLists = [...this.modelLists, item]
         }
-      })
+      });
+    },
+    // 获取models
+    getModels() {
+      this.modelLists = []
+      this.flatList(this.widgetForm)
       console.log(this.modelLists)
     },
     // mirror控制函数
@@ -879,9 +885,6 @@ export default {
     // 显示form配置
     handleFormConfig() {
       this.formVisible = true
-    },
-    handleGoGithub() {
-      window.location.href = 'https://github.com/GavinZhuLei/vue-form-making'
     },
     handleConfigSelect(value) {
       this.configTab = value
@@ -1123,12 +1126,6 @@ export default {
     }
   },
   watch: {
-    widgetForm: {
-      deep: true,
-      handler: function (val) {
-        console.log(this.$refs.widgetForm)
-      }
-    },
     $lang: function (val) {
       this._loadComponents()
     }

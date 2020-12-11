@@ -49,6 +49,7 @@ export default {
         tabs: "标签页",
         divider: "分割线",
         elTable: "表格",
+        tree: "树组件"
       },
       banking: {
         title: "金融组件",

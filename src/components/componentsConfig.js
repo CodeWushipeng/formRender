@@ -897,7 +897,10 @@ export const basicComponents = [
     icon: 'icon-switch',
     options: {
       hidden: false,
+      showDescribe: false,
       defaultValue: false,
+      activeValue: 'true',
+      inActiveValue: 'false',
       required: false,
       disabled: false,
       labelWidth: 100,
@@ -1115,6 +1118,86 @@ export const basicComponents = [
       '}',
     tableKey: '',
     tableCode: '',
+  },
+  {
+    type: 'tree',
+    icon: 'icon-slider',
+    options: {
+      width: '100%',
+      defaultValue: '',
+      data: [
+        {
+          label: '一级 1',
+          children: [
+            {
+              label: '二级 1-1',
+              children: [
+                {
+                  label: '三级 1-1-1',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: '一级 2',
+          children: [
+            {
+              label: '二级 2-1',
+              children: [
+                {
+                  label: '三级 2-1-1',
+                },
+              ],
+            },
+            {
+              label: '二级 2-2',
+              children: [
+                {
+                  label: '三级 2-2-1',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: '一级 3',
+          children: [
+            {
+              label: '二级 3-1',
+              children: [
+                {
+                  label: '三级 3-1-1',
+                },
+              ],
+            },
+            {
+              label: '二级 3-2',
+              children: [
+                {
+                  label: '三级 3-2-1',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      props: {
+        children: 'children',
+        label: 'label',
+      },
+      highlightCurrent: false,
+      accordion: false,
+      showCheckbox: false,
+      labelWidth: 100,
+      isLabelWidth: false,
+    },
+    hidden:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n' +
+      '\treturn null\n' +
+      '}',
   },
 ];
 
@@ -1463,7 +1546,8 @@ export const tableComponents = [
       },
       eventConfig: {},
     },
-    hidden: 'function main (models,utils)' +
+    hidden:
+      'function main (models,utils)' +
       '{\n' +
       '\t//models为当前表单所有model utils为扩展函数 返回true表示隐藏该组件 false和null显示该组件\n' +
       '\treturn null\n' +

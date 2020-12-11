@@ -101,7 +101,11 @@ export default {
 </script>
 
 <style lang="scss">
+.v-modal{
+  z-index: 1998 !important;
+}
 .cus-dialog-container{
+  z-index: 2000 !important;
   .el-dialog__footer{
     margin: 0 20px;
     // border-top: 1px dashed #ccc;

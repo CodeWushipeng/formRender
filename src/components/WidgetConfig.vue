@@ -432,7 +432,12 @@
           v-model="data.options.defaultValue"
           :show-alpha="data.options.showAlpha"
         ></el-color-picker>
-        <el-switch v-else-if="data.type=='switch'" v-model="data.options.defaultValue"></el-switch>
+        <el-form-item v-else-if="data.type=='switch'">
+          <el-input v-model="data.options.inActiveValue"></el-input>
+          <el-switch  v-model="data.options.defaultValue"></el-switch>
+          <el-input v-model="data.options.activeValue"></el-input>
+        </el-form-item>
+        
         <el-input v-else v-model="data.options.defaultValue"></el-input>
       </el-form-item>
 

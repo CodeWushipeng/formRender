@@ -22,7 +22,6 @@
         <span>{{element.model}}</span>
       </div>
     </div>
-
     <el-form-item
       class="widget-view"
       v-if="element && element.key && element.type != 'divider' || element.type != 'tabs'"
@@ -41,7 +40,15 @@
           :disabled="element.options.disabled"
         ></el-input>
       </template>
-
+      <!-- 树形组件 -->
+      <template v-if=" element.type == 'tree'">
+        <el-tree 
+        :data="element.options.data" 
+        :props="element.options.props"
+        :highlightCurrent="element.options.highlightCurrent"
+        :accordion="element.options.accordion"
+        :show-checkbox="element.options.showCheckbox"></el-tree>
+      </template>
       <!--密码-->
       <template v-if="element.type == 'password'">
         <el-input

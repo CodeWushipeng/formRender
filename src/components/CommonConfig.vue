@@ -9,7 +9,8 @@
         data.type !== 'fileupload' &&
         data.type !== 'videoupload' &&
         data.type !== 'divider' &&
-        data.type !== 'blank'
+        data.type !== 'blank' &&
+        data.type !== 'tree'
       "
     >
       <!-- 字典服务 @focus="getData(data.remoteCode)"-->

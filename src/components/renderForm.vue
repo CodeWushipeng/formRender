@@ -10,6 +10,7 @@
       :remote="remoteFuncs"
       :data="jsonData"
       :value="formdata"
+      :readOnly="readOnly"
       @isEnd="accept"
       ref="generateForm"
     ></fm-generate-form>
@@ -38,6 +39,10 @@ export default {
     remoteFuncs: {
       type: Object,
       default: () => {},
+    },
+    readOnly: {
+      type: Boolean,
+      default: false
     },
     url: {
       // 查询表单的服务

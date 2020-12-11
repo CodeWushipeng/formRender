@@ -53,7 +53,7 @@ let handlers = {
   methods: {
     // 组件获取焦点
     mouseValidate(params, type) {
-      // 
+      //
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
           console.log(i, this.outMark);
@@ -102,6 +102,7 @@ let handlers = {
             item.options.hidden = false;
           } else if (flag) {
             item.options.hidden = true;
+            this.models[item.model] = '';
           }
         }
       });
@@ -214,7 +215,6 @@ let handlers = {
     },
     // 转换金额域
     changeAmount() {
-      ;
       let type = this.comArr[this.outMark].type;
       let model = this.comArr[this.outMark].model;
       if (type == 'amount') {
@@ -410,7 +410,6 @@ let handlers = {
             },
           })
             .then(res => {
-              ;
               console.log(res);
               if (res.header.rspCode == RES_OK) {
                 self.handelValidate('success', '', i);
@@ -493,7 +492,6 @@ let handlers = {
     // 表格赋值
     setDataToTable(total) {
       this.$nextTick(() => {
-        ;
         for (let m = 0; m < this.comArr.length; m++) {
           if (this.comArr[m].type === 'elTable') {
             if (
@@ -642,12 +640,10 @@ let handlers = {
     // 对数字组件值做精度修正
     precisionHandel() {
       this.comArr.forEach(element => {
-        ;
         if (
           element.type == 'amount' ||
           (element.options && element.options.dataType == 'integer')
         ) {
-          ;
           let model = element.model;
           let item = this.models[model];
           let decimal = element.options.decimal
@@ -943,8 +939,8 @@ let handlers = {
       target.list.forEach(item => {
         if (item.type === 'grid') {
           item.columns.forEach(cloItem => {
-            // this.tranData(cloItem)
-            this.comArr = [...this.comArr, ...cloItem.list];
+            this.tranData(cloItem);
+            // this.comArr = [...this.comArr, ...cloItem.list];
           });
         } else {
           this.comArr = [...this.comArr, item];
@@ -1043,29 +1039,53 @@ let handlers = {
         formEle.addEventListener('keyup', this.arrowListener);
       }
     },
+    // 设置表单只读
+    setFormRead() {
+      if (this.data.config.onlyRead || this.readOnly) {
+        this.comArr.forEach(item => {
+          if (
+            typeof item.options.disabled != undefined &&
+            item.options.disabled == false
+          ) {
+            item.options.disabled = true;
+          } else if (
+            typeof item.options.readonly != undefined &&
+            item.options.readonly == false
+          ) {
+            item.options.readonly = true;
+          }
+        });
+        return;
+      } else {
+        this.generateHandle();
+      }
+    },
+    // 初始化表单控制
+    generateHandle(){
+      this.pushRemoteFunc();
+      this.handelHidden();
+      this.enterCheck();
+      this.getAllItems();
+      this.getFlowNotes();
+      this.getAllPoupTr();
+      this.getShowLength();
+      this.iteratorAllEle();
+      this.resetCursor();
+      this.copyMOdels();
+      this.handelCursorByArrow();
+    }
   },
   mounted() {
     let rankBtns = storage.session.get('Rank_BTNS', '');
     if (rankBtns) {
       this.Rank_BTNS = rankBtns.split('-');
     }
-
     let inter = setInterval(() => {
       if (this.data.list && this.data.list.length > 0) {
         clearInterval(inter);
         this.mountExtendJS();
         this.tranData(this.data);
-        this.pushRemoteFunc();
-        this.handelHidden();
-        this.enterCheck();
-        this.getAllItems();
-        this.getFlowNotes();
-        this.getAllPoupTr();
-        this.getShowLength();
-        this.iteratorAllEle();
-        this.resetCursor();
-        this.copyMOdels();
-        this.handelCursorByArrow();
+        this.setFormRead();
       }
     }, 300);
   },
