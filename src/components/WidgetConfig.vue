@@ -466,6 +466,25 @@
         <el-form-item :label="$t('fm.config.widget.isTimestamp')" v-if="data.type == 'date'">
           <el-switch v-model="data.options.timestamp"></el-switch>
         </el-form-item>
+        <el-form-item :label="$t('fm.config.widget.startDate')" v-if="data.type == 'date'">
+          <el-date-picker
+            v-model="data.options.startDate"
+            align="right"
+            type="date"
+            placeholder="选择日期"
+            >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item :label="$t('fm.config.widget.endDate')" v-if="data.type == 'date'">
+          <el-date-picker
+            v-model="data.options.endDate"
+            align="right"
+            type="date"
+            placeholder="选择日期"
+            >
+          </el-date-picker>
+        </el-form-item>
+
         <el-form-item
           :label="$t('fm.config.widget.placeholder')"
           v-if="(!data.options.isRange && data.type == 'time') || (data.type != 'time' && data.options.type != 'datetimerange' && data.options.type != 'daterange')"
