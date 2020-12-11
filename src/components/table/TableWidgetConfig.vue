@@ -122,8 +122,7 @@
 
 <script>
 import Draggable from 'vuedraggable'
-import request from '../../util/request'
-import { deepClone } from '../../util/index'
+import { deepClone,dateFormat } from '../../util/index'
 import CusDialog from '../CusDialog'
 import { getTableList } from '../../api/forms'
 
@@ -239,26 +238,6 @@ export default {
       this.dialogTableVisible = true
       getTableList({
         listName: this.tablePageCf.searchValue,
-        antiWeightSeqNo: 'anim',
-        gloSeqNo: 'G11111',
-        pageIndex: this.tablePageCf.startPage,
-        pageSize: this.tablePageCf.pageSize,
-        projectId: 'consequat sit',
-        reqSeqNo: 'R11111',
-        reqTime: '202012121212',
-        serviceGroupid: 'pariatur anim in',
-        serviceId: 'consectetur',
-        serviceName: 'dolor nisi ex',
-        subProjectId: 'velit in t',
-        userInfo: {
-          role: [
-            'dolor do',
-            'deserunt ea',
-            'anim occaecat ea',
-            'sint aliqua dolore'
-          ],
-          username: 'veniam'
-        }
       })
         .then((res) => {
           console.log(res)

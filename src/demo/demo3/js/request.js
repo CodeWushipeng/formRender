@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { MessageBox, Message } from 'element-ui';
-import { Loading } from 'element-ui'; //加载中
+import { Loading } from 'element-ui';
+import {dateFormat} from "../../../util"; //加载中
 
 let loadingObj;
 var loading = {
@@ -34,20 +35,31 @@ service.interceptors.request.use(
     config.data = {
       body: data.body ? data.body : data,
       header: {
-        pageIndex: pageIndex || 0,
-        pageSize: pageSize || 999,
-        gloSeqNo: new Date().getTime(),
-        reqSeqNo: new Date().getTime().toString(),
-        reqTime: new Date().getTime().toString(),
-        projectId: 'quis consectetur',
-        serviceGroupid: 'mollit sed',
-        serviceId: 'officia non',
-        serviceName: '1',
-        subProjectId: 'occaecat tempor dolor enim ex',
-        userInfo: {
-          role: ['ea fugiat incididunt'],
-          username: 'dolore deserunt do',
-        },
+          //"gloSeqNo": "10A07"+ dateFormat("YYYYmmdd", new Date()) + (new Date()).getTime().toString().substr(-4,4),
+          "gloSeqNo": "10A072020"+ (new Date()).getTime().toString().substr(-8,8),
+          "reqSeqNo": dateFormat("YYYYmmddHHMMSS", new Date()) + (new Date()).getTime().toString().substr(-3,3),
+          "reqTime": dateFormat("YYYYmmddHHMMSS", new Date()),
+          "channel": "channel",
+          "projectId": "subProjectId",
+          "subProjectId": "subProjectId",
+          "terminalCode": "terminalCode",
+          "branchId": "966999",
+          "serviceId": "serviceId",
+          "serviceName": "test",
+          "serviceGroupid": "serviceGroupid",
+          "sourceSysId": "sourceSysId",
+          "consumerId": "consumerId",
+          "pageIndex": pageIndex || 0,
+          "pageSize": pageSize || 999,
+          "mac": "mac",
+          "keyId": "keyId",
+          "extend": {
+              "TranTeller": "99988999"
+          },
+          "userInfo": {
+              "username": "123",
+              "role": []
+          },
 
         ...header,
       },

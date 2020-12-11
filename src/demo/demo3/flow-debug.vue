@@ -54,12 +54,11 @@
         </el-table>
 
       </el-tab-pane>
-
       <el-tab-pane name="user" label="user数据">
 
         <!--user数据-->
-        <!--{{usreData}}-->
-        <el-table :data="usreDataSolve" border>
+        <!--{{userData}}-->
+        <el-table :data="userDataSolve" border>
           <el-table-column label="序号" type="index" width="50"></el-table-column>
           <el-table-column property="key" label="KEY" width="150"></el-table-column>
           <el-table-column property="value" label="VALUE" width></el-table-column>
@@ -67,11 +66,20 @@
 
       </el-tab-pane>
       <el-tab-pane name="platform" label="platform数据">
-
         <!--platform数据-->
         <!--{{platformData}}-->
         <!--{{platformDataSolve}}-->
         <el-table :data="platformDataSolve" border>
+          <el-table-column label="序号" type="index" width="50"></el-table-column>
+          <el-table-column property="key" label="KEY" width="150"></el-table-column>
+          <el-table-column property="value" label="VALUE" width></el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane name="indata" label="indata数据">
+        <!--indata数据-->
+        <!--{{indata}}-->
+        <!--{{inDataSolve}}-->
+        <el-table :data="inDataSolve" border>
           <el-table-column label="序号" type="index" width="50"></el-table-column>
           <el-table-column property="key" label="KEY" width="150"></el-table-column>
           <el-table-column property="value" label="VALUE" width></el-table-column>
@@ -89,7 +97,6 @@
       </el-tab-pane>
       <el-tab-pane name="form" label="获取表单数据">
         <!--表单数据-->
-        <!--formData: <br>-->
         <!--{{formData}}-->
         <!--{{curFormData}}-->
         <el-table :data="curFromDataSolve" border>
@@ -113,8 +120,8 @@
 </template>
 
 <script>
-  // import getFG from "./js/fg-control";
-  import getFG from "fg-control";
+  import getFG from "./js/fg-control";
+  // import getFG from "fg-control";
   const FG = new getFG();
   import flowMixin from './js/mixins'
   import flowNode from './flow-node'
@@ -141,21 +148,24 @@
     data() {
       return {
         activeName: "currentNode",
-        flowDialogTableVisible: false,
-        userDialogTableVisible: false,
-        platformDialogTableVisible: false,
-        nodesDialogTableVisible: false,
-        formDialogTableVisible: false,
-        processDialogTableVisible: false,
+        // 流控数据
         listData: [],
-        usreData: [],
-        usreDataSolve: [],
+        // 用户
+        userData: [],
+        userDataSolve: [],
+        // 平台
         platformData: [],
         platformDataSolve: [],
+        // 启动数据
+        indata: [],
+        inDataSolve: [],
+        // 节点数据
         nodesData: [],
         nodesDataSolve: [],
+        // 当前表单数据
         curFormData: [],
         curFromDataSolve: [],
+        // 执行过程
         processDataList: []
       }
     },
@@ -183,7 +193,7 @@
       this._solveData(this.formData);
     },
     methods: {
-      handleClick(tab, event) {
+      handleClick(tab) {
         this.activeName = tab.name;
         // console.log('tab', tab);
         // console.log('event', event);
@@ -202,14 +212,17 @@
           case 'platform':
             this.platformHandler()
             break;
+          case 'indata':
+            this.indataHandler()
+            break;
           case 'nodes':
             this.nodesHandler()
             break;
           case 'form':
-            this.getFormHandler()
+            this.formHandler()
             break;
           case 'process':
-            this.getProcessHandler()
+            this.processHandler()
             break;
           default:
             // 默认代码块
@@ -218,7 +231,7 @@
       },
       flowHandler() {
         this.listData = FG.list;
-        this.flowDialogTableVisible = true;
+        // this.flowDialogTableVisible = true;
       },
       userHandler() {
         let res = [];
@@ -230,9 +243,8 @@
             value: typeof  value == "object" ? JSON.stringify(value) : value
           })
         }
-        this.usreData = FG.user;
-        this.usreDataSolve = res;
-        this.userDialogTableVisible = true;
+        this.userData = FG.user;
+        this.userDataSolve = res;
       },
       platformHandler() {
         let res = [];
@@ -245,7 +257,18 @@
         }
         this.platformData = FG.platform;
         this.platformDataSolve = res;
-        this.platformDialogTableVisible = true;
+      },
+      indataHandler(){
+        let res = [];
+        for (let key in FG.indata) {
+          const value = FG.indata[key]
+          res.push({
+            key: key,
+            value: typeof  value == "object" ? JSON.stringify(value) : value
+          })
+        }
+        this.indata = FG.indata;
+        this.inDataSolve = res;
       },
       nodesHandler() {
         console.log('FG.nodes', JSON.stringify(FG.nodes))
@@ -257,8 +280,6 @@
             const value_down = FG.nodes[key]['down'];
             res.push({
               key: key,
-              // value_up,
-              // value_down,
               value_up: typeof value_up == "object" ? JSON.stringify(value_up) : value_up,
               value_down: typeof value_down == "object" ? JSON.stringify(value_down) : value_down
             })
@@ -266,20 +287,13 @@
 
           this.nodesData = FG.nodes;
           this.nodesDataSolve = res;
-          this.nodesDialogTableVisible = true;
-        } else {
-          // this.$notify.info({
-          //   title: '消息',
-          //   message: '暂无节点数据'
-          // });
         }
       },
-      getFormHandler() {
+      formHandler() {
         // alert(JSON.stringify(data));
         this.$emit("getFormHandler")
       },
-      getProcessHandler() {
-        this.processDialogTableVisible = true;
+      processHandler() {
         this.processDataList = FG.getProcess()
       },
       _solveData(data) {
@@ -291,13 +305,10 @@
             value: typeof  value == "object" ? JSON.stringify(value) : value
           })
         }
-
         this.curFormData = data;
         this.curFromDataSolve = res;
       },
-      show() {
-        // this.formDialogTableVisible = true;
-      }
+
     },
     watch: {
       formData: {

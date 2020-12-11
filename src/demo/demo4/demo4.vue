@@ -2,13 +2,13 @@
   <div class="render-wrap" style="padding: 20px; " ref="loadingArea">
     <div>
      <!--{{hackRest}}-->
-      {{configdata.list}}
+      <!--{{configdata.list}}-->
       <!--debug:{{debug}}-->
       <!--btnIndex:{{btnIndex}} <br>-->
       <!--Rank_BTNS:{{displayBtn()}} <br>-->
       <!--data :{{data}}-->
       <!--list :{{ configdata.list}}-->
-      <br />
+      <!--<br />-->
       <!--rollbackData :{{configdata.rollbackData}} <br>-->
       <!--<hr>-->
       <!--configdata:{{configdata}}-->
@@ -20,7 +20,7 @@
       <div class="buss" id="buss" :style="bussStyle">
         <div :class="mainClass">
           <!--节点信息-->
-          <h3>{{nodeName}}-{{nodeType}}</h3>
+          <h3>{{nodeName}}</h3>
           <!--当前-->
           <div v-if="nodeType=='01'">可以开始</div>
           <div v-if="nodeType=='02'">结束</div>
@@ -28,19 +28,17 @@
             <!--render-form-->
             <render-form v-if="hackRest && configdata.list.length>0"
                          :configdata="configdata"
-                         :remoteFuncs="remoteFuncs"
                          ref="renderForm"
             >
+              <!--操作按钮-->
+              <div style="text-align:center;">
+                <el-button ref="back" @click="prev"><i class="el-icon-arrow-left"></i>上一步</el-button>
+                <el-button ref="submit" @click="submit">下一步 <i class="el-icon-arrow-right"></i></el-button>
+                <el-button ref="cancel" @click="cancel"><i class="el-icon-top-left"></i>取消</el-button>
+              </div>
             </render-form>
 
             <flowDialog ref="flowDialog"></flowDialog>
-          </div>
-
-          <!--操作按钮-->
-          <div style="text-align:center;">
-            <el-button ref="back" @click="prev"><i class="el-icon-arrow-left"></i>上一步</el-button>
-            <el-button ref="submit" @click="submit">下一步 <i class="el-icon-arrow-right"></i></el-button>
-            <el-button ref="cancel" @click="cancel"><i class="el-icon-top-left"></i>取消</el-button>
           </div>
         </div>
         <!--拖拽-->
@@ -52,26 +50,23 @@
                    :data="data"
                    :records="records"
                    :formData="formData"
-                   @getFormHandler="getFormHandler"/>
+                   @onFormHandler="onFormHandler"/>
       </div>
-
     </div>
   </div>
 </template>
 <script>
-  import  { oneCase,Toolkit,Api} from './js/core/index';
-  const grid = new oneCase();
-  import request from '../demo3/js/request';
-  import flowDebug from '../demo4/flow-debug';
-  import flowDialog from '../demo4/flow-dialog';
-
+  // import  { oneCase,Toolkit,Api} from './js/core/index';
+  import  { oneCase,Toolkit,Api} from 'fg-control';
+  import request from '../commonjs/request';
+  import flowDebug from './flow-debug';
+  import flowDialog from './flow-dialog';
   import {queryFlowDetail} from "@/api/flows";
-  import flowMixin from '../demo4/js/mixins';
+  import  {flowMixin,beforeRoute,alert} from './js/mixins';
   import directives from './js/drag-directives';
   import {RES_OK} from "@/api/config";
-  import {handleBackNode, handleRemoteFn, beforeRoute,alert} from './js/util';
-  import {platform, user,requestASyns} from "../demo3/js/mock-data";
-
+  import {platform, user,requestASyns} from "./js/mock-data";
+  const grid = new oneCase();
   export default {
     name: "flowMysDemos",
     mixins: [flowMixin],
@@ -82,6 +77,7 @@
     directives: {
       ...directives
     },
+    ...beforeRoute,
     computed: {
       nodeName(){
         return this.data.nodeName;
@@ -115,7 +111,6 @@
           list: [],
           rollbackData: {}
         },
-        remoteFuncs: {},
       }
     },
     created(){
@@ -176,10 +171,12 @@
       },
 
       async startSet(startNode){
+        debugger
         //配置启动数据
         const {initFunc} = startNode;
-        const indata = await grid.getStartSet(initFunc,request);
-        grid.busdata.setIndata(indata);
+        const indata = await grid.getStartSet(this,initFunc,request);
+        // const indata = {name:11,age:111}
+        grid.busdata.setIndata(indata)
       },
       async firstNode(startNode) {
         // 处理开始节点
@@ -211,6 +208,7 @@
         }
       },
       async submit() {
+        debugger
         const {
           commitType,
           type,
@@ -218,65 +216,70 @@
           commitFunc,
           nodeCode,
         } = this.data;
-        const isUsable = grid.checkSubmit(type,commitType);
-        if(isUsable) {
-          // 开始节点
-          if (type == Toolkit.static.START) {
-            debugger
-            this.locationToNext(nextNode);
-            return;
-          }
 
-          // 响应页面
-          if (grid.operdata.outflag) {
-            grid.setOutFlag(false);
-            this.locationToNext(nextNode);
-            return false;
-          }
+        // 提交检查
+        const checkmsg = Toolkit.matrix.checkSubmit(grid.busdata,grid.operdata,type,commitType);
+        if(checkmsg.status){
+          alert(checkmsg.error);
+          return
+        }
 
-          function judgeCommit(staticCommitType) {
-            return type === Toolkit.static.DOING && commitType === staticCommitType;
-          }
+        // 开始节点
+        if (type == Toolkit.static.isStart) {
+          debugger
+          this.locationToNext(nextNode);
+          return;
+        }
 
-          // 其他节点
-          this.subInstance = new Api(request); // 提交实例
-          const formdata = await this.$refs['renderForm'].getData();
-          let resdata = null;
+        // 响应页面
+        if (grid.operdata.outflag) {
+          grid.setOutFlag(false);
+          this.locationToNext(nextNode);
+          return false;
+        }
 
-          if (judgeCommit(Toolkit.static.COMMIT_DEFAULT)) {
-            alert('COMMIT_DEFAULT')
-            resdata = await this.subInstance.defaultCommit(commitFunc,formdata)
-            if(resdata){
-              grid.saveNodeData(formdata,resdata,nodeCode)
-              this.responseExec(this.data)
-            }
+        function judgeCommit(staticCommitType) {
+          return type === Toolkit.static.isBusing && commitType === staticCommitType;
+        }
+
+        // 其他节点
+        this.subInstance = new Api(request); // 提交实例
+        const formdata = await this.$refs['renderForm'].getData();
+        let resdata = null;
+
+        if (judgeCommit(Toolkit.static.isDefaultType)) {
+          alert('COMMIT_DEFAULT')
+          resdata = await this.subInstance.defaultCommit(commitFunc,formdata)
+          if(resdata){
+            grid.saveNodeData(formdata,resdata,nodeCode)
+            this.responseExec(this.data)
           }
-          if (judgeCommit(Toolkit.static.COMMIT_DEFINE)) {
-            alert('COMMIT_DEFINE')
-            resdata = await this.subInstance.defineCommit(this,commitFunc);
-            if(resdata){
-              grid.saveNodeData(formdata, resdata, nodeCode);
-              this.responseExec(this.data)
-            }
+        }
+        if (judgeCommit(Toolkit.static.isDefineType)) {
+          alert('COMMIT_DEFINE')
+          resdata = await this.subInstance.defineCommit(this,commitFunc);
+          if(resdata){
+            grid.saveNodeData(formdata, resdata, nodeCode);
+            this.responseExec(this.data)
           }
-          if (judgeCommit(Toolkit.static.COMMIT_LOCAL)) {
-            alert('COMMIT_LOCAL')
-            resdata = await this.subInstance.localCommit(formdata);
-            if(resdata){
-              grid.saveNodeData(formdata,resdata,nodeCode)
-              this.extendsConfig({
-                nodes: grid.getNodes() // 节点数据
-              })
-              this.responseExec(this.data)
-            }
+        }
+        if (judgeCommit(Toolkit.static.isLocalType)) {
+          alert('COMMIT_LOCAL')
+          resdata = await this.subInstance.localCommit(formdata);
+          if(resdata){
+            grid.saveNodeData(formdata,resdata,nodeCode)
+            this.responseExec(this.data)
+            this.extendsConfig({
+              nodes: grid.getNodes() // 节点数据
+            })
           }
-          if (judgeCommit(Toolkit.static.COMMIT_ORDER)) {
-            alert('COMMIT_ORDER');
-            resdata = await this.subInstance.orderCommit(formdata)
-            if(resdata){
-              grid.saveNodeData(formdata, resdata, nodeCode);
-              this.$refs.flowDialog.show();
-            }
+        }
+        if (judgeCommit(Toolkit.static.isOrderType)) {
+          alert('COMMIT_ORDER');
+          resdata = await this.subInstance.orderCommit(formdata)
+          if(resdata){
+            grid.saveNodeData(formdata, resdata, nodeCode);
+            this.$refs.flowDialog.show();
           }
         }
       },
@@ -286,13 +289,13 @@
       },
       responseExec(data) {
         const {outputFromCode, outputConfig, nextNode}  = data;
+        let $renderForm = this.$refs.renderForm;
         if (outputFromCode) {
           // 有响应页面
-          this.$refs.renderForm.changeJsonData(
+          $renderForm.changeJsonData(
               outputFromCode,
               outputConfig
           );
-          // FG.OUTFLAG = true;
           grid.setOutFlag(true)
         } else {
           // 无响应页面
@@ -305,65 +308,19 @@
           }
         }
       },
-      getFormHandler() {
+      onFormHandler() {
         const $refs = this.$refs.renderForm;
         if ($refs) {
           $refs.getData().then(data => {
-            console.log("data...", data)
+            // console.log("data...", data)
             this.formData = data;
           })
         } else {
-          this.$notify.info({
-            title: '消息',
-            message: '当前节点没有表单,不能获取数据'
-          });
-        }
-      },
-      cancel(){
-        // grid.destroy()
-        const keys = Object.keys(grid.operdata.nodes);
-        keys.forEach(key => {
-          delete grid.operdata.nodes[key];
-        });
-        // FG.ISOK = false;
-        grid.setUsable(false)
-        alert("已清理这个流程");
-        console.log("grid", grid);
-        // this.$router.push("/");
-
-      },
-      //验证是否可回退
-      validateBack() {
-        let res = {error: 0, text: null};
-        let {type, rollback, returnNode} = this.data;
-        if (rollback == Toolkit.static.CANNOT_ROLLBACK || !rollback) {
-          res = {error: -1, text: "当前节点不能回退"};
-        }
-        if (type == Toolkit.static.START) {
-          res = {error: -1, text: "开始节点不能回退"};
-        }
-        if (type == Toolkit.static.END) {
-          res = {error: -1, text: "流程已经结束,不能回退"};
-        }
-        if (returnNode) {
-          // 判断上一节点是否在当前的返回列表中
-          let processList = grid.getProcess().slice();
-          const ret = handleBackNode(returnNode, processList);
-          if (!ret) {
-            res = {error: -1, text: "上一节点不在设置的回退数组中，不能回退"};
-          }
-        }
-        return res;
-      },
-      processData(rollbackDataFlag, returnNode) {
-        if (rollbackDataFlag == grid.operdata.KEEP_DATA) {
-          // 保留数据
-          const nodeData = grid.operdata.nodes[returnNode]["up"];
-          this.configdata.rollbackData = nodeData;
-        }
-        if (rollbackDataFlag == grid.operdata.CLEAR_DATA) {
-          // 清除数据
-          delete grid.operdata.nodes[returnNode];
+          // this.$notify.info({
+          //   title: '消息',
+          //   message: '当前节点没有表单,不能获取数据'
+          // });
+          alert("当前节点没有表单,不能获取数据")
         }
       },
       // 上一节点
@@ -373,42 +330,60 @@
           alert("当前流程已经取消")
           return;
         }
-        this.configdata.rollbackData = {};
+        // this.configdata.rollbackData = {};
         // rollbackData 回退数据处理：01-清除，02-保留不处理
         const {rollback, rollbackData, returnNode} = this.data;
-        // 判断能否回退
-        // let message = this.validateBack();
-        const isUsable = grid.checkPrev(this.data);
-        if(isUsable){
-          // 清除当前节点后面的执行过点的节点
-          let processList = grid.getProcess().slice();
-          const prevNodeCode = handleBackNode(returnNode, processList); // 要回退到的节点
-          const index = processList.findIndex(node => {
-            return node == prevNodeCode;
-          })
-          if (processList.length > 0) {
-            processList.splice(index)
-            grid.setProcess(processList)
-          }
 
-          //  回退数据处理
-          if (rollback == Toolkit.static.CAN_ROLLBACK && prevNodeCode) {
-            const tempData = grid.getNodeData(prevNodeCode);
-            const {checkStart, type} = tempData;
-            if (type == Toolkit.static.START) {
-              alert("已到达第一个执行节点");
-              return
-            }
-            console.log('prev checkStart', checkStart)
-            if (grid.checkHandler(checkStart)) {
-              this.data = tempData;
-              this.configdata.list = [tempData];
-              // 数据处理（清除|保留）
-              this.processData(rollbackData, prevNodeCode);
-              grid.pushProcess(prevNodeCode);
-            }
-          }
+        // 判断能否回退
+        const checkmsg = Toolkit.matrix.checkPrev(grid,this.data);
+        if(checkmsg.status){
+          alert(checkmsg.error);
+          return
         }
+
+        // 清除当前节点后面的执行过点的节点
+        let processList = grid.getProcess().slice();
+        const prevCode = Toolkit.matrix.handleBackNode(returnNode, processList); // 要回退到的节点
+        const index = processList.findIndex(node => {
+          return node == prevCode;
+        })
+        if (processList.length > 0) {
+          processList.splice(index)
+          grid.setProcess(processList)
+        }
+
+        // 是否已到开始节点
+        const {type} = grid.getNodeData(prevCode);
+        if (type == Toolkit.static.isStart) {
+          alert("已到达第一个执行节点");
+          return
+        }
+        //  回退数据处理
+        if (rollback == Toolkit.static.canRollBack && prevCode) {
+          let operObj = {
+            rollbackData: {},
+            nodes: []
+          };
+          if (rollbackData == Toolkit.static.keepIt) {
+            // 保留数据
+            const updata = grid.operdata.nodes[returnNode]["up"];
+            operObj.rollbackData = updata;
+          }
+          if (rollbackData == Toolkit.static.clearIt) {
+            // 清除数据
+            delete grid.operdata.nodes[returnNode];
+            operObj.nodes = grid.operdata.nodes;
+          }
+          this.extendsConfig(operObj);
+          // 加载节点
+          this.locationToNext(prevCode);
+        }
+      },
+      cancel(){
+        grid.destroyGrid();
+        this.$refs['flowDebug'].nodesHandler()
+        alert("已清理这个流程");
+        // this.$router.push("/");
       },
     }
   }

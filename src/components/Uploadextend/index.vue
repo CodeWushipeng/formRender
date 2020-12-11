@@ -80,6 +80,8 @@ import Viewer from 'viewerjs'
 import Draggable from 'vuedraggable'
 import CusDialog from '../CusDialog'
 import mammoth from 'mammoth'
+import {upload} from "@/api/files";
+
 require('viewerjs/dist/viewer.css')
 
 export default {
@@ -228,28 +230,28 @@ export default {
 
     handleChange () {
       const files = this.$refs.uploadInput.files
-      
+
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
 
-          let url = null;
-          if (window.createObjectURL != undefined) {
-              // basic
-              url = window.createObjectURL(file);
-          } else if (window.webkitURL != undefined) {
-              // webkit or chrome
-              url = window.webkitURL.createObjectURL(file);
-          } else if (window.URL != undefined) {
-              // mozilla(firefox)
-              url = window.URL.createObjectURL(file);
-          }
+        let url = null;
+        if (window.createObjectURL != undefined) {
+            // basic
+            url = window.createObjectURL(file);
+        } else if (window.webkitURL != undefined) {
+            // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        } else if (window.URL != undefined) {
+            // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        }
 
         const reader = new FileReader()
         const key = (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
         if((file.name).indexOf(".doc") > -1 | (file.name).indexOf(".docx") > -1){
-            reader.readAsArrayBuffer(file)
-            reader.onload  = (e) => {
-                
+          reader.readAsArrayBuffer(file)
+          reader.onload  = (e) => {
+
                 /*let blob = new Blob([e.target.result], {
                     type: `application/msword` //word文档为msword,pdf文档为pdf
                 });*/
@@ -268,7 +270,7 @@ export default {
 
                     this.editIndex = -1
                 } else {
-                    
+
                     this.fileList.push({
                         key,
                         url: e.target.result,
@@ -280,35 +282,49 @@ export default {
                 }
             }
         }else{
-            reader.readAsDataURL(file)
-            reader.onload = () => {
-                
-                url=reader.result.substring(reader.result.indexOf(',')+1);
-                var imgUrl='data:image/png;base64,'+url
+          //上传
+          let formData=new FormData();
+          formData.append('header.gloSeqNo', "11")
+          formData.append('header.reqSeqNo', "11")
+          formData.append('body.files', files[0])
+          formData.append('body.publicAccess', true)
+          formData.append('body.systemUserNo', "11")
+          formData.append('body.systemNo', "11")
+          upload(formData).then(res => {
+             if(res.header.rspCode == "SP000000"){
+                 reader.readAsDataURL(file)
+                 reader.onload = () => {
 
-                if (this.editIndex >= 0) {
+                     url=reader.result.substring(reader.result.indexOf(',')+1);
+                     var imgUrl='data:image/png;base64,'+url
 
-                    this.$set(this.fileList, this.editIndex, {
-                        key,
-                        url: reader.result,
-                        name: file.name,
-                        urlPath: url,
-                        percent: 100,
-                        status: 'success'
-                    })
+                     if (this.editIndex >= 0) {
 
-                    this.editIndex = -1
-                } else {
-                    this.fileList.push({
-                        key,
-                        url: reader.result,
-                        name: file.name,
-                        urlPath: url,
-                        percent: 100,
-                        status: 'success'
-                    })
-                }
-            }
+                         this.$set(this.fileList, this.editIndex, {
+                             key,
+                             url: reader.result,
+                             name: file.name,
+                             urlPath: url,
+                             percent: 100,
+                             status: 'success'
+                         })
+
+                         this.editIndex = -1
+                     } else {
+                         this.fileList.push({
+                             key,
+                             url: reader.result,
+                             name: file.name,
+                             urlPath: url,
+                             percent: 100,
+                             status: 'success'
+                         })
+                     }
+                 }
+             }
+          }).catch(error => {
+             throw new Error(error);
+          });
         }
       }
       this.$refs.uploadInput.value = []

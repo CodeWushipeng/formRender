@@ -1,5 +1,6 @@
-import { getDic } from '@/api/forms';
-import { RES_OK } from '@/api/config';
+import { getDic } from '@/api/forms'
+import { RES_OK } from '@/api/config'
+import {dateFormat} from "../../util";
 let itemHandle = {
   data() {
     return {

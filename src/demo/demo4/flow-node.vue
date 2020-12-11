@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import flowMixin from './js/mixins'
+import {flowMixin} from './js/mixins'
 export default {
     name: "flowNode",
     mixins: [flowMixin],

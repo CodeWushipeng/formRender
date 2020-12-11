@@ -24,7 +24,7 @@ function defaultCommit(commit, data, request) {
 function defineCommit(currentObj,commitFunc, request) {
   // 自定义提交
   try {
-    return Toolkit.matrix.handleRemoteFn(currentObj,request, commitFunc)
+    return Toolkit.matrix.handleDefineFn(currentObj,request, commitFunc)
   }catch (e) {
     throw new Error(e)
   }
@@ -74,12 +74,12 @@ class Api {
 
 // 返回单例
 let oneCase = (function () {
-  let fee
+  let instance
   return function () {
-    if (!fee) {
-      fee = new Grid();
+    if (!instance) {
+      instance = new Grid();
     }
-    return fee
+    return instance
   }
 })()
 

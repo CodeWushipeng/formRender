@@ -102,8 +102,14 @@
         <el-input-number v-model="data.options.step" :min="0" :max="100" :step="1"></el-input-number>
       </el-form-item>
       <el-form-item
+        :label="$t('fm.config.widget.precision')"
+        v-if="Object.keys(data.options).indexOf('precision')>=0"
+      >
+        <el-input-number v-model="data.options.precision" :min="0" :max="100" :step="1"></el-input-number>
+      </el-form-item>
+      <el-form-item
         :label="$t('fm.config.widget.multiple')"
-        v-if="data.type=='select' || data.type=='imgupload' | data.type=='imageupload' |data.type=='fileupload' |data.type=='videoupload'"
+        v-if="data.type=='select' || data.type=='imgupload' | data.type=='imageupload' |data.type=='fileupload' |data.type=='fileuploadExt' |data.type=='videoupload'"
       >
         <el-switch v-model="data.options.multiple" @change="handleSelectMuliple"></el-switch>
       </el-form-item>
@@ -533,6 +539,38 @@
         </template>
       </template>
 
+      <template v-if="data.type=='fileuploadExt'">
+
+        <el-form-item :label="$t('fm.config.widget.limit')">
+          <el-input type="number" v-model.number="data.options.limit"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('fm.config.widget.tip')" v-if="Object.keys(data.options).indexOf('tip')>=0">
+          <el-input v-model="data.options.tip"></el-input>
+        </el-form-item>
+        <!--<el-form-item :label="$t('fm.config.widget.isQiniu')">
+          <el-switch v-model="data.options.isQiniu"></el-switch>
+        </el-form-item>-->
+
+          <!--<el-form-item :label="$t('fm.config.widget.action')" :required="true">
+            <el-input v-model="data.options.action"></el-input>
+          </el-form-item>
+          <el-form-item :label="$t('fm.config.widget.headers')">
+            <ul>
+              <li v-for="(item, index) in data.options.headers" :key="index" style="margin-bottom: 5px;">
+                <el-input type="textarea" clearable :rows="1" placeholder="KEY" size="mini" style="width: 100px;margin-right:5px;" v-model="item.key"></el-input>
+
+                <el-input type="textarea" clearable :rows="1" placeholder="VALUE" size="mini" style="width: 130px;" v-model="item.value"></el-input>
+
+                <el-button @click="handleOptionsRemove(index)" circle plain type="danger" size="mini" icon="el-icon-minus" style="padding: 4px;margin-left: 5px;"></el-button>
+
+              </li>
+            </ul>
+            <div>
+              <el-button type="text" @click="handleAddHeader">{{$t('fm.actions.add')}}</el-button>
+            </div>
+          </el-form-item>-->
+      </template>
+
       <template v-if="data.type=='blank'">
         <el-form-item :label="$t('fm.config.widget.defaultType')">
           <el-select v-model="data.options.defaultType">
@@ -872,7 +910,8 @@ export default {
         this.data.tabs.splice(index, 1)
       } else if (
         this.data.type === 'imgupload' ||
-        this.data.type === 'fileupload'
+        this.data.type === 'fileupload' ||
+        this.data.type === 'fileuploadExt'
       ) {
         this.data.options.headers.splice(index, 1)
       } else {

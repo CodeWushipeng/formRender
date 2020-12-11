@@ -120,12 +120,11 @@
 </template>
 
 <script>
-  // import getFG from "./js/fg-control";
-  // import getFG from "fg-control";
-  import {oneCase} from './js/core/index';
-  const grid = new oneCase();
-  import flowMixin from './js/mixins'
+  // import {oneCase} from './js/core/index';
+  import {oneCase} from "fg-control";
+  import {flowMixin} from './js/mixins'
   import flowNode from './flow-node'
+  const grid = new oneCase();
   export default {
     name: "flowBtns",
     mixins: [flowMixin],
@@ -272,10 +271,10 @@
         this.inDataSolve = res;
       },
       nodesHandler() {
-        console.log('FG.nodes', JSON.stringify(grid.operdata.nodes))
+        console.log('nodes', JSON.stringify(grid.operdata.nodes))
+        let res = [];
         const keys = Object.keys(grid.operdata.nodes);
         if (keys.length) {
-          let res = [];
           for (let key in grid.operdata.nodes) {
             const value_up = grid.operdata.nodes[key]['up'];
             const value_down = grid.operdata.nodes[key]['down'];
@@ -285,14 +284,12 @@
               value_down: typeof value_down == "object" ? JSON.stringify(value_down) : value_down
             })
           }
-
-          this.nodesData = grid.operdata.nodes;
-          this.nodesDataSolve = res;
         }
+        this.nodesData = grid.operdata.nodes;
+        this.nodesDataSolve = res;
       },
       formHandler() {
-        // alert(JSON.stringify(data));
-        this.$emit("getFormHandler")
+        this.$emit("onFormHandler")
       },
       processHandler() {
         this.processDataList = grid.getProcess()

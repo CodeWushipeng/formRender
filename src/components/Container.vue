@@ -516,7 +516,8 @@ export default {
         'taglable',
         'imageshow',
         'imageupload',
-        'fileupload',
+        'fileuploadExt',
+        /*'fileupload',*/
         'videoupload',
         'camera',
         'buttonCom',
@@ -530,6 +531,7 @@ export default {
         'input',
         'textarea',
         'number',
+        'counter',
         'radio',
         'checkbox',
         'time',

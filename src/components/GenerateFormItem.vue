@@ -234,27 +234,29 @@
       </el-input>
     </template>
 
-    <template v-if="widget.type == 'number'">
-      <el-input-number
-        v-model="dataModel"
-        :style="{ width: widget.options.width + 'px' }"
-        :step="widget.options.step"
-        controls-position="right"
-        :disabled="widget.options.disabled"
-        @focus="comFocus"
-        @blur="comBlur"
-        @keyup.native.enter="change"
-      >
-        <template slot="prepend">
-          <el-button
-            v-if="widget.options.tips != ''"
-            @click="showTips(widget.options.tips)"
-            slot="prepend"
-            icon="el-icon-question"
-          ></el-button>
-        </template>
-      </el-input-number>
-    </template>
+      <template v-if="widget.type == 'counter'">
+        <el-input-number
+          v-model="dataModel"
+          :style="{ width: widget.options.width }"
+          :min="widget.options.min"
+          :max="widget.options.max"
+          :step="widget.options.step"
+          :precision="widget.options.precision"
+          :disabled="widget.options.disabled"
+          @focus="comFocus"
+          @blur="comBlur"
+          @keyup.native.enter="change"
+        >
+          <template slot="prepend">
+            <el-button
+              v-if="widget.options.tips != ''"
+              @click="showTips(widget.options.tips)"
+              slot="prepend"
+              icon="el-icon-question"
+            ></el-button>
+          </template>
+        </el-input-number>
+      </template>
 
     <!--标签组件-->
     <template v-if="widget.type == 'taglable'">
@@ -840,27 +842,34 @@
       ></el-slider>
     </template>
 
-    <template v-if="widget.type == 'imgupload'">
-      <fm-upload
-        v-model="dataModel"
-        :disabled="widget.options.disabled"
-        :style="{ width: widget.options.width + 'px' }"
-        :width="widget.options.size.width"
-        :height="widget.options.size.height"
-        :token="widget.options.token"
-        :domain="widget.options.domain"
-        :multiple="widget.options.multiple"
-        :length="widget.options.length"
-        :is-qiniu="widget.options.isQiniu"
-        :is-delete="widget.options.isDelete"
-        :min="widget.options.min"
-        :is-edit="widget.options.isEdit"
-        :action="widget.options.action"
-      ></fm-upload>
-    </template>
+      <template v-if="widget.type == 'fileuploadExt'">
 
-    <template
-      v-if="
+        <fm-file-upload
+                el-decorator="[
+              widget.model,
+              {
+                rules: rules[widget.model],
+                initialValue: dataModel
+              }
+            ]"
+                :disabled="widget.options.disabled"
+                :style="{'width': widget.options.width}"
+                :token="widget.options.token"
+                :domain="widget.options.domain"
+                :multiple="widget.options.multiple"
+                :limit="widget.options.limit"
+                :is-qiniu="widget.options.isQiniu"
+                :min="widget.options.min"
+                :action="widget.options.action"
+                :tip="widget.options.tip"
+                ui="antd"
+                :headers="widget.options.headers || []"
+        >
+        </fm-file-upload>
+      </template>
+
+      <template
+        v-if="
         (widget.type == 'imageupload') |
           (widget.type == 'fileupload') |
           (widget.type == 'videoupload')
@@ -1005,24 +1014,28 @@
 </template>
 
 <script>
-import FmUpload from './Upload';
-import FmUploadExtend from './Uploadextend';
-import CusDialog from './CusDialog';
-import radioFormItem from './radioFormItem';
-import cameraFormItem from './cameraFormItem';
-import { getInputValue, delcommafy } from '../util/comother.js';
-import { InputMoney } from '../util/amtUtil';
+import { EventBus } from '../util/event-bus.js'
+import FmUpload from './Upload'
+import FmUploadExtend from './Uploadextend'
+import CusDialog from './CusDialog'
+import radioFormItem from './radioFormItem'
+import cameraFormItem from './cameraFormItem'
+import { getInputValue, delcommafy } from '../util/comother.js'
+import { InputMoney } from '../util/amtUtil'
 // import request from '../util/request.js'
-import ElImage from 'element-ui/packages/image/src/main';
-import { RES_OK, FAIL_CODE } from '@/api/config';
-import { getDicTwo } from '@/api/forms';
-import { getFormConfigDataById } from '../components/table/tableAction';
-import itemHandle from './mixins/itemHandle.js';
-import hrSelect from './base-components/my-select/select';
-import request from '../demo/demo3/js/request';
+import ElImage from 'element-ui/packages/image/src/main'
+import { RES_OK, FAIL_CODE } from '@/api/config'
+import { getDicTwo } from '@/api/forms'
+import { getFormConfigDataById } from '../components/table/tableAction'
+import itemHandle from './mixins/itemHandle.js'
+import hrSelect from './base-components/my-select/select'
+// import request from '../demo/demo3/js/request'
+import request from '../demo/commonjs/request'
+import FmFileUpload from './Upload/file'
 export default {
   props: ['widget', 'models', 'rules', 'remote'], // widget为当前组件json数据
   components: {
+    FmFileUpload,
     ElImage,
     FmUpload,
     FmUploadExtend,
@@ -1034,8 +1047,9 @@ export default {
   mixins: [itemHandle],
   data() {
     return {
-      imagesrc: require('../assets/wenjian.png'),
-      /*imagesrc: "",*/
+      fileList: [],
+      srcList: [],
+      //imagesrc: require('http://192.168.2.179:32009/public//20201208/785912151519703040.jpg'),
       radioVisible: false,
       pingLuConfigPopVisible: false,
       cameraVisible: false,
@@ -1143,6 +1157,15 @@ export default {
     };
   },
   created() {
+    if (this.widget.type == 'imageshow') {
+      this.$nextTick((_) => {
+          this.srcList.push(this.widget.options.imagesrc)
+      })
+    }else if(this.widget.type == 'fileuploadExt'){
+        this.$nextTick((_) => {
+          this.dataModel = this.fileList
+        })
+    }
     if (this.widget.type == 'taglable') {
       this.$nextTick(_ => {
         this.dataModel = this.dynamicTags;
@@ -1184,14 +1207,19 @@ export default {
     }
   },
   methods: {
-    currentChange(pageSize) {
-      eval('(' + this.widget.options.pagination.handleCurrentChange + ')')(
-        request,
-        pageSize,
-        res => {
-          this.widget.configdata.list[0].options.tableData = res;
-        }
-      );
+      submitUpload() {
+          this.$refs.upload.submit();
+      },
+      handleRemove(file, fileList) {
+          console.log(file, fileList);
+      },
+      handlePreview(file) {
+          console.log(file);
+      },
+    currentChange(pageSize){
+      eval("("+this.widget.options.pagination.handleCurrentChange+")")(request,pageSize,(res)=>{
+        this.widget.configdata.list[0].options.tableData = res;
+      })
     },
     /*标签方法*/
     handleClose(tag) {
@@ -1718,6 +1746,12 @@ export default {
     },
   },
   mounted() {
+      EventBus.$on("uploadE", (field, value) => {
+          this.$nextTick(() => {
+              this.dataModel = value
+          });
+      });
+
     if (this.widget.type == 'camera') {
       this.camera();
     } else if (

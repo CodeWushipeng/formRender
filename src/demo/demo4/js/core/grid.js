@@ -1,6 +1,5 @@
-import {BusFactory, OperateFactory} from './coreFactory';
+import {BusFactory, OperateFactory} from './factory';
 import Toolkit from './toolkit';
-import Check from './check';
 
 class Getting {
   constructor() {
@@ -18,7 +17,7 @@ class Getting {
    */
   getStart() {
     const busdata = this.busdata.list;
-    const result = this._find(busdata, item => item.type == Toolkit.static.START)
+    const result = this._find(busdata, item => item.type == Toolkit.static.isStart)
     return result || {}
   }
 
@@ -28,14 +27,14 @@ class Getting {
    */
   getEnd() {
     const busdata = this.busdata.list;
-    const result = this._find(busdata, item => item.type == Toolkit.static.END)
+    const result = this._find(busdata, item => item.type == Toolkit.static.isEnd)
     return result || {}
   }
 
   // 返回初始化启动数据
-  getStartSet(initFunc, request) {
+  getStartSet(_this,initFunc, request) {
     if (initFunc) {
-      return Toolkit.matrix.solveInitConfigJs(this, this.busdata, initFunc, request)
+      return Toolkit.matrix.solveInitDataConfigJs(_this, this.busdata, initFunc, request)
     } else {
       return Promise.resolve({})
     }
@@ -119,40 +118,13 @@ class Grid extends Getting {
   }
 
   /**
-   * 检查是否可提交
-   * @param type
-   * @param commitType
-   * @returns {boolean}
-   */
-  checkSubmit(type,commitType){
-    let isSuccess = true;
-    const checker = new Check();
-    const checkmsg = checker.check(this.busdata,this.operdata,type,commitType);
-    if(checkmsg.status){
-      alert(checkmsg.error);
-      isSuccess=false
-    }
-    return isSuccess
-  }
-  checkPrev(data){
-    let isSuccess = true;
-    const checker = new Check();
-    const checkmsg = checker.checkPrev(this,data);
-    if(checkmsg.status){
-      alert(checkmsg.error);
-      isSuccess=false
-    }
-    return isSuccess
-  }
-
-  /**
    * 检查节点能否执行
    * @param checkstart
    * @returns {*}
    */
   checkHandler(checkstart) {
     if (checkstart) {
-      return Toolkit.matrix._solveConfigJs(this.busdata, this.operdata, checkstart)
+      return Toolkit.matrix.solveStartConfigJs(this.busdata, this.operdata, checkstart)
     }
     return true
   }
@@ -163,18 +135,16 @@ class Grid extends Getting {
    * @param res
    */
   build(user, platform, res) {
-    let flow = Toolkit.matrix.solveFlow(res);
-    let list = flow.list;
-    let flowType = flow.flowType;
-    let utils = flow.utils;
+    let flow = Toolkit.matrix.getFlow(res);
+    const {list, flowType, utils} = flow;
     let indata = Object.create(null);
     this.busdata = new BusFactory(user, platform, indata, list, flowType, utils);
 
     let isUsable = false;
-    let outflag = false;
-    let process = [];
-    let nodes = [];
-    this.operdata = new OperateFactory(isUsable, outflag, process, nodes);
+    let outflag  = false;
+    let process  = [];
+    let nodes    = [];
+    this.operdata= new OperateFactory(isUsable, outflag, process, nodes);
   }
 
   /**
@@ -184,7 +154,7 @@ class Grid extends Getting {
    */
   setNode(nodeCode, value) {
     this.operdata.nodes[nodeCode] = value;
-    console.log('nodes', JSON.stringify(this.operdata.nodes))
+    // console.log('nodes', JSON.stringify(this.operdata.nodes))
   }
 
   // 设置提交标识
@@ -228,13 +198,17 @@ class Grid extends Getting {
       down: {...response, rspCode: "SP000000"}
     };
     console.log("通信提交响应数据：" + JSON.stringify(Obj));
-    const copyObj = JSON.parse(JSON.stringify(Obj));
+    const copyObj = Toolkit.matrix.copyObject(Obj);
     this.setNode(nodeCode, copyObj);
   }
-
-  destroy() {
+  // 取消流程
+  destroyGrid() {
     console.log('destory...')
-
+    const keys = Object.keys(this.operdata.nodes);
+    keys.forEach(key => {
+      delete this.operdata.nodes[key];
+    });
+    this.operdata.isUsable = false;
   }
 }
 

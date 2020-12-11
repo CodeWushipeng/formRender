@@ -3,18 +3,18 @@
 let   _MAX_WIDTH = null; // 最大宽度
 const _MIN_WIDTH = 400;  // 最小宽度
 
-export function getId(id) {
+function getId(id) {
   return document.getElementById(id);
 }
 
 function _getTags(tag) {
   return document.getElementsByTagName(tag)
 }
-export function getTag(tag) {
+function getTag(tag) {
   return _getTags(tag)[0];
 }
 
-export function clearSelectEmpty() {
+function clearSelectEmpty() {
   window.getSelection().empty();
 }
 

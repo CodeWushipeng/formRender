@@ -103,7 +103,7 @@
         ></el-input>
       </template>
 
-      <template v-if="element.type == 'number'">
+      <template v-if="element.type == 'counter'">
         <el-input-number
           v-model="element.options.defaultValue"
           :disabled="element.options.disabled"
@@ -270,6 +270,16 @@
           domain="xxx"
         ></fm-upload>
       </template>
+      <template v-if="element.type == 'fileuploadExt'">
+        <el-upload
+                action=""
+                :disabled="element.options.disabled"
+                :limit="element.options.limit"
+        >
+          <el-button size="small" type="primary">{{$t('fm.actions.upload')}}</el-button>
+          <div v-if="element.options.tip" class="el-upload__tip" slot="tip">{{element.options.tip}}</div>
+        </el-upload>
+      </template>
 
       <template v-if="element.type == 'cascader'">
         <el-cascader
@@ -390,7 +400,8 @@
 <script>
 import FmUpload from "./Upload";
 import { EventBus } from "../util/event-bus.js";
-import request from '../demo/demo3/js/request'
+// import request from '../demo/demo3/js/request'
+import request from '../demo/commonjs/request'
 export default {
   props: ["element", "select", "index", "data"],
   components: {
