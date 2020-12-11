@@ -1060,8 +1060,16 @@ export default {
       amountvisible: false, // 控制金额放大镜的显隐
       dataModel: this.models[this.widget.model], // 当前组件的默认值，是双向绑定的
       pickerOptionsDate: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
+        disabledDate:(time)=> {
+            let startDate = this.widget.options.startDate ? this.widget.options.startDate.replace(/-/g,'/') : "";
+            let endDate = this.widget.options.endDate ? this.widget.options.endDate.replace(/-/g,'/') : "";
+            if(startDate && endDate){
+                return time.getTime() < new Date(startDate).getTime() || time.getTime() > new Date(endDate).getTime();
+            }else if(startDate){
+                return time.getTime() < new Date(startDate).getTime();
+            }else if(endDate){
+                return time.getTime() > new Date(endDate).getTime();
+            }
         },
         shortcuts: [
           {
@@ -1164,6 +1172,13 @@ export default {
     }else if(this.widget.type == 'fileuploadExt'){
         this.$nextTick((_) => {
           this.dataModel = this.fileList
+        })
+    }else if(this.widget.type == 'date'){
+        this.$nextTick((_) => {
+            //如果有开始或者结束时间，去除快捷键
+            if(this.widget.options.startDate || this.widget.options.endDate){
+                delete this.pickerOptionsDate['shortcuts']
+            }
         })
     }
     if (this.widget.type == 'taglable') {

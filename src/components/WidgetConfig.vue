@@ -469,18 +469,20 @@
         <el-form-item :label="$t('fm.config.widget.startDate')" v-if="data.type == 'date'">
           <el-date-picker
             v-model="data.options.startDate"
-            align="right"
             type="date"
             placeholder="选择日期"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
             >
           </el-date-picker>
         </el-form-item>
         <el-form-item :label="$t('fm.config.widget.endDate')" v-if="data.type == 'date'">
           <el-date-picker
             v-model="data.options.endDate"
-            align="right"
             type="date"
             placeholder="选择日期"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
             >
           </el-date-picker>
         </el-form-item>

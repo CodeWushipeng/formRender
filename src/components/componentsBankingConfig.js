@@ -793,6 +793,8 @@ export const bankingComponents = [
       placeholder: '',
       startPlaceholder: '',
       endPlaceholder: '',
+      startDate: '',
+      endDate: '',
       type: 'date',
       format: 'yyyy-MM-dd',
       timestamp: false,

@@ -171,6 +171,8 @@ export default {
         showType: "显示类型",
         isRange: "是否为范围选择",
         isTimestamp: "是否获取时间戳",
+        startDate: "开始时间",
+        endDate: "结束时间",
         startPlaceholder: "开始时间占位内容",
         endPlaceholder: "结束时间占位内容",
         format: "格式",
