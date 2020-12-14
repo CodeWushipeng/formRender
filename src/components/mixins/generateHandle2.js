@@ -54,7 +54,6 @@ let handlers = {
   methods: {
     // 组件获取焦点
     mouseValidate(params, type) {
-      //
       for (let i = 0; i < this.comArr.length; i++) {
         if (this.comArr[i].model == params) {
           console.log(i, this.outMark);
@@ -844,7 +843,7 @@ let handlers = {
     },
     // 回车事件
     onElChange(params) {
-      this.changeAmount();
+      // this.changeAmount();
       if (this.cancelNext) {
         this.cancelNext = false;
         return;

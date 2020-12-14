@@ -1126,70 +1126,23 @@ export const basicComponents = [
     options: {
       width: '100%',
       defaultValue: '',
-      data: [
-        {
-          label: '一级 1',
-          children: [
-            {
-              label: '二级 1-1',
-              children: [
-                {
-                  label: '三级 1-1-1',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          label: '一级 2',
-          children: [
-            {
-              label: '二级 2-1',
-              children: [
-                {
-                  label: '三级 2-1-1',
-                },
-              ],
-            },
-            {
-              label: '二级 2-2',
-              children: [
-                {
-                  label: '三级 2-2-1',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          label: '一级 3',
-          children: [
-            {
-              label: '二级 3-1',
-              children: [
-                {
-                  label: '三级 3-1-1',
-                },
-              ],
-            },
-            {
-              label: '二级 3-2',
-              children: [
-                {
-                  label: '三级 3-2-1',
-                },
-              ],
-            },
-          ],
-        },
-      ],
+      data: [],
+      dataFunc: 'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数 树组件数据只能是数组需return一个数组\n' +
+      '\treturn []\n' +
+      '}',
       props: {
         children: 'children',
         label: 'label',
+        disabled: '',
       },
+      nodeKey: '',
       highlightCurrent: false,
       accordion: false,
       showCheckbox: false,
+      currentNodeKey: '',
+      iconClass: '',
       labelWidth: 100,
       isLabelWidth: false,
     },

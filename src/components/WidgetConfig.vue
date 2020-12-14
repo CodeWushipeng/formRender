@@ -1,43 +1,61 @@
 <template>
   <div v-if="show">
     <el-form label-position="top">
-      <el-form-item :label="$t('fm.config.widget.model')" v-if="data.type!='grid'">
+      <el-form-item
+        :label="$t('fm.config.widget.model')"
+        v-if="data.type != 'grid'"
+      >
         <el-input v-model="data.model"></el-input>
       </el-form-item>
-      <el-form-item :label="$t('fm.config.widget.name')" v-if="data.type!='grid'">
+      <el-form-item
+        :label="$t('fm.config.widget.name')"
+        v-if="data.type != 'grid'"
+      >
         <el-input v-model="data.name"></el-input>
       </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.width')"
-        v-if="Object.keys(data.options).indexOf('width')>=0"
+        v-if="Object.keys(data.options).indexOf('width') >= 0"
       >
         <el-input v-model="data.options.width"></el-input>
       </el-form-item>
 
       <el-form-item
         :label="$t('fm.config.widget.height')"
-        v-if="Object.keys(data.options).indexOf('height')>=0"
+        v-if="Object.keys(data.options).indexOf('height') >= 0"
       >
         <el-input v-model="data.options.height"></el-input>
       </el-form-item>
 
       <el-form-item
         :label="$t('fm.config.widget.size')"
-        v-if="Object.keys(data.options).indexOf('size')>=0"
+        v-if="Object.keys(data.options).indexOf('size') >= 0"
       >
-        {{$t('fm.config.widget.width')}}
-        <el-input style="width: 90px;" type="number" v-model.number="data.options.size.width"></el-input>
-        {{$t('fm.config.widget.height')}}
-        <el-input style="width: 90px;" type="number" v-model.number="data.options.size.height"></el-input>
+        {{ $t('fm.config.widget.width') }}
+        <el-input
+          style="width: 90px;"
+          type="number"
+          v-model.number="data.options.size.width"
+        ></el-input>
+        {{ $t('fm.config.widget.height') }}
+        <el-input
+          style="width: 90px;"
+          type="number"
+          v-model.number="data.options.size.height"
+        ></el-input>
       </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.labelWidth')"
-        v-if="Object.keys(data.options).indexOf('labelWidth')>=0 && !data.options.tableColumn"
+        v-if="
+          Object.keys(data.options).indexOf('labelWidth') >= 0 &&
+            !data.options.tableColumn
+        "
       >
         <el-checkbox
           v-model="data.options.isLabelWidth"
           style="margin-right: 5px;"
-        >{{$t('fm.config.widget.custom')}}</el-checkbox>
+          >{{ $t('fm.config.widget.custom') }}</el-checkbox
+        >
         <el-input-number
           v-model="data.options.labelWidth"
           :disabled="!data.options.isLabelWidth"
@@ -48,23 +66,36 @@
       </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.hideLabel')"
-        v-if="data.type !='grid' && data.type != 'tabs' && data.type != 'report' && data.type != 'divider' && data.type != 'td'"
+        v-if="
+          data.type != 'grid' &&
+            data.type != 'tabs' &&
+            data.type != 'report' &&
+            data.type != 'divider' &&
+            data.type != 'td'
+        "
       >
         <el-switch v-model="data.options.hideLabel"></el-switch>
       </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.placeholder')"
-        v-if="Object.keys(data.options).indexOf('placeholder')>=0 && (data.type!='time' || data.type!='date')"
+        v-if="
+          Object.keys(data.options).indexOf('placeholder') >= 0 &&
+            (data.type != 'time' || data.type != 'date')
+        "
       >
         <el-input v-model="data.options.placeholder"></el-input>
       </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.layout')"
-        v-if="Object.keys(data.options).indexOf('inline')>=0"
+        v-if="Object.keys(data.options).indexOf('inline') >= 0"
       >
         <el-radio-group v-model="data.options.inline">
-          <el-radio-button :label="false">{{$t('fm.config.widget.block')}}</el-radio-button>
-          <el-radio-button :label="true">{{$t('fm.config.widget.inline')}}</el-radio-button>
+          <el-radio-button :label="false">{{
+            $t('fm.config.widget.block')
+          }}</el-radio-button>
+          <el-radio-button :label="true">{{
+            $t('fm.config.widget.inline')
+          }}</el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item
@@ -72,84 +103,142 @@
         v-if="Object.keys(data.options).indexOf('contentPosition') >= 0"
       >
         <el-radio-group v-model="data.options.contentPosition">
-          <el-radio-button label="left">{{$t('fm.config.widget.left')}}</el-radio-button>
-          <el-radio-button label="center">{{$t('fm.config.widget.center')}}</el-radio-button>
-          <el-radio-button label="right">{{$t('fm.config.widget.right')}}</el-radio-button>
+          <el-radio-button label="left">{{
+            $t('fm.config.widget.left')
+          }}</el-radio-button>
+          <el-radio-button label="center">{{
+            $t('fm.config.widget.center')
+          }}</el-radio-button>
+          <el-radio-button label="right">{{
+            $t('fm.config.widget.right')
+          }}</el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.showInput')"
-        v-if="Object.keys(data.options).indexOf('showInput')>=0"
+        v-if="Object.keys(data.options).indexOf('showInput') >= 0"
       >
         <el-switch v-model="data.options.showInput"></el-switch>
       </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.min')"
-        v-if="Object.keys(data.options).indexOf('min')>=0"
+        v-if="Object.keys(data.options).indexOf('min') >= 0"
       >
-        <el-input-number v-model="data.options.min" :min="0" :max="100" :step="1"></el-input-number>
+        <el-input-number
+          v-model="data.options.min"
+          :min="0"
+          :max="100"
+          :step="1"
+        ></el-input-number>
       </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.max')"
-        v-if="Object.keys(data.options).indexOf('max')>=0"
+        v-if="Object.keys(data.options).indexOf('max') >= 0"
       >
-        <el-input-number v-model="data.options.max" :min="0" :max="100" :step="1"></el-input-number>
+        <el-input-number
+          v-model="data.options.max"
+          :min="0"
+          :max="100"
+          :step="1"
+        ></el-input-number>
       </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.step')"
-        v-if="Object.keys(data.options).indexOf('step')>=0"
+        v-if="Object.keys(data.options).indexOf('step') >= 0"
       >
-        <el-input-number v-model="data.options.step" :min="0" :max="100" :step="1"></el-input-number>
+        <el-input-number
+          v-model="data.options.step"
+          :min="0"
+          :max="100"
+          :step="1"
+        ></el-input-number>
       </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.precision')"
-        v-if="Object.keys(data.options).indexOf('precision')>=0"
+        v-if="Object.keys(data.options).indexOf('precision') >= 0"
       >
-        <el-input-number v-model="data.options.precision" :min="0" :max="100" :step="1"></el-input-number>
+        <el-input-number
+          v-model="data.options.precision"
+          :min="0"
+          :max="100"
+          :step="1"
+        ></el-input-number>
       </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.multiple')"
-        v-if="data.type=='select' || data.type=='imgupload' | data.type=='imageupload' |data.type=='fileupload' |data.type=='fileuploadExt' |data.type=='videoupload'"
+        v-if="
+          data.type == 'select' ||
+            (data.type == 'imgupload') |
+              (data.type == 'imageupload') |
+              (data.type == 'fileupload') |
+              (data.type == 'fileuploadExt') |
+              (data.type == 'videoupload')
+        "
       >
-        <el-switch v-model="data.options.multiple" @change="handleSelectMuliple"></el-switch>
+        <el-switch
+          v-model="data.options.multiple"
+          @change="handleSelectMuliple"
+        ></el-switch>
       </el-form-item>
-      <el-form-item :label="$t('fm.config.widget.filterable')" v-if="data.type=='select'">
+      <el-form-item
+        :label="$t('fm.config.widget.filterable')"
+        v-if="data.type == 'select'"
+      >
         <el-switch v-model="data.options.filterable"></el-switch>
       </el-form-item>
 
-      <el-form-item v-if="data.type=='idencard' | data.type == 'readcard'">
+      <el-form-item
+        v-if="(data.type == 'idencard') | (data.type == 'readcard')"
+      >
         <!--是否支持外设-->
-        <div v-if="data.type=='idencard' | data.type == 'readcard'">
-          <el-checkbox v-model="data.options.ifperipheral">{{$t('fm.config.widget.ifperipheral')}}</el-checkbox>
+        <div v-if="(data.type == 'idencard') | (data.type == 'readcard')">
+          <el-checkbox v-model="data.options.ifperipheral">{{
+            $t('fm.config.widget.ifperipheral')
+          }}</el-checkbox>
         </div>
         <!--卡类型-->
-        <div v-if="data.type=='readcard'">
+        <div v-if="data.type == 'readcard'">
           <el-select v-model="data.options.cardType">
-            <el-option value="01" :label="$t('fm.config.widget.iccard')"></el-option>
-            <el-option value="02" :label="$t('fm.config.widget.magnetismcard')"></el-option>
+            <el-option
+              value="01"
+              :label="$t('fm.config.widget.iccard')"
+            ></el-option>
+            <el-option
+              value="02"
+              :label="$t('fm.config.widget.magnetismcard')"
+            ></el-option>
           </el-select>
-          <label>{{$t('fm.config.widget.cardType')}}</label>
+          <label>{{ $t('fm.config.widget.cardType') }}</label>
         </div>
       </el-form-item>
 
-        <el-form-item v-if="data.type=='frequency'">
-            {{$t('fm.config.widget.spaceType')}}
-            <el-select v-model="data.options.spaceType">
-                <el-option value='pingLuConfigPop' :label="$t('fm.config.widget.pingLuConfigPop')"></el-option>
-                <el-option value='qiXianConfigPop' :label="$t('fm.config.widget.qiXianConfigPop')"></el-option>
-                <el-option value='pingLuConfigPop_zhouqi' :label="$t('fm.config.widget.pingLuConfigPop_zhouqi')"></el-option>
-            </el-select>
-        </el-form-item>
+      <el-form-item v-if="data.type == 'frequency'">
+        {{ $t('fm.config.widget.spaceType') }}
+        <el-select v-model="data.options.spaceType">
+          <el-option
+            value="pingLuConfigPop"
+            :label="$t('fm.config.widget.pingLuConfigPop')"
+          ></el-option>
+          <el-option
+            value="qiXianConfigPop"
+            :label="$t('fm.config.widget.qiXianConfigPop')"
+          ></el-option>
+          <el-option
+            value="pingLuConfigPop_zhouqi"
+            :label="$t('fm.config.widget.pingLuConfigPop_zhouqi')"
+          ></el-option>
+        </el-select>
+      </el-form-item>
 
       <!--按钮相关属性-->
-      <el-form-item v-if="data.type=='buttonCom' | data.type=='alink'">
-        {{$t('fm.config.widget.buttontext')}}
+      <el-form-item v-if="(data.type == 'buttonCom') | (data.type == 'alink')">
+        {{ $t('fm.config.widget.buttontext') }}
         <el-input v-model="data.options.buttontext"></el-input>
-        <div v-if="data.type=='buttonCom'">
-          {{$t('fm.config.widget.buttonicon')}}
+        <div v-if="data.type == 'buttonCom'">
+          {{ $t('fm.config.widget.buttonicon') }}
           <el-input v-model="data.options.buttonicon"></el-input>
         </div>
-        {{$t('fm.config.widget.buttonfun')}}
+        {{ $t('fm.config.widget.buttonfun') }}
         <el-input
           style="text-overflow: ellipsis;"
           readonly
@@ -157,14 +246,22 @@
           v-model="data.options.buttonfun"
           placeholder="调用函数"
         ></el-input>
-        {{$t('fm.config.widget.funname')}}
-        <el-input v-model="data.options.funname" placeholder="调用方法名"></el-input>
-        {{$t('fm.config.widget.buttonurl')}}
-        <el-input v-model="data.options.buttonurl" placeholder="调用url"></el-input>
+        {{ $t('fm.config.widget.funname') }}
+        <el-input
+          v-model="data.options.funname"
+          placeholder="调用方法名"
+        ></el-input>
+        {{ $t('fm.config.widget.buttonurl') }}
+        <el-input
+          v-model="data.options.buttonurl"
+          placeholder="调用url"
+        ></el-input>
       </el-form-item>
 
       <!--密码相关属性-->
-      <el-form-item v-if="data.type=='password' | data.type=='againpassword'">
+      <el-form-item
+        v-if="(data.type == 'password') | (data.type == 'againpassword')"
+      >
         <el-switch
           v-model="data.options.peripheral"
           :inactive-text="$t('fm.config.widget.peripheral')"
@@ -172,7 +269,7 @@
       </el-form-item>
 
       <!--图片属性-->
-      <el-form-item v-if="data.type=='imageshow'">
+      <el-form-item v-if="data.type == 'imageshow'">
         <el-form-item :label="$t('fm.config.widget.imagesrc')">
           <el-input v-model="data.options.imagesrc"></el-input>
         </el-form-item>
@@ -180,19 +277,19 @@
 
       <el-form-item
         :label="$t('fm.config.widget.allowHalf')"
-        v-if="Object.keys(data.options).indexOf('allowHalf')>=0"
+        v-if="Object.keys(data.options).indexOf('allowHalf') >= 0"
       >
         <el-switch v-model="data.options.allowHalf"></el-switch>
       </el-form-item>
 
       <el-form-item
         :label="$t('fm.config.widget.showAlpha')"
-        v-if="Object.keys(data.options).indexOf('showAlpha')>=0"
+        v-if="Object.keys(data.options).indexOf('showAlpha') >= 0"
       >
         <el-switch v-model="data.options.showAlpha"></el-switch>
       </el-form-item>
       <!-- 下拉选择框是否用作级联选择器 -->
-      <el-form-item label="是否用作级联选择器" v-if="data.type=='select'">
+      <el-form-item label="是否用作级联选择器" v-if="data.type == 'select'">
         <el-switch v-model="data.isCascader"></el-switch>
       </el-form-item>
       <el-form-item v-if="data.isCascader">
@@ -201,7 +298,10 @@
         </el-input>
       </el-form-item>
       <el-form-item v-if="data.isCascader">
-        <el-input placeholder="请输入当前选择框父级model" v-model="data.fatherModel">
+        <el-input
+          placeholder="请输入当前选择框父级model"
+          v-model="data.fatherModel"
+        >
           <template slot="prepend">父级Model</template>
         </el-input>
       </el-form-item>
@@ -228,17 +328,25 @@
 
       <el-form-item
         :label="$t('fm.config.widget.showLabel')"
-        v-if="Object.keys(data.options).indexOf('showLabel')>=0"
+        v-if="Object.keys(data.options).indexOf('showLabel') >= 0"
       >
         <el-switch v-model="data.options.showLabel"></el-switch>
       </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.option')"
-        v-if="Object.keys(data.options).indexOf('options')>=0"
+        v-if="Object.keys(data.options).indexOf('options') >= 0"
       >
-        <el-radio-group v-model="data.options.remote" size="mini" style="margin-bottom:10px;">
-          <el-radio-button :label="false">{{$t('fm.config.widget.staticData')}}</el-radio-button>
-          <el-radio-button :label="true">{{$t('fm.config.widget.remoteData')}}</el-radio-button>
+        <el-radio-group
+          v-model="data.options.remote"
+          size="mini"
+          style="margin-bottom:10px;"
+        >
+          <el-radio-button :label="false">{{
+            $t('fm.config.widget.staticData')
+          }}</el-radio-button>
+          <el-radio-button :label="true">{{
+            $t('fm.config.widget.remoteData')
+          }}</el-radio-button>
         </el-radio-group>
         <template v-if="data.options.remote">
           <div>
@@ -250,29 +358,46 @@
               @focus="handelMirror"
               placeholder="请输入远程方法"
             >
-              <template slot="prepend">{{$t('fm.config.widget.remoteFunc')}}</template>
+              <template slot="prepend">{{
+                $t('fm.config.widget.remoteFunc')
+              }}</template>
             </el-input>
             <el-input size="mini" style v-model="data.options.props.value">
-              <template slot="prepend">{{$t('fm.config.widget.value')}}</template>
+              <template slot="prepend">{{
+                $t('fm.config.widget.value')
+              }}</template>
             </el-input>
             <el-input size="mini" style v-model="data.options.props.label">
-              <template slot="prepend">{{$t('fm.config.widget.label')}}</template>
+              <template slot="prepend">{{
+                $t('fm.config.widget.label')
+              }}</template>
             </el-input>
           </div>
         </template>
         <template v-else>
-          <template v-if="data.type=='radio' || (data.type=='select'&&!data.options.multiple)">
+          <template
+            v-if="
+              data.type == 'radio' ||
+                (data.type == 'select' && !data.options.multiple)
+            "
+          >
             <el-radio-group v-model="data.options.defaultValue">
               <draggable
                 tag="ul"
                 :list="data.options.options"
-                v-bind="{group:{ name:'options'}, ghostClass: 'ghost',handle: '.drag-item'}"
+                v-bind="{
+                  group: { name: 'options' },
+                  ghostClass: 'ghost',
+                  handle: '.drag-item',
+                }"
                 handle=".drag-item"
               >
                 <li v-for="(item, index) in data.options.options" :key="index">
                   <el-radio :label="item.value" style="margin-right: 5px;">
                     <el-input
-                      :style="{'width': data.options.showLabel? '90px': '180px' }"
+                      :style="{
+                        width: data.options.showLabel ? '90px' : '180px',
+                      }"
                       size="mini"
                       v-model="item.value"
                     ></el-input>
@@ -284,7 +409,10 @@
                     ></el-input>
                     <!-- <input v-model="item.value"/> -->
                   </el-radio>
-                  <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;">
+                  <i
+                    class="drag-item"
+                    style="font-size: 16px;margin: 0 5px;cursor: move;"
+                  >
                     <i class="iconfont icon-icon_bars"></i>
                   </i>
                   <el-button
@@ -301,18 +429,29 @@
             </el-radio-group>
           </template>
 
-          <template v-if="data.type=='checkbox' || (data.type=='select' && data.options.multiple)">
+          <template
+            v-if="
+              data.type == 'checkbox' ||
+                (data.type == 'select' && data.options.multiple)
+            "
+          >
             <el-checkbox-group v-model="data.options.defaultValue">
               <draggable
                 tag="ul"
                 :list="data.options.options"
-                v-bind="{group:{ name:'options'}, ghostClass: 'ghost',handle: '.drag-item'}"
+                v-bind="{
+                  group: { name: 'options' },
+                  ghostClass: 'ghost',
+                  handle: '.drag-item',
+                }"
                 handle=".drag-item"
               >
                 <li v-for="(item, index) in data.options.options" :key="index">
                   <el-checkbox :label="item.value" style="margin-right: 5px;">
                     <el-input
-                      :style="{'width': data.options.showLabel? '90px': '180px' }"
+                      :style="{
+                        width: data.options.showLabel ? '90px' : '180px',
+                      }"
                       size="mini"
                       v-model="item.value"
                     ></el-input>
@@ -323,7 +462,10 @@
                       v-model="item.label"
                     ></el-input>
                   </el-checkbox>
-                  <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;">
+                  <i
+                    class="drag-item"
+                    style="font-size: 16px;margin: 0 5px;cursor: move;"
+                  >
                     <i class="iconfont icon-icon_bars"></i>
                   </i>
                   <el-button
@@ -340,41 +482,54 @@
             </el-checkbox-group>
           </template>
           <div style="margin-left: 22px;">
-            <el-button type="text" @click="handleAddOption">{{$t('fm.actions.addOption')}}</el-button>
+            <el-button type="text" @click="handleAddOption">{{
+              $t('fm.actions.addOption')
+            }}</el-button>
           </div>
         </template>
       </el-form-item>
 
-      <el-form-item :label="$t('fm.config.widget.remoteData')" v-if="data.type=='cascader'">
+      <el-form-item
+        :label="$t('fm.config.widget.remoteData')"
+        v-if="data.type == 'cascader'"
+      >
         <div>
           <el-input size="mini" style v-model="data.options.remoteFunc">
-            <template slot="prepend">{{$t('fm.config.widget.remoteFunc')}}</template>
+            <template slot="prepend">{{
+              $t('fm.config.widget.remoteFunc')
+            }}</template>
           </el-input>
           <el-input size="mini" style v-model="data.options.props.value">
-            <template slot="prepend">{{$t('fm.config.widget.value')}}</template>
+            <template slot="prepend">{{
+              $t('fm.config.widget.value')
+            }}</template>
           </el-input>
           <el-input size="mini" style v-model="data.options.props.label">
-            <template slot="prepend">{{$t('fm.config.widget.label')}}</template>
+            <template slot="prepend">{{
+              $t('fm.config.widget.label')
+            }}</template>
           </el-input>
           <el-input size="mini" style v-model="data.options.props.children">
-            <template slot="prepend">{{$t('fm.config.widget.childrenOption')}}</template>
+            <template slot="prepend">{{
+              $t('fm.config.widget.childrenOption')
+            }}</template>
           </el-input>
         </div>
       </el-form-item>
       <!-- input扩展配置 -->
-      <el-form-item v-if="data.type=='input'">
+      <el-form-item v-if="data.type == 'input'">
         <el-form-item label="最大输入字数">
           <el-input v-model="data.options.maxlength"></el-input>
         </el-form-item>
       </el-form-item>
       <!-- textarea扩展配置 -->
-      <el-form-item v-if="data.type=='textarea'">
+      <el-form-item v-if="data.type == 'textarea'">
         <el-form-item label="最大输入字数">
           <el-input v-model="data.options.textarealength"></el-input>
         </el-form-item>
-        <el-checkbox
-          v-model="data.options.textareaautosize"
-        >{{$t('fm.config.widget.textareaautosize')}}</el-checkbox>
+        <el-checkbox v-model="data.options.textareaautosize">{{
+          $t('fm.config.widget.textareaautosize')
+        }}</el-checkbox>
         <el-form-item v-if="data.options.textareaautosize" label="最大行数">
           <el-input v-model="data.options.textarearowmax"></el-input>
         </el-form-item>
@@ -412,10 +567,19 @@
 
       <el-form-item
         :label="$t('fm.config.widget.defaultValue')"
-        v-if="Object.keys(data.options).indexOf('defaultValue')>=0 && (data.type == 'text' || data.type == 'textarea' || data.type == 'input' || data.type=='number' || data.type=='rate' || data.type=='color' || data.type=='switch')"
+        v-if="
+          Object.keys(data.options).indexOf('defaultValue') >= 0 &&
+            (data.type == 'text' ||
+              data.type == 'textarea' ||
+              data.type == 'input' ||
+              data.type == 'number' ||
+              data.type == 'rate' ||
+              data.type == 'color' ||
+              data.type == 'switch')
+        "
       >
         <el-input
-          v-if="data.type=='textarea'"
+          v-if="data.type == 'textarea'"
           type="textarea"
           :rows="data.options.textarearows"
           v-model="data.options.defaultValue"
@@ -430,25 +594,29 @@
           <el-button
             type="text"
             style="display:inline-block;vertical-align: middle;margin-left: 10px;"
-            @click="data.options.defaultValue=0"
-          >{{$t('fm.actions.clear')}}</el-button>
+            @click="data.options.defaultValue = 0"
+            >{{ $t('fm.actions.clear') }}</el-button
+          >
         </template>
         <el-color-picker
           v-else-if="data.type == 'color'"
           v-model="data.options.defaultValue"
           :show-alpha="data.options.showAlpha"
         ></el-color-picker>
-        <el-form-item v-else-if="data.type=='switch'">
+        <el-form-item v-else-if="data.type == 'switch'">
           <el-input v-model="data.options.inActiveValue"></el-input>
-          <el-switch  v-model="data.options.defaultValue"></el-switch>
+          <el-switch v-model="data.options.defaultValue"></el-switch>
           <el-input v-model="data.options.activeValue"></el-input>
         </el-form-item>
-        
+
         <el-input v-else v-model="data.options.defaultValue"></el-input>
       </el-form-item>
 
       <template v-if="data.type == 'time' || data.type == 'date'">
-        <el-form-item :label="$t('fm.config.widget.showType')" v-if="data.type == 'date'">
+        <el-form-item
+          :label="$t('fm.config.widget.showType')"
+          v-if="data.type == 'date'"
+        >
           <el-select v-model="data.options.type">
             <el-option value="year"></el-option>
             <el-option value="month"></el-option>
@@ -460,55 +628,97 @@
             <el-option value="daterange"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.isRange')" v-if="data.type == 'time'">
+        <el-form-item
+          :label="$t('fm.config.widget.isRange')"
+          v-if="data.type == 'time'"
+        >
           <el-switch v-model="data.options.isRange"></el-switch>
         </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.isTimestamp')" v-if="data.type == 'date'">
+        <el-form-item
+          :label="$t('fm.config.widget.isTimestamp')"
+          v-if="data.type == 'date'"
+        >
           <el-switch v-model="data.options.timestamp"></el-switch>
         </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.startDate')" v-if="data.type == 'date'">
+        <el-form-item
+          :label="$t('fm.config.widget.startDate')"
+          v-if="data.type == 'date'"
+        >
           <el-date-picker
             v-model="data.options.startDate"
             align="right"
             type="date"
             placeholder="选择日期"
-            >
+          >
           </el-date-picker>
         </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.endDate')" v-if="data.type == 'date'">
+        <el-form-item
+          :label="$t('fm.config.widget.endDate')"
+          v-if="data.type == 'date'"
+        >
           <el-date-picker
             v-model="data.options.endDate"
             align="right"
             type="date"
             placeholder="选择日期"
-            >
+          >
           </el-date-picker>
         </el-form-item>
 
         <el-form-item
           :label="$t('fm.config.widget.placeholder')"
-          v-if="(!data.options.isRange && data.type == 'time') || (data.type != 'time' && data.options.type != 'datetimerange' && data.options.type != 'daterange')"
+          v-if="
+            (!data.options.isRange && data.type == 'time') ||
+              (data.type != 'time' &&
+                data.options.type != 'datetimerange' &&
+                data.options.type != 'daterange')
+          "
         >
           <el-input v-model="data.options.placeholder"></el-input>
         </el-form-item>
         <el-form-item
           :label="$t('fm.config.widget.startPlaceholder')"
-          v-if="(data.options.isRange) || data.options.type=='datetimerange' || data.options.type=='daterange'"
+          v-if="
+            data.options.isRange ||
+              data.options.type == 'datetimerange' ||
+              data.options.type == 'daterange'
+          "
         >
           <el-input v-model="data.options.startPlaceholder"></el-input>
         </el-form-item>
         <el-form-item
           :label="$t('fm.config.widget.endPlaceholder')"
-          v-if="data.options.isRange || data.options.type=='datetimerange' || data.options.type=='daterange'"
+          v-if="
+            data.options.isRange ||
+              data.options.type == 'datetimerange' ||
+              data.options.type == 'daterange'
+          "
         >
           <el-input v-model="data.options.endPlaceholder"></el-input>
         </el-form-item>
         <el-form-item :label="$t('fm.config.widget.format')">
-          <el-input v-model="data.options.format"></el-input>
+          <el-select filterable allow-create v-model="data.options.format">
+            <el-option value="yyyy-MM-dd"></el-option>
+            <el-option value="yyyy-MM-d"></el-option>
+            <el-option value="yyyy-M-dd"></el-option>
+            <el-option value="yyyy-M-d"></el-option>
+            <el-option value="yyyy年MM月dd日"></el-option>
+            <el-option value="yyyy年MM月d日"></el-option>
+            <el-option value="yyyy年M月dd日"></el-option>
+            <el-option value="yyyy年M月d日"></el-option>
+            <el-option value="yyyy/MM/dd"></el-option>
+            <el-option value="yyyy/MM/d"></el-option>
+            <el-option value="yyyy/M/dd"></el-option>
+            <el-option value="yyyy/M/d"></el-option>
+          </el-select>
+          <!-- <el-input v-model="data.options.format"></el-input> -->
         </el-form-item>
         <el-form-item
           :label="$t('fm.config.widget.defaultValue')"
-          v-if="data.type=='time' && Object.keys(data.options).indexOf('isRange')>=0"
+          v-if="
+            data.type == 'time' &&
+              Object.keys(data.options).indexOf('isRange') >= 0
+          "
         >
           <el-time-picker
             key="1"
@@ -531,19 +741,33 @@
       </template>
 
       <template
-        v-if="data.type=='imgupload' | data.type=='imageupload' |data.type=='fileupload' |data.type=='videoupload'"
+        v-if="
+          (data.type == 'imgupload') |
+            (data.type == 'imageupload') |
+            (data.type == 'fileupload') |
+            (data.type == 'videoupload')
+        "
       >
         <el-form-item :label="$t('fm.config.widget.limit')">
-          <el-input type="number" v-model.number="data.options.length"></el-input>
+          <el-input
+            type="number"
+            v-model.number="data.options.length"
+          ></el-input>
         </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.isQiniu')" v-if="data.type == 'imgupload'">
+        <el-form-item
+          :label="$t('fm.config.widget.isQiniu')"
+          v-if="data.type == 'imgupload'"
+        >
           <el-switch v-model="data.options.isQiniu"></el-switch>
         </el-form-item>
         <template v-if="data.options.isQiniu && data.type == 'imgupload'">
           <el-form-item label="Domain" :required="true">
             <el-input v-model="data.options.domain"></el-input>
           </el-form-item>
-          <el-form-item :label="$t('fm.config.widget.tokenFunc')" :required="true">
+          <el-form-item
+            :label="$t('fm.config.widget.tokenFunc')"
+            :required="true"
+          >
             <el-input v-model="data.options.tokenFunc"></el-input>
           </el-form-item>
         </template>
@@ -558,19 +782,24 @@
         </template>
       </template>
 
-      <template v-if="data.type=='fileuploadExt'">
-
+      <template v-if="data.type == 'fileuploadExt'">
         <el-form-item :label="$t('fm.config.widget.limit')">
-          <el-input type="number" v-model.number="data.options.limit"></el-input>
+          <el-input
+            type="number"
+            v-model.number="data.options.limit"
+          ></el-input>
         </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.tip')" v-if="Object.keys(data.options).indexOf('tip')>=0">
+        <el-form-item
+          :label="$t('fm.config.widget.tip')"
+          v-if="Object.keys(data.options).indexOf('tip') >= 0"
+        >
           <el-input v-model="data.options.tip"></el-input>
         </el-form-item>
         <!--<el-form-item :label="$t('fm.config.widget.isQiniu')">
           <el-switch v-model="data.options.isQiniu"></el-switch>
         </el-form-item>-->
 
-          <!--<el-form-item :label="$t('fm.config.widget.action')" :required="true">
+        <!--<el-form-item :label="$t('fm.config.widget.action')" :required="true">
             <el-input v-model="data.options.action"></el-input>
           </el-form-item>
           <el-form-item :label="$t('fm.config.widget.headers')">
@@ -590,29 +819,48 @@
           </el-form-item>-->
       </template>
 
-      <template v-if="data.type=='blank'">
+      <template v-if="data.type == 'blank'">
         <el-form-item :label="$t('fm.config.widget.defaultType')">
           <el-select v-model="data.options.defaultType">
-            <el-option value="String" :label="$t('fm.config.widget.string')"></el-option>
-            <el-option value="Object" :label="$t('fm.config.widget.object')"></el-option>
-            <el-option value="Array" :label="$t('fm.config.widget.array')"></el-option>
+            <el-option
+              value="String"
+              :label="$t('fm.config.widget.string')"
+            ></el-option>
+            <el-option
+              value="Object"
+              :label="$t('fm.config.widget.object')"
+            ></el-option>
+            <el-option
+              value="Array"
+              :label="$t('fm.config.widget.array')"
+            ></el-option>
           </el-select>
         </el-form-item>
       </template>
 
       <template v-if="data.type == 'grid'">
         <el-form-item :label="$t('fm.config.widget.gutter')">
-          <el-input type="number" v-model.number="data.options.gutter"></el-input>
+          <el-input
+            type="number"
+            v-model.number="data.options.gutter"
+          ></el-input>
         </el-form-item>
         <el-form-item :label="$t('fm.config.widget.columnOption')">
           <draggable
             tag="ul"
             :list="data.columns"
-            v-bind="{group:{ name:'options'}, ghostClass: 'ghost',handle: '.drag-item'}"
+            v-bind="{
+              group: { name: 'options' },
+              ghostClass: 'ghost',
+              handle: '.drag-item',
+            }"
             handle=".drag-item"
           >
             <li v-for="(item, index) in data.columns" :key="index">
-              <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;">
+              <i
+                class="drag-item"
+                style="font-size: 16px;margin: 0 5px;cursor: move;"
+              >
                 <i class="iconfont icon-icon_bars"></i>
               </i>
               <el-input
@@ -635,51 +883,98 @@
             </li>
           </draggable>
           <div style="margin-left: 22px;">
-            <el-button type="text" @click="handleAddColumn">{{$t('fm.actions.addColumn')}}</el-button>
+            <el-button type="text" @click="handleAddColumn">{{
+              $t('fm.actions.addColumn')
+            }}</el-button>
           </div>
         </el-form-item>
         <el-form-item :label="$t('fm.config.widget.justify')">
           <el-select v-model="data.options.justify">
-            <el-option value="start" :label="$t('fm.config.widget.justifyStart')"></el-option>
-            <el-option value="end" :label="$t('fm.config.widget.justifyEnd')"></el-option>
-            <el-option value="center" :label="$t('fm.config.widget.justifyCenter')"></el-option>
-            <el-option value="space-around" :label="$t('fm.config.widget.justifySpaceAround')"></el-option>
-            <el-option value="space-between" :label="$t('fm.config.widget.justifySpaceBetween')"></el-option>
+            <el-option
+              value="start"
+              :label="$t('fm.config.widget.justifyStart')"
+            ></el-option>
+            <el-option
+              value="end"
+              :label="$t('fm.config.widget.justifyEnd')"
+            ></el-option>
+            <el-option
+              value="center"
+              :label="$t('fm.config.widget.justifyCenter')"
+            ></el-option>
+            <el-option
+              value="space-around"
+              :label="$t('fm.config.widget.justifySpaceAround')"
+            ></el-option>
+            <el-option
+              value="space-between"
+              :label="$t('fm.config.widget.justifySpaceBetween')"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('fm.config.widget.align')">
           <el-select v-model="data.options.align">
-            <el-option value="top" :label="$t('fm.config.widget.alignTop')"></el-option>
-            <el-option value="middle" :label="$t('fm.config.widget.alignMiddle')"></el-option>
-            <el-option value="bottom" :label="$t('fm.config.widget.alignBottom')"></el-option>
+            <el-option
+              value="top"
+              :label="$t('fm.config.widget.alignTop')"
+            ></el-option>
+            <el-option
+              value="middle"
+              :label="$t('fm.config.widget.alignMiddle')"
+            ></el-option>
+            <el-option
+              value="bottom"
+              :label="$t('fm.config.widget.alignBottom')"
+            ></el-option>
           </el-select>
         </el-form-item>
       </template>
       <template v-if="data.type == 'tabs'">
         <el-form-item :label="$t('fm.config.widget.type')">
           <el-radio-group v-model="data.options.type">
-            <el-radio-button label>{{$t('fm.config.widget.default')}}</el-radio-button>
-            <el-radio-button label="card">{{$t('fm.config.widget.card')}}</el-radio-button>
-            <el-radio-button label="border-card">{{$t('fm.config.widget.borderCard')}}</el-radio-button>
+            <el-radio-button label>{{
+              $t('fm.config.widget.default')
+            }}</el-radio-button>
+            <el-radio-button label="card">{{
+              $t('fm.config.widget.card')
+            }}</el-radio-button>
+            <el-radio-button label="border-card">{{
+              $t('fm.config.widget.borderCard')
+            }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item :label="$t('fm.config.widget.tabPosition')">
           <el-radio-group v-model="data.options.tabPosition">
-            <el-radio-button label="top">{{$t('fm.config.widget.top')}}</el-radio-button>
-            <el-radio-button label="left">{{$t('fm.config.widget.left')}}</el-radio-button>
-            <el-radio-button label="right">{{$t('fm.config.widget.right')}}</el-radio-button>
-            <el-radio-button label="bottom">{{$t('fm.config.widget.bottom')}}</el-radio-button>
+            <el-radio-button label="top">{{
+              $t('fm.config.widget.top')
+            }}</el-radio-button>
+            <el-radio-button label="left">{{
+              $t('fm.config.widget.left')
+            }}</el-radio-button>
+            <el-radio-button label="right">{{
+              $t('fm.config.widget.right')
+            }}</el-radio-button>
+            <el-radio-button label="bottom">{{
+              $t('fm.config.widget.bottom')
+            }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item :label="$t('fm.config.widget.tabOption')">
           <draggable
             tag="ul"
             :list="data.tabs"
-            v-bind="{group:{ name:'options'}, ghostClass: 'ghost',handle: '.drag-item'}"
+            v-bind="{
+              group: { name: 'options' },
+              ghostClass: 'ghost',
+              handle: '.drag-item',
+            }"
             handle=".drag-item"
           >
             <li v-for="(item, index) in data.tabs" :key="index">
-              <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;">
+              <i
+                class="drag-item"
+                style="font-size: 16px;margin: 0 5px;cursor: move;"
+              >
                 <i class="iconfont icon-icon_bars"></i>
               </i>
               <el-input
@@ -701,56 +996,111 @@
             </li>
           </draggable>
           <div style="margin-left: 22px;">
-            <el-button type="text" @click="handleAddTab">{{$t('fm.actions.addTab')}}</el-button>
+            <el-button type="text" @click="handleAddTab">{{
+              $t('fm.actions.addTab')
+            }}</el-button>
           </div>
         </el-form-item>
       </template>
       <!-- 操作属性 -->
       <template
-        v-if="data.type != 'grid' && data.type != 'tabs' && data.type != 'report' && data.type != 'divider' && data.type != 'td'"
+        v-if="
+          data.type != 'grid' &&
+            data.type != 'tabs' &&
+            data.type != 'report' &&
+            data.type != 'divider' &&
+            data.type != 'td'
+        "
       >
         <el-form-item :label="$t('fm.config.widget.attribute')">
+          <template v-if="data.type == 'tree'">
+            <el-form-item :label="$t('fm.config.widget.treeData')">
+              <el-input readonly placeholder="点击设置树组件数据" @focus="handelMirror"></el-input>
+            </el-form-item>
+            <el-form-item :label="$t('fm.config.widget.nodeKey')">
+              <el-input placeholder="请输入树节点唯一标识" v-model="data.options.nodeKey"></el-input>
+            </el-form-item>
+            <el-form-item :label="$t('fm.config.widget.currentNodeKey')">
+              <el-input placeholder="请输入当前选中的节点" v-model="data.options.currentNodeKey"></el-input>
+            </el-form-item>
+            <el-form-item :label="$t('fm.config.widget.iconClass')">
+              <el-input placeholder="请输入自定义树节点图标class" v-model="data.options.iconClass"></el-input>
+            </el-form-item>
+            <el-checkbox v-model="data.options.highlightCurrent">{{
+              $t('fm.config.widget.highlightCurrent')
+            }}</el-checkbox>
+            <el-checkbox v-model="data.options.accordion">{{
+              $t('fm.config.widget.accordion')
+            }}</el-checkbox>
+            <el-checkbox v-model="data.options.showCheckbox">{{
+              $t('fm.config.widget.showCheckbox')
+            }}</el-checkbox>
+            <el-form-item :label="$t('fm.config.widget.props')">
+              <el-form-item label="树节点显示标签">
+                <el-input v-model="data.options.props.label"></el-input>
+              </el-form-item>
+              <el-form-item label="子节点属性名">
+                <el-input v-model="data.options.props.children"></el-input>
+              </el-form-item>
+              <el-form-item label="禁用节点属性">
+                <el-input v-model="data.options.props.disabled"></el-input>
+              </el-form-item>
+            </el-form-item>
+          </template>
           <el-checkbox
             v-model="data.options.dataBind"
-            v-if="Object.keys(data.options).indexOf('dataBind')>=0 && !data.options.tableColumn"
+            v-if="
+              Object.keys(data.options).indexOf('dataBind') >= 0 &&
+                !data.options.tableColumn
+            "
             :disabled="data.type != 'blank' && data.type != 'component'"
-          >{{$t('fm.config.widget.dataBind')}}</el-checkbox>
+            >{{ $t('fm.config.widget.dataBind') }}</el-checkbox
+          >
           <el-checkbox
             v-model="data.options.readonly"
-            v-if="Object.keys(data.options).indexOf('readonly')>=0"
-          >{{$t('fm.config.widget.readonly')}}</el-checkbox>
+            v-if="Object.keys(data.options).indexOf('readonly') >= 0"
+            >{{ $t('fm.config.widget.readonly') }}</el-checkbox
+          >
           <el-checkbox
             v-model="data.options.hidden"
-            v-if="Object.keys(data.options).indexOf('hidden')>=0"
-          >{{$t('fm.config.widget.hidden')}}</el-checkbox>
+            v-if="Object.keys(data.options).indexOf('hidden') >= 0"
+            >{{ $t('fm.config.widget.hidden') }}</el-checkbox
+          >
           <el-checkbox
             v-model="data.options.disabled"
-            v-if="Object.keys(data.options).indexOf('disabled')>=0"
-          >{{$t('fm.config.widget.disabled')}}</el-checkbox>
+            v-if="Object.keys(data.options).indexOf('disabled') >= 0"
+            >{{ $t('fm.config.widget.disabled') }}</el-checkbox
+          >
           <el-checkbox
             v-model="data.options.editable"
-            v-if="Object.keys(data.options).indexOf('editable')>=0"
-          >{{$t('fm.config.widget.editable')}}</el-checkbox>
+            v-if="Object.keys(data.options).indexOf('editable') >= 0"
+            >{{ $t('fm.config.widget.editable') }}</el-checkbox
+          >
           <el-checkbox
             v-model="data.options.clearable"
-            v-if="Object.keys(data.options).indexOf('clearable')>=0"
-          >{{$t('fm.config.widget.clearable')}}</el-checkbox>
+            v-if="Object.keys(data.options).indexOf('clearable') >= 0"
+            >{{ $t('fm.config.widget.clearable') }}</el-checkbox
+          >
           <el-checkbox
             v-model="data.options.arrowControl"
-            v-if="Object.keys(data.options).indexOf('arrowControl')>=0"
-          >{{$t('fm.config.widget.arrowControl')}}</el-checkbox>
+            v-if="Object.keys(data.options).indexOf('arrowControl') >= 0"
+            >{{ $t('fm.config.widget.arrowControl') }}</el-checkbox
+          >
           <el-checkbox
             v-model="data.options.isDelete"
-            v-if="Object.keys(data.options).indexOf('isDelete')>=0"
-          >{{$t('fm.config.widget.isDelete')}}</el-checkbox>
+            v-if="Object.keys(data.options).indexOf('isDelete') >= 0"
+            >{{ $t('fm.config.widget.isDelete') }}</el-checkbox
+          >
           <el-checkbox
             v-model="data.options.isEdit"
-            v-if="Object.keys(data.options).indexOf('isEdit')>=0"
-          >{{$t('fm.config.widget.isEdit')}}</el-checkbox>
+            v-if="Object.keys(data.options).indexOf('isEdit') >= 0"
+            >{{ $t('fm.config.widget.isEdit') }}</el-checkbox
+          >
           <el-checkbox
             v-model="data.options.showPassword"
-            v-if="Object.keys(data.options).indexOf('showPassword')>=0"
-          >{{$t('fm.config.widget.showPassword')}}</el-checkbox>
+            v-if="Object.keys(data.options).indexOf('showPassword') >= 0"
+            >{{ $t('fm.config.widget.showPassword') }}</el-checkbox
+          >
         </el-form-item>
         <!-- 提示信息 -->
         <!-- <el-form-item v-if="data.type !='grid'" :label="$t('fm.config.widget.showTips')"> -->
@@ -758,9 +1108,14 @@
         <!-- <el-input v-if="data.options.disabled" :disabled="data.options.disabled" placeholder="不可配置"></el-input> -->
         <!-- <el-input placeholder="输入提示信息" v-model="data.options.tips"></el-input> -->
         <!-- </el-form-item> -->
-        <el-form-item :label="$t('fm.config.widget.validate')">
-          <div class="validate-block" v-if="Object.keys(data.options).indexOf('required')>=0">
-            <el-checkbox v-model="data.options.required">{{$t('fm.config.widget.required')}}</el-checkbox>
+        <el-form-item :label="$t('fm.config.widget.validate')" v-if="data.type != 'grid' && data.type != 'tree'">
+          <div
+            class="validate-block"
+            v-if="Object.keys(data.options).indexOf('required') >= 0"
+          >
+            <el-checkbox v-model="data.options.required">{{
+              $t('fm.config.widget.required')
+            }}</el-checkbox>
             <el-input
               size="mini"
               class="message-input"
@@ -770,25 +1125,61 @@
               :placeholder="$t('fm.message.errorTip')"
             ></el-input>
           </div>
-          <div class="validate-block" v-if="Object.keys(data.options).indexOf('dataType')>=0">
-            <el-checkbox v-model="data.options.dataTypeCheck" style="margin-right: 10px;"></el-checkbox>
+          <div
+            class="validate-block"
+            v-if="Object.keys(data.options).indexOf('dataType') >= 0"
+          >
+            <el-checkbox
+              v-model="data.options.dataTypeCheck"
+              style="margin-right: 10px;"
+            ></el-checkbox>
             <el-select
               :disabled="!data.options.dataTypeCheck"
-              v-if="Object.keys(data.options).indexOf('dataType')>=0"
+              v-if="Object.keys(data.options).indexOf('dataType') >= 0"
               v-model="data.options.dataType"
               size="mini"
             >
               <el-option value="text" label="无"></el-option>
-              <el-option value="password" :label="$t('fm.config.widget.password')"></el-option>
-              <el-option value="againpassword" :label="$t('fm.config.widget.againpassword')"></el-option>
-              <el-option value="string" :label="$t('fm.config.widget.string')"></el-option>
-              <el-option value="number" :label="$t('fm.config.widget.number')"></el-option>
-              <el-option value="boolean" :label="$t('fm.config.widget.boolean')"></el-option>
-              <el-option value="integer" :label="$t('fm.config.widget.integer')"></el-option>
-              <el-option value="float" :label="$t('fm.config.widget.float')"></el-option>
-              <el-option value="url" :label="$t('fm.config.widget.url')"></el-option>
-              <el-option value="email" :label="$t('fm.config.widget.email')"></el-option>
-              <el-option value="hex" :label="$t('fm.config.widget.hex')"></el-option>
+              <el-option
+                value="password"
+                :label="$t('fm.config.widget.password')"
+              ></el-option>
+              <el-option
+                value="againpassword"
+                :label="$t('fm.config.widget.againpassword')"
+              ></el-option>
+              <el-option
+                value="string"
+                :label="$t('fm.config.widget.string')"
+              ></el-option>
+              <el-option
+                value="number"
+                :label="$t('fm.config.widget.number')"
+              ></el-option>
+              <el-option
+                value="boolean"
+                :label="$t('fm.config.widget.boolean')"
+              ></el-option>
+              <el-option
+                value="integer"
+                :label="$t('fm.config.widget.integer')"
+              ></el-option>
+              <el-option
+                value="float"
+                :label="$t('fm.config.widget.float')"
+              ></el-option>
+              <el-option
+                value="url"
+                :label="$t('fm.config.widget.url')"
+              ></el-option>
+              <el-option
+                value="email"
+                :label="$t('fm.config.widget.email')"
+              ></el-option>
+              <el-option
+                value="hex"
+                :label="$t('fm.config.widget.hex')"
+              ></el-option>
             </el-select>
             <el-input
               size="mini"
@@ -808,26 +1199,56 @@
             <template slot="prepend">自定义验证信息</template>
           </el-input>-->
           <!--todo 整数自定义属性-->
-          <el-select v-if="data.options.dataType=='integer'" v-model="patternpara" size="mini">
-            <el-option value="//" :label="$t('fm.config.integerpara.all')"></el-option>
-            <el-option value="/^[0-9]*[1-9][0-9]*$/" :label="$t('fm.config.integerpara.pinteger')"></el-option>
-            <el-option value="/^\d+$/" :label="$t('fm.config.integerpara.pzinteger')"></el-option>
-            <el-option value="/^-[0-9]*[1-9][0-9]*$/" :label="$t('fm.config.integerpara.einteger')"></el-option>
-            <el-option value="/^((-\d+)|(0+))$/" :label="$t('fm.config.integerpara.ezinteger')"></el-option>
+          <el-select
+            v-if="data.options.dataType == 'integer'"
+            v-model="patternpara"
+            size="mini"
+          >
+            <el-option
+              value="//"
+              :label="$t('fm.config.integerpara.all')"
+            ></el-option>
+            <el-option
+              value="/^[0-9]*[1-9][0-9]*$/"
+              :label="$t('fm.config.integerpara.pinteger')"
+            ></el-option>
+            <el-option
+              value="/^\d+$/"
+              :label="$t('fm.config.integerpara.pzinteger')"
+            ></el-option>
+            <el-option
+              value="/^-[0-9]*[1-9][0-9]*$/"
+              :label="$t('fm.config.integerpara.einteger')"
+            ></el-option>
+            <el-option
+              value="/^((-\d+)|(0+))$/"
+              :label="$t('fm.config.integerpara.ezinteger')"
+            ></el-option>
           </el-select>
           <!--todo 整数位位数-->
-          <template v-if="data.options.dataType=='integer' | data.options.dataType=='float'">
+          <template
+            v-if="
+              (data.options.dataType == 'integer') |
+                (data.options.dataType == 'float')
+            "
+          >
             <el-input-number
               v-model="data.options.integerbits"
               :min="1"
               :max="17"
               size="mini"
               :step="1"
-            >{{$t('fm.config.integerpara.integerbits')}}</el-input-number>
-            <label>{{$t('fm.config.integerpara.integerbits')}}</label>
+              >{{ $t('fm.config.integerpara.integerbits') }}</el-input-number
+            >
+            <label>{{ $t('fm.config.integerpara.integerbits') }}</label>
           </template>
           <!--todo 小数位位数-->
-          <template v-if="data.options.dataType=='integer' | data.options.dataType=='float'">
+          <template
+            v-if="
+              (data.options.dataType == 'integer') |
+                (data.options.dataType == 'float')
+            "
+          >
             <el-input-number
               v-model="data.options.decimalbits"
               :min="0"
@@ -836,31 +1257,41 @@
               size="mini"
               :step="1"
             ></el-input-number>
-            <label>{{$t('fm.config.integerpara.decimalbits')}}</label>
+            <label>{{ $t('fm.config.integerpara.decimalbits') }}</label>
           </template>
 
           <!--todo 金额精度-->
-          <template v-if="data.options.amountmoney==true">
+          <template v-if="data.options.amountmoney == true">
             <el-form-item :label="$t('fm.config.widget.point')">
               <el-input-number
                 v-model="data.options.decimal"
                 :min="0"
                 :max="3"
                 size="mini"
-              >{{$t('fm.config.widget.decimal')}}</el-input-number>
+                >{{ $t('fm.config.widget.decimal') }}</el-input-number
+              >
             </el-form-item>
           </template>
 
           <!--todo 确认密码字段-->
           <el-form-item
             :label="$t('fm.config.widget.confirm_field')"
-            v-if="data.options.confirm_field || data.options.dataType=='againpassword'"
+            v-if="
+              data.options.confirm_field ||
+                data.options.dataType == 'againpassword'
+            "
           >
             <el-input v-model="data.options.confirm_field"></el-input>
           </el-form-item>
 
-          <div class="validate-block" v-if="Object.keys(data.options).indexOf('pattern')>=0">
-            <el-checkbox v-model="data.options.patternCheck" style="margin-right: 10px;"></el-checkbox>
+          <div
+            class="validate-block"
+            v-if="Object.keys(data.options).indexOf('pattern') >= 0"
+          >
+            <el-checkbox
+              v-model="data.options.patternCheck"
+              style="margin-right: 10px;"
+            ></el-checkbox>
             <el-input
               :disabled="!data.options.patternCheck"
               size="mini"
@@ -884,11 +1315,11 @@
 </template>
 
 <script>
-import Draggable from 'vuedraggable'
+import Draggable from 'vuedraggable';
 
 export default {
   components: {
-    Draggable
+    Draggable,
   },
   props: ['data'],
   data() {
@@ -899,9 +1330,9 @@ export default {
         required: null,
         pattern: null,
         range: null,
-        length: null
-      }
-    }
+        length: null,
+      },
+    };
   },
   created() {
     /*this.$nextTick(()=>{
@@ -911,98 +1342,98 @@ export default {
   computed: {
     show() {
       if (this.data && Object.keys(this.data).length > 0) {
-        return true
+        return true;
       }
-      return false
-    }
+      return false;
+    },
   },
   methods: {
     // codeMirror弹出函数
     handelMirror(e) {
-      console.log(this.data)
-      this.$emit('mirror', this.data, e.target.placeholder)
+      console.log(this.data);
+      this.$emit('mirror', this.data, e.target.placeholder);
     },
     handleOptionsRemove(index) {
       if (this.data.type === 'grid') {
-        this.data.columns.splice(index, 1)
+        this.data.columns.splice(index, 1);
       } else if (this.data.type === 'tabs') {
-        this.data.tabs.splice(index, 1)
+        this.data.tabs.splice(index, 1);
       } else if (
         this.data.type === 'imgupload' ||
         this.data.type === 'fileupload' ||
         this.data.type === 'fileuploadExt'
       ) {
-        this.data.options.headers.splice(index, 1)
+        this.data.options.headers.splice(index, 1);
       } else {
         if (
           !this.data.options.remote &&
           this.data.options.options[index].value
         ) {
           this.data.options.defaultValue =
-            typeof this.data.options.defaultValue === 'string' ? '' : []
+            typeof this.data.options.defaultValue === 'string' ? '' : [];
         }
 
-        this.data.options.options.splice(index, 1)
+        this.data.options.options.splice(index, 1);
       }
     },
     handleAddOption() {
       if (this.data.options.showLabel) {
         this.data.options.options.push({
           value: this.$t('fm.config.widget.newOption'),
-          label: this.$t('fm.config.widget.newOption')
-        })
+          label: this.$t('fm.config.widget.newOption'),
+        });
       } else {
         this.data.options.options.push({
-          value: this.$t('fm.config.widget.newOption')
-        })
+          value: this.$t('fm.config.widget.newOption'),
+        });
       }
     },
     handleAddColumn() {
       this.data.columns.push({
         span: '',
-        list: []
-      })
+        list: [],
+      });
     },
     handleAddTab() {
-      let length = this.data.tabs.length
+      let length = this.data.tabs.length;
 
       this.data.tabs.push({
         label: this.$t('fm.config.widget.tab') + (length + 1),
         name: 'tab_' + new Date().getTime(),
-        list: []
-      })
+        list: [],
+      });
     },
     handleAddHeader() {
       if ('headers' in this.data.options) {
         this.data.options.headers.push({
           key: '',
-          value: ''
-        })
+          value: '',
+        });
       } else {
-        this.$set(this.data.options, 'headers', [{ key: '', value: '' }])
+        this.$set(this.data.options, 'headers', [{ key: '', value: '' }]);
       }
     },
     generateRule() {
-      this.data.rules = []
-      Object.keys(this.validator).forEach((key) => {
+      this.data.rules = [];
+      Object.keys(this.validator).forEach(key => {
         if (this.validator[key]) {
-          this.data.rules.push(this.validator[key])
+          this.data.rules.push(this.validator[key]);
         }
-      })
+      });
     },
     handleSelectMuliple(value) {
       if (this.data.type == 'select') {
         if (value) {
           if (this.data.options.defaultValue) {
-            this.data.options.defaultValue = [this.data.options.defaultValue]
+            this.data.options.defaultValue = [this.data.options.defaultValue];
           } else {
-            this.data.options.defaultValue = []
+            this.data.options.defaultValue = [];
           }
         } else {
           if (this.data.options.defaultValue.length > 0) {
-            this.data.options.defaultValue = this.data.options.defaultValue[0]
+            this.data.options.defaultValue = this.data.options.defaultValue[0];
           } else {
-            this.data.options.defaultValue = ''
+            this.data.options.defaultValue = '';
           }
         }
       }
@@ -1014,20 +1445,20 @@ export default {
           required: true,
           message: this.data.options.requiredMessage
             ? this.data.options.requiredMessage
-            : `${this.$t('fm.config.widget.validatorRequired')}`
-        }
+            : `${this.$t('fm.config.widget.validatorRequired')}`,
+        };
       } else {
-        this.validator.required = null
+        this.validator.required = null;
       }
 
       this.$nextTick(() => {
-        this.generateRule()
-      })
+        this.generateRule();
+      });
     },
 
     validateDataType(val) {
       if (!this.show) {
-        return false
+        return false;
       }
 
       // todo 排除密码和确认密码 (单独自定义校验方法)
@@ -1045,17 +1476,17 @@ export default {
           type: val,
           message: this.data.options.dataTypeMessage
             ? this.data.options.dataTypeMessage
-            : this.$t('fm.config.widget.validatorType')
-        }
+            : this.$t('fm.config.widget.validatorType'),
+        };
       } else {
-        this.validator.type = null
+        this.validator.type = null;
       }
 
-      this.generateRule()
+      this.generateRule();
     },
     valiatePattern(val) {
       if (!this.show) {
-        return false
+        return false;
       }
 
       if (
@@ -1067,85 +1498,85 @@ export default {
           pattern: val,
           message: this.data.options.patternMessage
             ? this.data.options.patternMessage
-            : this.$t('fm.config.widget.validatorPattern')
-        }
+            : this.$t('fm.config.widget.validatorPattern'),
+        };
       } else {
-        this.validator.pattern = null
+        this.validator.pattern = null;
       }
 
-      this.generateRule()
-    }
+      this.generateRule();
+    },
   },
   watch: {
-    patternpara: function (val) {
-      this.data.options.pattern = val
+    patternpara: function(val) {
+      this.data.options.pattern = val;
     },
-    'data.options.isRange': function (val) {
+    'data.options.isRange': function(val) {
       if (typeof val !== 'undefined') {
         if (val) {
-          this.data.options.defaultValue = null
+          this.data.options.defaultValue = null;
         } else {
           if (Object.keys(this.data.options).indexOf('defaultValue') >= 0)
-            this.data.options.defaultValue = ''
+            this.data.options.defaultValue = '';
         }
       }
     },
-    'data.options.required': function (val) {
-      this.validateRequired(val)
+    'data.options.required': function(val) {
+      this.validateRequired(val);
     },
-    'data.options.requiredMessage': function (val) {
+    'data.options.requiredMessage': function(val) {
       this.validateRequired(
         this.data && this.data.options ? this.data.options.required : false
-      )
+      );
     },
-    'data.options.dataType': function (val) {
-      this.validateDataType(val)
+    'data.options.dataType': function(val) {
+      this.validateDataType(val);
     },
-    'data.options.dataTypeCheck': function (val) {
+    'data.options.dataTypeCheck': function(val) {
       this.validateDataType(
         this.data && this.data.options ? this.data.options.dataType : ''
-      )
+      );
     },
-    'data.options.dataTypeMessage': function (val) {
+    'data.options.dataTypeMessage': function(val) {
       this.validateDataType(
         this.data && this.data.options ? this.data.options.dataType : ''
-      )
+      );
     },
-    'data.options.pattern': function (val) {
-      this.valiatePattern(val)
+    'data.options.pattern': function(val) {
+      this.valiatePattern(val);
     },
-    'data.options.patternCheck': function (val) {
+    'data.options.patternCheck': function(val) {
       this.valiatePattern(
         this.data && this.data.options ? this.data.options.pattern : ''
-      )
+      );
     },
-    'data.options.patternMessage': function (val) {
+    'data.options.patternMessage': function(val) {
       this.valiatePattern(
         this.data && this.data.options ? this.data.options.pattern : ''
-      )
+      );
     },
     'data.options.options': {
       deep: true,
       handler(val) {
-        console.log(val)
-        console.log(typeof this.data.options.defaultValue)
+        console.log(val);
+        console.log(typeof this.data.options.defaultValue);
         if (typeof this.data.options.defaultValue == 'array') {
           this.data.options.defaultValue = this.data.options.defaultValue.filter(
-            (item) => val.map((item) => item.value).includes(item)
-          )
+            item => val.map(item => item.value).includes(item)
+          );
         }
         if (typeof this.data.options.defaultValue == 'string') {
           if (
             typeof val == 'array' &&
             !val
-              .map((item) => item.value)
+              .map(item => item.value)
               .includes(this.data.options.defaultValue)
           ) {
-            this.data.options.defaultValue = ''
+            this.data.options.defaultValue = '';
           }
         }
-      }
-    }
-  }
-}
+      },
+    },
+  },
+};
 </script>

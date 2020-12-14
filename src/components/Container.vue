@@ -823,6 +823,10 @@ export default {
         if (this.nowEle.options.remoteFunc != '') {
           this.code = this.nowEle.options.remoteFunc
         }
+      } else if(this.modify == '点击设置树组件数据'){
+        if (this.nowEle.options.dataFunc != '') {
+          this.code = this.nowEle.options.dataFunc
+        }
       }
       this.getModels()
       this.mirrorVisible = true
@@ -879,6 +883,12 @@ export default {
         console.log(this.nowEle.options.buttonfun)
       } else if (this.modify == '请输入远程方法') {
         this.nowEle.options.remoteFunc = this.code
+      } else if(this.modify == '点击设置树组件数据'){
+        debugger
+        this.nowEle.options.dataFunc = this.code
+        console.log(eval('('+this.nowEle.options.dataFunc+')'))
+        let tempFunc = eval('('+this.nowEle.options.dataFunc+')')
+        this.nowEle.options.data = tempFunc()
       }
       this.mirrorVisible = false
       this.extendFunc = ''

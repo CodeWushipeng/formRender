@@ -160,7 +160,6 @@ let itemHandle = {
     change() {
       // 如果是可输入的日期组件对输入值做校验
       if (this.widget.type === 'date' && this.widget.options.editable) {
-        debugger;
         const originDate = this.$refs[this.widget.model].userInput;
         let year = originDate.slice(0, 4);
         let month = originDate.slice(4, 6);
@@ -177,14 +176,17 @@ let itemHandle = {
             message: '请输入8位数合法日期',
           });
         } else {
-          const format = this.widget.options.format;
-          this.$nextTick(() => {
-            this.dataModel = this.dateFormat(year, month, day, format);
-          });
+          // const format = this.widget.options.format;
+          // this.dataModel = this.dateFormat(year, month, day, format);
+          this.$emit('el-change', this.widget.model, this.widget);
+          this.$refs[this.widget.model].hidePicker();
+          console.log(this.$refs);
         }
+      }else{
+        this.$emit('el-change', this.widget.model, this.widget);
       }
-      this.$emit('el-change', this.widget.model, this.widget);
     },
+
     // radio组件change事件
     valueChange() {
       if (this.widget.type === 'frequency') {

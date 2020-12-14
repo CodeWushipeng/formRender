@@ -90,6 +90,9 @@
     <template v-if="widget.type == 'tree'">
       <el-tree
         :data="widget.options.data"
+        :node-key="widget.options.nodeKey"
+        :current-node-key="widget.options.currentNodeKey"
+        :icon-class="widget.options.iconClass"
         :props="widget.options.props"
         :ref="widget.model"
         :highlightCurrent="widget.options.highlightCurrent"
