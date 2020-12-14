@@ -634,10 +634,34 @@
         >
           <el-switch v-model="data.options.isRange"></el-switch>
         </el-form-item>
-        <el-form-item
-          :label="$t('fm.config.widget.isTimestamp')"
-          v-if="data.type == 'date'"
-        >
+        <!--<el-form-item :label="$t('fm.config.widget.startTime')" v-if="data.type == 'time'">
+          <el-time-picker
+                  v-model="data.options.startTime"
+                  value-format="HH:mm:ss"
+                  format="HH:mm:ss"
+                  placeholder="选择时间">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item :label="$t('fm.config.widget.endTime')" v-if="data.type == 'time'">
+          <el-time-picker
+                  v-model="data.options.endTime"
+                  value-format="HH:mm:ss"
+                  format="HH:mm:ss"
+                  placeholder="选择时间"
+          >
+          </el-time-picker>
+        </el-form-item>-->
+        <el-form-item :label="$t('fm.config.widget.endDate')" v-if="data.type == 'date'">
+          <el-date-picker
+                  v-model="data.options.endDate"
+                  type="date"
+                  placeholder="选择日期"
+                  format="yyyy 年 MM 月 dd 日"
+                  value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item :label="$t('fm.config.widget.isTimestamp')" v-if="data.type == 'date'">
           <el-switch v-model="data.options.timestamp"></el-switch>
         </el-form-item>
         <el-form-item
@@ -646,10 +670,11 @@
         >
           <el-date-picker
             v-model="data.options.startDate"
-            align="right"
             type="date"
             placeholder="选择日期"
-          >
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
+            >
           </el-date-picker>
         </el-form-item>
         <el-form-item
@@ -658,10 +683,11 @@
         >
           <el-date-picker
             v-model="data.options.endDate"
-            align="right"
             type="date"
             placeholder="选择日期"
-          >
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
+            >
           </el-date-picker>
         </el-form-item>
 

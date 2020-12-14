@@ -393,9 +393,10 @@
         </el-checkbox>
       </el-checkbox-group>
     </template>
-
+{{widget.options.startTime}}
+{{widget.options.endTime}}
     <template v-if="widget.type == 'time'">
-      <hr-time-select
+      <el-time-picker
         v-model="dataModel"
         :is-range="widget.options.isRange"
         :placeholder="widget.options.placeholder"
@@ -406,15 +407,21 @@
         :editable="widget.options.editable"
         :clearable="widget.options.clearable"
         :arrowControl="widget.options.arrowControl"
+        :format="widget.options.format"
         :value-format="widget.options.format"
         :style="{ width: widget.options.width + 'px' }"
+        v-bind:picker-options="
+          widget.options.isRange
+            ? pickerOptionsTimeRange
+            : pickerOptionsTime
+        "
         :ref="widget.model"
         @focus="comFocus"
         @blur="dateBlur"
         @keyup.native.space="dateShow"
         @picker-show="pickShow"
         @keyup.native.enter="change"
-      ></hr-time-select>
+      ></el-time-picker>
     </template>
 
     <template v-if="widget.type == 'date'">
@@ -428,16 +435,16 @@
         :disabled="widget.options.disabled"
         :editable="widget.options.editable"
         :clearable="widget.options.clearable"
+        :format="widget.options.format"
         :value-format="
           widget.options.timestamp ? 'timestamp' : widget.options.format
         "
-        :format="widget.options.format"
         :style="{ width: widget.options.width + 'px' }"
         v-bind:picker-options="
           widget.options.type == 'date'
             ? pickerOptionsDate
             : widget.options.type == 'daterange'
-            ? pickerOptionsRange
+            ? pickerOptionsDateRange
             : ''
         "
         :ref="widget.model"
@@ -1062,9 +1069,23 @@ export default {
       frequencyUnit: '',
       amountvisible: false, // 控制金额放大镜的显隐
       dataModel: this.models[this.widget.model], // 当前组件的默认值，是双向绑定的
+      pickerOptionsTime: {
+          //selectableRange: '"this.widget.options.startTime" +  "-" + "this.widget.options.endTime"'
+      },
+      pickerOptionsTimeRange: {
+          //selectableRange: ['09:30:00 - 16:00:00', '14:30:00 - 18:30:00']
+      },
       pickerOptionsDate: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
+        disabledDate:(time)=> {
+            let startDate = this.widget.options.startDate ? this.widget.options.startDate.replace(/-/g,'/') : "";
+            let endDate = this.widget.options.endDate ? this.widget.options.endDate.replace(/-/g,'/') : "";
+            if(startDate && endDate){
+                return time.getTime() < new Date(startDate).getTime() || time.getTime() > new Date(endDate).getTime();
+            }else if(startDate){
+                return time.getTime() < new Date(startDate).getTime();
+            }else if(endDate){
+                return time.getTime() > new Date(endDate).getTime();
+            }
         },
         shortcuts: [
           {
@@ -1091,7 +1112,25 @@ export default {
           },
         ],
       },
-      pickerOptionsRange: {
+      pickerOptionsDateRange: {
+          disabledDate:(time)=> {
+            let startDate = this.widget.options.startDate ? this.widget.options.startDate.replace(/-/g,'/') : "";
+            let endDate = this.widget.options.endDate ? this.widget.options.endDate.replace(/-/g,'/') : "";
+            if(startDate && endDate){
+                return (
+                    time.getTime() < new Date(startDate).getTime() ||
+                    time.getTime() > new Date(endDate).getTime()
+                );
+            }else if(startDate){
+                return (
+                    time.getTime() < new Date(startDate).getTime()
+                );
+            }else if(endDate){
+                return (
+                    time.getTime() > new Date(endDate).getTime()
+                );
+            }
+        },
         shortcuts: [
           {
             text: '最近一周',
@@ -1167,6 +1206,14 @@ export default {
     }else if(this.widget.type == 'fileuploadExt'){
         this.$nextTick((_) => {
           this.dataModel = this.fileList
+        })
+    }else if(this.widget.type == 'date'){
+        this.$nextTick((_) => {
+            //如果有开始或者结束时间，去除快捷键
+            if(this.widget.options.startDate || this.widget.options.endDate){
+                delete this.pickerOptionsDate['shortcuts']
+                delete this.pickerOptionsDateRange['shortcuts']
+            }
         })
     }
     if (this.widget.type == 'taglable') {

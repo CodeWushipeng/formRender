@@ -1,11 +1,24 @@
 <template>
     <div >
-      <el-date-picker
-            v-model="value1"
-            type="date"
-            placeholder="选择日期"
-            :picker-options="pickerOptions0">
-    </el-date-picker>
+      <template>
+            <el-time-picker
+                    is-range
+                    v-model="value1"
+                    range-separator="至"
+                    start-placeholder="开始时间"
+                    end-placeholder="结束时间"
+                    placeholder="选择时间范围">
+            </el-time-picker>
+            <el-time-picker
+                    is-range
+                    arrow-control
+                    v-model="value2"
+                    range-separator="至"
+                    start-placeholder="开始时间"
+                    end-placeholder="结束时间"
+                    placeholder="选择时间范围">
+            </el-time-picker>
+        </template>
     </div>
 </template>
 
@@ -14,24 +27,15 @@
     export default {
         data (){
             return {
-                value1: "",
-                pickerOptions0: {
-                    disabledDate(time) {
-                        return this.filter (time);
-                    }
-                },
-            }
+                value1: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
+                value2: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)]
+            };
         },
         methods: {
-            filter (time){
-                return time.getTime() < Date.now()
-            }
+        },
+        methods: {
         },
         mounted () {
-            /*let curDate = (new Date()).getTime();
-            let three = 90 * 24 * 3600 * 1000;
-            let threeMonths = curDate - three;
-            return time.getTime() > Date.now() || time.getTime() < threeMonths;;*/
         }
     };
 </script>
