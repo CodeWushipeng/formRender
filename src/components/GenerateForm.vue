@@ -429,7 +429,9 @@ export default {
     // 监听表单数据改变
     onInputChange(value, field) {
       // 向container组件发射on-change事件，将 key value 以及models（form表单的key value对象）传入
+      this.models[field] = value
       this.$emit('on-change', field, value, this.models);
+      console.log(value, field, this.models)
     },
     // 重置models
     resetModelsFields() {
@@ -445,7 +447,6 @@ export default {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
       handler(val) {
-        debugger
         console.log('models', val);
         // this.isDataNull = false;
       },

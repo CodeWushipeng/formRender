@@ -1841,9 +1841,7 @@ export default {
     dataModel: {
       // 深度监听组件绑定的数据，执行赋值操作并发射更新models的事件，发射input-change事件，将值和对应的key传入
       deep: true,
-      // immediate: true,
       handler(val, oldValue) {
-        // debugger;
         if (val == oldValue) {
           return;
         } else {
@@ -1851,7 +1849,7 @@ export default {
           this.$emit('update:models', {
             ...this.models,
           });
-          // this.$emit('input-change', val, this.widget.model);
+          this.$emit('input-change', val, this.widget.model);
         }
       },
     },

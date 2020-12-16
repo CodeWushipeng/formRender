@@ -94,15 +94,9 @@ export default {
       deep: true,
       handler(val) {
         this.elModels[this.widget.model] = val[this.widget.model]
+        this.$emit('update:elModels', {...this.elModels});
       },
-    },
-    elModels: {
-      deep: true,
-      handler(val) {
-        // debugger
-        this.$emit('update:elModels', this.dataModels);
-      },
-    },
+    }
   },
 };
 </script>

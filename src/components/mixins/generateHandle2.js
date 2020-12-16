@@ -49,6 +49,8 @@ let handlers = {
         'buttonCom',
         'taglable',
       ],
+      preActiveElement:null,
+      activeElement: null,
     };
   },
   methods: {
@@ -402,31 +404,41 @@ let handlers = {
           getTrade(url, {
             body: postData,
             header: {
-                //"gloSeqNo": "10A07"+ dateFormat("YYYYmmdd", new Date()) + (new Date()).getTime().toString().substr(-4,4),
-                "gloSeqNo": "10A072020"+ (new Date()).getTime().toString().substr(-8,8),
-                "reqSeqNo": dateFormat("YYYYmmddHHMMSS", new Date()) + (new Date()).getTime().toString().substr(-3,3),
-                "reqTime": dateFormat("YYYYmmddHHMMSS", new Date()),
-                "channel": "channel",
-                "projectId": "subProjectId",
-                "subProjectId": "subProjectId",
-                "terminalCode": "terminalCode",
-                "branchId": "966999",
-                "serviceId": "serviceId",
-                "serviceName": "test",
-                "serviceGroupid": "serviceGroupid",
-                "sourceSysId": "sourceSysId",
-                "consumerId": "consumerId",
-                "pageIndex": pageIndex || 0,
-                "pageSize": pageSize || 999,
-                "mac": "mac",
-                "keyId": "keyId",
-                "extend": {
-                    "TranTeller": "99988999"
-                },
-                "userInfo": {
-                    "username": "123",
-                    "role": []
-                },
+              //"gloSeqNo": "10A07"+ dateFormat("YYYYmmdd", new Date()) + (new Date()).getTime().toString().substr(-4,4),
+              gloSeqNo:
+                '10A072020' +
+                new Date()
+                  .getTime()
+                  .toString()
+                  .substr(-8, 8),
+              reqSeqNo:
+                dateFormat('YYYYmmddHHMMSS', new Date()) +
+                new Date()
+                  .getTime()
+                  .toString()
+                  .substr(-3, 3),
+              reqTime: dateFormat('YYYYmmddHHMMSS', new Date()),
+              channel: 'channel',
+              projectId: 'subProjectId',
+              subProjectId: 'subProjectId',
+              terminalCode: 'terminalCode',
+              branchId: '966999',
+              serviceId: 'serviceId',
+              serviceName: 'test',
+              serviceGroupid: 'serviceGroupid',
+              sourceSysId: 'sourceSysId',
+              consumerId: 'consumerId',
+              pageIndex: pageIndex || 0,
+              pageSize: pageSize || 999,
+              mac: 'mac',
+              keyId: 'keyId',
+              extend: {
+                TranTeller: '99988999',
+              },
+              userInfo: {
+                username: '123',
+                role: [],
+              },
             },
           })
             .then(res => {
@@ -984,22 +996,39 @@ let handlers = {
     },
     // 判断页面是否有聚焦元素
     hasFocusItem() {
-      let activeElement = document.activeElement.tagName;
-      if (activeElement && activeElement != 'BODY') {
+      this.activeElement = document.activeElement.tagName;
+      if (this.activeElement && this.activeElement != 'BODY') {
         return true;
       } else {
         return false;
       }
     },
+    // 全局监听鼠标点击事件
+    mouseClick(){
+      let that = this
+      document.addEventListener('mouseup',e=>{
+        if (this.outMark <= this.canFocusLength){
+          that.preActiveElement = that.activeElement;
+          if (
+            !that.hasFocusItem() &&
+            that.preActiveElement != that.activeElement
+          ) {
+            that.allValidate(that.outMark);
+          }
+        }
+      })
+    },
     // F键复位函数
     resetCursor() {
       this.$nextTick(() => {
-        document.addEventListener('keyup', e => {
-          if (!this.hasFocusItem()) {
-            console.log(e.keyCode);
-            if (e.keyCode === 70) {
-              let preEle = this.allItems[this.outMark];
-              this.setFocus(preEle);
+        let _that = this;
+        window.addEventListener('keyup', e => {
+          console.log(_that.outMark);
+          if (!_that.hasFocusItem()) {
+            if (e.key === 'f') {
+              let preEle = _that.allItems[_that.outMark];
+              _that.setFocus(preEle);
+              _that.activeElement = document.activeElement.tagName;
             }
           }
         });
@@ -1081,7 +1110,7 @@ let handlers = {
       }
     },
     // 初始化表单控制
-    generateHandle(){
+    generateHandle() {
       this.pushRemoteFunc();
       this.handelHidden();
       this.enterCheck();
@@ -1093,7 +1122,8 @@ let handlers = {
       this.resetCursor();
       this.copyMOdels();
       this.handelCursorByArrow();
-    }
+      this.mouseClick();
+    },
   },
   mounted() {
     let rankBtns = storage.session.get('Rank_BTNS', '');

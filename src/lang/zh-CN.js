@@ -251,7 +251,7 @@ export default {
         patternPlaceholder: '填写正则表达式',
         newOption: '新选项',
         tab: '标签页',
-        validatorRequired: '必须填写',
+        validatorRequired: '不能为空',
         validatorType: '格式不正确',
         validatorPattern: '格式不匹配',
         confirm_field: '确认字段',

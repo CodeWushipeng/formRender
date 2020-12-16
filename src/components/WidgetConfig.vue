@@ -572,6 +572,7 @@
             (data.type == 'text' ||
               data.type == 'textarea' ||
               data.type == 'input' ||
+              data.type == 'singletext' ||
               data.type == 'number' ||
               data.type == 'rate' ||
               data.type == 'color' ||
@@ -725,17 +726,17 @@
         <el-form-item :label="$t('fm.config.widget.format')">
           <el-select filterable allow-create v-model="data.options.format">
             <el-option value="yyyy-MM-dd"></el-option>
-            <el-option value="yyyy-MM-d"></el-option>
+            <!-- <el-option value="yyyy-MM-d"></el-option>
             <el-option value="yyyy-M-dd"></el-option>
-            <el-option value="yyyy-M-d"></el-option>
+            <el-option value="yyyy-M-d"></el-option> -->
             <el-option value="yyyy年MM月dd日"></el-option>
-            <el-option value="yyyy年MM月d日"></el-option>
+            <!-- <el-option value="yyyy年MM月d日"></el-option>
             <el-option value="yyyy年M月dd日"></el-option>
-            <el-option value="yyyy年M月d日"></el-option>
+            <el-option value="yyyy年M月d日"></el-option> -->
             <el-option value="yyyy/MM/dd"></el-option>
-            <el-option value="yyyy/MM/d"></el-option>
+            <!-- <el-option value="yyyy/MM/d"></el-option>
             <el-option value="yyyy/M/dd"></el-option>
-            <el-option value="yyyy/M/d"></el-option>
+            <el-option value="yyyy/M/d"></el-option> -->
           </el-select>
           <!-- <el-input v-model="data.options.format"></el-input> -->
         </el-form-item>
@@ -1469,9 +1470,10 @@ export default {
       if (val) {
         this.validator.required = {
           required: true,
+          trigger: 'blur',
           message: this.data.options.requiredMessage
             ? this.data.options.requiredMessage
-            : `${this.$t('fm.config.widget.validatorRequired')}`,
+            : `${this.data.model+this.$t('fm.config.widget.validatorRequired')}`,
         };
       } else {
         this.validator.required = null;

@@ -176,10 +176,11 @@ let itemHandle = {
             message: '请输入8位数合法日期',
           });
         } else {
-          // const format = this.widget.options.format;
-          // this.dataModel = this.dateFormat(year, month, day, format);
-          this.$emit('el-change', this.widget.model, this.widget);
+          const format = this.widget.options.format;
+          this.dataModel = this.dateFormat(year, month, day, format);
+          // this.$refs[this.widget.model].handleChange();
           this.$refs[this.widget.model].hidePicker();
+          this.$emit('el-change', this.widget.model, this.widget);
           console.log(this.$refs);
         }
       }else{
