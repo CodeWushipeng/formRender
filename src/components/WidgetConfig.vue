@@ -517,7 +517,7 @@
         </div>
       </el-form-item>
       <!-- input扩展配置 -->
-      <el-form-item v-if="data.type == 'input'">
+      <el-form-item v-if="data.type == 'input' || data.type == 'singletext'">
         <el-form-item label="最大输入字数">
           <el-input v-model="data.options.maxlength"></el-input>
         </el-form-item>

@@ -19,7 +19,7 @@
           type="text"
           :disabled="widget.options.disabled"
           :placeholder="widget.options.placeholder"
-          :style="{ width: widget.options.width + 'px' }"
+          :style="{ width: widget.options.width }"
         />
 
         <transition name="fade">
@@ -44,7 +44,7 @@
         v-model="dataModel"
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         :maxlength="widget.options.maxlength"
         @keyup.native.enter="change"
         @keyup.native="passwordKeyup"
@@ -70,7 +70,7 @@
         :maxlength="widget.options.maxlength"
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         @focus="comFocus"
         @blur="comBlur"
         @keyup.native.enter="change"
@@ -110,7 +110,7 @@
         type="number"
         v-model.number="dataModel"
         :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         :disabled="widget.options.disabled"
         :show-password="widget.options.showPassword"
         @focus="comFocus"
@@ -137,7 +137,7 @@
         :show-word-limit="widget.options.maxlength ? true : false"
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         :show-password="widget.options.showPassword"
         @focus="comFocus"
         @blur="comBlur"
@@ -165,7 +165,7 @@
         v-model="dataModel"
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         @focus="comFocus"
         @blur="comBlur"
         @keyup.native.enter="change"
@@ -187,7 +187,7 @@
         v-model="dataModel"
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         :ref="widget.model"
         :maxlength="widget.options.textarealength"
         show-word-limit
@@ -220,7 +220,7 @@
         v-model="dataModel"
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         show-word-limit
         @focus="comFocus"
         @blur="comBlur"
@@ -237,29 +237,29 @@
       </el-input>
     </template>
 
-      <template v-if="widget.type == 'counter'">
-        <el-input-number
-          v-model="dataModel"
-          :style="{ width: widget.options.width }"
-          :min="widget.options.min"
-          :max="widget.options.max"
-          :step="widget.options.step"
-          :precision="widget.options.precision"
-          :disabled="widget.options.disabled"
-          @focus="comFocus"
-          @blur="comBlur"
-          @keyup.native.enter="change"
-        >
-          <template slot="prepend">
-            <el-button
-              v-if="widget.options.tips != ''"
-              @click="showTips(widget.options.tips)"
-              slot="prepend"
-              icon="el-icon-question"
-            ></el-button>
-          </template>
-        </el-input-number>
-      </template>
+    <template v-if="widget.type == 'counter'">
+      <el-input-number
+        v-model="dataModel"
+        :style="{ width: widget.options.width }"
+        :min="widget.options.min"
+        :max="widget.options.max"
+        :step="widget.options.step"
+        :precision="widget.options.precision"
+        :disabled="widget.options.disabled"
+        @focus="comFocus"
+        @blur="comBlur"
+        @keyup.native.enter="change"
+      >
+        <template slot="prepend">
+          <el-button
+            v-if="widget.options.tips != ''"
+            @click="showTips(widget.options.tips)"
+            slot="prepend"
+            icon="el-icon-question"
+          ></el-button>
+        </template>
+      </el-input-number>
+    </template>
 
     <!--标签组件-->
     <template v-if="widget.type == 'taglable'">
@@ -311,7 +311,7 @@
     <template v-if="widget.type == 'radio'">
       <el-radio-group
         v-model="dataModel"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         :disabled="widget.options.disabled"
         @keyup.native.enter="change"
         @change="valueChange"
@@ -370,7 +370,7 @@
     <template v-if="widget.type == 'checkbox'">
       <el-checkbox-group
         v-model="dataModel"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         :disabled="widget.options.disabled"
         @keyup.native.enter="change"
         @keyup.native.up="checkUp"
@@ -393,8 +393,8 @@
         </el-checkbox>
       </el-checkbox-group>
     </template>
-{{widget.options.startTime}}
-{{widget.options.endTime}}
+    {{ widget.options.startTime }}
+    {{ widget.options.endTime }}
     <template v-if="widget.type == 'time'">
       <el-time-picker
         v-model="dataModel"
@@ -409,11 +409,9 @@
         :arrowControl="widget.options.arrowControl"
         :format="widget.options.format"
         :value-format="widget.options.format"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         v-bind:picker-options="
-          widget.options.isRange
-            ? pickerOptionsTimeRange
-            : pickerOptionsTime
+          widget.options.isRange ? pickerOptionsTimeRange : pickerOptionsTime
         "
         :ref="widget.model"
         @focus="comFocus"
@@ -439,7 +437,7 @@
         :value-format="
           widget.options.timestamp ? 'timestamp' : widget.options.format
         "
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         v-bind:picker-options="
           widget.options.type == 'date'
             ? pickerOptionsDate
@@ -481,7 +479,7 @@
         :multiple="widget.options.multiple"
         :clearable="widget.options.clearable"
         :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         :filterable="widget.options.filterable"
         :ref="widget.model"
         @visible-change="optionStatu"
@@ -523,7 +521,7 @@
         :multiple="widget.options.multiple"
         :clearable="widget.options.clearable"
         :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         :filterable="widget.options.filterable"
         style="width: 80%"
         @visible-change="optionStatu"
@@ -591,7 +589,7 @@
         @click="buttonfun(widget.options.buttonfun)"
         :placeholder="widget.options.placeholder"
         :size="widget.options.size"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         :disabled="widget.options.disabled"
         @keyup.native.enter="change"
         @focus="comFocus"
@@ -613,7 +611,7 @@
         @click="buttonfun(widget.options.buttonfun)"
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         :options="widget.options.remoteOptions"
       >
         <span ref="alinkSpanRef">a 链接</span>
@@ -627,7 +625,7 @@
         v-model="dataModel"
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         @input="handleInput1($event)"
         @blur="comBlur"
         @focus="comFocus"
@@ -848,38 +846,37 @@
         :step="widget.options.step"
         :show-input="widget.options.showInput"
         :range="widget.options.range"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
       ></el-slider>
     </template>
 
-      <template v-if="widget.type == 'fileuploadExt'">
-
-        <fm-file-upload
-                el-decorator="[
+    <template v-if="widget.type == 'fileuploadExt'">
+      <fm-file-upload
+        el-decorator="[
               widget.model,
               {
                 rules: rules[widget.model],
                 initialValue: dataModel
               }
             ]"
-                :disabled="widget.options.disabled"
-                :style="{'width': widget.options.width}"
-                :token="widget.options.token"
-                :domain="widget.options.domain"
-                :multiple="widget.options.multiple"
-                :limit="widget.options.limit"
-                :is-qiniu="widget.options.isQiniu"
-                :min="widget.options.min"
-                :action="widget.options.action"
-                :tip="widget.options.tip"
-                ui="antd"
-                :headers="widget.options.headers || []"
-        >
-        </fm-file-upload>
-      </template>
+        :disabled="widget.options.disabled"
+        :style="{ width: widget.options.width }"
+        :token="widget.options.token"
+        :domain="widget.options.domain"
+        :multiple="widget.options.multiple"
+        :limit="widget.options.limit"
+        :is-qiniu="widget.options.isQiniu"
+        :min="widget.options.min"
+        :action="widget.options.action"
+        :tip="widget.options.tip"
+        ui="antd"
+        :headers="widget.options.headers || []"
+      >
+      </fm-file-upload>
+    </template>
 
-      <template
-        v-if="
+    <template
+      v-if="
         (widget.type == 'imageupload') |
           (widget.type == 'fileupload') |
           (widget.type == 'videoupload')
@@ -889,7 +886,7 @@
         v-model="dataModel"
         :uploadtype="widget.type"
         :disabled="widget.options.disabled"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         :width="widget.options.size.width"
         :height="widget.options.size.height"
         :token="widget.options.token"
@@ -906,7 +903,7 @@
     <template v-if="widget.type == 'editor'">
       <vue-editor
         v-model="dataModel"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
       ></vue-editor>
     </template>
 
@@ -916,7 +913,7 @@
         :disabled="widget.options.disabled"
         :clearable="widget.options.clearable"
         :placeholder="widget.options.placeholder"
-        :style="{ width: widget.options.width + 'px' }"
+        :style="{ width: widget.options.width }"
         :options="widget.options.remoteOptions"
       ></el-cascader>
     </template>
@@ -1024,24 +1021,24 @@
 </template>
 
 <script>
-import { EventBus } from '../util/event-bus.js'
-import FmUpload from './Upload'
-import FmUploadExtend from './Uploadextend'
-import CusDialog from './CusDialog'
-import radioFormItem from './radioFormItem'
-import cameraFormItem from './cameraFormItem'
-import { getInputValue, delcommafy } from '../util/comother.js'
-import { InputMoney } from '../util/amtUtil'
+import { EventBus } from '../util/event-bus.js';
+import FmUpload from './Upload';
+import FmUploadExtend from './Uploadextend';
+import CusDialog from './CusDialog';
+import radioFormItem from './radioFormItem';
+import cameraFormItem from './cameraFormItem';
+import { getInputValue, delcommafy } from '../util/comother.js';
+import { InputMoney } from '../util/amtUtil';
 // import request from '../util/request.js'
-import ElImage from 'element-ui/packages/image/src/main'
-import { RES_OK, FAIL_CODE } from '@/api/config'
-import { getDicTwo } from '@/api/forms'
-import { getFormConfigDataById } from '../components/table/tableAction'
-import itemHandle from './mixins/itemHandle.js'
-import hrSelect from './base-components/my-select/select'
+import ElImage from 'element-ui/packages/image/src/main';
+import { RES_OK, FAIL_CODE } from '@/api/config';
+import { getDicTwo } from '@/api/forms';
+import { getFormConfigDataById } from '../components/table/tableAction';
+import itemHandle from './mixins/itemHandle.js';
+import hrSelect from './base-components/my-select/select';
 // import request from '../demo/demo3/js/request'
-import request from '../demo/commonjs/request'
-import FmFileUpload from './Upload/file'
+import request from '../demo/commonjs/request';
+import FmFileUpload from './Upload/file';
 export default {
   props: ['widget', 'models', 'rules', 'remote'], // widget为当前组件json数据
   components: {
@@ -1070,22 +1067,29 @@ export default {
       amountvisible: false, // 控制金额放大镜的显隐
       dataModel: this.models[this.widget.model], // 当前组件的默认值，是双向绑定的
       pickerOptionsTime: {
-          //selectableRange: '"this.widget.options.startTime" +  "-" + "this.widget.options.endTime"'
+        //selectableRange: '"this.widget.options.startTime" +  "-" + "this.widget.options.endTime"'
       },
       pickerOptionsTimeRange: {
-          //selectableRange: ['09:30:00 - 16:00:00', '14:30:00 - 18:30:00']
+        //selectableRange: ['09:30:00 - 16:00:00', '14:30:00 - 18:30:00']
       },
       pickerOptionsDate: {
-        disabledDate:(time)=> {
-            let startDate = this.widget.options.startDate ? this.widget.options.startDate.replace(/-/g,'/') : "";
-            let endDate = this.widget.options.endDate ? this.widget.options.endDate.replace(/-/g,'/') : "";
-            if(startDate && endDate){
-                return time.getTime() < new Date(startDate).getTime() || time.getTime() > new Date(endDate).getTime();
-            }else if(startDate){
-                return time.getTime() < new Date(startDate).getTime();
-            }else if(endDate){
-                return time.getTime() > new Date(endDate).getTime();
-            }
+        disabledDate: time => {
+          let startDate = this.widget.options.startDate
+            ? this.widget.options.startDate.replace(/-/g, '/')
+            : '';
+          let endDate = this.widget.options.endDate
+            ? this.widget.options.endDate.replace(/-/g, '/')
+            : '';
+          if (startDate && endDate) {
+            return (
+              time.getTime() < new Date(startDate).getTime() ||
+              time.getTime() > new Date(endDate).getTime()
+            );
+          } else if (startDate) {
+            return time.getTime() < new Date(startDate).getTime();
+          } else if (endDate) {
+            return time.getTime() > new Date(endDate).getTime();
+          }
         },
         shortcuts: [
           {
@@ -1113,23 +1117,23 @@ export default {
         ],
       },
       pickerOptionsDateRange: {
-          disabledDate:(time)=> {
-            let startDate = this.widget.options.startDate ? this.widget.options.startDate.replace(/-/g,'/') : "";
-            let endDate = this.widget.options.endDate ? this.widget.options.endDate.replace(/-/g,'/') : "";
-            if(startDate && endDate){
-                return (
-                    time.getTime() < new Date(startDate).getTime() ||
-                    time.getTime() > new Date(endDate).getTime()
-                );
-            }else if(startDate){
-                return (
-                    time.getTime() < new Date(startDate).getTime()
-                );
-            }else if(endDate){
-                return (
-                    time.getTime() > new Date(endDate).getTime()
-                );
-            }
+        disabledDate: time => {
+          let startDate = this.widget.options.startDate
+            ? this.widget.options.startDate.replace(/-/g, '/')
+            : '';
+          let endDate = this.widget.options.endDate
+            ? this.widget.options.endDate.replace(/-/g, '/')
+            : '';
+          if (startDate && endDate) {
+            return (
+              time.getTime() < new Date(startDate).getTime() ||
+              time.getTime() > new Date(endDate).getTime()
+            );
+          } else if (startDate) {
+            return time.getTime() < new Date(startDate).getTime();
+          } else if (endDate) {
+            return time.getTime() > new Date(endDate).getTime();
+          }
         },
         shortcuts: [
           {
@@ -1200,21 +1204,21 @@ export default {
   },
   created() {
     if (this.widget.type == 'imageshow') {
-      this.$nextTick((_) => {
-          this.srcList.push(this.widget.options.imagesrc)
-      })
-    }else if(this.widget.type == 'fileuploadExt'){
-        this.$nextTick((_) => {
-          this.dataModel = this.fileList
-        })
-    }else if(this.widget.type == 'date'){
-        this.$nextTick((_) => {
-            //如果有开始或者结束时间，去除快捷键
-            if(this.widget.options.startDate || this.widget.options.endDate){
-                delete this.pickerOptionsDate['shortcuts']
-                delete this.pickerOptionsDateRange['shortcuts']
-            }
-        })
+      this.$nextTick(_ => {
+        this.srcList.push(this.widget.options.imagesrc);
+      });
+    } else if (this.widget.type == 'fileuploadExt') {
+      this.$nextTick(_ => {
+        this.dataModel = this.fileList;
+      });
+    } else if (this.widget.type == 'date') {
+      this.$nextTick(_ => {
+        //如果有开始或者结束时间，去除快捷键
+        if (this.widget.options.startDate || this.widget.options.endDate) {
+          delete this.pickerOptionsDate['shortcuts'];
+          delete this.pickerOptionsDateRange['shortcuts'];
+        }
+      });
     }
     if (this.widget.type == 'taglable') {
       this.$nextTick(_ => {
@@ -1257,19 +1261,23 @@ export default {
     }
   },
   methods: {
-      submitUpload() {
-          this.$refs.upload.submit();
-      },
-      handleRemove(file, fileList) {
-          console.log(file, fileList);
-      },
-      handlePreview(file) {
-          console.log(file);
-      },
-    currentChange(pageSize){
-      eval("("+this.widget.options.pagination.handleCurrentChange+")")(request,pageSize,(res)=>{
-        this.widget.configdata.list[0].options.tableData = res;
-      })
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    currentChange(pageSize) {
+      eval('(' + this.widget.options.pagination.handleCurrentChange + ')')(
+        request,
+        pageSize,
+        res => {
+          this.widget.configdata.list[0].options.tableData = res;
+        }
+      );
     },
     /*标签方法*/
     handleClose(tag) {
@@ -1796,11 +1804,11 @@ export default {
     },
   },
   mounted() {
-      EventBus.$on("uploadE", (field, value) => {
-          this.$nextTick(() => {
-              this.dataModel = value
-          });
+    EventBus.$on('uploadE', (field, value) => {
+      this.$nextTick(() => {
+        this.dataModel = value;
       });
+    });
 
     if (this.widget.type == 'camera') {
       this.camera();

@@ -881,7 +881,7 @@ export const bankingComponents = [
       showLabel: false,
       labelWidth: 100,
       isLabelWidth: false,
-      width: '',
+      width: '100%',
       options: [
         {
           value: 'Option 1',
@@ -1244,7 +1244,7 @@ export const bankingComponents = [
       disabled: false,
       min: 0,
       length: 8,
-      imagesrc:'',
+      imagesrc: '',
       multiple: false,
       isDelete: true,
       labelWidth: 100,
@@ -1320,11 +1320,11 @@ export const bankingComponents = [
       isLabelWidth: false,
     },
     hidden:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn null\n" +
-      "}",
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn null\n' +
+      '}',
     isRemote:
       'function main (models,utils)' +
       '{\n' +
@@ -1430,55 +1430,55 @@ export const bankingComponents = [
     tableModel: '',
   },*/
   {
-      type: 'fileuploadExt',
-      icon: 'icon-wenjianshangchuan',
-      options: {
-          defaultValue: [],
-          width: '',
-          tokenFunc: 'funcGetToken',
-          token: '',
-          domain: 'http://tcdn.form.xiaoyaoji.cn/',
-          disabled: false,
-          tip: '',
-          action: 'http://tools-server.making.link/api/transfer',
-          customClass: '',
-          limit: 9,
-          multiple: false,
-          isQiniu: false,
-          labelWidth: 100,
-          isLabelWidth: false,
-          hidden: false,
-          dataBind: true,
-          headers: [],
-          required: false,
-      },
-      hidden:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn null\n" +
-      "}",
-      isRemote:
+    type: 'fileuploadExt',
+    icon: 'icon-wenjianshangchuan',
+    options: {
+      defaultValue: [],
+      width: '',
+      tokenFunc: 'funcGetToken',
+      token: '',
+      domain: 'http://tcdn.form.xiaoyaoji.cn/',
+      disabled: false,
+      tip: '',
+      action: 'http://tools-server.making.link/api/transfer',
+      customClass: '',
+      limit: 9,
+      multiple: false,
+      isQiniu: false,
+      labelWidth: 100,
+      isLabelWidth: false,
+      hidden: false,
+      dataBind: true,
+      headers: [],
+      required: false,
+    },
+    hidden:
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn null\n' +
+      '}',
+    isRemote:
       'function main (models,utils)' +
       '{\n' +
       '\t//models为当前表单所有model utils为扩展函数\n' +
       '\treturn false\n' +
       '}',
-      url: '',
-      data:
+    url: '',
+    data:
       'function main (models,utils)' +
       '{\n' +
       '\t//models为当前表单所有model utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
-      success:
+    success:
       'function main (models,res,utils)' +
       '{\n' +
       '\t//models为当前表单所有model utils为扩展函数\n' +
       '\treturn {}\n' +
       '}',
-      multiToggle: false,
-      multiCondition:
+    multiToggle: false,
+    multiCondition:
       'function main (models,utils,request)' +
       '{\n' +
       '\t//models为当前表单所有model utils为扩展函数 request为axios对象\n' +
@@ -1492,8 +1492,8 @@ export const bankingComponents = [
       '\t})\n' +
       '\t.catch(error=>{console.log(error)})\n' +
       '}',
-      tableKey: '',
-      tableModel: '',
+    tableKey: '',
+    tableModel: '',
   },
   {
     type: 'videoupload',
@@ -1520,11 +1520,11 @@ export const bankingComponents = [
       action: '',
     },
     hidden:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn null\n" +
-      "}",
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn null\n' +
+      '}',
     isRemote:
       'function main (models,utils)' +
       '{\n' +
@@ -1577,11 +1577,11 @@ export const bankingComponents = [
       tips: '',
     },
     hidden:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn null\n" +
-      "}",
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn null\n' +
+      '}',
     isRemote:
       'function main (models,utils)' +
       '{\n' +
@@ -1633,11 +1633,11 @@ export const bankingComponents = [
       isLabelWidth: false,
     },
     hidden:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn null\n" +
-      "}",
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn null\n' +
+      '}',
     isRemote:
       'function main (models,utils)' +
       '{\n' +
@@ -1689,11 +1689,11 @@ export const bankingComponents = [
       disabled: false,
     },
     hidden:
-      "function main (models,utils)" +
-      "{\n" +
-      "\t//models为当前表单所有model utils为扩展函数\n" +
-      "\treturn null\n" +
-      "}",
+      'function main (models,utils)' +
+      '{\n' +
+      '\t//models为当前表单所有model utils为扩展函数\n' +
+      '\treturn null\n' +
+      '}',
     isRemote:
       'function main (models,utils)' +
       '{\n' +
