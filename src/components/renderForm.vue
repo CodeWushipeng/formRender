@@ -23,7 +23,7 @@
 <script>
 // import { Loading } from "element-ui";
 import fmGenerateForm from "./GenerateForm";
-import { getFormList } from "../api/forms";
+import { queryFromDefineById } from "../api/forms";
 import handler from "./mixins/renderHandle";
 import { RES_OK,RES_OK_SEC} from "@/api/config";
 export default {
@@ -131,23 +131,24 @@ export default {
           return;
         }
         this.showLoading();
-        getFormList({formCode: inputFormCode })
+        queryFromDefineById({formCode: inputFormCode })
           .then((res) => {
+            debugger
             console.log("=====form-making-secondary===res============", res);
             const { rspCode } = res.header;
             let formContent;
             if (rspCode == RES_OK) {
-              const rest = res.body.define;
-              if (rest && rest.records) {
-                if(typeof rest.records === 'string'){
+              let formContent = res.body.define.formContent;
+              // const rest = res.body.define;
+              if (formContent) {
+                /*if(typeof rest.records === 'string'){
                   const tempArr = new Array(JSON.parse(rest.records.slice(1,-1)));
                   formContent = tempArr[0]["formContent"]
                 }else if (Array.isArray(rest.records)){
                   formContent = rest.records[0]["formContent"];
-                }
+                }*/
                 // 设置数据
-                let temp =
-                  typeof formContent == "string"
+                let temp =  typeof formContent == "string"
                     ? JSON.parse(formContent)
                     : formContent;
                     console.log("temp", temp);
@@ -262,8 +263,7 @@ export default {
       } else {
         return false;
       }
-      // getFormList(this.url, { formCode: outputFromCode })
-      getFormList({ formCode: outputFromCode })
+      queryFromDefineById({ formCode: outputFromCode })
         .then((res) => {
           const { rspCode } = res.header;
           this.hideLoading();
