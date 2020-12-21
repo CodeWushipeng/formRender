@@ -403,7 +403,10 @@ export default {
         }
       }
     },
+    // 禁用只读隐藏组件移除必输项校验
     clearValidate() {
+      debugger
+      if(typeof this.comArr !='Array' || this.comArr.length==0) return
       let lists = this.comArr;
       for (let i = 0; i < lists.length; i++) {
         if (
@@ -414,7 +417,7 @@ export default {
           console.log(this.rules);
           this.rules[lists[i].model];
           for (let j = 0; j < this.rules[lists[i].model].length; j++) {
-            if (this.rules[lists[i].model][j].required) {
+            if (this.rules[lists[i].model][j].required && typeof this.models[lists[i].model] == 'undefined') {
               this.rules[lists[i].model][j].required = false;
             }
           }
