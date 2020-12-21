@@ -221,8 +221,16 @@ export default {
             this.generateModel(item.list);
           });
         } else if (genList[i].type === 'elTable') {
-          this.models[genList[i].model] =
+          debugger
+          if (
+            this.value &&
+            Object.keys(this.value).indexOf(genList[i].model) >= 0
+          ) {
+            this.models[genList[i].model] = this.value[genList[i].model];
+          }else{
+            this.models[genList[i].model] =
             genList[i].configdata.list[0].options.tableData;
+          }
         } else if (genList[i].type === 'tabs') {
           genList[i].tabs.forEach(item => {
             this.generateModel(item.list);

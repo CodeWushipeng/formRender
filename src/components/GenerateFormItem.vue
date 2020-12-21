@@ -977,9 +977,11 @@
           </el-row>
         </div>
       </template>
+      <!-- :data="widget.configdata" -->
       <fm-generate-table
         v-model="dataModel"
         :data="widget.configdata"
+        :value="tableValue"
         @dblhandleCurrentRow="dblhandleCurrentRow"
         v-if="!widget.options.hidden"
         ref="generateTable"
@@ -1052,6 +1054,19 @@ export default {
     hrSelect,
   },
   mixins: [itemHandle],
+  computed:{
+    tableValue:function(){
+      debugger
+      let result = {}
+      let tableModel = this.widget.model
+      if(this.dataModel){
+        result[tableModel] = this.dataModel
+        return result
+      }else{
+        return this.widget.configdata
+      }
+    }
+  },
   data() {
     return {
       fileList: [],

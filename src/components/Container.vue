@@ -5,7 +5,9 @@
         <el-aside width="250px">
           <div class="components-list">
             <template v-if="bankingFields.length">
-              <div class="widget-cate">{{ $t("fm.components.banking.title") }}</div>
+              <div class="widget-cate">
+                {{ $t('fm.components.banking.title') }}
+              </div>
               <draggable
                 tag="ul"
                 :list="bankingComponents"
@@ -34,7 +36,9 @@
               </draggable>
             </template>
             <template v-if="basicFields.length">
-              <div class="widget-cate">{{ $t("fm.components.basic.title") }}</div>
+              <div class="widget-cate">
+                {{ $t('fm.components.basic.title') }}
+              </div>
               <draggable
                 tag="ul"
                 :list="basicComponents"
@@ -49,22 +53,24 @@
               >
                 <li
                   @click="handleField(item)"
-                  v-if="basicFields.indexOf(item.type)>=0"
+                  v-if="basicFields.indexOf(item.type) >= 0"
                   class="form-edit-widget-label"
-                  :class="{'no-put': item.type == 'divider'}"
+                  :class="{ 'no-put': item.type == 'divider' }"
                   v-for="(item, index) in basicComponents"
                   :key="index"
                 >
                   <a>
                     <i class="icon iconfont" :class="item.icon"></i>
-                    <span>{{item.name}}</span>
+                    <span>{{ item.name }}</span>
                   </a>
                 </li>
               </draggable>
             </template>
 
             <template v-if="advanceFields.length">
-              <div class="widget-cate">{{ $t("fm.components.advance.title") }}</div>
+              <div class="widget-cate">
+                {{ $t('fm.components.advance.title') }}
+              </div>
               <draggable
                 tag="ul"
                 :list="advanceComponents"
@@ -81,20 +87,22 @@
                   @click="handleField(item)"
                   v-if="advanceFields.indexOf(item.type) >= 0"
                   class="form-edit-widget-label"
-                  :class="{'no-put': item.type == 'table'}"
+                  :class="{ 'no-put': item.type == 'table' }"
                   v-for="(item, index) in advanceComponents"
                   :key="index"
                 >
                   <a>
                     <i class="icon iconfont" :class="item.icon"></i>
-                    <span>{{item.name}}</span>
+                    <span>{{ item.name }}</span>
                   </a>
                 </li>
               </draggable>
             </template>
 
             <template v-if="layoutFields.length">
-              <div class="widget-cate">{{ $t("fm.components.layout.title") }}</div>
+              <div class="widget-cate">
+                {{ $t('fm.components.layout.title') }}
+              </div>
               <draggable
                 tag="ul"
                 :list="layoutComponents"
@@ -109,20 +117,22 @@
               >
                 <li
                   @click="handleField(item)"
-                  v-if="layoutFields.indexOf(item.type) >=0"
+                  v-if="layoutFields.indexOf(item.type) >= 0"
                   class="form-edit-widget-label no-put"
                   v-for="(item, index) in layoutComponents"
                   :key="index"
                 >
                   <a>
                     <i class="icon iconfont" :class="item.icon"></i>
-                    <span>{{item.name}}</span>
+                    <span>{{ item.name }}</span>
                   </a>
                 </li>
               </draggable>
             </template>
             <template v-if="tableFields.length">
-              <div class="widget-cate">{{ $t("fm.components.table.title") }}</div>
+              <div class="widget-cate">
+                {{ $t('fm.components.table.title') }}
+              </div>
               <draggable
                 tag="ul"
                 :list="tableComponents"
@@ -160,62 +170,71 @@
               size="medium"
               icon="el-icon-edit-outline"
               @click="handleEdit($event)"
-            >扩展函数</el-button>
+              >扩展函数</el-button
+            >
             <el-button
               v-if="formConfig"
               type="text"
               size="medium"
               icon="el-icon-tickets"
               @click="handleFormConfig"
-            >{{ $t("fm.actions.formConfig") }}</el-button>
+              >{{ $t('fm.actions.formConfig') }}</el-button
+            >
             <el-button
               type="text"
               :disabled="!undo"
               size="medium"
               icon="el-icon-back"
               @click="handleUndo"
-            >{{$t('fm.actions.undo')}}</el-button>
+              >{{ $t('fm.actions.undo') }}</el-button
+            >
             <el-button
               type="text"
               :disabled="!redo"
               size="medium"
               icon="el-icon-right"
               @click="handleRedo"
-            >{{$t('fm.actions.redo')}}</el-button>
+              >{{ $t('fm.actions.redo') }}</el-button
+            >
             <el-button
               v-if="upload"
               type="text"
               size="medium"
               icon="el-icon-upload2"
               @click="handleUpload"
-            >{{ $t("fm.actions.import") }}</el-button>
+              >{{ $t('fm.actions.import') }}</el-button
+            >
             <el-button
               type="text"
               size="medium"
               icon="el-icon-delete"
               @click="handleClear"
-            >{{ $t("fm.actions.clear") }}</el-button>
+              >{{ $t('fm.actions.clear') }}</el-button
+            >
             <el-button
               v-if="preview"
               type="text"
               size="medium"
               icon="el-icon-view"
               @click="handlePreview"
-            >{{ $t("fm.actions.preview") }}</el-button>
+              >{{ $t('fm.actions.preview') }}</el-button
+            >
             <el-button
               v-if="generateJson"
               type="text"
               size="medium"
               icon="el-icon-tickets"
               @click="handleGenerateJson"
-            >{{ $t("fm.actions.json") }}</el-button>
+              >{{ $t('fm.actions.json') }}</el-button
+            >
             <el-button
               v-if="generateCode"
               type="text"
               size="medium"
               icon="el-icon-document"
               @click="handleGenerateCode"
-            >{{ $t("fm.actions.code") }}</el-button>
+              >{{ $t('fm.actions.code') }}</el-button
+            >
           </el-header>
           <el-main :class="{ 'widget-empty': widgetForm.list.length == 0 }">
             <widget-form
@@ -237,12 +256,16 @@
                 class="config-tab"
                 :class="{ active: configTab == 'widget' }"
                 @click="handleConfigSelect('widget')"
-              >{{ $t("fm.tableWidget.title") }}</div>
+              >
+                {{ $t('fm.tableWidget.title') }}
+              </div>
               <div
                 class="config-tab"
                 :class="{ active: configTab == 'common' }"
                 @click="handleConfigSelect('common')"
-              >{{ $t("fm.tableEvent.title") }}</div>
+              >
+                {{ $t('fm.tableEvent.title') }}
+              </div>
             </el-header>
             <el-main class="config-content">
               <table-widget-config
@@ -268,12 +291,16 @@
                 class="config-tab"
                 :class="{ active: configTab == 'widget' }"
                 @click="handleConfigSelect('widget')"
-              >{{ $t("fm.config.widget.title") }}</div>
+              >
+                {{ $t('fm.config.widget.title') }}
+              </div>
               <div
                 class="config-tab"
                 :class="{ active: configTab == 'common' }"
                 @click="handleConfigSelect('common')"
-              >{{ $t("fm.config.common.title") }}</div>
+              >
+                {{ $t('fm.config.common.title') }}
+              </div>
               <!-- <div class="config-tab" :class="{active: configTab=='form'}" @click="handleConfigSelect('form')">{{$t('fm.config.form.title')}}</div> -->
             </el-header>
             <el-main class="config-content">
@@ -311,21 +338,24 @@
           >
             <template v-slot:blank="scope">
               Width
-              <el-input v-model="scope.model.blank.width" style="width: 100px"></el-input>Height
-              <el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
+              <el-input
+                v-model="scope.model.blank.width"
+                style="width: 100px"
+              ></el-input
+              >Height
+              <el-input
+                v-model="scope.model.blank.height"
+                style="width: 100px"
+              ></el-input>
             </template>
           </generate-form>
 
           <template slot="action">
             <el-button type="primary" @click="handleTest">
-              {{
-              $t("fm.actions.getData")
-              }}
+              {{ $t('fm.actions.getData') }}
             </el-button>
             <el-button @click="handleReset">
-              {{
-              $t("fm.actions.reset")
-              }}
+              {{ $t('fm.actions.reset') }}
             </el-button>
           </template>
         </cus-dialog>
@@ -338,8 +368,13 @@
           width="800px"
           form
         >
-          <el-alert type="info" :title="$t('fm.description.uploadJsonInfo')"></el-alert>
-          <div id="uploadeditor" style="height: 400px;width: 100%;">{{ jsonEg }}</div>
+          <el-alert
+            type="info"
+            :title="$t('fm.description.uploadJsonInfo')"
+          ></el-alert>
+          <div id="uploadeditor" style="height: 400px;width: 100%;">
+            {{ jsonEg }}
+          </div>
         </cus-dialog>
 
         <cus-dialog
@@ -349,14 +384,17 @@
           width="800px"
           form
         >
-          <div id="jsoneditor" style="height: 400px;width: 100%;">{{ jsonTemplate }}</div>
+          <div id="jsoneditor" style="height: 400px;width: 100%;">
+            {{ jsonTemplate }}
+          </div>
 
           <template slot="action">
             <el-button
               type="primary"
               class="json-btn"
               :data-clipboard-text="jsonCopyValue"
-            >{{ $t("fm.actions.copyData") }}</el-button>
+              >{{ $t('fm.actions.copyData') }}</el-button
+            >
           </template>
         </cus-dialog>
 
@@ -370,7 +408,12 @@
         >
           <form-config :data="widgetForm.config"></form-config>
           <template slot="action">
-            <el-button type="primary" class="json-btn" @click="formVisible = false">确认</el-button>
+            <el-button
+              type="primary"
+              class="json-btn"
+              @click="formVisible = false"
+              >确认</el-button
+            >
           </template>
         </cus-dialog>
 
@@ -383,12 +426,20 @@
           :action="false"
         >
           <!-- <div id="codeeditor" style="height: 500px; width: 100%;">{{htmlTemplate}}</div> -->
-          <el-tabs type="border-card" style="box-shadow: none;" v-model="codeActiveName">
+          <el-tabs
+            type="border-card"
+            style="box-shadow: none;"
+            v-model="codeActiveName"
+          >
             <el-tab-pane label="Vue Component" name="vue">
-              <div id="vuecodeeditor" style="height: 500px; width: 100%;">{{ vueTemplate }}</div>
+              <div id="vuecodeeditor" style="height: 500px; width: 100%;">
+                {{ vueTemplate }}
+              </div>
             </el-tab-pane>
             <el-tab-pane label="HTML" name="html">
-              <div id="codeeditor" style="height: 500px; width: 100%;">{{ htmlTemplate }}</div>
+              <div id="codeeditor" style="height: 500px; width: 100%;">
+                {{ htmlTemplate }}
+              </div>
             </el-tab-pane>
           </el-tabs>
         </cus-dialog>
@@ -402,7 +453,11 @@
           form
         >
           <div class="wrap">
-            <codemirror ref="myCm" v-model="code" :options="cmOptions"></codemirror>
+            <codemirror
+              ref="myCm"
+              v-model="code"
+              :options="cmOptions"
+            ></codemirror>
             <div class="data-list">
               <div class="data">
                 <div>
@@ -412,7 +467,9 @@
                     v-for="item in modelLists"
                     :key="item.model"
                     :title="item.model"
-                  >{{'models.'+item.model}}</div>
+                  >
+                    {{ 'models.' + item.model }}
+                  </div>
                 </div>
                 <div>
                   <span>组件描述</span>
@@ -421,7 +478,9 @@
                     :title="item.name"
                     v-for="item in modelLists"
                     :key="item.model"
-                  >{{item.name}}</div>
+                  >
+                    {{ item.name }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -433,27 +492,27 @@
 </template>
 
 <script>
-import Draggable from 'vuedraggable'
-import WidgetConfig from './WidgetConfig'
-import CommonConfig from './CommonConfig' //通用字段
-import FormConfig from './FormConfig'
-import WidgetForm from './WidgetForm'
-import CusDialog from './CusDialog'
-import GenerateForm from './GenerateForm'
-import Clipboard from 'clipboard'
+import Draggable from 'vuedraggable';
+import WidgetConfig from './WidgetConfig';
+import CommonConfig from './CommonConfig'; //通用字段
+import FormConfig from './FormConfig';
+import WidgetForm from './WidgetForm';
+import CusDialog from './CusDialog';
+import GenerateForm from './GenerateForm';
+import Clipboard from 'clipboard';
 import {
   basicComponents,
   layoutComponents,
   advanceComponents,
-  tableComponents
-} from './componentsConfig.js'
-import { bankingComponents } from './componentsBankingConfig.js'
-import request from '../util/request.js'
-import generateCode from './generateCode.js'
-import { EventBus } from '../util/event-bus.js'
+  tableComponents,
+} from './componentsConfig.js';
+import { bankingComponents } from './componentsBankingConfig.js';
+import request from '../util/request.js';
+import generateCode from './generateCode.js';
+import { EventBus } from '../util/event-bus.js';
 // import historyManager from '../util/history-manager.js'
-import TableWidgetConfig from './table/TableWidgetConfig'
-import TableEventConfig from './table/TableEventConfig'
+import TableWidgetConfig from './table/TableWidgetConfig';
+import TableEventConfig from './table/TableEventConfig';
 
 export default {
   name: 'fm-making-form',
@@ -466,36 +525,36 @@ export default {
     CusDialog,
     GenerateForm,
     TableWidgetConfig,
-    TableEventConfig
+    TableEventConfig,
   },
   props: {
     preview: {
       type: Boolean,
-      default: false
+      default: false,
     },
     extend: {
       type: Boolean,
-      default: true
+      default: true,
     },
     formConfig: {
       type: Boolean,
-      default: false
+      default: false,
     },
     generateCode: {
       type: Boolean,
-      default: false
+      default: false,
     },
     generateJson: {
       type: Boolean,
-      default: false
+      default: false,
     },
     upload: {
       type: Boolean,
-      default: false
+      default: false,
     },
     clearable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     bankingFields: {
       type: Array,
@@ -522,8 +581,8 @@ export default {
         'camera',
         'buttonCom',
         'alink',
-        'frequency'
-      ]
+        'frequency',
+      ],
     },
     basicFields: {
       type: Array,
@@ -542,21 +601,21 @@ export default {
         'switch',
         'slider',
         'text',
-        'tree'
-      ]
+        'tree',
+      ],
     },
     advanceFields: {
       type: Array,
-      default: () => ['blank', 'imgupload', 'editor', 'cascader']
+      default: () => ['blank', 'imgupload', 'editor', 'cascader'],
     },
     layoutFields: {
       type: Array,
-      default: () => ['grid', 'divider']
+      default: () => ['grid', 'divider'],
     },
     tableFields: {
       type: Array,
-      default: () => ['elTable']
-    }
+      default: () => ['elTable'],
+    },
   },
   data() {
     return {
@@ -581,7 +640,7 @@ export default {
         indentUnit: 2,
         line: true,
         showHint: true,
-        gutters: ['CodeMirror-lint-markers']
+        gutters: ['CodeMirror-lint-markers'],
       },
       modelLists: [],
       mirrorVisible: false,
@@ -601,7 +660,7 @@ export default {
           size: 'small',
           onlyRead: false,
         },
-        extendDetail: 'function main ()' + '{\n' + '}'
+        extendDetail: 'function main ()' + '{\n' + '}',
       },
       oldWidgetForm: [], //保存预览之前的组件配置数据
       configTab: 'widget',
@@ -612,7 +671,30 @@ export default {
       uploadVisible: false,
       formVisible: false,
       remoteFuncs: {},
-      widgetModels: {},
+      widgetModels: {
+        table: [
+          {
+            warningMsg: '1111',
+            id: 58650276,
+          },
+          {
+            warningMsg: '222222',
+            id: 10351139,
+          },
+          {
+            warningMsg: '33333333',
+            id: 61478143,
+          },
+          {
+            warningMsg: '44444',
+            id: 73274862,
+          },
+          {
+            warningMsg: '55555',
+            id: 11540412,
+          },
+        ],
+      },
       blank: '',
       htmlTemplate: '',
       vueTemplate: '',
@@ -636,19 +718,19 @@ export default {
       copyModel: new DataTransfer(),
       revokeNumber: 0,
       rollNumbers: 0,
-      widgetLists: []
-    }
+      widgetLists: [],
+    };
   },
   computed: {
     codemirror() {
-      return this.$refs.myCm.codemirror
-    }
+      return this.$refs.myCm.codemirror;
+    },
   },
   created() {
-    localStorage.removeItem('selectIndex')
+    localStorage.removeItem('selectIndex');
   },
   mounted() {
-    this._loadComponents()
+    this._loadComponents();
     // historyManager.clear().then((e) => {
     //   EventBus.$on('on-history-add', () => {
     //     console.log('xxx', _this.widgetFormSelect)
@@ -662,25 +744,27 @@ export default {
     //     _this.redo = false
     //   })
     // })
-    let that =this
-    console.log(that.widgetLists)
+    let that = this;
+    console.log(that.widgetLists);
     EventBus.$on('on-history-add', () => {
-      // 
-      let cloneWidget = Object.assign({}, that.widgetForm)
-      that.widgetLists.push(cloneWidget)
-      that.undo = true
-      that.redo = false
-    })
+      //
+      let cloneWidget = Object.assign({}, that.widgetForm);
+      that.widgetLists.push(cloneWidget);
+      that.undo = true;
+      that.redo = false;
+    });
   },
   methods: {
     // 撤销
     handleUndo() {
-      this.revokeNumber++
-      if (this.widgetLists.length >this.revokeNumber) {
-        let end = this.widgetLists.length - this.revokeNumber
-        this.widgetForm = this.widgetLists.slice(end - 1, end)[0]
-        this.widgetFormSelect = this.widgetForm.list[this.widgetForm.list.length-1]
-      } else if ((this.widgetLists.length == this.revokeNumber)) {
+      this.revokeNumber++;
+      if (this.widgetLists.length > this.revokeNumber) {
+        let end = this.widgetLists.length - this.revokeNumber;
+        this.widgetForm = this.widgetLists.slice(end - 1, end)[0];
+        this.widgetFormSelect = this.widgetForm.list[
+          this.widgetForm.list.length - 1
+        ];
+      } else if (this.widgetLists.length == this.revokeNumber) {
         this.widgetForm = {
           list: [],
           config: {
@@ -689,64 +773,66 @@ export default {
             size: 'small',
             onlyRead: false,
           },
-          extendDetail: 'function main ()' + '{\n' + '}'
-        }
-        this.widgetFormSelect = {}
-        this.undo = false
+          extendDetail: 'function main ()' + '{\n' + '}',
+        };
+        this.widgetFormSelect = {};
+        this.undo = false;
       }
-      this.redo = true
+      this.redo = true;
     },
     // 重做
     handleRedo() {
       if (this.revokeNumber > 0) {
-        let start = this.widgetLists.length - this.revokeNumber
-        this.widgetForm = this.widgetLists.slice(start, start + 1)[0]
-        this.widgetFormSelect = this.widgetForm.list[this.widgetForm.list.length-1]
-        this.revokeNumber--
-        this.undo = true
+        let start = this.widgetLists.length - this.revokeNumber;
+        this.widgetForm = this.widgetLists.slice(start, start + 1)[0];
+        this.widgetFormSelect = this.widgetForm.list[
+          this.widgetForm.list.length - 1
+        ];
+        this.revokeNumber--;
+        this.undo = true;
         this.$nextTick(() => {
           if (this.revokeNumber == 0) {
-            this.redo = false
+            this.redo = false;
           }
-        })
+        });
       }
     },
     _addFlow() {
-      this.$emit('addFlow')
+      this.$emit('addFlow');
     },
     // 为每个组件添加name属性
     _loadComponents() {
       // 金融控件
-      this.bankingComponents = this.bankingComponents.map((item) => {
+      this.bankingComponents = this.bankingComponents.map(item => {
         return {
           ...item,
-          name: this.$t(`fm.components.nFields.${item.type}`)
-        }
-      })
-      this.basicComponents = this.basicComponents.map((item) => {
+          name: this.$t(`fm.components.nFields.${item.type}`),
+        };
+      });
+      this.basicComponents = this.basicComponents.map(item => {
         return {
           ...item,
-          name: this.$t(`fm.components.fields.${item.type}`)
-        }
-      })
-      this.advanceComponents = this.advanceComponents.map((item) => {
+          name: this.$t(`fm.components.fields.${item.type}`),
+        };
+      });
+      this.advanceComponents = this.advanceComponents.map(item => {
         return {
           ...item,
-          name: this.$t(`fm.components.fields.${item.type}`)
-        }
-      })
-      this.layoutComponents = this.layoutComponents.map((item) => {
+          name: this.$t(`fm.components.fields.${item.type}`),
+        };
+      });
+      this.layoutComponents = this.layoutComponents.map(item => {
         return {
           ...item,
-          name: this.$t(`fm.components.fields.${item.type}`)
-        }
-      })
-      this.tableComponents = this.tableComponents.map((item) => {
+          name: this.$t(`fm.components.fields.${item.type}`),
+        };
+      });
+      this.tableComponents = this.tableComponents.map(item => {
         return {
           ...item,
-          name: this.$t(`fm.components.fields.${item.type}`)
-        }
-      })
+          name: this.$t(`fm.components.fields.${item.type}`),
+        };
+      });
     },
     // 展平数据
     flatList(target) {
@@ -756,111 +842,111 @@ export default {
             this.flatList(cloItem);
           });
         } else {
-          this.modelLists = [...this.modelLists, item]
+          this.modelLists = [...this.modelLists, item];
         }
       });
     },
     // 获取models
     getModels() {
-      this.modelLists = []
-      this.flatList(this.widgetForm)
-      console.log(this.modelLists)
+      this.modelLists = [];
+      this.flatList(this.widgetForm);
+      console.log(this.modelLists);
     },
     // mirror控制函数
     showMirror(parms, modify) {
-      console.log(modify)
-      this.modify = modify
-      this.nowEle = parms
+      console.log(modify);
+      this.modify = modify;
+      this.nowEle = parms;
       if (this.modify == '隐藏条件') {
         if (this.nowEle.hidden != '') {
-          this.code = this.nowEle.hidden
+          this.code = this.nowEle.hidden;
         }
       } else if (this.modify == '离开条件') {
         if (this.nowEle.condition != '') {
-          this.code = this.nowEle.condition
+          this.code = this.nowEle.condition;
         }
       } else if (this.modify == '进入条件') {
         if (this.nowEle.enterCondition != '') {
-          this.code = this.nowEle.enterCondition
+          this.code = this.nowEle.enterCondition;
         }
       } else if (this.modify == '离开赋值') {
         if (this.nowEle.assignment != '') {
-          this.code = this.nowEle.assignment
+          this.code = this.nowEle.assignment;
         }
       } else if (this.modify == '入口数据') {
         if (this.nowEle.data != '') {
-          this.code = this.nowEle.data
+          this.code = this.nowEle.data;
         }
       } else if (this.modify == '启动条件') {
         if (this.nowEle.isRemote != '') {
-          this.code = this.nowEle.isRemote
+          this.code = this.nowEle.isRemote;
         }
       } else if (this.modify == '服务名') {
         if (this.nowEle.url != '') {
-          this.code = this.nowEle.url
+          this.code = this.nowEle.url;
         }
       } else if (this.modify == '出口数据') {
         if (this.nowEle.success != '') {
-          this.code = this.nowEle.success
+          this.code = this.nowEle.success;
         }
       } else if (this.modify == '请输入入口数据') {
         if (this.nowEle.requestData != '') {
-          this.code = this.nowEle.requestData
+          this.code = this.nowEle.requestData;
         }
       } else if (this.modify == '请输入出口数据') {
         if (this.nowEle.responseData != '') {
-          this.code = this.nowEle.responseData
+          this.code = this.nowEle.responseData;
         }
       } else if (this.modify == '调用函数') {
         if (this.nowEle.options.buttonfun != '') {
-          this.code = this.nowEle.options.buttonfun
+          this.code = this.nowEle.options.buttonfun;
         }
       } else if (this.modify == '多个外部条件访问') {
         if (this.nowEle.multiCondition != '') {
-          this.code = this.nowEle.multiCondition
+          this.code = this.nowEle.multiCondition;
         }
       } else if (this.modify == '请输入远程方法') {
         if (this.nowEle.options.remoteFunc != '') {
-          this.code = this.nowEle.options.remoteFunc
+          this.code = this.nowEle.options.remoteFunc;
         }
-      } else if(this.modify == '点击设置树组件数据'){
+      } else if (this.modify == '点击设置树组件数据') {
         if (this.nowEle.options.dataFunc != '') {
-          this.code = this.nowEle.options.dataFunc
+          this.code = this.nowEle.options.dataFunc;
         }
       }
-      this.getModels()
-      this.mirrorVisible = true
+      this.getModels();
+      this.mirrorVisible = true;
     },
     // 扩展函数编辑器
     handleEdit(e) {
-      this.extendFunc = e.target.innerText
-      this.code = this.widgetForm.extendDetail
-      this.mirrorVisible = true
+      this.extendFunc = e.target.innerText;
+      this.code = this.widgetForm.extendDetail;
+      this.mirrorVisible = true;
     },
     // 关闭mirror
     closeMirror() {
-      this.code = ''
-      this.mirrorVisible = false
+      this.code = '';
+      this.mirrorVisible = false;
     },
     // 获取mirror输入的代码
     getCode() {
-      console.log(this.extendFunc)
+      console.log(this.extendFunc);
       if (this.modify == '隐藏条件') {
-        this.nowEle.hidden = this.code
+        this.nowEle.hidden = this.code;
       } else if (this.modify == '离开条件') {
-        this.nowEle.condition = this.code
+        this.nowEle.condition = this.code;
       } else if (this.modify == '进入条件') {
-        this.nowEle.enterCondition = this.code
+        this.nowEle.enterCondition = this.code;
       } else if (this.modify == '离开赋值') {
-        this.nowEle.assignment = this.code
+        this.nowEle.assignment = this.code;
       } else if (this.modify == '启动条件') {
-        this.nowEle.isRemote = this.code
+        this.nowEle.isRemote = this.code;
       } else if (this.modify == '服务名') {
-        this.nowEle.url = this.code
+        this.nowEle.url = this.code;
       } else if (this.modify == '出口数据') {
-        this.nowEle.success = this.code
+        this.nowEle.success = this.code;
       } else if (this.modify == '多个外部条件访问') {
-        this.nowEle.multiCondition = this.code
+        this.nowEle.multiCondition = this.code;
       } else if (this.modify == '入口数据') {
         // let tmp;
         // try {
@@ -868,56 +954,56 @@ export default {
         // } catch (error) {
         //   throw new Error(error);
         // }
-        this.nowEle.data = this.code
+        this.nowEle.data = this.code;
       } else if (this.modify == '请输入入口数据') {
-        this.nowEle.requestData = this.code
+        this.nowEle.requestData = this.code;
       } else if (this.modify == '请输入出口数据') {
-        this.nowEle.responseData = this.code
+        this.nowEle.responseData = this.code;
       } else if (this.extendFunc == '扩展函数') {
-        this.widgetForm.extendDetail = this.code
-        console.log(this.widgetForm)
-        this.extendDetail = this.code
-        console.log(this.extendDetail)
+        this.widgetForm.extendDetail = this.code;
+        console.log(this.widgetForm);
+        this.extendDetail = this.code;
+        console.log(this.extendDetail);
       } else if (this.modify == '调用函数') {
-        this.nowEle.options.buttonfun = this.code
-        console.log(this.nowEle.options.buttonfun)
+        this.nowEle.options.buttonfun = this.code;
+        console.log(this.nowEle.options.buttonfun);
       } else if (this.modify == '请输入远程方法') {
-        this.nowEle.options.remoteFunc = this.code
-      } else if(this.modify == '点击设置树组件数据'){
-        debugger
-        this.nowEle.options.dataFunc = this.code
-        console.log(eval('('+this.nowEle.options.dataFunc+')'))
-        let tempFunc = eval('('+this.nowEle.options.dataFunc+')')
-        this.nowEle.options.data = tempFunc()
+        this.nowEle.options.remoteFunc = this.code;
+      } else if (this.modify == '点击设置树组件数据') {
+        debugger;
+        this.nowEle.options.dataFunc = this.code;
+        console.log(eval('(' + this.nowEle.options.dataFunc + ')'));
+        let tempFunc = eval('(' + this.nowEle.options.dataFunc + ')');
+        this.nowEle.options.data = tempFunc();
       }
-      this.mirrorVisible = false
-      this.extendFunc = ''
-      this.modify = ''
+      this.mirrorVisible = false;
+      this.extendFunc = '';
+      this.modify = '';
     },
     // 显示form配置
     handleFormConfig() {
-      this.formVisible = true
+      this.formVisible = true;
     },
     handleConfigSelect(value) {
-      this.configTab = value
+      this.configTab = value;
     },
     handleMoveEnd(evt) {
-      console.log('end', evt)
+      console.log('end', evt);
     },
     handleMoveStart({ oldIndex }) {
-      console.log('start', oldIndex, this.basicComponents)
+      console.log('start', oldIndex, this.basicComponents);
     },
     handleMove() {
-      return true
+      return true;
     },
     // 监听新增表格
     toAddTable() {
-      this.$emit('table')
+      this.$emit('table');
     },
     // 检查model是否有重复
     checkModels(item) {
       if (item.length <= 1) {
-        return true
+        return true;
       } else {
         for (let i = 0; i < item.length; i++) {
           for (let j = i + 1; j < item.length; j++) {
@@ -926,11 +1012,11 @@ export default {
                 showClose: true,
                 duration: 5000,
                 message: `${item[i].name} 和 ${item[j].name} 字段标识重复`,
-                type: 'error'
-              })
-              return false
+                type: 'error',
+              });
+              return false;
             } else {
-              return true
+              return true;
             }
           }
         }
@@ -944,54 +1030,54 @@ export default {
             showClose: true,
             duration: 5000,
             message: `表格 ${item[i].name} 未配置 `,
-            type: 'error'
-          })
-          return false
+            type: 'error',
+          });
+          return false;
         } else {
-          return true
+          return true;
         }
       }
     },
     handlePreview() {
-      this.oldWidgetForm = JSON.parse(JSON.stringify(this.widgetForm))
-      let tempList = []
-      this.widgetForm.list.forEach((item) => {
+      this.oldWidgetForm = JSON.parse(JSON.stringify(this.widgetForm));
+      let tempList = [];
+      this.widgetForm.list.forEach(item => {
         if (item.type === 'grid') {
-          item.columns.forEach((cloItem) => {
-            tempList = [...tempList, ...cloItem.list]
-          })
+          item.columns.forEach(cloItem => {
+            tempList = [...tempList, ...cloItem.list];
+          });
         } else {
-          tempList = [...tempList, item]
+          tempList = [...tempList, item];
         }
-      })
+      });
       if (!this.checkModels(tempList) || !this.checkEmptyTable(tempList)) {
-        return
+        return;
       }
-      this.previewVisible = true
+      this.previewVisible = true;
     },
     closePreview() {
-      this.widgetForm = this.oldWidgetForm
-      this._loadComponents()
-      let index = localStorage.getItem('selectIndex') * 1
-      this.widgetFormSelect = this.widgetForm.list[index]
-      this.previewVisible = false
+      this.widgetForm = this.oldWidgetForm;
+      this._loadComponents();
+      let index = localStorage.getItem('selectIndex') * 1;
+      this.widgetFormSelect = this.widgetForm.list[index];
+      this.previewVisible = false;
     },
     handleTest() {
       this.$refs.generateForm
         .getData()
-        .then((data) => {
-          this.$alert(data, '').catch((e) => {})
-          this.$refs.widgetPreview.end()
+        .then(data => {
+          this.$alert(data, '').catch(e => {});
+          this.$refs.widgetPreview.end();
         })
-        .catch((e) => {
-          this.$refs.widgetPreview.end()
-        })
+        .catch(e => {
+          this.$refs.widgetPreview.end();
+        });
     },
     handleReset() {
-      this.$refs.generateForm.reset()
+      this.$refs.generateForm.reset();
     },
     handleField(item) {
-      console.log(item,'-------',this.widgetForm)
+      console.log(item, '-------', this.widgetForm);
       // EventBus.$emit('on-field-add', item)
     },
     //撤销
@@ -1016,75 +1102,75 @@ export default {
     //     })
     // },
     _findWidgetItem(list, key) {
-      const index = list.findIndex((item) => item.key == key)
+      const index = list.findIndex(item => item.key == key);
 
       if (index >= 0) {
-        return list[index]
+        return list[index];
       } else {
         for (let m = 0; m < list.length; m++) {
-          const item = list[m]
+          const item = list[m];
 
           if (item.type === 'grid') {
             for (let i = 0; i < item.columns.length; i++) {
-              return this._findWidgetItem(item.columns[i].list, key)
+              return this._findWidgetItem(item.columns[i].list, key);
             }
           }
           if (item.type === 'table') {
-            return this._findWidgetItem(item.tableColumns, key)
+            return this._findWidgetItem(item.tableColumns, key);
           }
           if (item.type === 'tabs') {
             for (let i = 0; i < item.tabs.length; i++) {
-              return this._findWidgetItem(item.tabs[i].list, key)
+              return this._findWidgetItem(item.tabs[i].list, key);
             }
           }
         }
 
-        return {}
+        return {};
       }
     },
     handleGenerateJson() {
-      this.jsonVisible = true
-      this.jsonTemplate = this.widgetForm
-      console.log(JSON.stringify(this.widgetForm))
+      this.jsonVisible = true;
+      this.jsonTemplate = this.widgetForm;
+      console.log(JSON.stringify(this.widgetForm));
       this.$nextTick(() => {
-        const editor = ace.edit('jsoneditor')
-        editor.session.setMode('ace/mode/json')
+        const editor = ace.edit('jsoneditor');
+        editor.session.setMode('ace/mode/json');
 
         if (!this.jsonClipboard) {
-          this.jsonClipboard = new Clipboard('.json-btn')
-          this.jsonClipboard.on('success', (e) => {
-            this.$message.success(this.$t('fm.message.copySuccess'))
-          })
+          this.jsonClipboard = new Clipboard('.json-btn');
+          this.jsonClipboard.on('success', e => {
+            this.$message.success(this.$t('fm.message.copySuccess'));
+          });
         }
-        this.jsonCopyValue = JSON.stringify(this.widgetForm)
-      })
+        this.jsonCopyValue = JSON.stringify(this.widgetForm);
+      });
     },
     handleGenerateCode() {
-      this.codeVisible = true
-      this.htmlTemplate = generateCode(JSON.stringify(this.widgetForm), 'html')
-      this.vueTemplate = generateCode(JSON.stringify(this.widgetForm), 'vue')
+      this.codeVisible = true;
+      this.htmlTemplate = generateCode(JSON.stringify(this.widgetForm), 'html');
+      this.vueTemplate = generateCode(JSON.stringify(this.widgetForm), 'vue');
       this.$nextTick(() => {
-        const editor = ace.edit('codeeditor')
-        editor.session.setMode('ace/mode/html')
+        const editor = ace.edit('codeeditor');
+        editor.session.setMode('ace/mode/html');
 
-        const vueeditor = ace.edit('vuecodeeditor')
-        vueeditor.session.setMode('ace/mode/html')
-      })
+        const vueeditor = ace.edit('vuecodeeditor');
+        vueeditor.session.setMode('ace/mode/html');
+      });
     },
     handleUpload() {
-      this.uploadVisible = true
+      this.uploadVisible = true;
       this.$nextTick(() => {
-        this.uploadEditor = ace.edit('uploadeditor')
-        this.uploadEditor.session.setMode('ace/mode/json')
-      })
+        this.uploadEditor = ace.edit('uploadeditor');
+        this.uploadEditor.session.setMode('ace/mode/json');
+      });
     },
     handleUploadJson() {
       try {
-        this.setJSON(JSON.parse(this.uploadEditor.getValue()))
-        this.uploadVisible = false
+        this.setJSON(JSON.parse(this.uploadEditor.getValue()));
+        this.uploadVisible = false;
       } catch (e) {
-        this.$message.error(e.message)
-        this.$refs.uploadJson.end()
+        this.$message.error(e.message);
+        this.$refs.uploadJson.end();
       }
     },
     //清空
@@ -1095,54 +1181,54 @@ export default {
           labelWidth: 100,
           labelPosition: 'right',
           size: 'small',
-          customClass: ''
-        }
-      }
-      this.widgetFormSelect = {}
+          customClass: '',
+        },
+      };
+      this.widgetFormSelect = {};
       this.$nextTick(() => {
-        EventBus.$emit('on-history-add')
-      })
+        EventBus.$emit('on-history-add');
+      });
     },
     getJSON() {
-      return this.widgetForm
+      return this.widgetForm;
     },
     getHtml() {
-      return generateCode(JSON.stringify(this.widgetForm))
+      return generateCode(JSON.stringify(this.widgetForm));
     },
     setJSON(json) {
       if (typeof json === 'string') {
-        json = JSON.parse(json)
+        json = JSON.parse(json);
       }
-      this.widgetForm = json
+      this.widgetForm = json;
 
       if (json.list.length > 0) {
-        this.widgetFormSelect = json.list[0]
+        this.widgetFormSelect = json.list[0];
       } else {
-        this.widgetFormSelect = {}
+        this.widgetFormSelect = {};
       }
       this.$nextTick(() => {
-        EventBus.$emit('on-history-add')
-      })
+        EventBus.$emit('on-history-add');
+      });
     },
     handleInput(val) {
-      console.log(val)
-      this.blank = val
+      console.log(val);
+      this.blank = val;
     },
     // 监听数据改变
     handleDataChange(field, value, data) {
-      console.log(field, value, data)
+      console.log(field, value, data);
     },
     // 监听input组件通过form组件发射出来的事件
     inputChange() {
-      console.log('input')
-    }
+      console.log('input');
+    },
   },
   watch: {
-    $lang: function (val) {
-      this._loadComponents()
-    }
-  }
-}
+    $lang: function(val) {
+      this._loadComponents();
+    },
+  },
+};
 </script>
 
 <style lang="scss">
