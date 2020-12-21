@@ -54,6 +54,14 @@ export function getFormList(data) { // isOk
     data
   })
 }
+//查询单个表单
+export function queryFromDefineById(data) {
+  return request({
+    url: urlPrefix + '/formDevelop/qryFromDefineById',
+    method: 'post',
+    data
+  })
+}
 
 // 查询表格
 export function getTableList(data) { // isOk
