@@ -1215,12 +1215,14 @@ export default {
 .wrap {
   display: flex;
   justify-content: space-between;
+  flex-wrap: nowrap;
+  height: 300px;
 }
 .vue-codemirror {
-  width: 550px;
+  width: 520px;
 }
 .data-list {
-  width: 260px;
+  width: 270px;
   height: 300px;
   overflow-y: scroll;
   border-left: 1px solid #eee;
