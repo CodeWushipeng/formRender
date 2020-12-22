@@ -979,7 +979,6 @@
       </template>
       <!-- :data="widget.configdata" -->
       <fm-generate-table
-        v-model="dataModel"
         :data="widget.configdata"
         :value="tableValue"
         @dblhandleCurrentRow="dblhandleCurrentRow"
@@ -1054,21 +1053,9 @@ export default {
     hrSelect,
   },
   mixins: [itemHandle],
-  computed:{
-    tableValue:function(){
-      debugger
-      let result = {}
-      let tableModel = this.widget.model
-      if(this.dataModel){
-        result[tableModel] = this.dataModel
-        return result
-      }else{
-        return this.widget.configdata
-      }
-    }
-  },
   data() {
     return {
+      tableValue:{},
       fileList: [],
       srcList: [],
       //imagesrc: require('http://192.168.2.179:32009/public//20201208/785912151519703040.jpg'),
@@ -1274,8 +1261,20 @@ export default {
         this.handleRemoteFn(temFun);
       }
     }
+    this.initTableValue()
   },
   methods: {
+    initTableValue(){
+      let result = {};
+      let tableModel = this.widget.model;
+      result[tableModel] = []
+      if (this.widget.type=="elTable" && this.dataModel) {
+        for(let i=0;i<this.dataModel.length;i++){
+          result[tableModel].push(this.dataModel[i])
+        }
+        this.tableValue = result
+      }
+    },
     submitUpload() {
       this.$refs.upload.submit();
     },

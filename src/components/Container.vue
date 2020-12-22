@@ -671,30 +671,7 @@ export default {
       uploadVisible: false,
       formVisible: false,
       remoteFuncs: {},
-      widgetModels: {
-        table: [
-          {
-            warningMsg: '1111',
-            id: 58650276,
-          },
-          {
-            warningMsg: '222222',
-            id: 10351139,
-          },
-          {
-            warningMsg: '33333333',
-            id: 61478143,
-          },
-          {
-            warningMsg: '44444',
-            id: 73274862,
-          },
-          {
-            warningMsg: '55555',
-            id: 11540412,
-          },
-        ],
-      },
+      widgetModels: {},
       blank: '',
       htmlTemplate: '',
       vueTemplate: '',
