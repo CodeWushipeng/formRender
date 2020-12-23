@@ -115,8 +115,8 @@ let handlers = {
       if (localStorage.getItem('oldMark')) {
         generate = document.querySelector('.tableConfig');
       } else {
-        generate = document.querySelector('.form-wrap .generateForm')
-          ? document.querySelector('.form-wrap .generateForm')
+        generate = document.querySelector('.generateForm')
+          ? document.querySelector('.generateForm')
           : document.querySelector('.el-dialog .generateForm');
       }
       this.allItems = generate && generate.getElementsByClassName('targetEle');

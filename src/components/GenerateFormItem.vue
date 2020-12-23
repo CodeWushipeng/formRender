@@ -1883,12 +1883,6 @@ export default {
         }
       },
     },
-    tableValue:{
-      deep: true,
-      handler(val){
-        this.initTableValue()
-      }
-    }
   },
 };
 </script>
