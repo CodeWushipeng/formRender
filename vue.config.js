@@ -27,6 +27,9 @@ module.exports = {
       },
       '/formDevelop': {
         target: 'http://192.168.2.179:32340',
+        pathRewrite: {
+          '^/formDevelop': '',
+        },
       },
       // ====流控服务====
       '/flowDevelop': {

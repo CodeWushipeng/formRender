@@ -51,10 +51,11 @@ export default {
   components: {
     GenerateFormItem,
   },
-  props: ['widget', 'elModels', 'rules', 'remote'],
+  props: ['widget', 'models', 'rules', 'remote'],
   data() {
     return {
-      dataModels: this.elModels,
+      dataModels: this.models,
+      // dataModel: this.models[this.widget.model],
     };
   },
   inject: ['genform'],
@@ -93,10 +94,15 @@ export default {
     dataModels: {
       deep: true,
       handler(val) {
-        this.elModels[this.widget.model] = val[this.widget.model]
-        this.$emit('update:elModels', {...this.elModels});
+        this.$emit('update:models', val);
       },
-    }
+    },
+    models: {
+      deep: true,
+      handler(val) {
+        this.dataModels = val
+      },
+    },
   },
 };
 </script>

@@ -1860,19 +1860,23 @@ export default {
     // }
   },
   watch: {
+    value (val) {
+      this.dataModel = val
+    },
     dataModel: {
       // 深度监听组件绑定的数据，执行赋值操作并发射更新models的事件，发射input-change事件，将值和对应的key传入
       deep: true,
       handler(val, oldValue) {
-        if (val == oldValue) {
-          return;
-        } else {
-          this.models[this.widget.model] = val;
-          this.$emit('update:models', {
-            ...this.models,
-          });
-          this.$emit('input-change', val, this.widget.model);
-        }
+        this.$emit('input-change', val, this.widget.model);
+        // if (val == oldValue) {
+        //   return;
+        // } else {
+        //   this.models[this.widget.model] = val;
+        //   this.$emit('update:models', {
+        //     ...this.models,
+        //   });
+        //   this.$emit('input-change', val, this.widget.model);
+        // }
       },
     },
     pingLuConfigPopVisible: {

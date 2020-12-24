@@ -47,6 +47,17 @@
                   @select-change="handleSelectChange($event, item)"
                 >
                 </widget-col-item>
+                <widget-tab-item
+                  v-if="col.type === 'tabs'"
+                  :key="col.key"
+                  :element="col"
+                  :select.sync="selectWidget"
+                  :index="colindex"
+                  :data="item"
+                  @select-change="handleSelectChange($event, item)"
+                >
+
+                </widget-tab-item>
                 <widget-form-item
                   v-else
                   :key="col.key"
@@ -92,12 +103,14 @@ import Draggable from 'vuedraggable';
 import _ from 'lodash';
 import { CloneLayout } from '../util/layout-clone.js';
 import { EventBus } from '../util/event-bus.js';
+import WidgetTabItem from './WidgetTabItem.vue';
 
 export default {
   name: 'widget-col-item',
   components: {
     Draggable,
     WidgetFormItem,
+    WidgetTabItem,
   },
   props: ['element', 'select', 'index', 'data'],
   data() {
@@ -166,7 +179,6 @@ export default {
           ...row.columns[colIndex].list[newIndex].novalid,
         },
         key,
-        // model: row.columns[colIndex].list[newIndex].model ? row.columns[colIndex].list[newIndex].model : row.columns[colIndex].list[newIndex].type + '_' + key,
         model: 'object',
         rules: row.columns[colIndex].list[newIndex].rules
           ? [...row.columns[colIndex].list[newIndex].rules]

@@ -9,6 +9,7 @@
     <!--btnFocusIndex:{{btnFocusIndex}}-->
     <el-form
       class="generateForm"
+      @submit.native.prevent
       v-if="keysLength"
       ref="generateForm"
       label-suffix=":"
@@ -20,74 +21,22 @@
       :key="formKey"
     >
       <template v-for="item in data.list">
-        <!-- <template v-if="item.type == 'grid'">
-          <el-row
-            :key="item.key"
-            type="flex"
-            :gutter="item.options.gutter ? item.options.gutter : 0"
-            :justify="item.options.justify"
-            :align="item.options.align"
-          >
-            <el-col
-              v-for="(col, colIndex) in item.columns"
-              :key="colIndex"
-              :span="col.span"
-            >
-              <template v-for="citem in col.list">
-                <el-form-item
-                  v-if="citem.type == 'blank'"
-                  :label="citem.name"
-                  :prop="citem.model"
-                  :key="citem.key"
-                >
-                  <slot :name="citem.model" :model="models"></slot>
-                </el-form-item>
-                <genetate-form-item
-                  v-else
-                  :key="citem.key"
-                  :models.sync="models"
-                  :remote="remote"
-                  :rules="rules"
-                  :widget="citem"
-                  @input-change="onInputChange"
-                  @el-change="onElChange"
-                  @radio-change="radioChange"
-                  @el-focus="mouseValidate"
-                  @el-blur="blurValidate"
-                  @date-blur="dateValidata"
-                  @toggleGenerate="toggleGenerate"
-                  @close-dialog="closeDialog"
-                  v-show="!citem.options.hidden"
-                ></genetate-form-item>
-              </template>
-            </el-col>
-          </el-row>
-        </template> -->
 
         <!-- 栅格组件 -->
         <generate-col-item
           v-if="item.type == 'grid'"
           :key="item.key"
-          :colModels.sync="models"
+          :models.sync="models"
           :rules="rules"
-          :element="item"
+          :widget="item"
           :remote="remote"
           @input-change="onInputChange"
         >
         </generate-col-item>
         <template v-else-if="item.type == 'blank'">
-          <!-- <el-form-item
-            :label="item.name"
-            :prop="item.model"
-            :key="item.key"
-            class="targetEle"
-            :style="{ width: item.options.width }"
-          >
-            <slot :name="item.model" :model="models"></slot>
-          </el-form-item> -->
           <generate-element-item
             :key="item.key"
-            :elModels.sync="models"
+            :models.sync="models"
             :rules="rules"
             :widget="item"
             :remote="remote"
@@ -95,22 +44,21 @@
           ></generate-element-item>
         </template>
 
-        <!-- <generate-tab-item
+        <generate-tab-item
           v-else-if="item.type == 'tabs'"
           :key="item.key"
-          :model.sync="models"
+          :models.sync="models"
           :rules="rules"
-          :element="item"
+          :widget="item"
           :remote="remote"
           @input-change="onInputChange"
-          :edit="edit"
         >
-        </generate-tab-item>-->
+        </generate-tab-item>
 
         <template v-else>
           <generate-element-item
             :key="item.key"
-            :elModels.sync="models"
+            :models.sync="models"
             :rules="rules"
             :widget="item"
             :remote="remote"
@@ -209,12 +157,7 @@ export default {
     },
     // 生成models、rules对象
     generateModel(genList) {
-      // console.log(
-      //   "xxxxxxxxxxxxxxxx2333333333333333333xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-      // );
-      if (!genList) {
-        return;
-      }
+      if (!genList) return
       for (let i = 0; i < genList.length; i++) {
         if (genList[i].type === 'grid') {
           genList[i].columns.forEach(item => {
@@ -464,10 +407,13 @@ export default {
     },
     'data.list': {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
-      // deep: true,
+      deep: true,
       handler(val) {
-        debugger
-        this.resetModelsFields();
+        console.log(this.models)
+        this.models = {}
+        this.rules = {}
+        this.generateModel(val)
+        // this.resetModelsFields();
       },
     },
     value: {

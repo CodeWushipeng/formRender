@@ -1,73 +1,69 @@
 <template>
   <el-tabs v-model="tabActive" 
-    :type="element.options.type"
-    :tab-position="element.options.tabPosition"
+    :type="widget.options.type"
+    :tab-position="widget.options.tabPosition"
     :class="{
-      [element.options.customClass]: element.options.customClass?true: false
+      [widget.options.customClass]: widget.options.customClass?true: false
     }"
     style="margin-bottom: 18px;"
-    v-if="display[element.model]"
   >
     <el-tab-pane 
       :key="item.name" 
       :label="item.label" 
       :name="item.name" 
-      v-for="item in element.tabs"
+      v-for="item in widget.tabs"
     >
       <template v-for="tab in item.list">
         <generate-tab-item
           v-if="tab.type == 'tabs'"
           :key="tab.key"
+          :models.sync="dataModels"
+          :rules="rules"
+          :widget="tab"
+          :remote="remote"
+          @input-change="onInputChange"
+        >
+        </generate-tab-item>
+        <generate-col-item
+          v-else-if="tab.type == 'grid'"
+          :key="tab.key"
           :model.sync="dataModels"
           :rules="rules"
-          :element="tab"
+          :widget="tab"
           :remote="remote"
-          :blanks="blanks"
-          :display="display"
           @input-change="onInputChange"
-          :edit="edit"
         >
-          <template v-slot:[blank.name]="scope" v-for="blank in blanks">
-            <slot :name="blank.name" :model="scope.model"></slot>
-          </template>
-        </generate-tab-item>
-
-        <generate-form-item
+        </generate-col-item>
+        <generate-element-item
           v-else
           :key="tab.key"
           :models.sync="dataModels"
           :rules="rules"
           :widget="tab"
           :remote="remote"
-          :blanks="blanks"
-          :display="display"
           @input-change="onInputChange"
-          :edit="edit"
         >
-          <template v-slot:[blank.name]="scope" v-for="blank in blanks">
-            <slot :name="blank.name" :model="scope.model"></slot>
-          </template>
-        </generate-form-item>
+        </generate-element-item>
       </template>
     </el-tab-pane>
   </el-tabs>
 </template>
 
 <script>
-import GenerateFormItem from './GenerateFormItem'
+import GenerateElementItem from './GenerateElementItem'
+import GenerateColItem from './GenerateColItem'
 
 export default {
   name: 'generate-tab-item',
   components: {
-    GenerateFormItem,
-    // GenerateColItem : () => import('./GenerateColItem.vue'),
-    // GenerateReport: () => import('./GenerateReport.vue')
+    GenerateElementItem,
+    GenerateColItem
   },
-  props: ['element', 'model', 'rules', 'remote', 'blanks', 'display', 'edit'],
+  props: ['widget', 'models', 'rules', 'remote'],
   data () {
     return {
-      dataModels: this.model,
-      tabActive: this.element.tabs.length ? this.element.tabs[0].name : '',
+      dataModels: this.models,
+      tabActive: this.widget.tabs.length ? this.widget.tabs[0].name : '',
     }
   },
   methods: {
@@ -76,16 +72,16 @@ export default {
     }
   },
   watch: {
-    model: {
+    models: {
       deep: true,
       handler (val) {
-        this.dataModels = this.model
+        this.dataModels = this.models
       }
     },
     dataModels: {
       deep: true,
       handler (val) {
-        this.$emit('update:model', val)
+        this.$emit('update:models', val)
       }
     }
   }

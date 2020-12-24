@@ -610,7 +610,7 @@ export default {
     },
     layoutFields: {
       type: Array,
-      default: () => ['grid', 'divider'],
+      default: () => ['grid', 'divider', 'tabs'],
     },
     tableFields: {
       type: Array,

@@ -99,7 +99,6 @@ let handlers = {
       this.comArr.forEach(item => {
         if (item.hidden) {
           let flag = this.evalWrap(item.hidden);
-          console.log(flag);
           if (flag === false) {
             item.options.hidden = false;
           } else if (flag) {
@@ -254,7 +253,6 @@ let handlers = {
         try {
           let tempFunc = eval('(' + targetEval + ')');
           result = tempFunc(this.models, this.utils, this.handelValidate, i);
-          console.log(tempFunc, result);
         } catch (error) {
           throw new Error(error);
         }
@@ -974,11 +972,14 @@ let handlers = {
             this.tranData(cloItem);
             // this.comArr = [...this.comArr, ...cloItem.list];
           });
+        } else if (item.type === 'tabs') {
+          item.tabs.forEach(tabItem =>{
+            this.tranData(tabItem);
+          });
         } else {
           this.comArr = [...this.comArr, item];
         }
       });
-      console.log('获取组件数据', this.comArr);
     },
     // 解析扩展函数
     solveCommonJS(JsCode) {
@@ -1007,7 +1008,7 @@ let handlers = {
     mouseClick(){
       let that = this
       document.addEventListener('mouseup',e=>{
-        if (this.outMark <= this.canFocusLength){
+        if (this.outMark && this.outMark <= this.canFocusLength) {
           that.preActiveElement = that.activeElement;
           if (
             !that.hasFocusItem() &&
