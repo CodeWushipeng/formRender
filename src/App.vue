@@ -47,6 +47,10 @@ export default {
 </script>
 
 <style lang="scss">
+#app{
+  width: 100%;
+  min-width: 1366px;
+}
 .fm-header {
   height: 50px;
   box-shadow: 0 2px 10px rgba(70, 160, 252, 0.6);

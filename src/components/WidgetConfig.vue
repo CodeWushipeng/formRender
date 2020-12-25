@@ -1470,7 +1470,6 @@ export default {
       if (val) {
         this.validator.required = {
           required: true,
-          trigger: 'blur',
           message: this.data.options.requiredMessage
             ? this.data.options.requiredMessage
             : `${this.data.model+this.$t('fm.config.widget.validatorRequired')}`,

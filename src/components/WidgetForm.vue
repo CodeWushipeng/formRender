@@ -35,6 +35,16 @@
                 @select-change="handleSelectChange"
               >
               </widget-col-item>
+              <widget-tab-item
+                v-else-if="element.type === 'tabs'"
+                :key="element.key"
+                :element="element"
+                :select.sync="selectWidget"
+                :index="index"
+                :data="data"
+                @select-change="handleSelectChange"
+              >
+              </widget-tab-item>
               <widget-form-item
                 v-else
                 :key="element.key"
@@ -56,7 +66,7 @@
 import Draggable from 'vuedraggable';
 import WidgetColItem from './WidgetColItem';
 import WidgetFormItem from './WidgetFormItem';
-// import WidgetTabItem from './WidgetTabItem'
+import WidgetTabItem from './WidgetTabItem'
 import { EventBus } from '../util/event-bus.js';
 import _ from 'lodash';
 
@@ -65,7 +75,7 @@ export default {
     Draggable,
     WidgetFormItem,
     WidgetColItem,
-    // WidgetTabItem
+    WidgetTabItem
   },
   props: ['data', 'select'],
   data() {

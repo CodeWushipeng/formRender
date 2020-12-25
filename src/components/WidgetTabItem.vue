@@ -36,6 +36,15 @@
                 @select-change="handleSelectChange($event, item)"  
               >
               </widget-tab-item>
+              <widget-col-item
+                v-else-if="tab.type == 'grid'"
+                :key="tab.key"
+                :element="tab"
+                :select.sync="selectWidget" 
+                :index="tabindex" :data="item"
+                @select-change="handleSelectChange($event, item)"  
+              >
+              </widget-col-item>
               <widget-form-item 
                 v-else-if="tab.type !== 'grid'" 
                 :key="tab.key" 
@@ -66,6 +75,7 @@
 
 <script>
 import WidgetFormItem from './WidgetFormItem'
+import WidgetColItem from './WidgetColItem'
 import Draggable from 'vuedraggable'
 import _ from 'lodash'
 import { CloneLayout } from '../util/layout-clone.js'
@@ -76,7 +86,7 @@ export default {
   components: {
     WidgetFormItem,
     Draggable,
-    // WidgetColItem: () => import('./WidgetColItem.vue'),
+    WidgetColItem
     // WidgetReport: () => import('./WidgetReport.vue')
   },
   props: ['element', 'select', 'index', 'data'],
@@ -134,7 +144,7 @@ export default {
           remoteOption: element.tabs[tabIndex].list[newIndex].options.remoteOption || 'option_'+key,
         },
         key,
-        model: element.tabs[tabIndex].list[newIndex].model ? element.tabs[tabIndex].list[newIndex].model : element.tabs[tabIndex].list[newIndex].type + '_' + key,
+        model: 'object',
         rules: element.tabs[tabIndex].list[newIndex].rules ? [...element.tabs[tabIndex].list[newIndex].rules] : []
       })
 

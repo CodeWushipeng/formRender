@@ -2,13 +2,14 @@
   <!--<div v-if="!isDataNull">-->
   <div>
     <!--data:{{data.config}} <br>-->
-    <!--value:{{value}} <br>-->
+    <!-- value:{{value}} <br> -->
 
-    <!--rules:{{rules}} <br>-->
-    <!--models:{{ models }} <br />-->
+    <!-- rules:{{rules}} <br>
+    models:{{ models }} <br /> -->
     <!--btnFocusIndex:{{btnFocusIndex}}-->
     <el-form
       class="generateForm"
+      @submit.native.prevent
       v-if="keysLength"
       ref="generateForm"
       label-suffix=":"
@@ -20,74 +21,22 @@
       :key="formKey"
     >
       <template v-for="item in data.list">
-        <!-- <template v-if="item.type == 'grid'">
-          <el-row
-            :key="item.key"
-            type="flex"
-            :gutter="item.options.gutter ? item.options.gutter : 0"
-            :justify="item.options.justify"
-            :align="item.options.align"
-          >
-            <el-col
-              v-for="(col, colIndex) in item.columns"
-              :key="colIndex"
-              :span="col.span"
-            >
-              <template v-for="citem in col.list">
-                <el-form-item
-                  v-if="citem.type == 'blank'"
-                  :label="citem.name"
-                  :prop="citem.model"
-                  :key="citem.key"
-                >
-                  <slot :name="citem.model" :model="models"></slot>
-                </el-form-item>
-                <genetate-form-item
-                  v-else
-                  :key="citem.key"
-                  :models.sync="models"
-                  :remote="remote"
-                  :rules="rules"
-                  :widget="citem"
-                  @input-change="onInputChange"
-                  @el-change="onElChange"
-                  @radio-change="radioChange"
-                  @el-focus="mouseValidate"
-                  @el-blur="blurValidate"
-                  @date-blur="dateValidata"
-                  @toggleGenerate="toggleGenerate"
-                  @close-dialog="closeDialog"
-                  v-show="!citem.options.hidden"
-                ></genetate-form-item>
-              </template>
-            </el-col>
-          </el-row>
-        </template> -->
 
         <!-- 栅格组件 -->
         <generate-col-item
           v-if="item.type == 'grid'"
           :key="item.key"
-          :colModels.sync="models"
+          :models.sync="models"
           :rules="rules"
-          :element="item"
+          :widget="item"
           :remote="remote"
           @input-change="onInputChange"
         >
         </generate-col-item>
         <template v-else-if="item.type == 'blank'">
-          <!-- <el-form-item
-            :label="item.name"
-            :prop="item.model"
-            :key="item.key"
-            class="targetEle"
-            :style="{ width: item.options.width }"
-          >
-            <slot :name="item.model" :model="models"></slot>
-          </el-form-item> -->
           <generate-element-item
             :key="item.key"
-            :elModels.sync="models"
+            :models.sync="models"
             :rules="rules"
             :widget="item"
             :remote="remote"
@@ -95,22 +44,21 @@
           ></generate-element-item>
         </template>
 
-        <!-- <generate-tab-item
+        <generate-tab-item
           v-else-if="item.type == 'tabs'"
           :key="item.key"
-          :model.sync="models"
+          :models.sync="models"
           :rules="rules"
-          :element="item"
+          :widget="item"
           :remote="remote"
           @input-change="onInputChange"
-          :edit="edit"
         >
-        </generate-tab-item>-->
+        </generate-tab-item>
 
         <template v-else>
           <generate-element-item
             :key="item.key"
-            :elModels.sync="models"
+            :models.sync="models"
             :rules="rules"
             :widget="item"
             :remote="remote"
@@ -209,20 +157,23 @@ export default {
     },
     // 生成models、rules对象
     generateModel(genList) {
-      // console.log(
-      //   "xxxxxxxxxxxxxxxx2333333333333333333xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-      // );
-      if (!genList) {
-        return;
-      }
+      if (!genList) return
       for (let i = 0; i < genList.length; i++) {
         if (genList[i].type === 'grid') {
           genList[i].columns.forEach(item => {
             this.generateModel(item.list);
           });
         } else if (genList[i].type === 'elTable') {
-          this.models[genList[i].model] =
+          debugger
+          if (
+            this.value &&
+            Object.keys(this.value).indexOf(genList[i].model) >= 0
+          ) {
+            this.models[genList[i].model] = this.value[genList[i].model];
+          }else{
+            this.models[genList[i].model] =
             genList[i].configdata.list[0].options.tableData;
+          }
         } else if (genList[i].type === 'tabs') {
           genList[i].tabs.forEach(item => {
             this.generateModel(item.list);
@@ -403,7 +354,9 @@ export default {
         }
       }
     },
+    // 禁用只读隐藏组件移除必输项校验
     clearValidate() {
+      if(typeof this.comArr !='Array' || this.comArr.length==0) return
       let lists = this.comArr;
       for (let i = 0; i < lists.length; i++) {
         if (
@@ -414,7 +367,7 @@ export default {
           console.log(this.rules);
           this.rules[lists[i].model];
           for (let j = 0; j < this.rules[lists[i].model].length; j++) {
-            if (this.rules[lists[i].model][j].required) {
+            if (this.rules[lists[i].model][j].required && typeof this.models[lists[i].model] == 'undefined') {
               this.rules[lists[i].model][j].required = false;
             }
           }
@@ -453,18 +406,21 @@ export default {
     },
     'data.list': {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
-      // deep: true,
+      deep: true,
       handler(val) {
-        debugger
-        this.resetModelsFields();
+        console.log(this.models)
+        this.models = {}
+        this.rules = {}
+        this.generateModel(val)
+        // this.resetModelsFields();
       },
     },
     value: {
       // 深度观察组件key的值
       deep: true,
       handler(val) {
-        console.log(JSON.stringify(val));
-        this.models = { ...this.models, ...val };
+        // console.log(JSON.stringify(val));
+        // this.models = { ...this.models, ...val };
       },
     },
   },

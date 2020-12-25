@@ -977,9 +977,10 @@
           </el-row>
         </div>
       </template>
+      <!-- :data="widget.configdata" -->
       <fm-generate-table
-        v-model="dataModel"
         :data="widget.configdata"
+        :value="tableValue"
         @dblhandleCurrentRow="dblhandleCurrentRow"
         v-if="!widget.options.hidden"
         ref="generateTable"
@@ -1054,6 +1055,7 @@ export default {
   mixins: [itemHandle],
   data() {
     return {
+      tableValue:{},
       fileList: [],
       srcList: [],
       //imagesrc: require('http://192.168.2.179:32009/public//20201208/785912151519703040.jpg'),
@@ -1259,8 +1261,20 @@ export default {
         this.handleRemoteFn(temFun);
       }
     }
+    this.initTableValue()
   },
   methods: {
+    initTableValue(){
+      let result = {};
+      let tableModel = this.widget.model;
+      result[tableModel] = []
+      if (this.widget.type=="elTable" && this.dataModel) {
+        for(let i=0;i<this.dataModel.length;i++){
+          result[tableModel].push(this.dataModel[i])
+        }
+        this.tableValue = result
+      }
+    },
     submitUpload() {
       this.$refs.upload.submit();
     },
@@ -1850,15 +1864,11 @@ export default {
       // 深度监听组件绑定的数据，执行赋值操作并发射更新models的事件，发射input-change事件，将值和对应的key传入
       deep: true,
       handler(val, oldValue) {
-        if (val == oldValue) {
-          return;
-        } else {
-          this.models[this.widget.model] = val;
+        this.models[this.widget.model] = val;
           this.$emit('update:models', {
             ...this.models,
           });
-          this.$emit('input-change', val, this.widget.model);
-        }
+          this.$emit('input-change', val, this.widget.model)
       },
     },
     pingLuConfigPopVisible: {
