@@ -88,11 +88,7 @@ export default {
     models: {
       deep: true,
       handler(val) {
-<<<<<<< HEAD
-        this.dataModels = this.model
-=======
         this.dataModels = val
->>>>>>> 表单校验
       },
     },
   },

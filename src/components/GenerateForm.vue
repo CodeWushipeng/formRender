@@ -356,10 +356,6 @@ export default {
     },
     // 禁用只读隐藏组件移除必输项校验
     clearValidate() {
-<<<<<<< HEAD
-      debugger
-=======
->>>>>>> 表单校验
       if(typeof this.comArr !='Array' || this.comArr.length==0) return
       let lists = this.comArr;
       for (let i = 0; i < lists.length; i++) {
