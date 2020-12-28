@@ -1127,11 +1127,12 @@ export const basicComponents = [
       width: '100%',
       defaultValue: '',
       data: [],
-      dataFunc: 'function main (models,utils)' +
-      '{\n' +
-      '\t//models为当前表单所有model utils为扩展函数 树组件数据只能是数组需return一个数组\n' +
-      '\treturn []\n' +
-      '}',
+      dataFunc:
+        'function main (models,utils)' +
+        '{\n' +
+        '\t//models为当前表单所有model utils为扩展函数 树组件数据只能是数组需return一个数组\n' +
+        '\treturn []\n' +
+        '}',
       props: {
         children: 'children',
         label: 'label',
@@ -1406,7 +1407,18 @@ export const layoutComponents = [
     },
   },
 ];
-
+export const formComponents = [
+  {
+    type: 'childForm',
+    icon: 'el-icon-tickets',
+    formCode: '',
+    formData: {},
+    options: {
+      hidden: false,
+      disabled: false,
+    },
+  },
+];
 export const tableComponents = [
   {
     type: 'elTable',

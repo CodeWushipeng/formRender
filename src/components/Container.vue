@@ -129,6 +129,36 @@
                 </li>
               </draggable>
             </template>
+            <template v-if="formFields.length">
+              <div class="widget-cate">
+                {{ $t('fm.components.form.title') }}
+              </div>
+              <draggable
+                tag="ul"
+                :list="formComponents"
+                v-bind="{
+                  group: { name: 'people', pull: 'clone', put: false },
+                  sort: false,
+                  ghostClass: 'ghost',
+                }"
+                @end="handleMoveEnd"
+                @start="handleMoveStart"
+                :move="handleMove"
+              >
+                <li
+                  @click="handleField(item)"
+                  v-if="formFields.indexOf(item.type) >= 0"
+                  class="form-edit-widget-label no-put"
+                  v-for="(item, index) in formComponents"
+                  :key="index"
+                >
+                  <a>
+                    <i class="icon" :class="item.icon"></i>
+                    <span>{{ item.name }}</span>
+                  </a>
+                </li>
+              </draggable>
+            </template>
             <template v-if="tableFields.length">
               <div class="widget-cate">
                 {{ $t('fm.components.table.title') }}
@@ -505,6 +535,7 @@ import {
   layoutComponents,
   advanceComponents,
   tableComponents,
+  formComponents
 } from './componentsConfig.js';
 import { bankingComponents } from './componentsBankingConfig.js';
 import request from '../util/request.js';
@@ -612,6 +643,10 @@ export default {
       type: Array,
       default: () => ['grid', 'divider', 'tabs'],
     },
+    formFields: {
+      type: Array,
+      default: () => ['childForm'],
+    },
     tableFields: {
       type: Array,
       default: () => ['elTable'],
@@ -650,6 +685,7 @@ export default {
       basicComponents,
       layoutComponents,
       advanceComponents,
+      formComponents,
       tableComponents,
       resetJson: false,
       widgetForm: {
@@ -799,6 +835,12 @@ export default {
         };
       });
       this.layoutComponents = this.layoutComponents.map(item => {
+        return {
+          ...item,
+          name: this.$t(`fm.components.fields.${item.type}`),
+        };
+      });
+      this.formComponents = this.formComponents.map(item => {
         return {
           ...item,
           name: this.$t(`fm.components.fields.${item.type}`),

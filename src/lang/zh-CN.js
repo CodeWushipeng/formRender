@@ -51,6 +51,7 @@ export default {
         divider: '分割线',
         elTable: '表格',
         tree: '树组件',
+        childForm: '子表单'
       },
       banking: {
         title: '金融组件',
@@ -63,6 +64,9 @@ export default {
       },
       layout: {
         title: '布局字段',
+      },
+      form: {
+        title: '子表单字段'
       },
       table: {
         title: '表格字段',

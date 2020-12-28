@@ -22,9 +22,16 @@
         <span>{{element.model}}</span>
       </div>
     </div>
+    <template v-if="element.type == 'childForm'">
+      <generate-form
+        insite="true"
+        :data="widgetForm"
+        ref="generateForm"
+      ></generate-form>
+    </template>
     <el-form-item
       class="widget-view"
-      v-if="element && element.key && element.type != 'divider' || element.type != 'tabs'"
+      v-if="element && element.key && element.type != 'divider' || element.type != 'tabs' || element.type != 'childForm'"
       :label="(element.type != 'buttonCom' && element.type != 'alink' && !element.options.hideLabel) ? element.name : ''"
       @click.native.stop="handleSelectWidget(index)"
       :class="{active: selectWidget.key == element.key, 'is_req': element.options.required, 'is_hidden': element.options.hidden}"
@@ -384,7 +391,6 @@
           </div>
         </template>
       </template>
-
       <div class="widget-view-action" v-if="selectWidget.key == element.key">
         <i class="iconfont icon-icon_clone" @click.stop="handleWidgetClone(index)"></i>
         <i class="iconfont icon-trash" @click.stop="handleWidgetDelete(index)"></i>
@@ -402,14 +408,18 @@ import FmUpload from "./Upload";
 import { EventBus } from "../util/event-bus.js";
 // import request from '../demo/demo3/js/request'
 import request from '../demo/commonjs/request'
+import GenerateForm from './GenerateForm';
 export default {
   props: ["element", "select", "index", "data"],
   components: {
     FmUpload,
+    GenerateForm
   },
   data() {
     return {
       selectWidget: this.select,
+      widgetForm: {},
+      widgetModels: {}
     };
   },
   mounted() {},
@@ -502,6 +512,16 @@ export default {
       },
       deep: true,
     },
+    'element.formData': {
+      handler(val){
+        debugger
+        let data = JSON.parse(val)
+        this.widgetForm = data
+        this.data.list.splice(this.index,1,...this.widgetForm.list)
+        let targetExtend = this.widgetForm.extendDetail.slice(17,-1)
+        this.data.extendDetail = this.data.extendDetail.slice(0,-1) + targetExtend +'}'
+      }
+    }
   },
 };
 </script>

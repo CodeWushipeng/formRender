@@ -13,6 +13,14 @@
       >
         <el-input v-model="data.name"></el-input>
       </el-form-item>
+      <el-form-item v-if="data.type == 'childForm'" label="子表单编码">
+        <el-input
+          v-model="data.formCode"
+          readonly
+          placeholder="请选择子表单"
+          @focus="formListShow"
+        ></el-input>
+      </el-form-item>
       <el-form-item
         :label="$t('fm.config.widget.width')"
         v-if="Object.keys(data.options).indexOf('width') >= 0"
@@ -652,17 +660,23 @@
           >
           </el-time-picker>
         </el-form-item>-->
-        <el-form-item :label="$t('fm.config.widget.endDate')" v-if="data.type == 'date'">
+        <el-form-item
+          :label="$t('fm.config.widget.endDate')"
+          v-if="data.type == 'date'"
+        >
           <el-date-picker
-                  v-model="data.options.endDate"
-                  type="date"
-                  placeholder="选择日期"
-                  format="yyyy 年 MM 月 dd 日"
-                  value-format="yyyy-MM-dd"
+            v-model="data.options.endDate"
+            type="date"
+            placeholder="选择日期"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item :label="$t('fm.config.widget.isTimestamp')" v-if="data.type == 'date'">
+        <el-form-item
+          :label="$t('fm.config.widget.isTimestamp')"
+          v-if="data.type == 'date'"
+        >
           <el-switch v-model="data.options.timestamp"></el-switch>
         </el-form-item>
         <el-form-item
@@ -675,7 +689,7 @@
             placeholder="选择日期"
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
-            >
+          >
           </el-date-picker>
         </el-form-item>
         <el-form-item
@@ -688,7 +702,7 @@
             placeholder="选择日期"
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
-            >
+          >
           </el-date-picker>
         </el-form-item>
 
@@ -1042,16 +1056,29 @@
         <el-form-item :label="$t('fm.config.widget.attribute')">
           <template v-if="data.type == 'tree'">
             <el-form-item :label="$t('fm.config.widget.treeData')">
-              <el-input readonly placeholder="点击设置树组件数据" @focus="handelMirror"></el-input>
+              <el-input
+                readonly
+                placeholder="点击设置树组件数据"
+                @focus="handelMirror"
+              ></el-input>
             </el-form-item>
             <el-form-item :label="$t('fm.config.widget.nodeKey')">
-              <el-input placeholder="请输入树节点唯一标识" v-model="data.options.nodeKey"></el-input>
+              <el-input
+                placeholder="请输入树节点唯一标识"
+                v-model="data.options.nodeKey"
+              ></el-input>
             </el-form-item>
             <el-form-item :label="$t('fm.config.widget.currentNodeKey')">
-              <el-input placeholder="请输入当前选中的节点" v-model="data.options.currentNodeKey"></el-input>
+              <el-input
+                placeholder="请输入当前选中的节点"
+                v-model="data.options.currentNodeKey"
+              ></el-input>
             </el-form-item>
             <el-form-item :label="$t('fm.config.widget.iconClass')">
-              <el-input placeholder="请输入自定义树节点图标class" v-model="data.options.iconClass"></el-input>
+              <el-input
+                placeholder="请输入自定义树节点图标class"
+                v-model="data.options.iconClass"
+              ></el-input>
             </el-form-item>
             <el-checkbox v-model="data.options.highlightCurrent">{{
               $t('fm.config.widget.highlightCurrent')
@@ -1135,7 +1162,14 @@
         <!-- <el-input v-if="data.options.disabled" :disabled="data.options.disabled" placeholder="不可配置"></el-input> -->
         <!-- <el-input placeholder="输入提示信息" v-model="data.options.tips"></el-input> -->
         <!-- </el-form-item> -->
-        <el-form-item :label="$t('fm.config.widget.validate')" v-if="data.type != 'grid' && data.type != 'tree'">
+        <el-form-item
+          :label="$t('fm.config.widget.validate')"
+          v-if="
+            data.type != 'grid' &&
+              data.type != 'tree' &&
+              data.type != 'childForm'
+          "
+        >
           <div
             class="validate-block"
             v-if="Object.keys(data.options).indexOf('required') >= 0"
@@ -1338,15 +1372,65 @@
         </el-form-item>
       </template>
     </el-form>
+    <el-dialog :visible.sync="formVisible" :destroy-on-close="true">
+      <div class="search-panel">
+        <el-input v-model="searchCode" placeholder="请输入搜索内容" clearable />
+        <el-button type="primary" icon="el-icon-search" @click="searchChildForm"
+          >搜索</el-button
+        >
+      </div>
+      <el-table
+        :data="formListData"
+        style="width: 100%"
+        max-height="400"
+        border
+        highlight-current-row
+        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
+      >
+        <el-table-column type="index" width="50" />
+        <el-table-column prop="formCode" label="表单唯一编码" width="150" />
+        <el-table-column prop="projectName" label="项目名称" width="150" />
+        <el-table-column
+          prop="formType"
+          label="表单类型"
+          width="150"
+          :formatter="typeFormatter"
+        />
+        <el-table-column prop="surveyId" label="调查ID" width="150" />
+        <el-table-column prop="formName" label="表单名称" width="150" />
+        <el-table-column prop="formDescribe" label="表单描述" />
+        <el-table-column fixed="right" label="操作" width="130">
+          <template slot-scope="scope">
+            <!-- <el-button type="text" size="small" @click="toView(scope.row)"
+              >查看</el-button
+            > -->
+            <el-button type="text" size="small" @click="selectNowRow(scope.row)"
+              >选择</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        style="text-align: right;"
+        layout="prev, pager, next"
+        :page-size="pageSize"
+        :total="totalNum"
+        :current-page="nowPage"
+        @current-change="handleCurrentChange"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Draggable from 'vuedraggable';
+import generateForm from './GenerateForm';
+import request from '../util/request.js';
 
 export default {
   components: {
     Draggable,
+    generateForm,
   },
   props: ['data'],
   data() {
@@ -1359,6 +1443,13 @@ export default {
         range: null,
         length: null,
       },
+      formVisible: false,
+      formListData: [],
+      pageSize: 10,
+      totalNum: 0,
+      nowPage: 1,
+      searchCode: '',
+      // formDetail: {},
     };
   },
   created() {
@@ -1375,6 +1466,91 @@ export default {
     },
   },
   methods: {
+    // 格式化表单类型
+    typeFormatter(row, column) {
+      switch (row.formType) {
+        case '00':
+          return 'vueFrom表单-00';
+        case '01':
+          return 'vue自定义表单-01';
+        case '02':
+          return '调查表单-02';
+      }
+    },
+    // 弹出子表单
+    formListShow() {
+      this.searchChildForm();
+      this.formVisible = true;
+    },
+    handleCurrentChange(nowPage) {
+      this.nowPage = nowPage;
+      this.searchChildForm();
+    },
+    // 查询子表单
+    searchChildForm() {
+      let postData = {
+        body: {
+          formCode: this.searchCode,
+          pageIndex: this.nowPage,
+          pageSize: this.pageSize,
+        },
+        header: {
+          branchId: '966999',
+          channel: 'channel',
+          consumerId: 'consumerId',
+          extend: { TranTeller: '99988999' },
+          TranTeller: '99988999',
+          gloSeqNo: '10A07202019462456',
+          keyId: 'keyId',
+          mac: 'mac',
+          pageIndex: 1,
+          pageSize: 10,
+          projectId: 'subProjectId',
+          reqSeqNo: '20201228093742457',
+          reqTime: '20201228093742',
+          serviceGroupid: 'serviceGroupid',
+          serviceId: 'serviceId',
+          serviceName: 'test',
+          sourceSysId: 'sourceSysId',
+          subProjectId: 'subProjectId',
+          terminalCode: 'terminalCode',
+          userInfo: { username: '123', role: [] },
+          role: [],
+          username: '123',
+        },
+      };
+      request
+        .post('requestForward/formDevelop/qryFromDefineList2', postData)
+        .then(res => {
+          console.log(res);
+          const header = res.header ? res.header : res;
+          const body = res.body ? res.body : res;
+          if (header.rspCode === 'SP000000') {
+            if (typeof body.define.records === 'string') {
+              this.formListData = JSON.parse(body.define.records);
+            } else if (Array.isArray(body.define.records)) {
+              this.formListData = body.define.records;
+            }
+            this.totalNum = body.define.total;
+          } else {
+            this.$message.error('请求出错');
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.$message.error('请求出错');
+        });
+    },
+    // 双击选中当前表单
+    selectNowRow(row) {
+      this.data.formCode = row.formCode;
+      this.data.formData = row.formContent
+      this.formVisible = false;
+    },
+    // 查看当前表单
+    // toView(row) {
+    //   this.formDetail = JSON.parse(row.formContent);
+    // },
     // codeMirror弹出函数
     handelMirror(e) {
       console.log(this.data);
@@ -1472,7 +1648,8 @@ export default {
           required: true,
           message: this.data.options.requiredMessage
             ? this.data.options.requiredMessage
-            : `${this.data.model+this.$t('fm.config.widget.validatorRequired')}`,
+            : `${this.data.model +
+                this.$t('fm.config.widget.validatorRequired')}`,
         };
       } else {
         this.validator.required = null;
@@ -1607,3 +1784,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.search-panel {
+  display: flex;
+  margin-bottom: 30px;
+}
+.search-panel .el-input {
+  width: 300px;
+  margin-right: 30px;
+}
+</style>
