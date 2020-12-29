@@ -21,7 +21,6 @@
       :key="formKey"
     >
       <template v-for="item in data.list">
-
         <!-- 栅格组件 -->
         <generate-col-item
           v-if="item.type == 'grid'"
@@ -54,7 +53,12 @@
           @input-change="onInputChange"
         >
         </generate-tab-item>
-
+        <!-- <fm-generate-form
+          v-else-if="item.type == 'childForm'"
+          :key="item.key"
+          :data="item.formData"
+          :readOnly="item.options.disabled"
+        ></fm-generate-form> -->
         <template v-else>
           <generate-element-item
             :key="item.key"
@@ -130,10 +134,10 @@ export default {
   created() {
     this._initForm();
   },
-  provide(){
-    return{
-      genform:this
-    }
+  provide() {
+    return {
+      genform: this,
+    };
   },
   mounted() {
     EventBus.$on('on-field-change', (field, value) => {
@@ -157,22 +161,22 @@ export default {
     },
     // 生成models、rules对象
     generateModel(genList) {
-      if (!genList) return
+      if (!genList) return;
       for (let i = 0; i < genList.length; i++) {
         if (genList[i].type === 'grid') {
           genList[i].columns.forEach(item => {
             this.generateModel(item.list);
           });
         } else if (genList[i].type === 'elTable') {
-          debugger
+          debugger;
           if (
             this.value &&
             Object.keys(this.value).indexOf(genList[i].model) >= 0
           ) {
             this.models[genList[i].model] = this.value[genList[i].model];
-          }else{
+          } else {
             this.models[genList[i].model] =
-            genList[i].configdata.list[0].options.tableData;
+              genList[i].configdata.list[0].options.tableData;
           }
         } else if (genList[i].type === 'tabs') {
           genList[i].tabs.forEach(item => {
@@ -356,7 +360,7 @@ export default {
     },
     // 禁用只读隐藏组件移除必输项校验
     clearValidate() {
-      if(typeof this.comArr !='Array' || this.comArr.length==0) return
+      if (typeof this.comArr != 'Array' || this.comArr.length == 0) return;
       let lists = this.comArr;
       for (let i = 0; i < lists.length; i++) {
         if (
@@ -367,7 +371,10 @@ export default {
           console.log(this.rules);
           this.rules[lists[i].model];
           for (let j = 0; j < this.rules[lists[i].model].length; j++) {
-            if (this.rules[lists[i].model][j].required && typeof this.models[lists[i].model] == 'undefined') {
+            if (
+              this.rules[lists[i].model][j].required &&
+              typeof this.models[lists[i].model] == 'undefined'
+            ) {
               this.rules[lists[i].model][j].required = false;
             }
           }
@@ -382,9 +389,9 @@ export default {
     // 监听表单数据改变
     onInputChange(value, field) {
       // 向container组件发射on-change事件，将 key value 以及models（form表单的key value对象）传入
-      this.models[field] = value
+      this.models[field] = value;
       this.$emit('on-change', field, value, this.models);
-      console.log(value, field, this.models)
+      console.log(value, field, this.models);
     },
     // 重置models
     resetModelsFields() {
@@ -408,10 +415,10 @@ export default {
       // 深度观察表单渲染对象，如果数据变更再次执行model生成函数
       deep: true,
       handler(val) {
-        console.log(this.models)
-        this.models = {}
-        this.rules = {}
-        this.generateModel(val)
+        console.log(this.models);
+        this.models = {};
+        this.rules = {};
+        this.generateModel(val);
         // this.resetModelsFields();
       },
     },

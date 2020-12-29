@@ -1,5 +1,5 @@
 <template>
-  <el-container class="fm2-container">
+  <el-container class="fm2-container" ref="container">
     <el-main class="fm2-main">
       <el-container>
         <el-aside width="250px">
@@ -201,6 +201,14 @@
               icon="el-icon-edit-outline"
               @click="handleEdit($event)"
               >扩展函数</el-button
+            >
+            <el-button
+              v-if="extend"
+              type="text"
+              size="medium"
+              icon="el-icon-data-analysis"
+              @click="surveyShow = true"
+              >调查项</el-button
             >
             <el-button
               v-if="formConfig"
@@ -516,6 +524,10 @@
             </div>
           </div>
         </cus-dialog>
+        <!-- 调查项 -->
+        <el-dialog :visible.sync="surveyShow" width="900px">
+          <survey :surveyId="surveyId" @addWidget="updateWidget"></survey>
+        </el-dialog>
       </el-container>
     </el-main>
   </el-container>
@@ -530,12 +542,13 @@ import WidgetForm from './WidgetForm';
 import CusDialog from './CusDialog';
 import GenerateForm from './GenerateForm';
 import Clipboard from 'clipboard';
+import survey from './survey/survey';
 import {
   basicComponents,
   layoutComponents,
   advanceComponents,
   tableComponents,
-  formComponents
+  formComponents,
 } from './componentsConfig.js';
 import { bankingComponents } from './componentsBankingConfig.js';
 import request from '../util/request.js';
@@ -557,8 +570,13 @@ export default {
     GenerateForm,
     TableWidgetConfig,
     TableEventConfig,
+    survey,
   },
   props: {
+    // 调查id
+    surveyId: {
+      type: [String, Number],
+    },
     preview: {
       type: Boolean,
       default: false,
@@ -654,6 +672,7 @@ export default {
   },
   data() {
     return {
+      surveyShow: false, //调查项弹窗
       code: '',
       extendFunc: '',
       cmOptions: {
@@ -768,6 +787,15 @@ export default {
     });
   },
   methods: {
+    // 生成组件
+    updateWidget(val) {
+      let temp = Object.assign({}, this.widgetForm);
+      temp.list.push(val);
+      this.widgetForm = temp;
+      this.widgetFormSelect = this.widgetForm.list[
+        this.widgetForm.list.length - 1
+      ];
+    },
     // 撤销
     handleUndo() {
       this.revokeNumber++;

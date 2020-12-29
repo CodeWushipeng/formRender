@@ -328,6 +328,7 @@ export default {
     select: {
       deep: true,
       handler(val, oldval) {
+        this.select = val
         this.selectWidget = val;
       },
     },

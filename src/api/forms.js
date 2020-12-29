@@ -71,3 +71,12 @@ export function getTableList(data) { // isOk
     data
   })
 }
+
+//根据调查ID查询调查详情
+export function querySurveyById(data) {
+  return request({
+    url:urlPrefix + '/surveyDevelop/querySurvey',
+    method: 'post',
+    data
+  })
+}

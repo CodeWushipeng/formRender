@@ -42,12 +42,13 @@ module.exports = {
           '^/requestForward': '',
         },
       },
-      // '/requestForward': {
-      //   target: 'http://localhost:38081'
-      // },
-      // '/requestForwardDevelop': {
-      //   target: 'http://192.168.1.194:21004'
-      // }
+      // ====调查项====
+      '/requestForward/surveyDevelop/querySurvey': {
+        target: 'http://192.168.2.120:32038',
+        pathRewrite: {
+          '^/requestForward/surveyDevelop': '',
+        },
+      },
     },
     overlay: {
       warnings: false,

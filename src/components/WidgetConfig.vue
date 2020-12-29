@@ -1544,7 +1544,7 @@ export default {
     // 双击选中当前表单
     selectNowRow(row) {
       this.data.formCode = row.formCode;
-      this.data.formData = row.formContent
+      this.data.formData = JSON.parse(row.formContent)
       this.formVisible = false;
     },
     // 查看当前表单
